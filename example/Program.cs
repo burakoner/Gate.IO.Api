@@ -152,7 +152,7 @@ namespace GateApiDemo
             //var futures_14 = await api.Futures.GetStatsAsync(FuturesSettle.USDT, "BTC_USDT", FuturesStatsInterval.OneDay);
             //var futures_15 = await api.Futures.GetIndexConstituentsAsync(FuturesSettle.USDT, "BTC_USDT");
             //var futures_16 = await api.Futures.GetLiquidationHistoryAsync(FuturesSettle.USDT, "BTC_USDT");
-            var futures_17 = await api.Futures.GetAccountAsync(FuturesSettle.USDT);
+            //var futures_17 = await api.Futures.GetAccountAsync(FuturesSettle.USDT);
 
             Console.ReadLine();
             Console.ReadLine();
