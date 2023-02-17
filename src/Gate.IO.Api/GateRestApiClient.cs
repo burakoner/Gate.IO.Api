@@ -3,7 +3,7 @@
 public sealed class GateRestApiClient
 {
     // Options
-    public GateRestApiClientOptions ClientOptions { get; }
+    internal GateRestApiClientOptions ClientOptions { get; }
     internal CultureInfo CI { get; } = CultureInfo.InvariantCulture;
 
     // Master Clients
@@ -11,14 +11,10 @@ public sealed class GateRestApiClient
     public SubAccountRestApiClient SubAccount { get; }
     public SpotRestApiClient Spot { get; }
     public MarginRestApiClient Margin { get; }
-    public CrossMarginRestApiClient CrossMargin { get; }
-    public FlashSwapRestApiClient FlashSwap { get; }
     public FuturesRestApiClient Futures { get; }
-    /*
-    public DeliveryRestApiClient Delivery { get; }
+    public FlashSwapRestApiClient FlashSwap { get; }
     public OptionsRestApiClient Options { get; }
     public RebateRestApiClient Rebate { get; }
-    */
 
     public GateRestApiClient() : this(new GateRestApiClientOptions())
     {
@@ -32,9 +28,10 @@ public sealed class GateRestApiClient
         SubAccount = new SubAccountRestApiClient(this);
         Spot = new SpotRestApiClient(this);
         Margin = new MarginRestApiClient(this);
-        CrossMargin = new CrossMarginRestApiClient(this);
-        FlashSwap = new FlashSwapRestApiClient(this);
         Futures = new FuturesRestApiClient(this);
+        FlashSwap = new FlashSwapRestApiClient(this);
+        Options = new OptionsRestApiClient(this);
+        Rebate = new RebateRestApiClient(this);
     }
 
     internal Uri GetUrl(string api, string version, string section, string endpoint)

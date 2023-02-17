@@ -6,13 +6,13 @@ public class FuturesIndexConstituents
     /// Index name
     /// </summary>
     [JsonProperty("index")]
-    public string Index { get; private set; }
+    public string Index { get;  set; }
 
     /// <summary>
     /// Constituents
     /// </summary>
     [JsonProperty("constituents")]
-    public IEnumerable<IndexConstituent> Constituents { get; private set; }
+    public IEnumerable<IndexConstituent> Constituents { get;  set; }
 }
 
 public class IndexConstituent

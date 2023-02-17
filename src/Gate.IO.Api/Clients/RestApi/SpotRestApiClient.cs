@@ -1,6 +1,5 @@
 ﻿using Gate.IO.Api.Models.RestApi;
 using Gate.IO.Api.Models.RestApi.Spot;
-using Gate.IO.Api.Models.RestApi.Wallet;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
@@ -38,7 +37,7 @@ public class SpotRestApiClient : RestApiClient
     // Root Client
     internal GateRestApiClient RootClient { get; }
     internal CultureInfo CI { get { return RootClient.CI; } }
-    public GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    public new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
 
     internal SpotRestApiClient(GateRestApiClient root) : base("Gate.IO Spot RestApi", root.ClientOptions)
     {
@@ -91,7 +90,7 @@ public class SpotRestApiClient : RestApiClient
     #region Get server current time
     public async Task<RestCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
     {
-        var result = await SendRequestInternal<ServerTime>(RootClient.GetUrl(api, version, spot, timeEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        var result = await SendRequestInternal<SpotTime>(RootClient.GetUrl(api, version, spot, timeEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
         return result.As(result.Data?.Time ?? default);
     }
     #endregion
@@ -163,7 +162,7 @@ public class SpotRestApiClient : RestApiClient
         {
             { "currency_pair", symbol },
             { "limit", limit },
-            { "reverse", reverse },
+            { "reverse", reverse.ToString().ToLower() },
             { "page", page },
         };
         parameters.AddOptionalParameter("last_id", lastId);
@@ -175,15 +174,15 @@ public class SpotRestApiClient : RestApiClient
     #endregion
 
     #region Market candlesticks
-    public async Task<RestCallResult<IEnumerable<SpotCandlestick>>> GetCandlesticksAsync(string symbol, CandlestickInterval interval, DateTime from, DateTime to, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
-    => await GetCandlesticksAsync(symbol, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, lastId, reverse, page, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<IEnumerable<SpotCandlestick>>> GetCandlesticksAsync(string symbol, SpotCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    => await GetCandlesticksAsync(symbol, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<SpotCandlestick>>> GetCandlesticksAsync(string symbol, CandlestickInterval interval, long? from = null, long? to = null, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotCandlestick>>> GetCandlesticksAsync(string symbol, SpotCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "currency_pair", symbol },
-            { "interval", JsonConvert.SerializeObject(interval, new CandlestickIntervalConverter(false)) },
+            { "interval", JsonConvert.SerializeObject(interval, new SpotCandlestickIntervalConverter(false)) },
         };
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
@@ -201,12 +200,12 @@ public class SpotRestApiClient : RestApiClient
     /// <param name="symbol">Specify a currency pair to retrieve precise fee rate</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<SpotTradingFee>> GetUserFeeRatesAsync(string symbol = "", CancellationToken ct = default)
+    public async Task<RestCallResult<UserTradingFee>> GetUserFeeRatesAsync(string symbol = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<SpotTradingFee>(RootClient.GetUrl(api, version, spot, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<UserTradingFee>(RootClient.GetUrl(api, version, spot, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -218,7 +217,7 @@ public class SpotRestApiClient : RestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<Dictionary<string, SpotTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
+    public async Task<RestCallResult<Dictionary<string, UserTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
     {
         if (symbols.Count() > 50) throw new ArgumentException("A request can only query up to 50 currency pairs");
 
@@ -226,27 +225,27 @@ public class SpotRestApiClient : RestApiClient
             { "currency_pairs", string.Join(",", symbols) }
         };
 
-        return await SendRequestInternal<Dictionary<string, SpotTradingFee>>(RootClient.GetUrl(api, version, spot, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<Dictionary<string, UserTradingFee>>(RootClient.GetUrl(api, version, spot, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List spot accounts
-    public async Task<RestCallResult<IEnumerable<SpotBalance>>> GetSpotBalancesAsync(string currency = "", CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotAccount>>> GetAccountAsync(string currency = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await SendRequestInternal<IEnumerable<SpotBalance>>(RootClient.GetUrl(api, version, spot, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotAccount>>(RootClient.GetUrl(api, version, spot, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Create an order
-    public async Task<RestCallResult<SpotOrderResponse>> PlaceOrderAsync(
+    public async Task<RestCallResult<SpotOrder>> PlaceOrderAsync(
         AccountType account,
         string symbol,
         SpotOrderType type,
         SpotOrderSide side,
-        SpotOrderTimeInForce timeInForce,
+        SpotTimeInForce timeInForce,
         decimal amount,
         decimal? price = null,
         decimal? iceberg = null,
@@ -269,18 +268,18 @@ public class SpotRestApiClient : RestApiClient
             ClientOrderId = clientOrderId,
         }, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<SpotOrderResponse>> PlaceOrderAsync(SpotOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<SpotOrder>> PlaceOrderAsync(SpotOrderRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(request.Symbol);
-        SpotHelpers.ValidateClientOrderId(request.ClientOrderId, true);
+        SpotHelpers.ValidateMarketSymbol(request.Symbol);
+        ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
-        if (request.Type == SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.GoodTillCancelled)
+        if (request.Type == SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.GoodTillCancelled)
             throw new ArgumentException("GTC (GoodTillCancelled) is not supported for market orders");
 
-        if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.ImmediateOrCancel)
+        if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.ImmediateOrCancel)
             throw new ArgumentException("IOC (ImmediateOrCancel) is only supported for market orders");
 
-        if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.FillOrKill)
+        if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.FillOrKill)
             throw new ArgumentException("FOK (FillOrKill) is only supported for market orders");
 
         if (request.AutoBorrow.HasValue && request.AutoBorrow.Value &&
@@ -292,7 +291,7 @@ public class SpotRestApiClient : RestApiClient
             { "side", JsonConvert.SerializeObject(request.Side, new SpotOrderSideConverter(false)) },
             { "type", JsonConvert.SerializeObject(request.Type, new SpotOrderTypeConverter(false)) },
             { "account", JsonConvert.SerializeObject(request.Account, new AccountTypeConverter(false)) },
-            { "time_in_force", JsonConvert.SerializeObject(request.TimeInForce, new SpotOrderTimeInForceConverter(false)) },
+            { "time_in_force", JsonConvert.SerializeObject(request.TimeInForce, new SpotTimeInForceConverter(false)) },
             { "amount", request.Amount },
         };
         parameters.AddOptionalParameter("text", request.ClientOrderId);
@@ -301,25 +300,25 @@ public class SpotRestApiClient : RestApiClient
         parameters.AddOptionalParameter("auto_borrow", request.AutoBorrow);
         parameters.AddOptionalParameter("auto_repay", request.AutoRepay);
 
-        return await SendRequestInternal<SpotOrderResponse>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotOrder>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Create a batch of orders
-    public async Task<RestCallResult<IEnumerable<BatchOrderResponse>>> PlaceBatchOrdersAsync(IEnumerable<SpotOrderRequest> requests, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotBatchOrder>>> PlaceBatchOrdersAsync(IEnumerable<SpotOrderRequest> requests, CancellationToken ct = default)
     {
         foreach (var request in requests)
         {
-            SpotHelpers.ValidatePairSymbol(request.Symbol);
-            SpotHelpers.ValidateClientOrderId(request.ClientOrderId, false);
+            SpotHelpers.ValidateMarketSymbol(request.Symbol);
+            ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, false);
 
-            if (request.Type == SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.GoodTillCancelled)
+            if (request.Type == SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.GoodTillCancelled)
                 throw new ArgumentException("GTC (GoodTillCancelled) is not supported for market orders");
 
-            if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.ImmediateOrCancel)
+            if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.ImmediateOrCancel)
                 throw new ArgumentException("IOC (ImmediateOrCancel) is only supported for market orders");
 
-            if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotOrderTimeInForce.FillOrKill)
+            if (request.Type != SpotOrderType.Market && request.TimeInForce == SpotTimeInForce.FillOrKill)
                 throw new ArgumentException("FOK (FillOrKill) is only supported for market orders");
 
             if (request.AutoBorrow.HasValue && request.AutoBorrow.Value &&
@@ -331,12 +330,12 @@ public class SpotRestApiClient : RestApiClient
             { ClientOptions.RequestBodyParameterKey, requests },
         };
 
-        return await SendRequestInternal<IEnumerable<BatchOrderResponse>>(RootClient.GetUrl(api, version, spot, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotBatchOrder>>(RootClient.GetUrl(api, version, spot, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List all open orders
-    public async Task<RestCallResult<IEnumerable<OpenOrders>>> GetOpenOrdersAsync(AccountType account, int page = 1, int limit = 100, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotOpenOrders>>> GetOpenOrdersAsync(AccountType account, int page = 1, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -345,22 +344,22 @@ public class SpotRestApiClient : RestApiClient
             { "account", JsonConvert.SerializeObject(account, new AccountTypeConverter(false)) },
         };
 
-        return await SendRequestInternal<IEnumerable<OpenOrders>>(RootClient.GetUrl(api, version, spot, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotOpenOrders>>(RootClient.GetUrl(api, version, spot, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Close position when cross-currency is disabled
-    public async Task<RestCallResult<SpotOrderResponse>> CloseLiquidatedPositionsAsync(SpotOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<SpotOrder>> CloseLiquidatedPositionsAsync(SpotOrderRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(request.Symbol);
-        SpotHelpers.ValidateClientOrderId(request.ClientOrderId, true);
+        SpotHelpers.ValidateMarketSymbol(request.Symbol);
+        ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         var parameters = new Dictionary<string, object> {
             { "currency_pair", request.Symbol },
             { "side", JsonConvert.SerializeObject(request.Side, new SpotOrderSideConverter(false)) },
             { "type", JsonConvert.SerializeObject(request.Type, new SpotOrderTypeConverter(false)) },
             { "account", JsonConvert.SerializeObject(request.Account, new AccountTypeConverter(false)) },
-            { "time_in_force", JsonConvert.SerializeObject(request.TimeInForce, new SpotOrderTimeInForceConverter(false)) },
+            { "time_in_force", JsonConvert.SerializeObject(request.TimeInForce, new SpotTimeInForceConverter(false)) },
             { "amount", request.Amount },
         };
         parameters.AddOptionalParameter("text", request.ClientOrderId);
@@ -369,12 +368,12 @@ public class SpotRestApiClient : RestApiClient
         parameters.AddOptionalParameter("auto_borrow", request.AutoBorrow);
         parameters.AddOptionalParameter("auto_repay", request.AutoRepay);
 
-        return await SendRequestInternal<SpotOrderResponse>(RootClient.GetUrl(api, version, spot, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotOrder>(RootClient.GetUrl(api, version, spot, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List orders
-    public async Task<RestCallResult<IEnumerable<SpotOrderResponse>>> GetOrdersAsync(
+    public async Task<RestCallResult<IEnumerable<SpotOrder>>> GetOrdersAsync(
     AccountType account,
     string symbol,
     SpotOrderStatus status,
@@ -386,7 +385,7 @@ public class SpotRestApiClient : RestApiClient
     CancellationToken ct = default)
         => await GetOrdersAsync(account, symbol, status, side, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), page, limit, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<SpotOrderResponse>>> GetOrdersAsync(
+    public async Task<RestCallResult<IEnumerable<SpotOrder>>> GetOrdersAsync(
         AccountType account,
         string symbol,
         SpotOrderStatus status,
@@ -409,19 +408,19 @@ public class SpotRestApiClient : RestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await SendRequestInternal<IEnumerable<SpotOrderResponse>>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotOrder>>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel a single order
-    public async Task<RestCallResult<SpotOrderResponse>> CancelOrderAsync(
+    public async Task<RestCallResult<SpotOrder>> CancelOrderAsync(
         AccountType account,
         string symbol,
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(symbol);
+        SpotHelpers.ValidateMarketSymbol(symbol);
 
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -435,54 +434,52 @@ public class SpotRestApiClient : RestApiClient
         };
 
         var oid = orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId;
-        return await SendRequestInternal<SpotOrderResponse>(RootClient.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotOrder>(RootClient.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel all open orders in specified currency pair
-    public async Task<RestCallResult<IEnumerable<SpotOrderResponse>>> CancelOrdersAsync(
+    public async Task<RestCallResult<IEnumerable<SpotOrder>>> CancelOrdersAsync(
         AccountType account,
         string symbol,
         SpotOrderSide? side = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(symbol);
+        SpotHelpers.ValidateMarketSymbol(symbol);
 
         var parameters = new Dictionary<string, object> {
             { "account", JsonConvert.SerializeObject(account, new AccountTypeConverter(false)) },
             { "currency_pair", symbol },
         };
+        parameters.AddOptionalParameter("side", JsonConvert.SerializeObject(side, new SpotOrderSideConverter(false)));
 
-        if (side != null)
-            parameters.AddOptionalParameter("side", JsonConvert.SerializeObject(side, new SpotOrderSideConverter(false)));
-
-        return await SendRequestInternal<IEnumerable<SpotOrderResponse>>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotOrder>>(RootClient.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel a batch of orders with an ID list
-    public async Task<RestCallResult<BatchOrderResponse>> CancelOrdersAsync(IEnumerable<BatchCancelOrderRequest> requests, CancellationToken ct = default)
+    public async Task<RestCallResult<SpotBatchOrder>> CancelOrdersAsync(IEnumerable<BatchCancelOrderRequest> requests, CancellationToken ct = default)
     {
         foreach (var request in requests)
-            SpotHelpers.ValidatePairSymbol(request.Symbol);
+            SpotHelpers.ValidateMarketSymbol(request.Symbol);
 
         var parameters = new Dictionary<string, object> {
             { ClientOptions.RequestBodyParameterKey, requests },
         };
 
-        return await SendRequestInternal<BatchOrderResponse>(RootClient.GetUrl(api, version, spot, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotBatchOrder>(RootClient.GetUrl(api, version, spot, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Get a single order
-    public async Task<RestCallResult<SpotOrderResponse>> GetOrderAsync(
+    public async Task<RestCallResult<SpotOrder>> GetOrderAsync(
         AccountType account,
         string symbol,
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(symbol);
+        SpotHelpers.ValidateMarketSymbol(symbol);
 
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -496,13 +493,13 @@ public class SpotRestApiClient : RestApiClient
         };
 
         var oid = orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId;
-        return await SendRequestInternal<SpotOrderResponse>(RootClient.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotOrder>(RootClient.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Amend an order
 #if NETSTANDARD2_1
-    public async Task<RestCallResult<SpotOrderResponse>> AmendOrderAsync(
+    public async Task<RestCallResult<SpotOrder>> AmendOrderAsync(
         AccountType account,
         string symbol,
         long? orderId = null,
@@ -511,7 +508,7 @@ public class SpotRestApiClient : RestApiClient
         decimal? price = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(symbol);
+        SpotHelpers.ValidateMarketSymbol(symbol);
 
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -527,13 +524,13 @@ public class SpotRestApiClient : RestApiClient
         var uri = RootClient.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid));
         uri = uri.AddQueryParmeter("currency_pair", symbol);
 
-        return await SendRequestInternal<SpotOrderResponse>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<SpotOrder>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
 #endif
     #endregion
 
     #region List personal trading history
-    public async Task<RestCallResult<IEnumerable<SpotTrade>>> GetUserTradesAsync(
+    public async Task<RestCallResult<IEnumerable<SpotUserTrade>>> GetUserTradesAsync(
     AccountType account,
     string symbol,
     DateTime from,
@@ -545,7 +542,7 @@ public class SpotRestApiClient : RestApiClient
     CancellationToken ct = default)
         => await GetUserTradesAsync(account, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), page, limit, orderId, clientOrderId, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<SpotTrade>>> GetUserTradesAsync(
+    public async Task<RestCallResult<IEnumerable<SpotUserTrade>>> GetUserTradesAsync(
         AccountType? account = null,
         string symbol = "",
         long? from = null,
@@ -556,7 +553,7 @@ public class SpotRestApiClient : RestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidatePairSymbol(symbol);
+        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
 
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -573,7 +570,7 @@ public class SpotRestApiClient : RestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await SendRequestInternal<IEnumerable<SpotTrade>>(RootClient.GetUrl(api, version, spot, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotUserTrade>>(RootClient.GetUrl(api, version, spot, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -583,43 +580,42 @@ public class SpotRestApiClient : RestApiClient
         string symbol = "",
         CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidatePairSymbol(symbol);
+        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
 
         var parameters = new Dictionary<string, object> {
             { "timeout", timeout },
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
-        var result = await SendRequestInternal<PriceTriggeredOrderTime>(RootClient.GetUrl(api, version, spot, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await SendRequestInternal<SpotCountdown>(RootClient.GetUrl(api, version, spot, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.Time ?? default);
-
     }
     #endregion
 
     #region Create a price-triggered order
     public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
-        AccountType2 account,
         string symbol,
         decimal triggerPrice,
         PriceTriggerCondition triggerCondition,
         TimeSpan triggerExpiration,
+        AccountType2 orderAccount,
         SpotOrderType orderType,
         SpotOrderSide orderSide,
-        SpotPriceOrderTimeInForce orderTimeInForce,
+        SpotTriggerOrderTimeInForce orderTimeInForce,
         decimal? orderAmount,
         decimal? orderPrice,
         CancellationToken ct = default)
-        => await PlacePriceTriggeredOrderAsync(new PriceTriggeredOrderRequest
+        => await PlacePriceTriggeredOrderAsync(new SpotTriggerOrderRequest
         {
             Symbol = symbol,
-            Trigger = new PriceTrigger
+            Trigger = new SpotPriceTrigger
             {
                 Price = triggerPrice.ToString(CI),
                 Rule = triggerCondition,
                 Expiration = Convert.ToInt32(triggerExpiration.TotalSeconds),
             },
-            Put = new PricePutOrder
+            Order = new SpotPriceOrder
             {
-                Account = account,
+                Account = orderAccount,
                 Type = orderType,
                 Side = orderSide,
                 TimeInForce = orderTimeInForce,
@@ -628,23 +624,23 @@ public class SpotRestApiClient : RestApiClient
             }
         }, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(PriceTriggeredOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(SpotTriggerOrderRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidatePairSymbol(request.Symbol);
+        SpotHelpers.ValidateMarketSymbol(request.Symbol);
 
         var parameters = new Dictionary<string, object> {
             { ClientOptions.RequestBodyParameterKey, request },
         };
 
-        var result = await SendRequestInternal<PriceTriggeredOrderId>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await SendRequestInternal<SpotTriggerOrderId>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.OrderId ?? default);
     }
     #endregion
 
     #region Retrieve running auto order list
-    public async Task<RestCallResult<IEnumerable<PriceTriggeredOrderResponse>>> GetPriceTriggeredOrdersAsync(
+    public async Task<RestCallResult<IEnumerable<SpotTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(
     AccountType2 account,
-    SpotOrderStatus status,
+    PriceTriggerFilter status,
     string symbol = "",
     int limit = 100,
     int offset = 0,
@@ -653,32 +649,32 @@ public class SpotRestApiClient : RestApiClient
         var parameters = new Dictionary<string, object>
         {
             { "account", JsonConvert.SerializeObject(account, new AccountType2Converter(false)) },
-            { "status", JsonConvert.SerializeObject(status, new SpotOrderStatusConverter(false)) },
+            { "status", JsonConvert.SerializeObject(status, new PriceTriggerFilterConverter(false)) },
             { "limit", limit },
             { "offset", offset },
         };
         parameters.AddOptionalParameter("market", symbol);
 
-        return await SendRequestInternal<IEnumerable<PriceTriggeredOrderResponse>>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotTriggerOrderResponse>>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel all open orders
-    public async Task<RestCallResult<IEnumerable<PriceTriggeredOrderResponse>>> CancelPriceTriggeredOrdersAsync(AccountType2? account = null, string symbol = "", CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotTriggerOrderResponse>>> CancelPriceTriggeredOrdersAsync(AccountType2? account = null, string symbol = "", CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidatePairSymbol(symbol);
+        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
 
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("market", symbol);
         if (account.HasValue)
             parameters.AddOptionalParameter("account", JsonConvert.SerializeObject(account, new AccountType2Converter(false)));
 
-        return await SendRequestInternal<IEnumerable<PriceTriggeredOrderResponse>>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<SpotTriggerOrderResponse>>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Get a price-triggered order
-    public async Task<RestCallResult<PriceTriggeredOrderResponse>> GetPriceTriggeredOrderAsync(
+    public async Task<RestCallResult<SpotTriggerOrderResponse>> GetPriceTriggeredOrderAsync(
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
@@ -690,12 +686,12 @@ public class SpotRestApiClient : RestApiClient
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
         var oid = orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId;
-        return await SendRequestInternal<PriceTriggeredOrderResponse>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await SendRequestInternal<SpotTriggerOrderResponse>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel a price-triggered order
-    public async Task<RestCallResult<PriceTriggeredOrderResponse>> CancelPriceTriggeredOrderAsync(
+    public async Task<RestCallResult<SpotTriggerOrderResponse>> CancelPriceTriggeredOrderAsync(
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
@@ -707,7 +703,7 @@ public class SpotRestApiClient : RestApiClient
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
         var oid = orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId;
-        return await SendRequestInternal<PriceTriggeredOrderResponse>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return await SendRequestInternal<SpotTriggerOrderResponse>(RootClient.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 }

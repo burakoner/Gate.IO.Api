@@ -19,9 +19,9 @@ public class StreamSpotClient : StreamApiClient
     internal GateStreamClient RootClient { get; }
 
     // Options
-    public new GateStreamClientOptions Options { get { return (GateStreamClientOptions)base.Options; } }
+    public new GateStreamClientOptions ClientOptions { get { return (GateStreamClientOptions)base.Options; } }
 
-    internal StreamSpotClient(GateStreamClient root) : base("Gate.IO Spot Stream", root.Options)
+    internal StreamSpotClient(GateStreamClient root) : base("Gate.IO Spot Stream", root.ClientOptions)
     {
         RootClient = root;
 
@@ -117,7 +117,7 @@ public class StreamSpotClient : StreamApiClient
         if (!connection.Connected)
             return true;
 
-        await connection.SendAndWaitAsync(unsub, Options.ResponseTimeout, data =>
+        await connection.SendAndWaitAsync(unsub, ClientOptions.ResponseTimeout, data =>
         {
             if (data.Type != JTokenType.Object)
                 return false;

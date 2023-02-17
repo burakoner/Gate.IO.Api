@@ -21,7 +21,7 @@ public class SubAccountRestApiClient : RestApiClient
     // Root Client
     internal GateRestApiClient RootClient { get; }
     internal CultureInfo CI { get { return RootClient.CI; } }
-    public GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    public new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
 
     internal SubAccountRestApiClient(GateRestApiClient root) : base("Gate.IO SubAccount RestApi", root.ClientOptions)
     {

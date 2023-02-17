@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Models.RestApi.Futures;
 public class FuturesAccount
 {
     [JsonProperty("user")]
-    public long UserId { get; set; }
+    public int UserId { get; set; }
 
     /// <summary>
     /// Settle currency
@@ -61,10 +61,6 @@ public class FuturesAccount
 
     [JsonProperty("history")]
     public FuturesAccountHistory History { get; set; }
-
-
-
-
 
     /*
     /// <summary>

@@ -1,4 +1,5 @@
-﻿using Gate.IO.Api.Models.RestApi.Wallet;
+﻿using Gate.IO.Api.Models.RestApi;
+using Gate.IO.Api.Models.RestApi.Wallet;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
@@ -34,7 +35,7 @@ public class WalletRestApiClient : RestApiClient
     // Root Client
     internal GateRestApiClient RootClient { get; }
     internal CultureInfo CI { get { return RootClient.CI; } }
-    public GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    public new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
 
     internal WalletRestApiClient(GateRestApiClient root) : base("Gate.IO Wallet RestApi", root.ClientOptions)
     {
@@ -330,13 +331,13 @@ public class WalletRestApiClient : RestApiClient
     #endregion
 
     #region Retrieve personal trading fee
-    public async Task<RestCallResult<SpotTradingFee>> GetUserFeeRatesAsync(string symbol = "", string settle = "", CancellationToken ct = default)
+    public async Task<RestCallResult<UserTradingFee>> GetUserFeeRatesAsync(string symbol = "", string settle = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("settle", settle);
 
-        return await SendRequestInternal<SpotTradingFee>(RootClient.GetUrl(api, version, wallet, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<UserTradingFee>(RootClient.GetUrl(api, version, wallet, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 

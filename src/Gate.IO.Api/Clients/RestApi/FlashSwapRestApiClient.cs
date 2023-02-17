@@ -21,7 +21,7 @@ public class FlashSwapRestApiClient : RestApiClient
     // Root Client
     internal GateRestApiClient RootClient { get; }
     internal CultureInfo CI { get { return RootClient.CI; } }
-    public GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    public new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
 
     internal FlashSwapRestApiClient(GateRestApiClient root) : base("Gate.IO FlashSwap RestApi", root.ClientOptions)
     {
@@ -79,7 +79,7 @@ public class FlashSwapRestApiClient : RestApiClient
     #endregion
 
     #region Create a flash swap order
-    public async Task<RestCallResult<FlashSwapOrderResponse>> PlaceOrderAsync(
+    public async Task<RestCallResult<FlashSwapOrder>> PlaceOrderAsync(
         string buyCurrency,
         string sellCurrency, 
         decimal? buyAmount = null,
@@ -95,7 +95,7 @@ public class FlashSwapRestApiClient : RestApiClient
             PreviewId = previewId,
         }, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<FlashSwapOrderResponse>> PlaceOrderAsync(FlashSwapOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<FlashSwapOrder>> PlaceOrderAsync(FlashSwapOrderRequest request, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object> {
             { "sell_currency", request.SellCurrency },
@@ -105,12 +105,12 @@ public class FlashSwapRestApiClient : RestApiClient
         parameters.AddOptionalParameter("sell_amount", request.SellAmount);
         parameters.AddOptionalParameter("buy_amount", request.BuyAmount);
 
-        return await SendRequestInternal<FlashSwapOrderResponse>(RootClient.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<FlashSwapOrder>(RootClient.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List all flash swap orders
-    public async Task<RestCallResult<IEnumerable<FlashSwapOrderResponse>>> GetOrdersAsync(
+    public async Task<RestCallResult<IEnumerable<FlashSwapOrder>>> GetOrdersAsync(
         SwapOrderStatus status,
         string buyCurrency,
         string sellCurrency,
@@ -123,20 +123,20 @@ public class FlashSwapRestApiClient : RestApiClient
         {
             { "page", page },
             { "limit", limit },
-            { "reverse", reverse },
+            { "reverse", reverse.ToString().ToLower() },
         };
         parameters.AddOptionalParameter("status", JsonConvert.SerializeObject(status, new SwapOrderStatusConverter(false)));
         parameters.AddOptionalParameter("sell_currency", sellCurrency);
         parameters.AddOptionalParameter("buy_currency", buyCurrency);
 
-        return await SendRequestInternal<IEnumerable<FlashSwapOrderResponse>>(RootClient.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<FlashSwapOrder>>(RootClient.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Get a single order
-    public async Task<RestCallResult<FlashSwapOrderResponse>> GetOrderAsync(long orderId, CancellationToken ct = default)
+    public async Task<RestCallResult<FlashSwapOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await SendRequestInternal<FlashSwapOrderResponse>(RootClient.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await SendRequestInternal<FlashSwapOrder>(RootClient.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 

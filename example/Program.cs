@@ -11,7 +11,6 @@ namespace GateApiDemo
         {
             var api = new GateRestApiClient(new GateRestApiClientOptions
             {
-                ApiCredentials = new ApiSharp.Authentication.ApiCredentials("b491b7c59b9a466ca09c5e0573d81fcc", "62f95d662a3a40df1f3c821d988ee9f865cc5835dfd2b1cf2e77057c5c9d53f3"),
                 RawResponse = true,
             });
             //var spot_01 = await api.Spot.GetServerTimeAsync();

@@ -5,7 +5,7 @@ namespace Gate.IO.Api;
 public class GateStreamClient
 {
     // Options
-    public GateStreamClientOptions Options { get; }
+    public GateStreamClientOptions ClientOptions { get; }
 
     // Master Clients
     public StreamSpotClient Spot { get; }
@@ -16,7 +16,7 @@ public class GateStreamClient
 
     public GateStreamClient(GateStreamClientOptions options)
     {
-        Options = options;
+        ClientOptions = options;
 
         Spot = new StreamSpotClient(this);
     }

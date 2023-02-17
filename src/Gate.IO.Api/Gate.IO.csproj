@@ -8,10 +8,10 @@
   <PropertyGroup>
     <PackageId>Gate.IO</PackageId>
 	<Authors>Burak Öner</Authors>
-	<Version>1.0.3</Version>
-	<FileVersion>1.0.3</FileVersion>
-	<PackageVersion>1.0.3</PackageVersion>
-	<AssemblyVersion>1.0.3</AssemblyVersion>
+	<Version>1.0.4</Version>
+	<FileVersion>1.0.4</FileVersion>
+	<PackageVersion>1.0.4</PackageVersion>
+	<AssemblyVersion>1.0.4</AssemblyVersion>
 	<Description>Gate.IO Api Client</Description>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageTags>Gate.IO;Gate;IO;Binance;BNB;BTC;Api;Client;Rest;Web;Websocket;Socket;Wrapper;Crypto;Currency;Cryptocurrency;Exchange;Trade;Trading;Bitcoin;Spot;Margin;Futures;Derivates;Stock;Options;Swap;</PackageTags>
@@ -19,7 +19,7 @@
 	<NeutralLanguage>en</NeutralLanguage>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageReleaseNotes>
-		Version 1.0.3 - 14 Feb 2023
+		Version 1.0.4 - 17 Feb 2023
 	</PackageReleaseNotes>
 	<PackageIcon>Gate.IO.png</PackageIcon>
 	<PackageIconUrl />
@@ -36,8 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\RestApi\Futures\" />
-    <Folder Include="Models\RestApi\Options\" />
     <Folder Include="Models\StreamApi\" />
   </ItemGroup>
 

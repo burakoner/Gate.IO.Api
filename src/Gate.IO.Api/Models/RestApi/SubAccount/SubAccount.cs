@@ -30,17 +30,17 @@ public class SubAccount
     /// State: 1-normal, 2-locked\&quot;
     /// </summary>
     [JsonProperty("state"), JsonConverter(typeof(SubAccountStateConverter))]
-    public SubAccountState State { get; private set; }
+    public SubAccountState State { get; set; }
 
     /// <summary>
     /// The user id of the sub-account
     /// </summary>
     [JsonProperty("user_id")]
-    public long UserId { get; private set; }
+    public long UserId { get; set; }
 
     /// <summary>
     /// Created time
     /// </summary>
     [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime CreateTime { get; private set; }
+    public DateTime CreateTime { get; set; }
 }

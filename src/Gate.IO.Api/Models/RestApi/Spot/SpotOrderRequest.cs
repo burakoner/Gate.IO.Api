@@ -11,7 +11,7 @@ public class SpotOrderRequest
     /// 2. no longer than 28 bytes without t- prefix
     /// 3. can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)
     /// </summary>
-    [JsonProperty("text")]
+    [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
     public string ClientOrderId { get;  set; }
 
     /// <summary>
@@ -59,8 +59,8 @@ public class SpotOrderRequest
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none Only &#x60;ioc&#x60; and &#x60;fok&#x60; are supported when &#x60;type&#x60;&#x3D;&#x60;market&#x60;
     /// </summary>
-    [JsonProperty("time_in_force"), JsonConverter(typeof(SpotOrderTimeInForceConverter))]
-    public SpotOrderTimeInForce TimeInForce { get; set; }
+    [JsonProperty("time_in_force"), JsonConverter(typeof(SpotTimeInForceConverter))]
+    public SpotTimeInForce TimeInForce { get; set; }
 
     /// <summary>
     /// Used in margin or cross margin trading to allow automatic loan of insufficient amount if balance is not enough.
