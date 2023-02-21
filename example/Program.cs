@@ -1,6 +1,8 @@
 ﻿using Gate.IO.Api;
 using Gate.IO.Api.Enums;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace GateApiDemo
@@ -9,8 +11,106 @@ namespace GateApiDemo
     {
         public static async Task Main(string[] args)
         {
+            var ws = new GateStreamClient(new GateStreamClientOptions
+            {
+                RawResponse = true,
+                ApiCredentials = new ApiSharp.Authentication.ApiCredentials("b491b7c59b9a466ca09c5e0573d81fcc", "62f95d662a3a40df1f3c821d988ee9f865cc5835dfd2b1cf2e77057c5c9d53f3"),
+            });
+            /*
+            var ticker = await ws.Spot.SubscribeToTickersAsync(new List<string>
+            {
+                "BTC_USDT", "ETH_USDT", "XRP_USDT", "GT_USDT", "KEY_USDT", "FIL_USDT", "SOL_USDT", "MAGIC_USDT",
+            }, (data) =>
+            {
+                Console.WriteLine($"S:{data.Data.Symbol} L:{data.Data.Last} H:{data.Data.High24h} L:{data.Data.Low24h} LA:{data.Data.LowestAsk} HB:{data.Data.HighestBid}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ticker.Data);
+            */
+
+            /*
+            var ws_trades = await ws.Spot.SubscribeToTradesAsync(new List<string>
+            {
+                "BTC_USDT", "ETH_USDT", "XRP_USDT", "GT_USDT", "KEY_USDT", "FIL_USDT", "SOL_USDT", "MAGIC_USDT",
+            }, (data) =>
+            {
+                Console.WriteLine($"S:{data.Data.Symbol} S:{data.Data.Side} P:{data.Data.Price} A:{data.Data.Amount}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_trades.Data);
+            */
+
+            /*
+            var ws_klines = await ws.Spot.SubscribeToCandlesticksAsync("BTC_USDT", SpotCandlestickInterval.OneMinute, (data) =>
+            {
+                Console.WriteLine($"S:{data.Data.Subscription} O:{data.Data.Open} H:{data.Data.High} L:{data.Data.Low} C:{data.Data.Close} BaseVolume:{data.Data.BaseVolume} QuoteVolume:{data.Data.QuoteVolume}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_klines.Data);
+            */
+
+            /*
+            var ws_bookticker = await ws.Spot.SubscribeToBookTickersAsync(new List<string>
+            {
+                "BTC_USDT", "ETH_USDT", "XRP_USDT", "GT_USDT", "KEY_USDT", "FIL_USDT", "SOL_USDT", "MAGIC_USDT",
+            }, (data) =>
+            {
+                Console.WriteLine($"S:{data.Data.Symbol} BP:{data.Data.BestBidPrice} BA:{data.Data.BestBidAmount} AP:{data.Data.BestAskPrice} AA:{data.Data.BestAskAmount}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_bookticker.Data);
+            */
+
+            /**/
+            var ws_bookdiff = await ws.Spot.SubscribeToOrderBookDifferencesAsync("BTC_USDT", 100, (data) =>
+            {
+                // Console.WriteLine($"S:{data.Raw}");
+                Console.WriteLine($"S:{data.Data.Symbol} F:{data.Data.OrderBookFirstUpdateId} L:{data.Data.OrderBookLastUpdateId} Rows:{data.Data.OrderBookLastUpdateId - data.Data.OrderBookFirstUpdateId} A:{data.Data.Asks.Count()} B:{data.Data.Bids.Count()}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_bookdiff.Data);
+            /**/
+
+            /*
+            var ws_booksnapshot = await ws.Spot.SubscribeToOrderBookSnapshotsAsync("BTC_USDT", 100, 20, (data) =>
+            {
+                // Console.WriteLine($"S:{data.Raw}");
+                Console.WriteLine($"S:{data.Data.Symbol} F:{data.Data.Time} L:{data.Data.LastUpdateId} A:{data.Data.Asks.Count()} B:{data.Data.Bids.Count()}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_booksnapshot.Data);
+            */
+            
+            /*
+            var ws_userorders = await ws.Spot.SubscribeToUserOrdersAsync(new List<string>
+            {
+                "BTC_USDT", "ETH_USDT", "XRP_USDT", "GT_USDT", "KEY_USDT", "FIL_USDT", "SOL_USDT", "MAGIC_USDT",
+            }, (data) =>
+            {
+                // Console.WriteLine($"S:{data.Raw}");
+                Console.WriteLine($"S:{data.Data.Symbol} F:{data.Data.Status}");
+            });
+            Console.WriteLine("Subscribed");
+            Console.ReadLine();
+            await ws.Spot.UnsubscribeAsync(ws_userorders.Data);
+            */
+
+
+
+
+
+
+
+
             var api = new GateRestApiClient(new GateRestApiClientOptions
             {
+                ApiCredentials = new ApiSharp.Authentication.ApiCredentials("b491b7c59b9a466ca09c5e0573d81fcc", "62f95d662a3a40df1f3c821d988ee9f865cc5835dfd2b1cf2e77057c5c9d53f3"),
                 RawResponse = true,
             });
             //var spot_01 = await api.Spot.GetServerTimeAsync();

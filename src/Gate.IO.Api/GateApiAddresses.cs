@@ -2,31 +2,59 @@
 
 public class GateApiAddresses
 {
-    /// <summary>
-    /// The address used by the BinanceClient for the Spot API
-    /// </summary>
-    public string RestClientAddress { get; set; }
+    // Rest Api
+    public string RestApiAddress { get; set; }
 
-    /// <summary>
-    /// The address used by the BinanceSocketClient for the Spot API
-    /// </summary>
-    public string SocketClientAddress { get; set; }
+    // Stream-Spot
+    public string StreamSpotAddress { get; set; }
 
-    /// <summary>
-    /// The default addresses to connect to the binance.com API
-    /// </summary>
-    public static GateApiAddresses Default = new GateApiAddresses
+    // Stream-Perpetual Futures
+    public Dictionary<FuturesPerpetualSettle, string> StreamPerpetualFuturesAddresses { get; set; }
+
+    // Stream-Delivery Futures
+    public Dictionary<FuturesDeliverySettle, string> StreamDeliveryFuturesAddresses { get; set; }
+
+    public static GateApiAddresses Default = new()
     {
-        RestClientAddress = "https://api.gateio.ws",
-        SocketClientAddress = "wss://api.gateio.ws/ws/v4/",
+        // Rest Api
+        RestApiAddress = "https://api.gateio.ws",
+
+        // Stream-Spot
+        StreamSpotAddress = "wss://api.gateio.ws/ws/v4/",
+
+        // Stream-Perpetual Futures
+        StreamPerpetualFuturesAddresses = new Dictionary<FuturesPerpetualSettle, string> {
+            { FuturesPerpetualSettle.BTC, "wss://fx-ws.gateio.ws/v4/ws/btc" },
+            { FuturesPerpetualSettle.USD, "wss://fx-ws.gateio.ws/v4/ws/usd" },
+            { FuturesPerpetualSettle.USDT, "wss://fx-ws.gateio.ws/v4/ws/usdt" },
+        },
+
+        // Stream-Delivery Futures
+        StreamDeliveryFuturesAddresses = new Dictionary<FuturesDeliverySettle, string> {
+            { FuturesDeliverySettle.BTC, "wss://fx-ws.gateio.ws/v4/ws/delivery/btc" },
+            { FuturesDeliverySettle.USDT, "wss://fx-ws.gateio.ws/v4/ws/delivery/usdt" },
+        },
     };
 
-    /// <summary>
-    /// The addresses to connect to the binance testnet
-    /// </summary>
-    public static GateApiAddresses TestNet = new GateApiAddresses
+    public static GateApiAddresses TestNet = new()
     {
-        RestClientAddress = "https://fx-api-testnet.gateio.ws/api/v4",
-        SocketClientAddress = "wss://api.gateio.ws/ws/v4/",
+        // Rest Api
+        RestApiAddress = "https://fx-api-testnet.gateio.ws/api/v4",
+
+        // Stream-Spot
+        StreamSpotAddress = "wss://api.gateio.ws/ws/v4/",
+
+        // Stream-Perpetual Futures
+        StreamPerpetualFuturesAddresses = new Dictionary<FuturesPerpetualSettle, string> {
+            { FuturesPerpetualSettle.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/btc" },
+            { FuturesPerpetualSettle.USD, "wss://fx-ws-testnet.gateio.ws/v4/ws/usd" },
+            { FuturesPerpetualSettle.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/usdt" },
+        },
+
+        // Stream-Delivery Futures
+        StreamDeliveryFuturesAddresses = new Dictionary<FuturesDeliverySettle, string> {
+            { FuturesDeliverySettle.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/btc" },
+            { FuturesDeliverySettle.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/usdt" },
+        },
     };
 }

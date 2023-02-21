@@ -1,0 +1,34 @@
+namespace Gate.IO.Api.Models.StreamApi.Spot;
+
+public  class SpotStreamUserBalance
+{
+    [JsonProperty("timestamp"), JsonConverter(typeof(DateTimeConverter))]
+    public DateTime Timestamp { get; set; }
+
+    [JsonProperty("timestamp_ms")]
+    public decimal TimestampMilliseconds { get; set; }
+
+    [JsonProperty("user")]
+    public int UserId { get; set; }
+
+    [JsonProperty("currency")]
+    public string Currency { get; set; }
+    
+    [JsonProperty("change")]
+    public decimal Change { get; set; }
+    
+    [JsonProperty("total")]
+    public decimal Total { get; set; }
+    
+    [JsonProperty("available")]
+    public decimal Available { get; set; }
+    
+    [JsonProperty("freeze")]
+    public decimal Freeze { get; set; }
+    
+    [JsonProperty("freeze_change")]
+    public decimal FreezeChange { get; set; }
+    
+    [JsonProperty("change_type"), JsonConverter(typeof(SpotBalanceChangeTypeConverter))]
+    public SpotBalanceChangeType ChangeType { get; set; }
+}

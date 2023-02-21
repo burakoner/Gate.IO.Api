@@ -32,10 +32,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\StreamApi\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\..\ApiSharp\ApiSharp\ApiSharp.csproj" />
   </ItemGroup>
 

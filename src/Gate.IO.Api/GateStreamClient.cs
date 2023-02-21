@@ -1,4 +1,5 @@
 ﻿using Gate.IO.Api.Clients.StreamApi;
+using Gate.IO.Api.Models.StreamApi;
 
 namespace Gate.IO.Api;
 
@@ -8,7 +9,9 @@ public class GateStreamClient
     public GateStreamClientOptions ClientOptions { get; }
 
     // Master Clients
-    public StreamSpotClient Spot { get; }
+    public StreamApiBaseClient Base { get; }
+    public StreamApiSpotClient Spot { get; }
+    public StreamApiFuturesClient Futures { get; }
 
     public GateStreamClient() : this(new GateStreamClientOptions())
     {
@@ -18,6 +21,9 @@ public class GateStreamClient
     {
         ClientOptions = options;
 
-        Spot = new StreamSpotClient(this);
+        Base = new StreamApiBaseClient(this);
+        Spot = new StreamApiSpotClient(this);
+        Futures = new StreamApiFuturesClient(this);
     }
+
 }

@@ -1,4 +1,6 @@
-﻿namespace Gate.IO.Api.Authentication;
+﻿using Gate.IO.Api.Models.StreamApi;
+
+namespace Gate.IO.Api.Authentication;
 
 internal class GateAuthenticationProvider : AuthenticationProvider
 {
@@ -37,5 +39,18 @@ internal class GateAuthenticationProvider : AuthenticationProvider
     public override void AuthenticateStreamApi()
     {
         throw new NotImplementedException();
+    }
+
+    public void AuthenticateStreamRequest(GateStreamRequest request)
+    {
+        var eventName = JsonConvert.SerializeObject(request.Event, new StreamRequestEventConverter(false));
+        var signatureBody = $"channel={request.Channel}&event={eventName}&time={request.Timestamp}";
+        var signature = SignHMACSHA512(signatureBody).ToLower();
+        request.Auth = new StreamRequestAuth
+        {
+            Method = "api_key",
+            ApiKey = Credentials.Key!.GetString(),
+            Signature = signature
+        };
     }
 }

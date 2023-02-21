@@ -7,14 +7,14 @@ public sealed class GateRestApiClient
     internal CultureInfo CI { get; } = CultureInfo.InvariantCulture;
 
     // Master Clients
-    public WalletRestApiClient Wallet { get; }
-    public SubAccountRestApiClient SubAccount { get; }
-    public SpotRestApiClient Spot { get; }
-    public MarginRestApiClient Margin { get; }
-    public FuturesRestApiClient Futures { get; }
-    public FlashSwapRestApiClient FlashSwap { get; }
-    public OptionsRestApiClient Options { get; }
-    public RebateRestApiClient Rebate { get; }
+    public RestApiWalletClient Wallet { get; }
+    public RestApiSubAccountClient SubAccount { get; }
+    public RestApiSpotClient Spot { get; }
+    public RestApiMarginClient Margin { get; }
+    public RestApiFuturesClient Futures { get; }
+    public RestApiFlashSwapClient FlashSwap { get; }
+    public RestApiOptionsClient Options { get; }
+    public RestApiRebateClient Rebate { get; }
 
     public GateRestApiClient() : this(new GateRestApiClientOptions())
     {
@@ -24,14 +24,14 @@ public sealed class GateRestApiClient
     {
         ClientOptions = options;
 
-        Wallet = new WalletRestApiClient(this);
-        SubAccount = new SubAccountRestApiClient(this);
-        Spot = new SpotRestApiClient(this);
-        Margin = new MarginRestApiClient(this);
-        Futures = new FuturesRestApiClient(this);
-        FlashSwap = new FlashSwapRestApiClient(this);
-        Options = new OptionsRestApiClient(this);
-        Rebate = new RebateRestApiClient(this);
+        Wallet = new RestApiWalletClient(this);
+        SubAccount = new RestApiSubAccountClient(this);
+        Spot = new RestApiSpotClient(this);
+        Margin = new RestApiMarginClient(this);
+        Futures = new RestApiFuturesClient(this);
+        FlashSwap = new RestApiFlashSwapClient(this);
+        Options = new RestApiOptionsClient(this);
+        Rebate = new RestApiRebateClient(this);
     }
 
     internal Uri GetUrl(string api, string version, string section, string endpoint)
@@ -39,7 +39,7 @@ public sealed class GateRestApiClient
         return new Uri(ClientOptions.BaseAddress.AppendPath(api).AppendPath($"v{version}").AppendPath(section).AppendPath(endpoint));
     }
 
-    internal CallError ParseErrorResponse(JToken error)
+    internal Error ParseErrorResponse(JToken error)
     {
         if (!error.HasValues)
             return new ServerError(error.ToString());
