@@ -2,7 +2,6 @@ namespace Gate.IO.Api.Models.RestApi.Options;
 
 public class OptionsUnderlyingTicker
 {
-
     /// <summary>
     /// Total put options trades amount in last 24h
     /// </summary>
@@ -20,4 +19,7 @@ public class OptionsUnderlyingTicker
     /// </summary>
     [JsonProperty("index_price")]
     public decimal IndexPrice { get; set; }
+
+    [JsonProperty("name")]
+    public string Name { get; set; }
 }

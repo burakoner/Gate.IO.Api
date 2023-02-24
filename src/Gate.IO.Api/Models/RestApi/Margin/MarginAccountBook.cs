@@ -18,7 +18,7 @@ public class MarginAccountBook
     /// The timestamp of the change (in milliseconds)
     /// </summary>
     [JsonProperty("time_ms")]
-    public decimal TimeMilliseconds { get; set; }
+    public long TimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Currency changed

@@ -1,4 +1,6 @@
 ﻿using Gate.IO.Api.Models.StreamApi;
+using System.Diagnostics;
+using System.Net;
 
 namespace Gate.IO.Api.Clients.StreamApi;
 
@@ -17,6 +19,13 @@ public class StreamApiBaseClient : StreamApiClient
 
         RateLimitPerConnectionPerSecond = 4;
         SetDataInterpreter((data) => string.Empty, null);
+        /*
+        SendPeriodic("Ping", TimeSpan.FromSeconds(5), con => new GateStreamRequest
+        {
+            Id = NextId(),
+            Channel = spotPingChannel,
+        });
+        */
     }
 
     #region Override Methods
@@ -27,7 +36,25 @@ public class StreamApiBaseClient : StreamApiClient
 
     protected override bool HandleQueryResponse<T>(StreamConnection connection, object request, JToken data, out CallResult<T> callResult)
     {
-        throw new NotImplementedException();
+        callResult = null;
+
+        // Ping Request
+        if (request is GateStreamRequest req && req.Channel.EndsWith(".ping"))
+        {
+            if (data["channel"] != null && ((string)data["channel"]).EndsWith(".pong"))
+            {
+                callResult = new CallResult<T>(JsonConvert.DeserializeObject<T>(data.ToString()));
+                return true;
+            }
+        }
+
+        // Unsubscribe Request
+        if (request is GateStreamRequest req2 && req2.Event == StreamRequestEvent.Unsubscribe)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     protected override bool HandleSubscriptionResponse(StreamConnection connection, StreamSubscription subscription, object request, JToken message, out CallResult<object> callResult)
@@ -133,7 +160,7 @@ public class StreamApiBaseClient : StreamApiClient
         => this.HandleSubscriptionResponse(connection, subscription, request, message, out callResult);
 
     internal bool BaseMessageMatchesHandler(StreamConnection connection, JToken message, object request)
-        => this.MessageMatchesHandler( connection,  message,  request);
+        => this.MessageMatchesHandler(connection, message, request);
 
     internal bool BaseMessageMatchesHandler(StreamConnection connection, JToken message, string identifier)
         => this.MessageMatchesHandler(connection, message, identifier);
@@ -165,6 +192,29 @@ public class StreamApiBaseClient : StreamApiClient
         return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
     }
 
+    /*
+    internal async Task<CallResult<GateStreamResponse<GateStreamStatus>>> BaseUnsubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<StreamDataEvent<T>> onData, CancellationToken ct)
+    {
+        var request = new GateStreamRequest
+        {
+            Id = NextId(),
+            Channel = channel,
+            Event = StreamRequestEvent.Unsubscribe,
+            Payload = payload.ToArray(),
+        };
+
+        if (authenticated)
+        {
+            if (AuthenticationProvider == null)
+                throw new ArgumentNullException("ApiCredentials is null");
+
+            ((GateAuthenticationProvider)AuthenticationProvider).AuthenticateStreamRequest(request);
+        }
+
+        return await QueryAsync<GateStreamResponse<GateStreamStatus>>(url, request, false).ConfigureAwait(true);
+    }
+    */
+
     public async Task BaseUnsubscribeAsync(int subscriptionId)
         => await this.UnsubscribeAsync(subscriptionId).ConfigureAwait(false);
 
@@ -174,4 +224,27 @@ public class StreamApiBaseClient : StreamApiClient
     public async Task BaseUnsubscribeAllAsync()
         => await this.UnsubscribeAllAsync().ConfigureAwait(false);
     #endregion
+
+    internal async Task<CallResult<GateStreamLatency>> PingAsync(string endpoint, string channel)
+    {
+        var ping = DateTime.UtcNow;
+        var sw = Stopwatch.StartNew();
+        var response = await QueryAsync<GateStreamResponse<string>>(endpoint, new GateStreamRequest
+        {
+            Id = NextId(),
+            Channel = channel,
+        }, false).ConfigureAwait(true);
+        var pong = DateTime.UtcNow;
+        sw.Stop();
+
+        if (!response.Success) return new CallResult<GateStreamLatency>(response.Error);
+        return new CallResult<GateStreamLatency>(new GateStreamLatency
+        {
+            PingTime = ping,
+            PongTime = pong,
+            Latency = sw.Elapsed,
+            PongMessage = ""
+        });
+    }
+
 }

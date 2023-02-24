@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.RestApi.Options;
 
-public class OptionsTicker
+public class OptionsContractTicker
 {
     /// <summary>
     /// Options contract name

@@ -6,7 +6,7 @@ public class OptionsPosition
     /// User ID
     /// </summary>
     [JsonProperty("user")]
-    public int User { get; set; }
+    public int UserId { get; set; }
 
     /// <summary>
     /// Options contract name

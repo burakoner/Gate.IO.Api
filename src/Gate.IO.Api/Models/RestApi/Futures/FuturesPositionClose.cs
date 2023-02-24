@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.RestApi.Futures;
 
-public class FuturesClosedPosition
+public class FuturesPositionClose
 {
     [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
@@ -16,4 +16,7 @@ public class FuturesClosedPosition
 
     [JsonProperty("text")]
     public string ClientOrderId { get; set; }
+
+    [JsonProperty("user")]
+    public int UserId { get; set; }
 }

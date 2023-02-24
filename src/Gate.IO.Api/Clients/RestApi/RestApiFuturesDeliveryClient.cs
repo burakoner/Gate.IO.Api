@@ -153,14 +153,14 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     #endregion
 
     #region Get futures candlesticks
-    internal async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => await GetCandlesticksAsync(settle, contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
+    internal async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string prefix, string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    => await GetCandlesticksAsync(settle, prefix, contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
-    internal async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string prefix, string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
-            { "contract", contract },
+            { "contract", prefix + contract },
             { "interval", JsonConvert.SerializeObject(interval, new FuturesCandlestickIntervalConverter(false)) },
         };
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
@@ -416,7 +416,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     #endregion
 
     #region List position close history
-    internal async Task<RestCallResult<IEnumerable<FuturesClosedPosition>>> GetClosedPositionsAsync(FuturesDeliverySettle settle, string contract = "", int limit = 100, CancellationToken ct = default)
+    internal async Task<RestCallResult<IEnumerable<FuturesPositionClose>>> GetPositionClosesAsync(FuturesDeliverySettle settle, string contract = "", int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -425,7 +425,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settlePositionCloseEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesClosedPosition>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<FuturesPositionClose>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 

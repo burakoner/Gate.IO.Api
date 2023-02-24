@@ -4,8 +4,8 @@ namespace Gate.IO.Api.Clients.RestApi;
 
 public class RestApiFuturesPerpetualSettleClient
 {
-    internal RestApiFuturesPerpetualClient MainClient { get; }
     internal FuturesPerpetualSettle Settlement { get; }
+    internal RestApiFuturesPerpetualClient MainClient { get; }
 
     internal RestApiFuturesPerpetualSettleClient(RestApiFuturesPerpetualClient main, FuturesPerpetualSettle settle)
     {
@@ -28,11 +28,17 @@ public class RestApiFuturesPerpetualSettleClient
     public async Task<RestCallResult<IEnumerable<FuturesTrade>>> GetTradesAsync(string contract, long? from = null, long? to = null, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
         => await MainClient.GetTradesAsync(this.Settlement, contract, from, to, limit, offset, lastId, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-        => await MainClient.GetCandlesticksAsync(this.Settlement, contract, interval, from, to, limit, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetMarkPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+        => await MainClient.GetCandlesticksAsync(this.Settlement, "mark_", contract, interval, from, to, limit, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
-        => await MainClient.GetCandlesticksAsync(this.Settlement, contract, interval, from, to, limit, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetMarkPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+        => await MainClient.GetCandlesticksAsync(this.Settlement, "mark_", contract, interval, from, to, limit, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetIndexPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+        => await MainClient.GetCandlesticksAsync(this.Settlement, "index_", contract, interval, from, to, limit, ct).ConfigureAwait(false);
+
+    public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetIndexPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+        => await MainClient.GetCandlesticksAsync(this.Settlement, "index_", contract, interval, from, to, limit, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetPremiumIndexCandlesticksAsync(string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
         => await MainClient.GetPremiumIndexCandlesticksAsync(this.Settlement, contract, interval, from, to, limit, ct).ConfigureAwait(false);
@@ -136,11 +142,11 @@ public class RestApiFuturesPerpetualSettleClient
     public async Task<RestCallResult<IEnumerable<FuturesUserTrade>>> GetUserTradesAsync(string contract = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => await MainClient.GetUserTradesAsync(this.Settlement, contract, from, to, limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<FuturesClosedPosition>>> GetClosedPositionsAsync(string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => await MainClient.GetClosedPositionsAsync(this.Settlement, contract, from, to, limit, offset, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<IEnumerable<FuturesPositionClose>>> GetPositionClosesAsync(string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => await MainClient.GetPositionClosesAsync(this.Settlement, contract, from, to, limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<FuturesClosedPosition>>> GetClosedPositionsAsync(string contract = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => await MainClient.GetClosedPositionsAsync(this.Settlement, contract, from, to, limit, offset, ct).ConfigureAwait(false);
+    public async Task<RestCallResult<IEnumerable<FuturesPositionClose>>> GetPositionClosesAsync(string contract = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => await MainClient.GetPositionClosesAsync(this.Settlement, contract, from, to, limit, offset, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<IEnumerable<FuturesUserLiquidate>>> GetUserLiquidatesAsync(string contract = "", int limit = 100, long? at = null, CancellationToken ct = default)
         => await MainClient.GetUserLiquidatesAsync(this.Settlement, contract, limit, at, ct).ConfigureAwait(false);

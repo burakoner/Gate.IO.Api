@@ -11,8 +11,8 @@ internal class GateStreamRequest
     [JsonProperty("channel")]
     public string Channel { get; set; }
 
-    [JsonProperty("event"), JsonConverter(typeof(StreamRequestEventConverter))]
-    public StreamRequestEvent Event { get; set; }
+    [JsonProperty("event", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(StreamRequestEventConverter))]
+    public StreamRequestEvent? Event { get; set; }
 
     [JsonProperty("payload", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
     public IEnumerable<string> Payload { get; set; } = Array.Empty<string>();

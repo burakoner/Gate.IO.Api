@@ -21,7 +21,7 @@ public  class SpotUserTrade
     /// Trading time, with millisecond precision
     /// </summary>
     [JsonProperty("create_time_ms")]
-    public decimal CreateTimeMilliseconds { get; set; }
+    public long CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Currency pair

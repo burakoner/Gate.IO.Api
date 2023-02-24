@@ -8,6 +8,8 @@ internal class OptionsContractPeriodConverter : BaseConverter<OptionsContractPer
     protected override List<KeyValuePair<OptionsContractPeriod, string>> Mapping => new()
     {
         new KeyValuePair<OptionsContractPeriod, string>(OptionsContractPeriod.OneWeek, "week"),
+        new KeyValuePair<OptionsContractPeriod, string>(OptionsContractPeriod.OneWeek, "WEEK"),
         new KeyValuePair<OptionsContractPeriod, string>(OptionsContractPeriod.OneMonth, "month"),
+        new KeyValuePair<OptionsContractPeriod, string>(OptionsContractPeriod.OneMonth, "MONTH"),
     };
 }

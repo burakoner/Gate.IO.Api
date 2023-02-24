@@ -9,7 +9,7 @@ public class GateStreamResponse<T>
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("time_ms")]
-    public decimal TimestampMlliseconds { get; set; }
+    public long TimeInMlliseconds { get; set; }
 
     [JsonProperty("channel")]
     public string Channel { get; set; }

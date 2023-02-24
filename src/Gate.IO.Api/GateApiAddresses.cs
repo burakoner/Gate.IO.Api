@@ -14,6 +14,9 @@ public class GateApiAddresses
     // Stream-Delivery Futures
     public Dictionary<FuturesDeliverySettle, string> StreamDeliveryFuturesAddresses { get; set; }
 
+    // Stream-Options
+    public string StreamOptionsAddress { get; set; }
+
     public static GateApiAddresses Default = new()
     {
         // Rest Api
@@ -34,6 +37,9 @@ public class GateApiAddresses
             { FuturesDeliverySettle.BTC, "wss://fx-ws.gateio.ws/v4/ws/delivery/btc" },
             { FuturesDeliverySettle.USDT, "wss://fx-ws.gateio.ws/v4/ws/delivery/usdt" },
         },
+
+        // Stream-Options
+        StreamOptionsAddress = "wss://op-ws.gateio.live/v4/ws",
     };
 
     public static GateApiAddresses TestNet = new()
@@ -56,5 +62,8 @@ public class GateApiAddresses
             { FuturesDeliverySettle.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/btc" },
             { FuturesDeliverySettle.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/usdt" },
         },
+
+        // Stream-Options
+        StreamOptionsAddress = "wss://op-ws-testnet.gateio.live/v4/ws",
     };
 }

@@ -195,14 +195,14 @@ public class RestApiOptionsClient : RestApiClient
     #endregion
 
     #region List tickers of options contracts
-    public async Task<RestCallResult<IEnumerable<OptionsTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<OptionsContractTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "underlying", underlying },
         };
 
-        return await SendRequestInternal<IEnumerable<OptionsTicker>>(RootClient.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<OptionsContractTicker>>(RootClient.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 

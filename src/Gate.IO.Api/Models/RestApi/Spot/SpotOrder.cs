@@ -27,13 +27,13 @@ public  class SpotOrder: SpotOrderRequest
     /// Creation time of order (in milliseconds)
     /// </summary>
     [JsonProperty("create_time_ms")]
-    public decimal CreateTimeMilliseconds { get;  set; }
+    public long CreateTimeInMilliseconds { get;  set; }
 
     /// <summary>
     /// Last modification time of order (in milliseconds)
     /// </summary>
     [JsonProperty("update_time_ms")]
-    public decimal UpdateTimeMilliseconds { get;  set; }
+    public long UpdateTimeInMilliseconds { get;  set; }
 
     /// <summary>
     /// Order status

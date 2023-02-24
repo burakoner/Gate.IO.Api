@@ -7,13 +7,14 @@ namespace Gate.IO.Api.Clients.StreamApi;
 public class StreamApiSpotClient
 {
     // Channels
+    private const string spotPingChannel = "spot.ping";
     private const string spotTickersChannel = "spot.tickers";
-    private const string spotTradesChannel = "spot.trades"; 
+    private const string spotTradesChannel = "spot.trades";
     private const string spotCandlesticksChannel = "spot.candlesticks";
     private const string spotBookTickerChannel = "spot.book_ticker";
     private const string spotOrderBookUpdateChannel = "spot.order_book_update";
     private const string spotOrderBookChannel = "spot.order_book";
-    private const string spotOrdersChannel = "spot.orders";
+    private const string spotUserOrdersChannel = "spot.orders";
     private const string spotUserTradesChannel = "spot.usertrades";
     private const string spotUserSpotBalancesChannel = "spot.balances";
     private const string spotUserMarginBalancesChannel = "spot.margin_balances";
@@ -42,6 +43,9 @@ public class StreamApiSpotClient
 
     public async Task UnsubscribeAllAsync()
         => await BaseClient.UnsubscribeAllAsync().ConfigureAwait(false);
+
+    public async Task<CallResult<GateStreamLatency>> PingAsync()
+        => await BaseClient.PingAsync(BaseAddress, spotPingChannel).ConfigureAwait(false);
 
     public async Task<CallResult<UpdateSubscription>> SubscribeToTickersAsync(IEnumerable<string> symbols, Action<StreamDataEvent<SpotStreamTicker>> onMessage, CancellationToken ct = default)
     {
@@ -73,6 +77,8 @@ public class StreamApiSpotClient
 
     public async Task<CallResult<UpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string symbol, int interval, Action<StreamDataEvent<SpotStreamBookDifference>> onMessage, CancellationToken ct = default)
     {
+        interval.ValidateIntValues(nameof(interval), 100, 1000);
+
         var payload = new List<string>();
         payload.Add(symbol);
         payload.Add($"{interval}ms");
@@ -97,37 +103,43 @@ public class StreamApiSpotClient
 
     public async Task<CallResult<UpdateSubscription>> SubscribeToUserOrdersAsync(IEnumerable<string> symbols, Action<StreamDataEvent<SpotOrder>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<SpotOrder>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
-        return await BaseClient.BaseSubscribeAsync(BaseAddress, spotOrdersChannel, symbols, true, handler, ct).ConfigureAwait(false);
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotOrder>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
+        return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserOrdersChannel, symbols, true, handler, ct).ConfigureAwait(false);
     }
 
     public async Task<CallResult<UpdateSubscription>> SubscribeToUserTradesAsync(IEnumerable<string> symbols, Action<StreamDataEvent<SpotUserTrade>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<SpotUserTrade>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotUserTrade>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserTradesChannel, symbols, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<UpdateSubscription>> SubscribeToUserSpotBalancesAsync(Action<StreamDataEvent<IEnumerable<SpotStreamUserBalance>>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<UpdateSubscription>> SubscribeToUserSpotBalancesAsync(Action<StreamDataEvent<SpotStreamUserBalance>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamUserBalance>>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamUserBalance>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserSpotBalancesChannel, Array.Empty<string>(), true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<UpdateSubscription>> SubscribeToUserMarginBalancesAsync(Action<StreamDataEvent<IEnumerable<SpotStreamMarginBalance>>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<UpdateSubscription>> SubscribeToUserMarginBalancesAsync(Action<StreamDataEvent<SpotStreamMarginBalance>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamMarginBalance>>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamMarginBalance>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserMarginBalancesChannel, Array.Empty<string>(), true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<UpdateSubscription>> SubscribeToUserFundingBalancesAsync(Action<StreamDataEvent<IEnumerable<SpotStreamFundingBalance>>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<UpdateSubscription>> SubscribeToUserFundingBalancesAsync(Action<StreamDataEvent<SpotStreamFundingBalance>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamFundingBalance>>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamFundingBalance>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserFundingBalancesChannel, Array.Empty<string>(), true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<UpdateSubscription>> SubscribeToUserCrossMarginBalancesAsync(Action<StreamDataEvent<IEnumerable<SpotStreamCrossMarginBalance>>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<UpdateSubscription>> SubscribeToUserCrossMarginBalancesAsync(Action<StreamDataEvent<SpotStreamCrossMarginBalance>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamCrossMarginBalance>>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamCrossMarginBalance>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserCrossMarginBalancesChannel, Array.Empty<string>(), true, handler, ct).ConfigureAwait(false);
     }
 

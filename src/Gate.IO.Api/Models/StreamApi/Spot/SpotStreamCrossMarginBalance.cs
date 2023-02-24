@@ -6,7 +6,7 @@ public  class SpotStreamCrossMarginBalance
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("timestamp_ms")]
-    public decimal TimestampMilliseconds { get; set; }
+    public long TimeInMilliseconds { get; set; }
 
     [JsonProperty("user")]
     public int UserId { get; set; }
