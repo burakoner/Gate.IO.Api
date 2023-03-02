@@ -9,6 +9,9 @@ public class GateRestApiClientOptions : RestApiClientOptions
     public bool AutoTimestamp { get; set; }
     public TimeSpan TimestampRecalculationInterval { get; set; }
 
+    // Broker Id
+    public string BrokerId { get; set; }
+
     public GateRestApiClientOptions() : this(null)
     {
     }
@@ -93,6 +96,9 @@ public class GateRestApiClientOptions : RestApiClientOptions
 
         // Request Body
         RequestBodyParameterKey = "BODY";
+
+        // Broker Id
+        BrokerId = "phalchatha";
     }
 
 }

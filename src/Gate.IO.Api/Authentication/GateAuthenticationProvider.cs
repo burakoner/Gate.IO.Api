@@ -12,6 +12,9 @@ internal class GateAuthenticationProvider : AuthenticationProvider
     {
         if (!signed) return;
 
+        // Set Uri Parameters
+        uri = uri.SetParameters(query, serialization);
+
         // Key
         headers.Add("KEY", Credentials.Key!.GetString());
 
@@ -23,12 +26,14 @@ internal class GateAuthenticationProvider : AuthenticationProvider
         var signbody = new StringBuilder();
         signbody.Append(method.ToString().ToUpper() + "\n");
         signbody.Append(uri.AbsolutePath + "\n");
-        // signbody.Append(uri.Query.TrimStart('?') + "\n");
         signbody.Append(HttpUtility.UrlDecode(uri.Query.TrimStart('?')) + "\n");
         signbody.Append(SignSHA512(bodyContent, SignatureOutputType.Hex).ToLower() + "\n");
         signbody.Append(timestamp);
         var signature = SignHMACSHA512(signbody.ToString()).ToLower();
         headers.Add("SIGN", signature);
+
+        // Broker Id
+        headers.Add("X-Gate-Channel-Id", ((GateRestApiClientOptions)apiClient.ClientOptions).BrokerId);
     }
 
     public override void AuthenticateSocketApi()

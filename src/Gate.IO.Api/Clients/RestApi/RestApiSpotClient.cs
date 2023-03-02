@@ -230,7 +230,7 @@ public class RestApiSpotClient : RestApiClient
     #endregion
 
     #region List spot accounts
-    public async Task<RestCallResult<IEnumerable<SpotAccount>>> GetAccountAsync(string currency = "", CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<SpotAccount>>> GetBalancesAsync(string currency = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -376,7 +376,7 @@ public class RestApiSpotClient : RestApiClient
     public async Task<RestCallResult<IEnumerable<SpotOrder>>> GetOrdersAsync(
     AccountType account,
     string symbol,
-    SpotOrderStatus status,
+    SpotOrderQueryStatus status,
     SpotOrderSide side,
     DateTime from,
     DateTime to,
@@ -388,7 +388,7 @@ public class RestApiSpotClient : RestApiClient
     public async Task<RestCallResult<IEnumerable<SpotOrder>>> GetOrdersAsync(
         AccountType account,
         string symbol,
-        SpotOrderStatus status,
+        SpotOrderQueryStatus status,
         SpotOrderSide? side = null,
         long? from = null,
         long? to = null,
@@ -400,7 +400,7 @@ public class RestApiSpotClient : RestApiClient
         {
             { "account", JsonConvert.SerializeObject(account, new AccountTypeConverter(false)) },
             { "currency_pair", symbol },
-            { "status", JsonConvert.SerializeObject(status, new SpotOrderStatusConverter(false)) },
+            { "status", JsonConvert.SerializeObject(status, new SpotOrderQueryStatusConverter(false)) },
             { "page", page },
             { "limit", limit },
         };

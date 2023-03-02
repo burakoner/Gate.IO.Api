@@ -15,6 +15,7 @@ public sealed class GateRestApiClient
     public RestApiFlashSwapClient FlashSwap { get; }
     public RestApiOptionsClient Options { get; }
     public RestApiRebateClient Rebate { get; }
+    public RestApiBrokerClient Broker { get; }
 
     public GateRestApiClient() : this(new GateRestApiClientOptions())
     {
@@ -32,6 +33,7 @@ public sealed class GateRestApiClient
         FlashSwap = new RestApiFlashSwapClient(this);
         Options = new RestApiOptionsClient(this);
         Rebate = new RestApiRebateClient(this);
+        Broker = new RestApiBrokerClient(this);
     }
 
     internal Uri GetUrl(string api, string version, string section, string endpoint)

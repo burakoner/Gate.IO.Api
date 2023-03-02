@@ -117,7 +117,7 @@ public  class SpotOrder: SpotOrderRequest
     /// Rebated fee currency unit
     /// </summary>
     [JsonProperty("rebated_fee_currency")]
-    public decimal RebatedFeeCurrency { get; set; }
+    public string RebatedFeeCurrency { get; set; }
 }
 
 public class SpotBatchOrder : SpotOrder
