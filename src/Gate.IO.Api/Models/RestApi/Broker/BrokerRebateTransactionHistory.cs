@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.RestApi.Rebate;
+namespace Gate.IO.Api.Models.RestApi.Broker;
 
-public class RebateTransactionHistory
+public class BrokerRebateTransactionHistory
 {
     [JsonProperty("total")]
     public long Total { get; set; }

@@ -1,6 +1,4 @@
-﻿using Gate.IO.Api.Models.StreamApi;
-
-namespace Gate.IO.Api.Authentication;
+﻿namespace Gate.IO.Api.Authentication;
 
 internal class GateAuthenticationProvider : AuthenticationProvider
 {

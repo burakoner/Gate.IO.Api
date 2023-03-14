@@ -1,7 +1,4 @@
-﻿using Gate.IO.Api.Clients.StreamApi;
-using Gate.IO.Api.Models.StreamApi;
-
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 public class GateStreamClient
 {

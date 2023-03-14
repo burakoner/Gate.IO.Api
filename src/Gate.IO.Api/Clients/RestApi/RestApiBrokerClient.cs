@@ -1,4 +1,4 @@
-﻿using Gate.IO.Api.Models.RestApi.Rebate;
+﻿using Gate.IO.Api.Models.RestApi.Broker;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
@@ -70,9 +70,9 @@ public class RestApiBrokerClient : RestApiClient
     #endregion
 
     #region The broker inquires its own configuration
-    public async Task<RestCallResult<IEnumerable<RebateTransactionHistory>>> GetBrokerInformationAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<BrokerRebateTransactionHistory>>> GetBrokerInformationAsync(CancellationToken ct = default)
     {
-        return await SendRequestInternal<IEnumerable<RebateTransactionHistory>>(RootClient.GetUrl(api, version, broker, infoEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<BrokerRebateTransactionHistory>>(RootClient.GetUrl(api, version, broker, infoEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 

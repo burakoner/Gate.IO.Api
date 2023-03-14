@@ -1,6 +1,4 @@
-﻿using System.Text.RegularExpressions;
-
-namespace Gate.IO.Api.Helpers;
+﻿namespace Gate.IO.Api.Helpers;
 
 internal static class DeliveryHelpers
 {

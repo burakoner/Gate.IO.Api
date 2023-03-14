@@ -1,4 +1,4 @@
-﻿using Gate.IO.Api.Models.RestApi.Rebate;
+﻿using Gate.IO.Api.Models.RestApi.Broker;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
@@ -71,7 +71,7 @@ public class RestApiRebateClient : RestApiClient
     #endregion
 
     #region The broker obtains the transaction history of the recommended user
-    public async Task<RestCallResult<IEnumerable<RebateTransactionHistory>>> GetTransactionHistoryAsync(
+    public async Task<RestCallResult<IEnumerable<BrokerRebateTransactionHistory>>> GetTransactionHistoryAsync(
         DateTime from,
         DateTime to,
         string symbol = "",
@@ -81,7 +81,7 @@ public class RestApiRebateClient : RestApiClient
         CancellationToken ct = default)
         => await GetTransactionHistoryAsync(from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), symbol, userId, limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<RebateTransactionHistory>>> GetTransactionHistoryAsync(
+    public async Task<RestCallResult<IEnumerable<BrokerRebateTransactionHistory>>> GetTransactionHistoryAsync(
         long? from = null,
         long? to = null,
         string symbol = "",
@@ -100,12 +100,12 @@ public class RestApiRebateClient : RestApiClient
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await SendRequestInternal<IEnumerable<RebateTransactionHistory>>(RootClient.GetUrl(api, version, rebate, transactionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<BrokerRebateTransactionHistory>>(RootClient.GetUrl(api, version, rebate, transactionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region The broker obtains the commission history of the recommended user
-    public async Task<RestCallResult<IEnumerable<RebateTransactionHistory>>> GetCommissionHistoryAsync(
+    public async Task<RestCallResult<IEnumerable<BrokerRebateTransactionHistory>>> GetCommissionHistoryAsync(
         DateTime from,
         DateTime to,
         string currency = "",
@@ -115,7 +115,7 @@ public class RestApiRebateClient : RestApiClient
         CancellationToken ct = default)
         => await GetCommissionHistoryAsync(from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), currency, userId, limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<RebateTransactionHistory>>> GetCommissionHistoryAsync(
+    public async Task<RestCallResult<IEnumerable<BrokerRebateTransactionHistory>>> GetCommissionHistoryAsync(
         long? from = null,
         long? to = null,
         string currency = "",
@@ -134,7 +134,7 @@ public class RestApiRebateClient : RestApiClient
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await SendRequestInternal<IEnumerable<RebateTransactionHistory>>(RootClient.GetUrl(api, version, rebate, commissionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await SendRequestInternal<IEnumerable<BrokerRebateTransactionHistory>>(RootClient.GetUrl(api, version, rebate, commissionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
