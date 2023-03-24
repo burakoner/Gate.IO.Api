@@ -47,7 +47,7 @@ public class RestApiSubAccountClient : RestApiClient
     protected override TimeSyncInfo GetTimeSyncInfo()
         => new(log, ClientOptions.AutoTimestamp, ClientOptions.TimestampRecalculationInterval, TimeSyncState);
 
-    public override TimeSpan GetTimeOffset()
+    protected override TimeSpan GetTimeOffset()
         => TimeSyncState.TimeOffset;
     #endregion
 
