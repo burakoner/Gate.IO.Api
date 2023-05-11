@@ -101,9 +101,9 @@ public class StreamApiSpotClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotOrderBookChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<UpdateSubscription>> SubscribeToUserOrdersAsync(IEnumerable<string> symbols, Action<StreamDataEvent<SpotOrder>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<UpdateSubscription>> SubscribeToUserOrdersAsync(IEnumerable<string> symbols, Action<StreamDataEvent<SpotStreamOrderUpdate>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotOrder>>>>(data =>
+        var handler = new Action<StreamDataEvent<GateStreamResponse<IEnumerable<SpotStreamOrderUpdate>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserOrdersChannel, symbols, true, handler, ct).ConfigureAwait(false);
     }

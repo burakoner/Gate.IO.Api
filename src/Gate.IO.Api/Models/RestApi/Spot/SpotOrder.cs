@@ -39,7 +39,7 @@ public  class SpotOrder: SpotOrderRequest
     /// Order status
     /// </summary>
     [JsonProperty("status"), JsonConverter(typeof(SpotOrderStatusConverter))]
-    public SpotOrderStatus? Status { get; set; }
+    public SpotOrderStatus Status { get; set; }
 
     /// <summary>
     /// Amount left to fill
