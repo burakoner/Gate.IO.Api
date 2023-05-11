@@ -8,12 +8,12 @@ public enum SpotTraderRole
     /// <summary>
     /// Enum Taker for value: taker
     /// </summary>
-    [EnumMember(Value = "taker")]
-    Taker = 1,
+    [Label("taker")]
+    Taker,
 
     /// <summary>
     /// Enum Maker for value: maker
     /// </summary>
-    [EnumMember(Value = "maker")]
-    Maker = 2
+    [Label("maker")]
+    Maker
 }

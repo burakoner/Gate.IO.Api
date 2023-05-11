@@ -2,9 +2,9 @@
 
 public enum MarginLoanSide
 {
-    [EnumMember(Value = "lend")]
+    [Label("lend")]
     Lend,
 
-    [EnumMember(Value = "borrow")]
+    [Label("borrow")]
     Borrow,
 }

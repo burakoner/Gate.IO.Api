@@ -2,9 +2,9 @@
 
 public enum MarginLoanRepayMode
 {
-    [EnumMember(Value = "all")]
+    [Label("all")]
     All,
 
-    [EnumMember(Value = "partial")]
+    [Label("partial")]
     Partial,
 }

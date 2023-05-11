@@ -5,19 +5,19 @@ public enum AccountType
     /// <summary>
     /// Enum Spot for value: spot
     /// </summary>
-    [EnumMember(Value = "spot")]
+    [Label("spot")]
     Spot,
 
     /// <summary>
     /// Enum Margin for value: margin
     /// </summary>
-    [EnumMember(Value = "margin")]
+    [Label("margin")]
     Margin,
 
     /// <summary>
     /// Enum Crossmargin for value: cross_margin
     /// </summary>
-    [EnumMember(Value = "cross_margin")]
+    [Label("cross_margin")]
     CrossMargin,
 }
 
@@ -26,51 +26,51 @@ public enum AccountType2
     /// <summary>
     /// Enum Spot for value: spot
     /// </summary>
-    [EnumMember(Value = "normal")]
+    [Label("normal")]
     Spot,
 
     /// <summary>
     /// Enum Margin for value: margin
     /// </summary>
-    [EnumMember(Value = "margin")]
+    [Label("margin")]
     Margin,
 
     /// <summary>
     /// Enum Crossmargin for value: cross_margin
     /// </summary>
-    [EnumMember(Value = "cross_margin")]
+    [Label("cross_margin")]
     CrossMargin,
 }
 
 public enum AccountType3
 {
-    [EnumMember(Value = "spot")]
+    [Label("spot")]
     Spot,
 
-    [EnumMember(Value = "futures")]
+    [Label("futures")]
     Futures,
 
-    [EnumMember(Value = "cross_margin")]
+    [Label("cross_margin")]
     CrossMargin,
 }
 
 public enum WalletAccount
 {
-    [EnumMember(Value = "spot")]
+    [Label("spot")]
     Spot,
 
-    [EnumMember(Value = "margin")]
+    [Label("margin")]
     Margin,
 
-    [EnumMember(Value = "cross_margin")]
+    [Label("cross_margin")]
     CrossMargin,
 
-    [EnumMember(Value = "futures")]
+    [Label("futures")]
     Futures,
 
-    [EnumMember(Value = "delivery")]
+    [Label("delivery")]
     Delivery,
 
-    [EnumMember(Value = "options")]
+    [Label("options")]
     Options,
 }

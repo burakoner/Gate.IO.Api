@@ -8,12 +8,12 @@ public enum SpotOrderSide
     /// <summary>
     /// Enum Buy for value: buy
     /// </summary>
-    [EnumMember(Value = "buy")]
-    Buy = 1,
+    [Label("buy")]
+    Buy,
 
     /// <summary>
     /// Enum Sell for value: sell
     /// </summary>
-    [EnumMember(Value = "sell")]
-    Sell = 2
+    [Label("sell")]
+    Sell
 }

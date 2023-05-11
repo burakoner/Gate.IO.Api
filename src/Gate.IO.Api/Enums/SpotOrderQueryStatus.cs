@@ -2,9 +2,9 @@
 
 public enum SpotOrderQueryStatus
 {
-    [EnumMember(Value = "open")]
+    [Label("open")]
     Open,
 
-    [EnumMember(Value = "finished")]
+    [Label("finished")]
     Finished,
 }

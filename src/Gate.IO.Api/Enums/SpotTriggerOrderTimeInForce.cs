@@ -5,12 +5,12 @@ public enum SpotTriggerOrderTimeInForce
     /// <summary>
     /// GoodTillCancelled
     /// </summary>
-    [EnumMember(Value = "gtc")]
-    GoodTillCancelled = 1,
+    [Label("gtc")]
+    GoodTillCancelled,
 
     /// <summary>
     /// ImmediateOrCancelled, taker only
     /// </summary>
-    [EnumMember(Value = "ioc")]
-    ImmediateOrCancel = 2,
+    [Label("ioc")]
+    ImmediateOrCancel,
 }

@@ -8,12 +8,12 @@ public enum SpotOrderType
     /// <summary>
     /// Limit Order
     /// </summary>
-    [EnumMember(Value = "limit")]
-    Limit = 1,
+    [Label("limit")]
+    Limit,
 
     /// <summary>
     /// Market Order
     /// </summary>
-    [EnumMember(Value = "market")]
-    Market = 2
+    [Label("market")]
+    Market
 }

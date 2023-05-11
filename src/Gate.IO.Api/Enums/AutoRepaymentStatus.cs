@@ -2,9 +2,9 @@
 
 public enum AutoRepaymentStatus
 {
-    [EnumMember(Value = "on")]
+    [Label("on")]
     Enabled,
 
-    [EnumMember(Value = "off")]
+    [Label("off")]
     Disabled,
 }

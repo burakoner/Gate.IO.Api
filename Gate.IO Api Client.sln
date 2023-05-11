@@ -8,8 +8,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gate.IO.Api", "src\Gate.IO.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GateApiDemo", "example\GateApiDemo.csproj", "{959A68FE-0BF8-4117-A397-50E2BBF3D8B2}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApiSharp", "..\ApiSharp\ApiSharp\ApiSharp.csproj", "{F7DAD5DB-D8D4-41C8-B1C2-34CEFB286323}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -28,10 +26,6 @@ Global
 		{959A68FE-0BF8-4117-A397-50E2BBF3D8B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{959A68FE-0BF8-4117-A397-50E2BBF3D8B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{959A68FE-0BF8-4117-A397-50E2BBF3D8B2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F7DAD5DB-D8D4-41C8-B1C2-34CEFB286323}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F7DAD5DB-D8D4-41C8-B1C2-34CEFB286323}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F7DAD5DB-D8D4-41C8-B1C2-34CEFB286323}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F7DAD5DB-D8D4-41C8-B1C2-34CEFB286323}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

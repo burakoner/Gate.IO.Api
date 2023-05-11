@@ -5,18 +5,18 @@ public enum FuturesPositionMode
     /// <summary>
     /// Enum Single for value: single
     /// </summary>
-    [EnumMember(Value = "single")]
+    [Label("single")]
     Single,
 
     /// <summary>
     /// Enum Duallong for value: dual_long
     /// </summary>
-    [EnumMember(Value = "dual_long")]
+    [Label("dual_long")]
     DualLong,
 
     /// <summary>
     /// Enum Dualshort for value: dual_short
     /// </summary>
-    [EnumMember(Value = "dual_short")]
+    [Label("dual_short")]
     DualShort,
 }

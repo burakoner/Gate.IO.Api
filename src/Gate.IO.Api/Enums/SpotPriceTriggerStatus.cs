@@ -2,18 +2,18 @@
 
 public enum SpotPriceTriggerStatus
 {
-    [EnumMember(Value = "open")]
+    [Label("open")]
     Open,
 
-    [EnumMember(Value = "cancelled")]
+    [Label("cancelled")]
     Cancelled,
 
-    [EnumMember(Value = "finish")]
+    [Label("finish")]
     Finished,
 
-    [EnumMember(Value = "failed")]
+    [Label("failed")]
     Failed,
 
-    [EnumMember(Value = "expired")]
+    [Label("expired")]
     Expired,
 }

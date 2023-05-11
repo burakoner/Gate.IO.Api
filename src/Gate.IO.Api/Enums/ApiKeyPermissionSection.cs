@@ -8,36 +8,36 @@ public enum ApiKeyPermissionSection
     /// <summary>
     /// Enum Wallet for value: wallet
     /// </summary>
-    [EnumMember(Value = "wallet")]
+    [Label("wallet")]
     Wallet,
 
     /// <summary>
     /// Enum Spot for value: spot
     /// </summary>
-    [EnumMember(Value = "spot")]
+    [Label("spot")]
     Spot,
 
     /// <summary>
     /// Enum Futures for value: futures
     /// </summary>
-    [EnumMember(Value = "futures")]
+    [Label("futures")]
     Futures,
 
     /// <summary>
     /// Enum Delivery for value: delivery
     /// </summary>
-    [EnumMember(Value = "delivery")]
+    [Label("delivery")]
     Delivery,
 
     /// <summary>
     /// Enum Earn for value: earn
     /// </summary>
-    [EnumMember(Value = "earn")]
+    [Label("earn")]
     Earn,
 
     /// <summary>
     /// Enum Options for value: options
     /// </summary>
-    [EnumMember(Value = "options")]
+    [Label("options")]
     Options
 }

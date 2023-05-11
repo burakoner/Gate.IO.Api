@@ -8,18 +8,22 @@
   <PropertyGroup>
     <PackageId>Gate.IO.Api</PackageId>
 	<Authors>Burak Öner</Authors>
-	<Version>1.2.7</Version>
-	<FileVersion>1.2.7</FileVersion>
-	<PackageVersion>1.2.7</PackageVersion>
-	<AssemblyVersion>1.2.7</AssemblyVersion>
-	<Description>Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
+	<Version>1.3.3</Version>
+	<FileVersion>1.3.3</FileVersion>
+	<PackageVersion>1.3.3</PackageVersion>
+	<AssemblyVersion>1.3.3</AssemblyVersion>
+	<Description>Gate.IO API v4 Wrapper. Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageTags>Gate Gate.IO Binance Coinbase Kraken KuCoin Bitstamp Huobi OKX Okex ApiSharp Api Sharp Coin Token BNB BTC ETH Bitcoin Ether Ethereum Rest Web Socket Websocket Stream Webstream Client Wrapper Connector Crypto Currency Cryptocurrency Exchange Trade Trading Spot Margin Futures Derivates Stock Options Swap</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
 	<NeutralLanguage>en</NeutralLanguage>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 	<PackageReleaseNotes>
-		Version 1.2.7 - 17 Apr 2023
+		Version 1.3.3 - 11 May 2023
+		- Fixed some enumerations and models
+		- Updated ApiSharp version to 1.3.3
+		
+		Version 1.3.1 - 25 Apr 2023
 	</PackageReleaseNotes>
 	<PackageIcon>Gate.IO.png</PackageIcon>
 	<PackageIconUrl />
@@ -32,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-	<PackageReference Include="ApiSharp" Version="1.2.8" />
+	<PackageReference Include="ApiSharp" Version="1.3.3" />
   </ItemGroup>
 
 </Project>

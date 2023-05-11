@@ -2,9 +2,9 @@
 
 public enum SubAccountState
 {
-    [EnumMember(Value = "normal")]
+    [Label("normal")]
     Normal,
 
-    [EnumMember(Value = "locked")]
+    [Label("locked")]
     Locked,
 }

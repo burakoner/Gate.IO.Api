@@ -2,6 +2,9 @@
 
 public enum FuturesOrderSide
 {
+    [Label("ask")]
     Ask,
+
+    [Label("bid")]
     Bid,
 }

@@ -2,6 +2,9 @@
 
 public enum FuturesPositionSide
 {
+    [Label("long")]
     Long,
+
+    [Label("short")]
     Short,
 }

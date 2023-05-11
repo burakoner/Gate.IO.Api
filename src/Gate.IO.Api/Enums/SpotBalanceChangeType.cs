@@ -2,33 +2,33 @@
 
 public enum SpotBalanceChangeType
 {
-    [EnumMember(Value = "deposit")]
+    [Label("deposit")]
     Deposit,
 
-    [EnumMember(Value = "withdraw")]
+    [Label("withdraw")]
     Withdraw,
 
-    [EnumMember(Value = "trade-fee-deduct")]
+    [Label("trade-fee-deduct")]
     TradeFeeDeduct,
 
-    [EnumMember(Value = "order-create")]
+    [Label("order-create")]
     OrderCreate,
 
-    [EnumMember(Value = "order-match")]
+    [Label("order-match")]
     OrderMatch,
 
-    [EnumMember(Value = "order-update")]
+    [Label("order-update")]
     OrderUpdate,
 
-    [EnumMember(Value = "margin-transfer")]
+    [Label("margin-transfer")]
     MarginTransfer,
 
-    [EnumMember(Value = "future-transfer")]
+    [Label("future-transfer")]
     FutureTransfer,
 
-    [EnumMember(Value = "cross-margin")]
+    [Label("cross-margin")]
     CrossMargin,
 
-    [EnumMember(Value = "other")]
+    [Label("other")]
     Other,
 }

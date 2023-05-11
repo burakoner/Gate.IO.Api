@@ -5,36 +5,36 @@ public enum FuturesTriggerOrderType
     /// <summary>
     /// order take-profit/stop-loss, close long position
     /// </summary>
-    [EnumMember(Value = "close-long-order")]
+    [Label("close-long-order")]
     CloseLongOrder,
 
     /// <summary>
     /// order take-profit/stop-loss, close short position
     /// </summary>
-    [EnumMember(Value = "close-short-order")]
+    [Label("close-short-order")]
     CloseShortOrder,
 
     /// <summary>
     /// position take-profit/stop-loss, close long position
     /// </summary>
-    [EnumMember(Value = "close-long-position")]
+    [Label("close-long-position")]
     CloseLongPosition,
 
     /// <summary>
     /// position take-profit/stop-loss, close short position
     /// </summary>
-    [EnumMember(Value = "close-short-position")]
+    [Label("close-short-position")]
     CloseShortPosition,
 
     /// <summary>
     /// position planned take-profit/stop-loss, close long position
     /// </summary>
-    [EnumMember(Value = "plan-close-long-position")]
+    [Label("plan-close-long-position")]
     PlanCloseLongPosition,
 
     /// <summary>
     /// position planned take-profit/stop-loss, close short position
     /// </summary>
-    [EnumMember(Value = "plan-close-short-position")]
+    [Label("plan-close-short-position")]
     PlanCloseShortPosition,
 }

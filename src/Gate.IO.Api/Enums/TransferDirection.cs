@@ -2,9 +2,9 @@
 
 public enum TransferDirection
 {
-    [EnumMember(Value = "from")]
+    [Label("from")]
     From,
 
-    [EnumMember(Value = "to")]
+    [Label("to")]
     To,
 }

@@ -8,18 +8,18 @@ public enum SpotOrderStatus
     /// <summary>
     /// Enum Open for value: open
     /// </summary>
-    [EnumMember(Value = "open")]
-    Open = 1,
+    [Label("open")]
+    Open,
 
     /// <summary>
     /// Enum Closed for value: closed
     /// </summary>
-    [EnumMember(Value = "closed")]
-    Closed = 2,
+    [Label("closed")]
+    Closed,
 
     /// <summary>
     /// Enum Cancelled for value: cancelled
     /// </summary>
-    [EnumMember(Value = "cancelled")]
-    Cancelled = 3
+    [Label("cancelled")]
+    Cancelled
 }

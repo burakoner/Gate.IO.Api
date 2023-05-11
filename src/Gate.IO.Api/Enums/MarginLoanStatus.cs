@@ -5,24 +5,24 @@ public enum MarginLoanStatus
     /// <summary>
     /// not fully loaned
     /// </summary>
-    [EnumMember(Value = "open")]
+    [Label("open")]
     Open,
 
     /// <summary>
     /// All loaned out for lending loan; Loaned in for borrowing side
     /// </summary>
-    [EnumMember(Value = "loaned")]
+    [Label("loaned")]
     Loaned,
 
     /// <summary>
     /// loan is finished, either being all repaid or cancelled by the lender
     /// </summary>
-    [EnumMember(Value = "finished")]
+    [Label("finished")]
     Finished,
 
     /// <summary>
     /// Automatically repaid by the system
     /// </summary>
-    [EnumMember(Value = "auto_repaid")]
+    [Label("auto_repaid")]
     AutoRepaid,
 }

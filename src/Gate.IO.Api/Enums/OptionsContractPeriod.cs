@@ -2,9 +2,9 @@
 
 public enum OptionsContractPeriod
 {
-    [EnumMember(Value = "week")]
+    [Label("week")]
     OneWeek,
 
-    [EnumMember(Value = "month")]
+    [Label("month")]
     OneMonth,
 }

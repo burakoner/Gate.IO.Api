@@ -2,15 +2,15 @@
 
 public enum DeliveryCycle
 {
-    [EnumMember(Value = "WEEKLY")]
+    [Label("WEEKLY")]
     Weekly,
 
-    [EnumMember(Value = "BI-WEEKLY")]
+    [Label("BI-WEEKLY")]
     BiWeekly,
 
-    [EnumMember(Value = "QUARTERLY")]
+    [Label("QUARTERLY")]
     Quarterly,
 
-    [EnumMember(Value = "BI-QUARTERLY")]
+    [Label("BI-QUARTERLY")]
     BiQuarterly,
 }

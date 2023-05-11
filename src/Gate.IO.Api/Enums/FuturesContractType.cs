@@ -8,12 +8,12 @@ public enum FuturesContractType
     /// <summary>
     /// Enum Inverse for value: inverse
     /// </summary>
-    [EnumMember(Value = "inverse")]
-    Inverse = 1,
+    [Label("inverse")]
+    Inverse,
 
     /// <summary>
     /// Enum Direct for value: direct
     /// </summary>
-    [EnumMember(Value = "direct")]
-    Direct = 2
+    [Label("direct")]
+    Direct
 }

@@ -2,6 +2,9 @@
 
 public enum FuturesTriggerOrderStrategyType
 {
-    ByPrice,
-    ByPriceGap,
+    [Label("0")]
+    ByPrice=1,
+
+    [Label("1")]
+    ByPriceGap = 1,
 }

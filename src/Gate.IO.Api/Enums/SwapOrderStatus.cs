@@ -2,9 +2,9 @@
 
 public enum SwapOrderStatus
 {
-    [EnumMember(Value = "1")]
-    Success = 1,
+    [Label("1")]
+    Success,
 
-    [EnumMember(Value = "2")]
-    Failure = 2,
+    [Label("2")]
+    Failure,
 }

@@ -8,24 +8,24 @@ public enum SpotMarketStatus
     /// <summary>
     /// Enum Untradable for value: untradable
     /// </summary>
-    [EnumMember(Value = "untradable")]
-    Untradable = 1,
+    [Label("untradable")]
+    Untradable,
 
     /// <summary>
     /// Enum Buyable for value: buyable
     /// </summary>
-    [EnumMember(Value = "buyable")]
-    Buyable = 2,
+    [Label("buyable")]
+    Buyable,
 
     /// <summary>
     /// Enum Sellable for value: sellable
     /// </summary>
-    [EnumMember(Value = "sellable")]
-    Sellable = 3,
+    [Label("sellable")]
+    Sellable,
 
     /// <summary>
     /// Enum Tradable for value: tradable
     /// </summary>
-    [EnumMember(Value = "tradable")]
-    Tradable = 4,
+    [Label("tradable")]
+    Tradable,
 }

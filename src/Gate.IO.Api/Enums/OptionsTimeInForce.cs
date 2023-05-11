@@ -5,18 +5,18 @@ public enum OptionsTimeInForce
     /// <summary>
     /// GoodTillCancelled
     /// </summary>
-    [EnumMember(Value = "gtc")]
+    [Label("gtc")]
     GoodTillCancelled,
 
     /// <summary>
     /// ImmediateOrCancelled, taker only
     /// </summary>
-    [EnumMember(Value = "ioc")]
+    [Label("ioc")]
     ImmediateOrCancel,
 
     /// <summary>
     /// PendingOrCancelled, makes a post-only order that always enjoys a maker fee
     /// </summary>
-    [EnumMember(Value = "poc")]
+    [Label("poc")]
     PendingOrCancelled,
 }

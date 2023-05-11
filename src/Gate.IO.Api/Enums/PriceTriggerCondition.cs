@@ -5,12 +5,12 @@ public enum PriceTriggerCondition
     /// <summary>
     /// Enum GreaterThanOrEqualTo for value: >=
     /// </summary>
-    [EnumMember(Value = ">=")]
-    GreaterThanOrEqualTo = 1,
+    [Label(">=")]
+    GreaterThanOrEqualTo,
 
     /// <summary>
     /// Enum LessThanOrEqualTo for value: <=
     /// </summary>
-    [EnumMember(Value = "<=")]
-    LessThanOrEqualTo = 2
+    [Label("<=")]
+    LessThanOrEqualTo
 }

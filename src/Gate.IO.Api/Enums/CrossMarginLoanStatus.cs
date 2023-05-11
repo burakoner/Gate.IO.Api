@@ -2,12 +2,12 @@
 
 public enum CrossMarginLoanStatus
 {
-    [EnumMember(Value = "1")]
+    [Label("1")]
     Failed,
 
-    [EnumMember(Value = "2")]
+    [Label("2")]
     Borrowed,
 
-    [EnumMember(Value = "3")]
+    [Label("3")]
     Repaid,
 }

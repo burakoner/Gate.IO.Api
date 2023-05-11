@@ -2,12 +2,12 @@
 
 public enum TickerTimezone
 {
-    [EnumMember(Value = "utc0")]
-    UTC0 = 0,
+    [Label("utc0")]
+    UTC0,
 
-    [EnumMember(Value = "utc8")]
-    UTC8 = 8,
+    [Label("utc8")]
+    UTC8,
 
-    [EnumMember(Value = "all")]
-    All = -1
+    [Label("all")]
+    All
 }

@@ -2,6 +2,9 @@
 
 public enum OptionsType
 {
+    [Label("C")]
     Call,
+
+    [Label("P")]
     Put,
 }

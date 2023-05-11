@@ -1,4 +1,5 @@
 global using ApiSharp;
+global using ApiSharp.Attributes;
 global using ApiSharp.Authentication;
 global using ApiSharp.Converters;
 global using ApiSharp.Enums;
@@ -21,7 +22,6 @@ global using System.Collections.Generic;
 global using System.Globalization;
 global using System.Linq;
 global using System.Net.Http;
-global using System.Runtime.Serialization;
 global using System.Text;
 global using System.Text.RegularExpressions;
 global using System.Threading;

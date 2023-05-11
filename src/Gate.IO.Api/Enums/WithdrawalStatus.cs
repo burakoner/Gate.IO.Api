@@ -2,42 +2,42 @@
 
 public enum WithdrawalStatus
 {
-    [EnumMember(Value = "DONE")]
+    [Label("DONE")]
     Done,
 
-    [EnumMember(Value = "CANCEL")]
+    [Label("CANCEL")]
     Cancelled,
 
-    [EnumMember(Value = "REQUEST")]
+    [Label("REQUEST")]
     Requesting,
 
-    [EnumMember(Value = "PEND")]
+    [Label("PEND")]
     Pending,
 
-    [EnumMember(Value = "MANUAL")]
+    [Label("MANUAL")]
     PendingManualApproval,
 
-    [EnumMember(Value = "EXTPEND")]
+    [Label("EXTPEND")]
     PendingConfirmAfterSending,
 
-    [EnumMember(Value = "BCODE")]
+    [Label("BCODE")]
     GateCodeOperation,
 
-    [EnumMember(Value = "FAIL")]
+    [Label("FAIL")]
     PendingConfirmWhenFail,
 
-    [EnumMember(Value = "INVALID")]
+    [Label("INVALID")]
     InvalidOrder,
 
-    [EnumMember(Value = "VERIFY")]
+    [Label("VERIFY")]
     Verifying,
 
-    [EnumMember(Value = "PROCES")]
+    [Label("PROCES")]
     Processing,
 
-    [EnumMember(Value = "DMOVE")]
+    [Label("DMOVE")]
     RequiredManualApproval,
 
-    [EnumMember(Value = "SPLITPEND")]
+    [Label("SPLITPEND")]
     Splitted,
 }

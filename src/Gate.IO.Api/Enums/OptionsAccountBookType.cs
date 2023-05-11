@@ -5,30 +5,30 @@ public enum OptionsAccountBookType
     /// <summary>
     /// Deposit & Withdraw
     /// </summary>
-    [EnumMember(Value = "dnw")]
+    [Label("dnw")]
     DNW,
 
     /// <summary>
     /// Trading premium
     /// </summary>
-    [EnumMember(Value = "prem")]
+    [Label("prem")]
     Premium,
 
     /// <summary>
     /// Trading fee
     /// </summary>
-    [EnumMember(Value = "fee")]
+    [Label("fee")]
     Fee,
 
     /// <summary>
     /// Referrer rebate
     /// </summary>
-    [EnumMember(Value = "refr")]
+    [Label("refr")]
     Rebate,
 
     /// <summary>
     /// POINT Referrer rebate
     /// </summary>
-    [EnumMember(Value = "set")]
+    [Label("set")]
     SettlementPNL,
 }
