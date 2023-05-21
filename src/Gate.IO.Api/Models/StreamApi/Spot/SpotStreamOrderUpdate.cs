@@ -14,11 +14,11 @@ public  class SpotStreamOrderUpdate
     [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
     
-    [JsonProperty("update_time"), JsonConverter(typeof(DateTimeConverter))]
-    public DateTime UpdateTime { get; set; }
-
     [JsonProperty("create_time_ms")]
     public long CreateTimeInMilliseconds { get; set; }
+
+    [JsonProperty("update_time"), JsonConverter(typeof(DateTimeConverter))]
+    public DateTime UpdateTime { get; set; }
 
     [JsonProperty("update_time_ms")]
     public long UpdateTimeInMilliseconds { get; set; }
@@ -34,6 +34,12 @@ public  class SpotStreamOrderUpdate
 
     [JsonProperty("account"), JsonConverter(typeof(AccountTypeConverter))]
     public AccountType Account { get; set; }
+
+    [JsonProperty("side"), JsonConverter(typeof(SpotOrderSideConverter))]
+    public SpotOrderSide Side { get; set; }
+
+    [JsonProperty("amount")]
+    public decimal? Quantity { get; set; }
 
     [JsonProperty("price")]
     public decimal? Price { get; set; }
