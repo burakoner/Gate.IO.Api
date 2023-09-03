@@ -9,6 +9,11 @@ public class GateRestApiClientOptions : RestApiClientOptions
     public bool AutoTimestamp { get; set; }
     public TimeSpan TimestampRecalculationInterval { get; set; }
 
+    /// <summary>
+    /// Gate.IO API Broker Id
+    /// </summary>
+    public string BrokerId { get; }
+
     public GateRestApiClientOptions() : this(null)
     {
     }

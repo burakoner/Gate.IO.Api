@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api;
 
-public class GateStreamClientOptions : StreamApiClientOptions
+public class GateStreamClientOptions : WebSocketApiClientOptions
 {
     // Stream-Spot
     public string StreamSpotAddress { get; set; }
@@ -41,7 +41,7 @@ public class GateStreamClientOptions : StreamApiClientOptions
         this.StreamOptionsAddress = GateApiAddresses.Default.StreamOptionsAddress;
 
         // Limits
-        //this.MaxConnections = 300;
-        //this.SubscriptionsCombineTarget = 300;
+        // this.MaxConnections = 300;
+        // this.SubscriptionsCombineTarget = 300;
     }
 }

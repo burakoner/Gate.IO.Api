@@ -34,12 +34,12 @@ internal class GateAuthenticationProvider : AuthenticationProvider
         headers.Add("X-Gate-Channel-Id", ((GateRestApiClientOptions)apiClient.ClientOptions).BrokerId);
     }
 
-    public override void AuthenticateSocketApi()
+    public override void AuthenticateTcpSocketApi()
     {
         throw new NotImplementedException();
     }
 
-    public override void AuthenticateStreamApi()
+    public override void AuthenticateWebSocketApi()
     {
         throw new NotImplementedException();
     }

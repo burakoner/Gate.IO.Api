@@ -1,10 +1,6 @@
-﻿using Gate.IO.Api.Models.StreamApi;
-using System.Diagnostics;
-using System.Net;
+﻿namespace Gate.IO.Api.Clients.StreamApi;
 
-namespace Gate.IO.Api.Clients.StreamApi;
-
-public class StreamApiBaseClient : StreamApiClient
+public class StreamApiBaseClient : WebSocketApiClient
 {
     // Internal
     internal Log Log { get => this.log; }
@@ -34,7 +30,7 @@ public class StreamApiBaseClient : StreamApiClient
         return new GateAuthenticationProvider(credentials);
     }
 
-    protected override bool HandleQueryResponse<T>(StreamConnection connection, object request, JToken data, out CallResult<T> callResult)
+    protected override bool HandleQueryResponse<T>(WebSocketConnection connection, object request, JToken data, out CallResult<T> callResult)
     {
         callResult = null;
 
@@ -57,7 +53,7 @@ public class StreamApiBaseClient : StreamApiClient
         return false;
     }
 
-    protected override bool HandleSubscriptionResponse(StreamConnection connection, StreamSubscription subscription, object request, JToken message, out CallResult<object> callResult)
+    protected override bool HandleSubscriptionResponse(WebSocketConnection connection, WebSocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
     {
         callResult = null;
         if (message.Type != JTokenType.Object)
@@ -91,7 +87,7 @@ public class StreamApiBaseClient : StreamApiClient
         return true;
     }
 
-    protected override bool MessageMatchesHandler(StreamConnection connection, JToken message, object request)
+    protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken message, object request)
     {
         if (message.Type != JTokenType.Object)
             return false;
@@ -104,17 +100,17 @@ public class StreamApiBaseClient : StreamApiClient
         return bRequest.Channel == channel.ToString();
     }
 
-    protected override bool MessageMatchesHandler(StreamConnection connection, JToken message, string identifier)
+    protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken message, string identifier)
     {
         return true;
     }
 
-    protected override Task<CallResult<bool>> AuthenticateAsync(StreamConnection connection)
+    protected override Task<CallResult<bool>> AuthenticateAsync(WebSocketConnection connection)
     {
         throw new NotImplementedException();
     }
 
-    protected override async Task<bool> UnsubscribeAsync(StreamConnection connection, StreamSubscription subscription)
+    protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
         var topics = ((GateStreamRequest)subscription.Request!).Payload;
         var unsub = new GateStreamRequest { Event = StreamRequestEvent.Unsubscribe, Payload = topics, Id = NextId() };
@@ -153,25 +149,25 @@ public class StreamApiBaseClient : StreamApiClient
     internal AuthenticationProvider BaseCreateAuthenticationProvider(ApiCredentials credentials)
         => this.CreateAuthenticationProvider(credentials);
 
-    internal bool BaseHandleQueryResponse<T>(StreamConnection connection, object request, JToken data, out CallResult<T> callResult)
+    internal bool BaseHandleQueryResponse<T>(WebSocketConnection connection, object request, JToken data, out CallResult<T> callResult)
         => this.HandleQueryResponse<T>(connection, request, data, out callResult);
 
-    internal bool BaseHandleSubscriptionResponse(StreamConnection connection, StreamSubscription subscription, object request, JToken message, out CallResult<object> callResult)
+    internal bool BaseHandleSubscriptionResponse(WebSocketConnection connection, WebSocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
         => this.HandleSubscriptionResponse(connection, subscription, request, message, out callResult);
 
-    internal bool BaseMessageMatchesHandler(StreamConnection connection, JToken message, object request)
+    internal bool BaseMessageMatchesHandler(WebSocketConnection connection, JToken message, object request)
         => this.MessageMatchesHandler(connection, message, request);
 
-    internal bool BaseMessageMatchesHandler(StreamConnection connection, JToken message, string identifier)
+    internal bool BaseMessageMatchesHandler(WebSocketConnection connection, JToken message, string identifier)
         => this.MessageMatchesHandler(connection, message, identifier);
 
-    internal Task<CallResult<bool>> BaseAuthenticateAsync(StreamConnection connection)
+    internal Task<CallResult<bool>> BaseAuthenticateAsync(WebSocketConnection connection)
         => this.AuthenticateAsync(connection);
 
-    internal async Task<bool> BaseUnsubscribeAsync(StreamConnection connection, StreamSubscription subscription)
+    internal async Task<bool> BaseUnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
         => await this.UnsubscribeAsync(connection, subscription).ConfigureAwait(false);
 
-    internal Task<CallResult<UpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<StreamDataEvent<T>> onData, CancellationToken ct)
+    internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateStreamRequest
         {
@@ -193,7 +189,7 @@ public class StreamApiBaseClient : StreamApiClient
     }
 
     /*
-    internal async Task<CallResult<GateStreamResponse<GateStreamStatus>>> BaseUnsubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<StreamDataEvent<T>> onData, CancellationToken ct)
+    internal async Task<CallResult<GateStreamResponse<GateStreamStatus>>> BaseUnsubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateStreamRequest
         {
@@ -218,7 +214,7 @@ public class StreamApiBaseClient : StreamApiClient
     public async Task BaseUnsubscribeAsync(int subscriptionId)
         => await this.UnsubscribeAsync(subscriptionId).ConfigureAwait(false);
 
-    public async Task BaseUnsubscribeAsync(UpdateSubscription subscription)
+    public async Task BaseUnsubscribeAsync(WebSocketUpdateSubscription subscription)
         => await this.UnsubscribeAsync(subscription).ConfigureAwait(false);
 
     public async Task BaseUnsubscribeAllAsync()

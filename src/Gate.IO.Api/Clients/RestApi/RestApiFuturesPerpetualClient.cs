@@ -1,5 +1,4 @@
-﻿using Gate.IO.Api.Converters;
-using Gate.IO.Api.Models.RestApi.Futures;
+﻿using Gate.IO.Api.Models.RestApi.Futures;
 using Gate.IO.Api.Models.RestApi.Spot;
 
 namespace Gate.IO.Api.Clients.RestApi;
