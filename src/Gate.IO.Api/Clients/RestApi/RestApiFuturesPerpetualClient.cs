@@ -1,14 +1,15 @@
-﻿using Gate.IO.Api.Models.RestApi.Futures;
+﻿using ApiSharp.Rest;
+using Gate.IO.Api.Models.RestApi.Futures;
 using Gate.IO.Api.Models.RestApi.Spot;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
-public class RestApiFuturesPerpetualClient : RestApiClient
+public class RestApiFuturesPerpetualClient
 {
     // Api
-    protected const string api = "api";
-    protected const string version = "4";
-    protected const string futures = "futures";
+    private const string api = "api";
+    private const string version = "4";
+    private const string futures = "futures";
 
     // Endpoints
     private const string settleContractsEndpoint = "{settle}/contracts";
@@ -46,77 +47,28 @@ public class RestApiFuturesPerpetualClient : RestApiClient
     private const string settlePriceOrdersEndpoint = "{settle}/price_orders";
     private const string settlePriceOrdersOrderIdEndpoint = "{settle}/price_orders/{order_id}";
 
-    // Internal
-    internal Log Log { get => this.log; }
-    internal TimeSyncState TimeSyncState = new("Gate.IO Perpetual Futures RestApi");
-
     // Root Client
-    internal GateRestApiClient RootClient { get; }
-    internal CultureInfo CI { get { return RootClient.CI; } }
-    internal new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    internal GateRestApiClient Root { get; }
 
     // Public Clients
     public RestApiFuturesPerpetualSettleClient BTC { get; }
     public RestApiFuturesPerpetualSettleClient USD { get; }
     public RestApiFuturesPerpetualSettleClient USDT { get; }
 
-    internal RestApiFuturesPerpetualClient(GateRestApiClient root) : base("Gate.IO Perpetual Futures RestApi", root.ClientOptions)
+    internal RestApiFuturesPerpetualClient(GateRestApiClient root)
     {
-        RootClient = root;
-
-        RequestBodyFormat = RestRequestBodyFormat.Json;
-        ArraySerialization = ArraySerialization.MultipleValues;
-
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
+        Root = root;
 
         this.BTC = new RestApiFuturesPerpetualSettleClient(this, FuturesPerpetualSettle.BTC);
         this.USD = new RestApiFuturesPerpetualSettleClient(this, FuturesPerpetualSettle.USD);
         this.USDT = new RestApiFuturesPerpetualSettleClient(this, FuturesPerpetualSettle.USDT);
     }
 
-    #region Override Methods
-    protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-        => new GateAuthenticationProvider(credentials);
-
-    protected override Error ParseErrorResponse(JToken error)
-        => RootClient.ParseErrorResponse(error);
-
-    protected override Task<RestCallResult<DateTime>> GetServerTimestampAsync()
-        => RootClient.Spot.GetServerTimeAsync();
-
-    protected override TimeSyncInfo GetTimeSyncInfo()
-        => new(log, ClientOptions.AutoTimestamp, ClientOptions.TimestampRecalculationInterval, TimeSyncState);
-
-    protected override TimeSpan GetTimeOffset()
-        => TimeSyncState.TimeOffset;
-    #endregion
-
-    #region Internal Methods
-    internal async Task<RestCallResult<T>> SendRequestInternal<T>(
-        Uri uri,
-        HttpMethod method,
-        CancellationToken cancellationToken,
-        bool signed = false,
-        Dictionary<string, object> queryParameters = null,
-        Dictionary<string, object> bodyParameters = null,
-        Dictionary<string, string> headerParameters = null,
-        ArraySerialization? arraySerialization = null,
-        JsonSerializer deserializer = null,
-        bool ignoreRatelimit = false,
-        int requestWeight = 1) where T : class
-    {
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
-        return await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
-    }
-    #endregion
-
     #region List all futures contracts
     internal async Task<RestCallResult<IEnumerable<PerpetualContract>>> GetContractsAsync(FuturesPerpetualSettle settle, CancellationToken ct = default)
     {
         var endpoint = settleContractsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<PerpetualContract>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<PerpetualContract>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -126,7 +78,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleContractsContractEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<PerpetualContract>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<PerpetualContract>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -142,7 +94,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         };
 
         var endpoint = settleOrderBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<FuturesOrderBook>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesOrderBook>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -163,7 +115,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTrade>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTrade>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -183,7 +135,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleCandlesticksEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesCandlestick>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesCandlestick>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -203,7 +155,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settlePremiumIndexEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesCandlestick>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesCandlestick>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -214,7 +166,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settleTickersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<PerpetualTicker>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<PerpetualTicker>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -228,7 +180,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         };
 
         var endpoint = settleFundingRateEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesFundingRate>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesFundingRate>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -241,7 +193,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         };
 
         var endpoint = settleInsuranceEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesInsuranceBalance>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesInsuranceBalance>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -260,7 +212,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("from", from);
 
         var endpoint = settleContractStatsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesStats>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesStats>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -270,7 +222,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleIndexConstituentsIndexEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{index}", index);
-        return await SendRequestInternal<FuturesIndexConstituents>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesIndexConstituents>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -289,7 +241,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleLiqOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesLiquidate>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesLiquidate>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -297,7 +249,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
     internal async Task<RestCallResult<IEnumerable<FuturesAccount>>> GetAccountAsync(FuturesPerpetualSettle settle, CancellationToken ct = default)
     {
         var endpoint = settleAccountsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesAccount>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesAccount>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -314,7 +266,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleAccountBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesAccountBook>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesAccountBook>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -322,7 +274,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
     internal async Task<RestCallResult<IEnumerable<FuturesPosition>>> GetPositionsAsync(FuturesPerpetualSettle settle, CancellationToken ct = default)
     {
         var endpoint = settlePositionsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesPosition>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesPosition>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -332,7 +284,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePositionsContractEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -347,7 +299,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePositionsContractMarginEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -363,7 +315,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePositionsContractLeverageEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -378,7 +330,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePositionsContractRiskLimitEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -392,7 +344,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
 
         var endpoint = settleDualModeEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<FuturesAccount>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesAccount>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -402,7 +354,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleDualCompPositionsContractEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -418,7 +370,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleDualCompPositionsContractMarginEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -434,7 +386,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleDualCompPositionsContractLeverageEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -449,7 +401,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settleDualCompPositionsContractRiskLimitEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -489,7 +441,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
             { "size", request.Size },
             { "iceberg", request.Iceberg },
         };
-        parameters.AddOptionalParameter("price", request.Price?.ToString(CI));
+        parameters.AddOptionalParameter("price", request.Price?.ToGateString());
         parameters.AddOptionalParameter("close", request.Close);
         parameters.AddOptionalParameter("reduce_only", request.ReduceOnly);
         parameters.AddOptionalParameter("tif", JsonConvert.SerializeObject(request.TimeInForce, new FuturesTimeInForceConverter(false)));
@@ -498,7 +450,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
 
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -515,7 +467,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("last_id", lastId);
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesOrder>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -529,7 +481,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         };
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesOrder>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -542,12 +494,11 @@ public class RestApiFuturesPerpetualClient : RestApiClient
             ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
         }
 
-        var parameters = new Dictionary<string, object> {
-            { ClientOptions.RequestBodyParameterKey, requests },
-        };
+        var parameters = new ParameterCollection();
+        parameters.SetBody(requests);
 
         var endpoint = settleBatchOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesBatchOrder>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesBatchOrder>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -562,8 +513,8 @@ public class RestApiFuturesPerpetualClient : RestApiClient
 
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
-            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId);
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -578,8 +529,8 @@ public class RestApiFuturesPerpetualClient : RestApiClient
 
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
-            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId);
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -593,13 +544,13 @@ public class RestApiFuturesPerpetualClient : RestApiClient
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
         var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("price", price?.ToString(CI));
+        parameters.AddOptionalParameter("price", price?.ToGateString());
         parameters.AddOptionalParameter("size", size);
 
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
-            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId);
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -616,7 +567,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("order", orderId);
 
         var endpoint = settleMyTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesUserTrade>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesUserTrade>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -635,7 +586,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleMyTradesTimerangeEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesUserTrade>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesUserTrade>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -654,7 +605,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settlePositionCloseEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesPositionClose>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesPositionClose>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -669,7 +620,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("at", at);
 
         var endpoint = settleLiquidatesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesUserLiquidate>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesUserLiquidate>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -684,7 +635,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settleCountdownCancelAllEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        var result = await SendRequestInternal<FuturesCountdown>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<FuturesCountdown>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.Time ?? default);
     }
     #endregion
@@ -696,7 +647,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         FuturesTriggerOrderPriceType triggerPriceType,
         FuturesTriggerOrderStrategyType triggerStrategyType,
         decimal triggerPrice,
-        PriceTriggerCondition triggerCondition,
+        GateSpotTriggerCondition triggerCondition,
         TimeSpan triggerExpiration,
         string orderContract,
         decimal orderPrice,
@@ -707,7 +658,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
             Type = type,
             Trigger = new FuturesPriceTrigger
             {
-                Price = triggerPrice.ToString(CI),
+                Price = triggerPrice.ToGateString(),
                 Rule = triggerCondition,
                 Expiration = Convert.ToInt32(triggerExpiration.TotalSeconds),
                 PriceType= triggerPriceType,
@@ -715,7 +666,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
             },
             Order = new FuturesPriceOrder
             {
-                Price = orderPrice.ToString(CI),
+                Price = orderPrice.ToGateString(),
                 Contract = orderContract,
                 Size = orderSize,
             }
@@ -725,12 +676,11 @@ public class RestApiFuturesPerpetualClient : RestApiClient
     {
         PerpetualHelpers.ValidateContractSymbol(request.Order.Contract);
 
-        var parameters = new Dictionary<string, object> {
-            { ClientOptions.RequestBodyParameterKey, request },
-        };
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        var result = await SendRequestInternal<FuturesTriggerOrderId>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<FuturesTriggerOrderId>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.OrderId ?? default);
     }
     #endregion
@@ -738,7 +688,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
     #region List all auto orders
     internal async Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(
     FuturesPerpetualSettle settle,
-    PriceTriggerFilter status,
+    GateSpotTriggerFilter status,
     string contract = "",
     int limit = 100,
     int offset = 0,
@@ -753,7 +703,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -768,7 +718,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         };
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -778,7 +728,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{order_id}", orderId.ToString());
-        return await SendRequestInternal<FuturesTriggerOrderResponse>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -788,7 +738,7 @@ public class RestApiFuturesPerpetualClient : RestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesPerpetualSettleConverter(false)))
             .Replace("{order_id}", orderId.ToString());
-        return await SendRequestInternal<FuturesTriggerOrderResponse>(RootClient.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 

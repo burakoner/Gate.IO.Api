@@ -3,13 +3,13 @@
 public class StreamApiBaseClient : WebSocketApiClient
 {
     // Internal
-    internal Log Log { get => this.log; }
+    internal ILogger Log { get => this.RootClient.Logger; }
     internal GateStreamClient RootClient { get; }
 
     // Options
     public new GateStreamClientOptions ClientOptions { get { return (GateStreamClientOptions)base.ClientOptions; } }
 
-    internal StreamApiBaseClient(GateStreamClient root) : base("Gate.IO Stream", root.ClientOptions)
+    internal StreamApiBaseClient(GateStreamClient root) : base(root.Logger, root.ClientOptions)
     {
         RootClient = root;
 
@@ -70,7 +70,7 @@ public class StreamApiBaseClient : WebSocketApiClient
         var result = message["result"];
         if (result != null && result.Type == JTokenType.Object && result["status"] != null && (string)result["status"] == "success")
         {
-            Log.Write(LogLevel.Trace, $"Socket {connection.Id} Subscription completed");
+            Log?.LogTrace($"Socket {connection.Id} Subscription completed");
             callResult = new CallResult<object>(new object());
             return true;
         }

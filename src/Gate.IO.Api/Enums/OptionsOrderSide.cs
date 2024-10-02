@@ -2,9 +2,9 @@
 
 public enum OptionsOrderSide
 {
-    [Label("ask")]
+    [Map("ask")]
     Ask,
 
-    [Label("bid")]
+    [Map("bid")]
     Bid,
 }

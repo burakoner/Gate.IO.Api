@@ -43,9 +43,6 @@ public class GateRestApiClientOptions : RestApiClientOptions
             BodyFormat = RestBodyFormat.Json,
         };
 
-        // Request Body
-        RequestBodyParameterKey = "BODY";
-
         // Broker Id
         BrokerId = "phalchatha";
     }

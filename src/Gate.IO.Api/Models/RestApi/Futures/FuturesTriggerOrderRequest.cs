@@ -1,3 +1,5 @@
+using Gate.IO.Api.Spot;
+
 namespace Gate.IO.Api.Models.RestApi.Futures;
 
 public class FuturesTriggerOrderRequest
@@ -24,7 +26,7 @@ public class FuturesPriceTrigger
     /// Price trigger condition
     /// </summary>
     [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
-    public PriceTriggerCondition Rule { get; set; }
+    public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>
     /// How long (in seconds) to wait for the condition to be triggered before cancelling the order.

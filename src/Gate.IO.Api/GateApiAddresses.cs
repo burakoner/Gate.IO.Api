@@ -1,22 +1,38 @@
 ﻿namespace Gate.IO.Api;
 
+/// <summary>
+/// Gate.IO API Addresses
+/// </summary>
 public class GateApiAddresses
 {
-    // Rest Api
+    /// <summary>
+    /// Rest Api Address
+    /// </summary>
     public string RestApiAddress { get; set; }
 
-    // Stream-Spot
+    /// <summary>
+    /// Stream-Spot Address
+    /// </summary>
     public string StreamSpotAddress { get; set; }
 
-    // Stream-Perpetual Futures
+    /// <summary>
+    /// Stream-Perpetual Futures
+    /// </summary>
     public Dictionary<FuturesPerpetualSettle, string> StreamPerpetualFuturesAddresses { get; set; }
 
-    // Stream-Delivery Futures
+    /// <summary>
+    /// Stream-Delivery Futures
+    /// </summary>
     public Dictionary<FuturesDeliverySettle, string> StreamDeliveryFuturesAddresses { get; set; }
 
-    // Stream-Options
+    /// <summary>
+    /// Stream-Options
+    /// </summary>
     public string StreamOptionsAddress { get; set; }
 
+    /// <summary>
+    /// Default Gate.IO API Main Environment
+    /// </summary>
     public static GateApiAddresses Default = new()
     {
         // Rest Api
@@ -42,6 +58,9 @@ public class GateApiAddresses
         StreamOptionsAddress = "wss://op-ws.gateio.live/v4/ws",
     };
 
+    /// <summary>
+    /// Default Gate.IO API TestNet Environment
+    /// </summary>
     public static GateApiAddresses TestNet = new()
     {
         // Rest Api

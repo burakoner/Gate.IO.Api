@@ -8,12 +8,12 @@ public enum FuturesOrderAutoSize
     /// <summary>
     /// Enum Long for value: close_long
     /// </summary>
-    [Label("close_long")]
+    [Map("close_long")]
     CloseLong,
 
     /// <summary>
     /// Enum Short for value: close_short
     /// </summary>
-    [Label("close_short")]
+    [Map("close_short")]
     CloseShort,
 }

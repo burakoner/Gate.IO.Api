@@ -2,9 +2,9 @@
 
 public enum FuturesDualModeSide
 {
-    [Label("dual_long")]
+    [Map("dual_long")]
     DualLong,
 
-    [Label("dual_short")]
+    [Map("dual_short")]
     DualShort,
 }

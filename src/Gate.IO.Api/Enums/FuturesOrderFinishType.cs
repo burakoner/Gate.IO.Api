@@ -8,48 +8,48 @@ public enum FuturesOrderFinishType
     /// <summary>
     /// Enum Filled for value: filled
     /// </summary>
-    [Label("filled")]
+    [Map("filled")]
     Filled,
 
     /// <summary>
     /// Enum Cancelled for value: cancelled
     /// </summary>
-    [Label("cancelled")]
+    [Map("cancelled")]
     Cancelled,
 
     /// <summary>
     /// Enum Liquidated for value: liquidated
     /// </summary>
-    [Label("liquidated")]
+    [Map("liquidated")]
     Liquidated,
 
     /// <summary>
     /// Enum Ioc for value: ioc
     /// </summary>
-    [Label("ioc")]
+    [Map("ioc")]
     IOC,
 
     /// <summary>
     /// Enum Autodeleveraged for value: auto_deleveraged
     /// </summary>
-    [Label("auto_deleveraged")]
+    [Map("auto_deleveraged")]
     AutoDeleveraged,
 
     /// <summary>
     /// Enum Reduceonly for value: reduce_only
     /// </summary>
-    [Label("reduce_only")]
+    [Map("reduce_only")]
     ReduceOnly,
 
     /// <summary>
     /// Enum Positionclosed for value: position_closed
     /// </summary>
-    [Label("position_closed")]
+    [Map("position_closed")]
     PositionClosed,
 
     /// <summary>
     /// Enum Reduceout for value: reduce_out
     /// </summary>
-    [Label("reduce_out")]
+    [Map("reduce_out")]
     ReduceOut
 }

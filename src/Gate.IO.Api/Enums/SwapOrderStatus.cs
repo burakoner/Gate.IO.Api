@@ -2,9 +2,9 @@
 
 public enum SwapOrderStatus
 {
-    [Label("1")]
+    [Map("1")]
     Success,
 
-    [Label("2")]
+    [Map("2")]
     Failure,
 }

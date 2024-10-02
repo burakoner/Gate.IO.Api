@@ -8,12 +8,12 @@ public enum FuturesContractType
     /// <summary>
     /// Enum Inverse for value: inverse
     /// </summary>
-    [Label("inverse")]
+    [Map("inverse")]
     Inverse,
 
     /// <summary>
     /// Enum Direct for value: direct
     /// </summary>
-    [Label("direct")]
+    [Map("direct")]
     Direct
 }

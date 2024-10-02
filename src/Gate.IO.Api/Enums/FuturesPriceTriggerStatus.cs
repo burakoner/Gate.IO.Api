@@ -2,15 +2,15 @@
 
 public enum FuturesPriceTriggerStatus
 {
-    [Label("open")]
+    [Map("open")]
     Open,
 
-    [Label("finished")]
+    [Map("finished")]
     Finished,
 
-    [Label("inactive")]
+    [Map("inactive")]
     Inactive,
 
-    [Label("invalid")]
+    [Map("invalid")]
     Invalid,
 }

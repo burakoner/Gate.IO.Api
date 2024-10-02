@@ -1,4 +1,6 @@
-﻿namespace Gate.IO.Api.Converters;
+﻿using Gate.IO.Api.Spot;
+
+namespace Gate.IO.Api.Converters;
 
 internal class OrderUpdateEventConverter : BaseConverter<SpotOrderUpdateEvent>
 {

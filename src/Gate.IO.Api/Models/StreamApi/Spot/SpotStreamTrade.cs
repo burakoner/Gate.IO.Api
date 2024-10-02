@@ -1,3 +1,5 @@
+using Gate.IO.Api.Spot;
+
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public class SpotStreamTrade
@@ -29,8 +31,8 @@ public class SpotStreamTrade
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side"), JsonConverter(typeof(SpotOrderSideConverter))]
-    public SpotOrderSide Side { get; set; }
+    [JsonProperty("side")]
+    public GateSpotOrderSide Side { get; set; }
 
     /// <summary>
     /// Trade amount

@@ -2,9 +2,9 @@
 
 public enum OptionsType
 {
-    [Label("C")]
+    [Map("C")]
     Call,
 
-    [Label("P")]
+    [Map("P")]
     Put,
 }

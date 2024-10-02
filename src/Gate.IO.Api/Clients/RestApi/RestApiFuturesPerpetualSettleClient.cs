@@ -154,13 +154,13 @@ public class RestApiFuturesPerpetualSettleClient
     public async Task<RestCallResult<DateTime>> CountdownCancelOrdersAsync(int timeout, string contract = "", CancellationToken ct = default)
         => await MainClient.CountdownCancelOrdersAsync(this.Settlement, timeout, contract, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(FuturesTriggerOrderType type, FuturesTriggerOrderPriceType triggerPriceType, FuturesTriggerOrderStrategyType triggerStrategyType, decimal triggerPrice, PriceTriggerCondition triggerCondition, TimeSpan triggerExpiration, string orderContract, decimal orderPrice, long orderSize, CancellationToken ct = default)
+    public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(FuturesTriggerOrderType type, FuturesTriggerOrderPriceType triggerPriceType, FuturesTriggerOrderStrategyType triggerStrategyType, decimal triggerPrice, GateSpotTriggerCondition triggerCondition, TimeSpan triggerExpiration, string orderContract, decimal orderPrice, long orderSize, CancellationToken ct = default)
         => await MainClient.PlacePriceTriggeredOrderAsync(this.Settlement, type, triggerPriceType, triggerStrategyType, triggerPrice, triggerCondition, triggerExpiration, orderContract, orderPrice, orderSize, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(FuturesTriggerOrderRequest request, CancellationToken ct = default)
         => await MainClient.PlacePriceTriggeredOrderAsync(this.Settlement, request, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(PriceTriggerFilter status, string contract = "", int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter status, string contract = "", int limit = 100, int offset = 0, CancellationToken ct = default)
         => await MainClient.GetPriceTriggeredOrdersAsync(this.Settlement, status, contract, limit, offset, ct).ConfigureAwait(false);
 
     public async Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> CancelPriceTriggeredOrdersAsync(string contract, CancellationToken ct = default)

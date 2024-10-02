@@ -1,3 +1,5 @@
+using Gate.IO.Api.Spot;
+
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamUserBalance
@@ -29,6 +31,6 @@ public  class SpotStreamUserBalance
     [JsonProperty("freeze_change")]
     public decimal FreezeChange { get; set; }
     
-    [JsonProperty("change_type"), JsonConverter(typeof(SpotBalanceChangeTypeConverter))]
-    public SpotBalanceChangeType ChangeType { get; set; }
+    [JsonProperty("change_type")]
+    public GateSpotBalanceChangeType ChangeType { get; set; }
 }

@@ -1,13 +1,13 @@
 ﻿namespace Gate.IO.Api.Converters;
 
-internal class PriceTriggerConditionConverter : BaseConverter<PriceTriggerCondition>
+internal class PriceTriggerConditionConverter : BaseConverter<GateSpotTriggerCondition>
 {
     public PriceTriggerConditionConverter() : this(true) { }
     public PriceTriggerConditionConverter(bool quotes) : base(quotes) { }
 
-    protected override List<KeyValuePair<PriceTriggerCondition, string>> Mapping => new()
+    protected override List<KeyValuePair<GateSpotTriggerCondition, string>> Mapping => new()
     {
-        new KeyValuePair<PriceTriggerCondition, string>(PriceTriggerCondition.GreaterThanOrEqualTo, ">="),
-        new KeyValuePair<PriceTriggerCondition, string>(PriceTriggerCondition.LessThanOrEqualTo, "<="),
+        new KeyValuePair<GateSpotTriggerCondition, string>(GateSpotTriggerCondition.GreaterThanOrEqualTo, ">="),
+        new KeyValuePair<GateSpotTriggerCondition, string>(GateSpotTriggerCondition.LessThanOrEqualTo, "<="),
     };
 }

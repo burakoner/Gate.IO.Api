@@ -2,9 +2,9 @@
 
 public enum OptionsSide
 {
-    [Label("long")]
+    [Map("long")]
     Long,
 
-    [Label("short")]
+    [Map("short")]
     Short,
 }

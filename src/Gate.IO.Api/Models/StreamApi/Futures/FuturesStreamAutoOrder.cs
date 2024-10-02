@@ -45,7 +45,7 @@ public class FuturesStreamAutoOrder
 public class FuturesStreamAutoOrderStopTrigger
 {
     [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
-    public PriceTriggerCondition? Rule { get; set; }
+    public GateSpotTriggerCondition? Rule { get; set; }
 
     [JsonProperty("trigger_price")]
     public decimal? TriggerPrice { get; set; }
@@ -66,7 +66,7 @@ public class FuturesStreamAutoOrderTrigger
     public decimal? Price { get; set; }
 
     [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
-    public PriceTriggerCondition? Rule { get; set; }
+    public GateSpotTriggerCondition? Rule { get; set; }
 
     [JsonProperty("expiration")]
     public int Expiration { get; set; }

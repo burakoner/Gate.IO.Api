@@ -8,12 +8,12 @@ public enum FuturesMarkType
     /// <summary>
     /// Enum Internal for value: internal
     /// </summary>
-    [Label("internal")]
+    [Map("internal")]
     Internal,
 
     /// <summary>
     /// Enum Index for value: index
     /// </summary>
-    [Label("index")]
+    [Map("index")]
     Index
 }

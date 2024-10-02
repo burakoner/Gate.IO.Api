@@ -5,12 +5,12 @@ public enum OptionsOrderStatus
     /// <summary>
     /// Enum Open for value: open
     /// </summary>
-    [Label("open")]
+    [Map("open")]
     Open,
 
     /// <summary>
     /// Enum Finished for value: finished
     /// </summary>
-    [Label("finished")]
+    [Map("finished")]
     Finished,
 }

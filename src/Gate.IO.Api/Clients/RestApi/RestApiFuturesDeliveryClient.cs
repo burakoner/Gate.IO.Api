@@ -1,14 +1,15 @@
 ﻿using Gate.IO.Api.Models.RestApi.Futures;
 using Gate.IO.Api.Models.RestApi.Spot;
+using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Clients.RestApi;
 
-public class RestApiFuturesDeliveryClient : RestApiClient
+public class RestApiFuturesDeliveryClient
 {
     // Api
-    protected const string api = "api";
-    protected const string version = "4";
-    protected const string delivery = "delivery";
+    private const string api = "api";
+    private const string version = "4";
+    private const string delivery = "delivery";
 
     // Endpoints
     private const string settleContractsEndpoint = "{settle}/contracts";
@@ -34,75 +35,26 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     private const string settlePriceOrdersEndpoint = "{settle}/price_orders";
     private const string settlePriceOrdersOrderIdEndpoint = "{settle}/price_orders/{order_id}";
 
-    // Internal
-    internal Log Log { get => this.log; }
-    internal TimeSyncState TimeSyncState = new("Gate.IO Delivery Futures RestApi");
-
     // Root Client
-    internal GateRestApiClient RootClient { get; }
-    internal CultureInfo CI { get { return RootClient.CI; } }
-    internal new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    internal GateRestApiClient Root { get; }
 
     // Public Clients
     public RestApiFuturesDeliverySettleClient BTC { get; }
     public RestApiFuturesDeliverySettleClient USDT { get; }
 
-    internal RestApiFuturesDeliveryClient(GateRestApiClient root) : base("Gate.IO Delivery Futures RestApi", root.ClientOptions)
+    internal RestApiFuturesDeliveryClient(GateRestApiClient root)
     {
-        RootClient = root;
-
-        RequestBodyFormat = RestRequestBodyFormat.Json;
-        ArraySerialization = ArraySerialization.MultipleValues;
-
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
+        Root = root;
 
         this.BTC = new RestApiFuturesDeliverySettleClient(this, FuturesDeliverySettle.BTC);
         this.USDT = new RestApiFuturesDeliverySettleClient(this, FuturesDeliverySettle.USDT);
     }
 
-    #region Override Methods
-    protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-        => new GateAuthenticationProvider(credentials);
-
-    protected override Error ParseErrorResponse(JToken error)
-        => RootClient.ParseErrorResponse(error);
-
-    protected override Task<RestCallResult<DateTime>> GetServerTimestampAsync()
-        => RootClient.Spot.GetServerTimeAsync();
-
-    protected override TimeSyncInfo GetTimeSyncInfo()
-        => new(log, ClientOptions.AutoTimestamp, ClientOptions.TimestampRecalculationInterval, TimeSyncState);
-
-    protected override TimeSpan GetTimeOffset()
-        => TimeSyncState.TimeOffset;
-    #endregion
-
-    #region Internal Methods
-    internal async Task<RestCallResult<T>> SendRequestInternal<T>(
-        Uri uri,
-        HttpMethod method,
-        CancellationToken cancellationToken,
-        bool signed = false,
-        Dictionary<string, object> queryParameters = null,
-        Dictionary<string, object> bodyParameters = null,
-        Dictionary<string, string> headerParameters = null,
-        ArraySerialization? arraySerialization = null,
-        JsonSerializer deserializer = null,
-        bool ignoreRatelimit = false,
-        int requestWeight = 1) where T : class
-    {
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
-        return await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
-    }
-    #endregion
-
     #region List all futures contracts
     internal async Task<RestCallResult<IEnumerable<DeliveryContract>>> GetContractsAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
     {
         var endpoint = settleContractsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<DeliveryContract>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<DeliveryContract>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -112,7 +64,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settleContractsContractEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<DeliveryContract>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<DeliveryContract>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -128,7 +80,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         };
 
         var endpoint = settleOrderBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<FuturesOrderBook>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesOrderBook>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -148,7 +100,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTrade>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -168,7 +120,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleCandlesticksEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesCandlestick>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesCandlestick>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -179,7 +131,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settleTickersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<DeliveryTicker>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<DeliveryTicker>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -192,7 +144,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         };
 
         var endpoint = settleInsuranceEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesInsuranceBalance>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesInsuranceBalance>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -200,7 +152,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     internal async Task<RestCallResult<IEnumerable<FuturesAccount>>> GetAccountAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
     {
         var endpoint = settleAccountsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesAccount>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesAccount>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -217,7 +169,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleAccountBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesAccountBook>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesAccountBook>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -225,7 +177,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     internal async Task<RestCallResult<IEnumerable<FuturesPosition>>> GetPositionsAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
     {
         var endpoint = settlePositionsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesPosition>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesPosition>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -235,7 +187,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePositionsContractEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -250,7 +202,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePositionsContractMarginEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -265,7 +217,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePositionsContractLeverageEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -280,7 +232,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePositionsContractRiskLimitEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{contract}", contract);
-        return await SendRequestInternal<FuturesPosition>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -329,7 +281,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
 
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -347,7 +299,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("last_id", lastId);
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesOrder>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -361,7 +313,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         };
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesOrder>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -376,8 +328,8 @@ public class RestApiFuturesDeliveryClient : RestApiClient
 
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
-            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId);
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -392,8 +344,8 @@ public class RestApiFuturesDeliveryClient : RestApiClient
 
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
-            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString(CI) : clientOrderId);
-        return await SendRequestInternal<FuturesOrder>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+            .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
+        return await Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -411,7 +363,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("order", orderId);
 
         var endpoint = settleMyTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesUserTrade>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesUserTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -425,7 +377,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settlePositionCloseEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesPositionClose>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesPositionClose>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -440,7 +392,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("at", at);
 
         var endpoint = settleLiquidatesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesUserLiquidate>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesUserLiquidate>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -455,7 +407,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("at", at);
 
         var endpoint = settleSettlementsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<DeliverySettlement>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<DeliverySettlement>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -466,7 +418,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         FuturesTriggerOrderPriceType triggerPriceType,
         FuturesTriggerOrderStrategyType triggerStrategyType,
         decimal triggerPrice,
-        PriceTriggerCondition triggerCondition,
+        GateSpotTriggerCondition triggerCondition,
         TimeSpan triggerExpiration,
         string orderContract,
         decimal orderPrice,
@@ -477,7 +429,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
             Type = type,
             Trigger = new FuturesPriceTrigger
             {
-                Price = triggerPrice.ToString(CI),
+                Price = triggerPrice.ToGateString(),
                 Rule = triggerCondition,
                 Expiration = Convert.ToInt32(triggerExpiration.TotalSeconds),
                 PriceType= triggerPriceType,
@@ -485,7 +437,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
             },
             Order = new FuturesPriceOrder
             {
-                Price = orderPrice.ToString(CI),
+                Price = orderPrice.ToGateString(),
                 Contract = orderContract,
                 Size = orderSize,
             }
@@ -495,12 +447,11 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     {
         DeliveryHelpers.ValidateContractSymbol(request.Order.Contract);
 
-        var parameters = new Dictionary<string, object> {
-            { ClientOptions.RequestBodyParameterKey, request },
-        };
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        var result = await SendRequestInternal<FuturesTriggerOrderId>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<FuturesTriggerOrderId>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.OrderId ?? default);
     }
     #endregion
@@ -508,7 +459,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
     #region List all auto orders
     internal async Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(
     FuturesDeliverySettle settle,
-    PriceTriggerFilter status,
+    GateSpotTriggerFilter status,
     string contract = "",
     int limit = 100,
     int offset = 0,
@@ -523,7 +474,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -538,7 +489,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         };
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return await SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -548,7 +499,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{order_id}", orderId.ToString());
-        return await SendRequestInternal<FuturesTriggerOrderResponse>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -558,7 +509,7 @@ public class RestApiFuturesDeliveryClient : RestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
             .Replace("{order_id}", orderId.ToString());
-        return await SendRequestInternal<FuturesTriggerOrderResponse>(RootClient.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 

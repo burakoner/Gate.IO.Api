@@ -2,9 +2,9 @@
 
 public enum MarginMarketStatus
 {
-    [Label("0")]
+    [Map("0")]
     Disabled,
 
-    [Label("1")]
+    [Map("1")]
     Enabled,
 }

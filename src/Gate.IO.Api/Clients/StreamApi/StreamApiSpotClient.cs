@@ -1,5 +1,6 @@
-﻿using Gate.IO.Api.Models.RestApi.Spot;
-using Gate.IO.Api.Models.StreamApi.Spot;
+﻿using Gate.IO.Api.Models.StreamApi.Spot;
+using Gate.IO.Api.Spot;
+using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Clients.StreamApi;
 
@@ -58,10 +59,10 @@ public class StreamApiSpotClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotTradesChannel, symbols, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToCandlesticksAsync(string symbol, SpotCandlestickInterval interval, Action<WebSocketDataEvent<SpotStreamCandlestick>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToCandlesticksAsync(string symbol, GateSpotCandlestickInterval interval, Action<WebSocketDataEvent<SpotStreamCandlestick>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
-        payload.Add(JsonConvert.SerializeObject(interval, new SpotCandlestickIntervalConverter(false)));
+        payload.Add(MapConverter.GetString(interval));
         payload.Add(symbol);
 
         var handler = new Action<WebSocketDataEvent<GateStreamResponse<SpotStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
@@ -107,9 +108,9 @@ public class StreamApiSpotClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserOrdersChannel, symbols, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserTradesAsync(IEnumerable<string> symbols, Action<WebSocketDataEvent<SpotUserTrade>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserTradesAsync(IEnumerable<string> symbols, Action<WebSocketDataEvent<GateSpotTradeHistory>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<SpotUserTrade>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateSpotTradeHistory>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, spotUserTradesChannel, symbols, true, handler, ct).ConfigureAwait(false);
     }

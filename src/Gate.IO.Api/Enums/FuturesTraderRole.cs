@@ -8,12 +8,12 @@ public enum FuturesTraderRole
     /// <summary>
     /// Enum Taker for value: taker
     /// </summary>
-    [Label("taker")]
+    [Map("taker")]
     Taker = 1,
 
     /// <summary>
     /// Enum Maker for value: maker
     /// </summary>
-    [Label("maker")]
+    [Map("maker")]
     Maker = 2
 }

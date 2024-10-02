@@ -2,33 +2,33 @@
 
 public enum MarginTransactionType
 {
-    [Label("in")]
+    [Map("in")]
     TransferIn, 
 
-    [Label("out")]
+    [Map("out")]
     TransferOut,
 
-    [Label("repay")]
+    [Map("repay")]
     Repay,
 
-    [Label("borrow")]
+    [Map("borrow")]
     Borrow,
 
-    [Label("interest")]
+    [Map("interest")]
     Interest,
     
-    [Label("new_order")]
+    [Map("new_order")]
     NewOrder,
     
-    [Label("order_fill")]
+    [Map("order_fill")]
     OrderFill,
     
-    [Label("referral_fee")]
+    [Map("referral_fee")]
     ReferralFee,
     
-    [Label("order_fee")]
+    [Map("order_fee")]
     OrderFee,
     
-    [Label("unknown")]
+    [Map("unknown")]
     Unknown
 }

@@ -2,18 +2,18 @@
 
 public enum OptionsCandlestickInterval
 {
-    [Label("1m")]
+    [Map("1m")]
     OneMinute = 60,
 
-    [Label("5m")]
+    [Map("5m")]
     FiveMinutes = 300,
 
-    [Label("15m")]
+    [Map("15m")]
     FifteenMinutes = 900,
 
-    [Label("30m")]
+    [Map("30m")]
     ThirtyMinutes = 1800,
 
-    [Label("1h")]
+    [Map("1h")]
     OneHour = 3600,
 }

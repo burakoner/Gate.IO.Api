@@ -8,24 +8,24 @@ public enum FuturesTimeInForce
     /// <summary>
     /// GoodTillCancelled
     /// </summary>
-    [Label("gtc")]
+    [Map("gtc")]
     GoodTillCancelled,
 
     /// <summary>
     /// ImmediateOrCancelled, taker only
     /// </summary>
-    [Label("ioc")]
+    [Map("ioc")]
     ImmediateOrCancel,
 
     /// <summary>
     /// FillOrKill, fill either completely or none Only. ioc and fok are supported when type=market
     /// </summary>
-    [Label("fok")]
+    [Map("fok")]
     FillOrKill,
 
     /// <summary>
     /// PendingOrCancelled, makes a post-only order that always enjoys a maker fee
     /// </summary>
-    [Label("poc")]
+    [Map("poc")]
     PendingOrCancelled,
 }

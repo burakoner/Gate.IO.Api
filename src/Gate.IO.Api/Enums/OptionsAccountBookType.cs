@@ -5,30 +5,30 @@ public enum OptionsAccountBookType
     /// <summary>
     /// Deposit & Withdraw
     /// </summary>
-    [Label("dnw")]
+    [Map("dnw")]
     DNW,
 
     /// <summary>
     /// Trading premium
     /// </summary>
-    [Label("prem")]
+    [Map("prem")]
     Premium,
 
     /// <summary>
     /// Trading fee
     /// </summary>
-    [Label("fee")]
+    [Map("fee")]
     Fee,
 
     /// <summary>
     /// Referrer rebate
     /// </summary>
-    [Label("refr")]
+    [Map("refr")]
     Rebate,
 
     /// <summary>
     /// POINT Referrer rebate
     /// </summary>
-    [Label("set")]
+    [Map("set")]
     SettlementPNL,
 }

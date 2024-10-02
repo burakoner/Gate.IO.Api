@@ -1,13 +1,13 @@
 ﻿namespace Gate.IO.Api.Converters;
 
-internal class PriceTriggerFilterConverter : BaseConverter<PriceTriggerFilter>
+internal class PriceTriggerFilterConverter : BaseConverter<GateSpotTriggerFilter>
 {
     public PriceTriggerFilterConverter() : this(true) { }
     public PriceTriggerFilterConverter(bool quotes) : base(quotes) { }
 
-    protected override List<KeyValuePair<PriceTriggerFilter, string>> Mapping => new()
+    protected override List<KeyValuePair<GateSpotTriggerFilter, string>> Mapping => new()
     {
-        new KeyValuePair<PriceTriggerFilter, string>(PriceTriggerFilter.Open, "open"),
-        new KeyValuePair<PriceTriggerFilter, string>(PriceTriggerFilter.Finished, "finished"),
+        new KeyValuePair<GateSpotTriggerFilter, string>(GateSpotTriggerFilter.Open, "open"),
+        new KeyValuePair<GateSpotTriggerFilter, string>(GateSpotTriggerFilter.Finished, "finished"),
     };
 }

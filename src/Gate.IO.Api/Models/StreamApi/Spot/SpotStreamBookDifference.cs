@@ -1,4 +1,4 @@
-using Gate.IO.Api.Models.RestApi.Spot;
+using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
@@ -20,8 +20,8 @@ public  class SpotStreamBookDifference
     public long OrderBookLastUpdateId { get; set; }
 
     [JsonProperty("b", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<SpotOrderBookEntry> Bids { get; set; }
+    public IEnumerable<GateSpotOrderBookEntry> Bids { get; set; }
 
     [JsonProperty("a", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<SpotOrderBookEntry> Asks { get; set; }
+    public IEnumerable<GateSpotOrderBookEntry> Asks { get; set; }
 }

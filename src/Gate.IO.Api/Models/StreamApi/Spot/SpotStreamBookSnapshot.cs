@@ -1,4 +1,4 @@
-using Gate.IO.Api.Models.RestApi.Spot;
+using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
@@ -14,8 +14,8 @@ public  class SpotStreamBookSnapshot
     public string Symbol { get; set; }
 
     [JsonProperty("bids", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<SpotOrderBookEntry> Bids { get; set; }
+    public IEnumerable<GateSpotOrderBookEntry> Bids { get; set; }
 
     [JsonProperty("asks", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<SpotOrderBookEntry> Asks { get; set; }
+    public IEnumerable<GateSpotOrderBookEntry> Asks { get; set; }
 }

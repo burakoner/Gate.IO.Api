@@ -5,48 +5,48 @@ public enum FuturesAccountBookType
     /// <summary>
     /// Deposit & Withdraw
     /// </summary>
-    [Label("dnw")]
+    [Map("dnw")]
     DNW,
 
     /// <summary>
     /// Profit & Loss by reducing position
     /// </summary>
-    [Label("pnl")]
+    [Map("pnl")]
     PNL,
 
     /// <summary>
     /// Trading fee
     /// </summary>
-    [Label("fee")]
+    [Map("fee")]
     Fee,
 
     /// <summary>
     /// Referrer rebate
     /// </summary>
-    [Label("refr")]
+    [Map("refr")]
     Rebate,
 
     /// <summary>
     /// Funding
     /// </summary>
-    [Label("fund")]
+    [Map("fund")]
     Funding,
 
     /// <summary>
     /// POINT Deposit & Withdraw
     /// </summary>
-    [Label("point_dnw")]
+    [Map("point_dnw")]
     PointDNW,
 
     /// <summary>
     /// POINT Trading fee
     /// </summary>
-    [Label("point_fee")]
+    [Map("point_fee")]
     PointFee,
 
     /// <summary>
     /// POINT Referrer rebate
     /// </summary>
-    [Label("point_refr")]
+    [Map("point_refr")]
     PointRebate,
 }

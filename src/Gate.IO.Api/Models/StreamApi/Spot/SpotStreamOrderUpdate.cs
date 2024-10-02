@@ -1,3 +1,5 @@
+using Gate.IO.Api.Spot;
+
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamOrderUpdate
@@ -23,20 +25,20 @@ public  class SpotStreamOrderUpdate
     [JsonProperty("update_time_ms")]
     public long UpdateTimeInMilliseconds { get; set; }
 
-    [JsonProperty("event"), JsonConverter(typeof(OrderUpdateEventConverter))]
+    [JsonProperty("event")]
     public SpotOrderUpdateEvent Event { get; set; }
 
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
 
-    [JsonProperty("type"), JsonConverter(typeof(SpotOrderTypeConverter))]
-    public SpotOrderType Type { get; set; }
+    [JsonProperty("type")]
+    public GateSpotOrderType Type { get; set; }
 
-    [JsonProperty("account"), JsonConverter(typeof(AccountTypeConverter))]
-    public AccountType Account { get; set; }
+    [JsonProperty("account")]
+    public GateSpotAccountType Account { get; set; }
 
-    [JsonProperty("side"), JsonConverter(typeof(SpotOrderSideConverter))]
-    public SpotOrderSide Side { get; set; }
+    [JsonProperty("side")]
+    public GateSpotOrderSide Side { get; set; }
 
     [JsonProperty("amount")]
     public decimal? Quantity { get; set; }
@@ -44,8 +46,8 @@ public  class SpotStreamOrderUpdate
     [JsonProperty("price")]
     public decimal? Price { get; set; }
 
-    [JsonProperty("time_in_force"), JsonConverter(typeof(SpotTimeInForceConverter))]
-    public SpotTimeInForce TimeInForce { get; set; }
+    [JsonProperty("time_in_force")]
+    public GateSpotTimeInForce TimeInForce { get; set; }
 
     [JsonProperty("left")]
     public decimal Left { get; set; }

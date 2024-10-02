@@ -5,18 +5,18 @@ public enum FuturesTriggerOrderPriceType
     /// <summary>
     /// Latest Deal Price
     /// </summary>
-    [Label("0")]
+    [Map("0")]
     DealPrice=0,
 
     /// <summary>
     /// Mark Price
     /// </summary>
-    [Label("1")]
+    [Map("1")]
     MarkPrice=1,
 
     /// <summary>
     /// Index Price
     /// </summary>
-    [Label("2")]
+    [Map("2")]
     IndexPrice=2,
 }

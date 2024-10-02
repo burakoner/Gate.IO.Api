@@ -2,36 +2,36 @@
 
 public enum FuturesCandlestickInterval
 {
-    [Label("10s")]
+    [Map("10s")]
     TenSeconds = 10,
 
-    [Label("1m")]
+    [Map("1m")]
     OneMinute = 60,
 
-    [Label("5m")]
+    [Map("5m")]
     FiveMinutes = 300,
 
-    [Label("15m")]
+    [Map("15m")]
     FifteenMinutes = 900,
 
-    [Label("30m")]
+    [Map("30m")]
     ThirtyMinutes = 1800,
 
-    [Label("1h")]
+    [Map("1h")]
     OneHour = 3600,
 
-    [Label("4h")]
+    [Map("4h")]
     FourHours = 14400,
 
-    [Label("8h")]
+    [Map("8h")]
     EightHours = 28800,
 
-    [Label("1d")]
+    [Map("1d")]
     OneDay = 86400,
 
-    [Label("7d")]
+    [Map("7d")]
     OneWeek = 604800,
 
-    [Label("30d")]
+    [Map("30d")]
     OneMonth = 2592000,
 }

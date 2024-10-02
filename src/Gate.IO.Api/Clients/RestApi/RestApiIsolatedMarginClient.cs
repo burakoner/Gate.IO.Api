@@ -2,12 +2,12 @@
 
 namespace Gate.IO.Api.Clients.RestApi;
 
-public class RestApiIsolatedMarginClient : RestApiClient
+public class RestApiIsolatedMarginClient
 {
     // Api
-    protected const string api = "api";
-    protected const string version = "4";
-    protected const string margin = "margin";
+    private const string api = "api";
+    private const string version = "4";
+    private const string margin = "margin";
 
     // Endpoints
     private const string currencyPairsEndpoint = "currency_pairs";
@@ -21,74 +21,25 @@ public class RestApiIsolatedMarginClient : RestApiClient
     private const string transferableEndpoint = "transferable";
     private const string borrowableEndpoint = "borrowable";
 
-    // Internal
-    internal Log Log { get => this.log; }
-    internal TimeSyncState TimeSyncState = new("Gate.IO Margin RestApi");
-
     // Root Client
-    internal GateRestApiClient RootClient { get; }
-    internal CultureInfo CI { get { return RootClient.CI; } }
-    public new GateRestApiClientOptions ClientOptions { get { return RootClient.ClientOptions; } }
+    internal GateRestApiClient Root { get; }
 
-    internal RestApiIsolatedMarginClient(GateRestApiClient root) : base("Gate.IO Margin RestApi", root.ClientOptions)
+    internal RestApiIsolatedMarginClient(GateRestApiClient root)
     {
-        RootClient = root;
-
-        RequestBodyFormat = RestRequestBodyFormat.Json;
-        ArraySerialization = ArraySerialization.MultipleValues;
-
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
+        Root = root;
     }
-
-    #region Override Methods
-    protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
-        => new GateAuthenticationProvider(credentials);
-
-    protected override Error ParseErrorResponse(JToken error)
-        => RootClient.ParseErrorResponse(error);
-
-    protected override Task<RestCallResult<DateTime>> GetServerTimestampAsync()
-        => RootClient.Spot.GetServerTimeAsync();
-
-    protected override TimeSyncInfo GetTimeSyncInfo()
-        => new(log, ClientOptions.AutoTimestamp, ClientOptions.TimestampRecalculationInterval, TimeSyncState);
-
-    protected override TimeSpan GetTimeOffset()
-        => TimeSyncState.TimeOffset;
-    #endregion
-
-    #region Internal Methods
-    internal async Task<RestCallResult<T>> SendRequestInternal<T>(
-        Uri uri,
-        HttpMethod method,
-        CancellationToken cancellationToken,
-        bool signed = false,
-        Dictionary<string, object> queryParameters = null,
-        Dictionary<string, object> bodyParameters = null,
-        Dictionary<string, string> headerParameters = null,
-        ArraySerialization? arraySerialization = null,
-        JsonSerializer deserializer = null,
-        bool ignoreRatelimit = false,
-        int requestWeight = 1) where T : class
-    {
-        Thread.CurrentThread.CurrentCulture = CI;
-        Thread.CurrentThread.CurrentUICulture = CI;
-        return await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
-    }
-    #endregion
 
     #region List all supported currency pairs supported in margin trading
     public async Task<RestCallResult<IEnumerable<MarginMarket>>> GetAllPairsAsync(CancellationToken ct = default)
     {
-        return await SendRequestInternal<IEnumerable<MarginMarket>>(RootClient.GetUrl(api, version, margin, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginMarket>>(Root.GetUrl(api, version, margin, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
     #region Query one single margin currency pair
     public async Task<RestCallResult<MarginMarket>> GetPairAsync(string symbol, CancellationToken ct = default)
     {
-        return await SendRequestInternal<MarginMarket>(RootClient.GetUrl(api, version, margin, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginMarket>(Root.GetUrl(api, version, margin, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -100,7 +51,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "currency", currency },
         };
 
-        return await SendRequestInternal<IEnumerable<MarginFundingAccountBook>>(RootClient.GetUrl(api, version, margin, fundingBookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginFundingAccountBook>>(Root.GetUrl(api, version, margin, fundingBookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -110,7 +61,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<IEnumerable<MarginAccount>>(RootClient.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginAccount>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -130,7 +81,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await SendRequestInternal<IEnumerable<MarginAccountBook>>(RootClient.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginAccountBook>>(Root.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -140,7 +91,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await SendRequestInternal<IEnumerable<MarginFundingAccount>>(RootClient.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginFundingAccount>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -176,16 +127,16 @@ public class RestApiIsolatedMarginClient : RestApiClient
         var parameters = new Dictionary<string, object> {
             { "side", JsonConvert.SerializeObject(request.Side, new MarginLoanSideConverter(false)) },
             { "currency", request.Currency },
-            { "amount", request.Amount.ToString(CI) },
+            { "amount", request.Amount.ToGateString() },
         };
-        parameters.AddOptionalParameter("rate", request.Rate?.ToString(CI));
-        parameters.AddOptionalParameter("days", request.Days?.ToString(CI));
+        parameters.AddOptionalParameter("rate", request.Rate?.ToGateString());
+        parameters.AddOptionalParameter("days", request.Days?.ToString());
         parameters.AddOptionalParameter("auto_renew", request.AutoRenew);
         parameters.AddOptionalParameter("currency_pair", request.Symbol);
-        parameters.AddOptionalParameter("fee_rate", request.FeeRate?.ToString(CI));
+        parameters.AddOptionalParameter("fee_rate", request.FeeRate?.ToGateString());
         parameters.AddOptionalParameter("text", request.ClientOrderId);
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, loansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, loansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -212,7 +163,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<IEnumerable<MarginLoan>>(RootClient.GetUrl(api, version, margin, loansEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginLoan>>(Root.GetUrl(api, version, margin, loansEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -224,7 +175,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "ids", string.Join(",", ids) }
         };
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, mergedLoansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, mergedLoansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -235,7 +186,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "side", JsonConvert.SerializeObject(side, new MarginLoanSideConverter(false)) },
         };
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -257,7 +208,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
 #endif
     #endregion
@@ -269,7 +220,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "currency", currency },
         };
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -281,16 +232,16 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "currency_pair", symbol },
             { "mode", JsonConvert.SerializeObject(mode, new MarginLoanRepayModeConverter(false)) },
         };
-        parameters.AddOptionalParameter("amount", amount?.ToString(CI));
+        parameters.AddOptionalParameter("amount", amount?.ToGateString());
 
-        return await SendRequestInternal<MarginLoan>(RootClient.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString()).AppendPath("repayment")), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoan>(Root.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString()).AppendPath("repayment")), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List loan repayment records
     public async Task<RestCallResult<IEnumerable<MarginLoanRepayment>>> GetLoanRepaymentsAsync(long loanId, CancellationToken ct = default)
     {
-        return await SendRequestInternal<IEnumerable<MarginLoanRepayment>>(RootClient.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString()).AppendPath("repayment")), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginLoanRepayment>>(Root.GetUrl(api, version, margin, loansEndpoint.AppendPath(loanId.ToString()).AppendPath("repayment")), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -304,7 +255,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         };
         parameters.AddOptionalParameter("status", JsonConvert.SerializeObject(status, new MarginLoanStatusConverter(false)));
 
-        return await SendRequestInternal<IEnumerable<MarginLoanRecord>>(RootClient.GetUrl(api, version, margin, loanRecordsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<IEnumerable<MarginLoanRecord>>(Root.GetUrl(api, version, margin, loanRecordsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -315,7 +266,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "loan_id", loanId },
         };
 
-        return await SendRequestInternal<MarginLoanRecord>(RootClient.GetUrl(api, version, margin, loanRecordsEndpoint.AppendPath(loanRecordId.ToString())), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoanRecord>(Root.GetUrl(api, version, margin, loanRecordsEndpoint.AppendPath(loanRecordId.ToString())), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -338,7 +289,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<MarginLoanRecord>(RootClient.GetUrl(api, version, margin, loanRecordsEndpoint.AppendPath(loanRecordId.ToString())), HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginLoanRecord>(Root.GetUrl(api, version, margin, loanRecordsEndpoint.AppendPath(loanRecordId.ToString())), HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
 #endif
     #endregion
@@ -350,14 +301,14 @@ public class RestApiIsolatedMarginClient : RestApiClient
             { "status", JsonConvert.SerializeObject(status, new AutoRepaymentStatusConverter(false)) },
         };
 
-        return await SendRequestInternal<MarginAutoRepayment>(RootClient.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Retrieve user auto repayment setting
     public async Task<RestCallResult<MarginAutoRepayment>> GetAutoRepaymentAsync(CancellationToken ct = default)
     {
-        return await SendRequestInternal<MarginAutoRepayment>(RootClient.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -369,7 +320,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<MarginAmount>(RootClient.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginAmount>(Root.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -381,7 +332,7 @@ public class RestApiIsolatedMarginClient : RestApiClient
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await SendRequestInternal<MarginAmount>(RootClient.GetUrl(api, version, margin, borrowableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<MarginAmount>(Root.GetUrl(api, version, margin, borrowableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 

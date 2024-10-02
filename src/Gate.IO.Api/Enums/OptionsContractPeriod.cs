@@ -2,9 +2,9 @@
 
 public enum OptionsContractPeriod
 {
-    [Label("week")]
+    [Map("week")]
     OneWeek,
 
-    [Label("month")]
+    [Map("month")]
     OneMonth,
 }

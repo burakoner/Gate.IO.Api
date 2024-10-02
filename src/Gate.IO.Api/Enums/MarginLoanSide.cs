@@ -2,9 +2,9 @@
 
 public enum MarginLoanSide
 {
-    [Label("lend")]
+    [Map("lend")]
     Lend,
 
-    [Label("borrow")]
+    [Map("borrow")]
     Borrow,
 }
