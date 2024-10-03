@@ -2,14 +2,14 @@ namespace Gate.IO.Api.Models.StreamApi.Futures;
 
 public class FuturesStreamBalance
 {
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]
     public long TimeInMilliseconds { get; set; }
 
-    [JsonProperty("type"), JsonConverter(typeof(FuturesAccountBookType))]
-    public FuturesAccountBookType Type { get; set; }
+    [JsonProperty("type")]
+    public GateFuturesBalanceType Type { get; set; }
 
     [JsonProperty("user")]
     public int UserId { get; set; }

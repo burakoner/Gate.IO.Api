@@ -18,12 +18,12 @@ public class GateApiAddresses
     /// <summary>
     /// Stream-Perpetual Futures
     /// </summary>
-    public Dictionary<FuturesPerpetualSettle, string> StreamPerpetualFuturesAddresses { get; set; }
+    public Dictionary<GateFuturesSettlement, string> StreamPerpetualFuturesAddresses { get; set; }
 
     /// <summary>
     /// Stream-Delivery Futures
     /// </summary>
-    public Dictionary<FuturesDeliverySettle, string> StreamDeliveryFuturesAddresses { get; set; }
+    public Dictionary<GateDeliverySettlement, string> StreamDeliveryFuturesAddresses { get; set; }
 
     /// <summary>
     /// Stream-Options
@@ -42,16 +42,15 @@ public class GateApiAddresses
         StreamSpotAddress = "wss://api.gateio.ws/ws/v4/",
 
         // Stream-Perpetual Futures
-        StreamPerpetualFuturesAddresses = new Dictionary<FuturesPerpetualSettle, string> {
-            { FuturesPerpetualSettle.BTC, "wss://fx-ws.gateio.ws/v4/ws/btc" },
-            { FuturesPerpetualSettle.USD, "wss://fx-ws.gateio.ws/v4/ws/usd" },
-            { FuturesPerpetualSettle.USDT, "wss://fx-ws.gateio.ws/v4/ws/usdt" },
+        StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string> {
+            { GateFuturesSettlement.BTC, "wss://fx-ws.gateio.ws/v4/ws/btc" },
+            { GateFuturesSettlement.USD, "wss://fx-ws.gateio.ws/v4/ws/usd" },
+            { GateFuturesSettlement.USDT, "wss://fx-ws.gateio.ws/v4/ws/usdt" },
         },
 
         // Stream-Delivery Futures
-        StreamDeliveryFuturesAddresses = new Dictionary<FuturesDeliverySettle, string> {
-            { FuturesDeliverySettle.BTC, "wss://fx-ws.gateio.ws/v4/ws/delivery/btc" },
-            { FuturesDeliverySettle.USDT, "wss://fx-ws.gateio.ws/v4/ws/delivery/usdt" },
+        StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string> {
+            { GateDeliverySettlement.USDT, "wss://fx-ws.gateio.ws/v4/ws/delivery/usdt" },
         },
 
         // Stream-Options
@@ -70,16 +69,15 @@ public class GateApiAddresses
         StreamSpotAddress = "wss://api.gateio.ws/ws/v4/",
 
         // Stream-Perpetual Futures
-        StreamPerpetualFuturesAddresses = new Dictionary<FuturesPerpetualSettle, string> {
-            { FuturesPerpetualSettle.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/btc" },
-            { FuturesPerpetualSettle.USD, "wss://fx-ws-testnet.gateio.ws/v4/ws/usd" },
-            { FuturesPerpetualSettle.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/usdt" },
+        StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string> {
+            { GateFuturesSettlement.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/btc" },
+            { GateFuturesSettlement.USD, "wss://fx-ws-testnet.gateio.ws/v4/ws/usd" },
+            { GateFuturesSettlement.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/usdt" },
         },
 
         // Stream-Delivery Futures
-        StreamDeliveryFuturesAddresses = new Dictionary<FuturesDeliverySettle, string> {
-            { FuturesDeliverySettle.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/btc" },
-            { FuturesDeliverySettle.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/usdt" },
+        StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string> {
+            { GateDeliverySettlement.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/usdt" },
         },
 
         // Stream-Options

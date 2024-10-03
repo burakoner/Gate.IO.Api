@@ -23,13 +23,13 @@ public class FuturesOrder
     /// <summary>
     /// Creation time of order
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Order finished time. Not returned if order is open
     /// </summary>
-    [JsonProperty("finish_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("finish_time")]
     public DateTime? FinishTime { get; set; }
 
     /// <summary>
@@ -101,7 +101,7 @@ public class FuturesOrder
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
-    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(FuturesTimeInForceConverter))]
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore)]
     public FuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -116,13 +116,13 @@ public class FuturesOrder
     /// <summary>
     /// Order status  - &#x60;open&#x60;: waiting to be traded - &#x60;finished&#x60;: finished
     /// </summary>
-    [JsonProperty("status"), JsonConverter(typeof(FuturesOrderStatusConverter))]
+    [JsonProperty("status")]
     public FuturesOrderStatus Status { get; set; }
 
     /// <summary>
     /// How the order was finished.  - filled: all filled - cancelled: manually cancelled - liquidated: cancelled because of liquidation - ioc: time in force is &#x60;IOC&#x60;, finish immediately - auto_deleveraged: finished by ADL - reduce_only: cancelled because of increasing position while &#x60;reduce-only&#x60; set- position_closed: cancelled because of position close 
     /// </summary>
-    [JsonProperty("finish_as"), JsonConverter(typeof(FuturesOrderFinishTypeConverter))]
+    [JsonProperty("finish_as")]
     public FuturesOrderFinishType? FinishedAs { get; set; }
 }
 

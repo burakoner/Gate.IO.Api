@@ -115,7 +115,13 @@ public class GateRestApiClient : RestApiClient
     #region Internal Methods
     internal Uri GetUrl(string api, string version, string section, string endpoint)
     {
-        return new Uri(ClientOptions.BaseAddress.AppendPath(api).AppendPath($"v{version}").AppendPath(section).AppendPath(endpoint));
+        var url = ClientOptions.BaseAddress;
+        if (!string.IsNullOrEmpty(api)) url = url.AppendPath(api);
+        if (!string.IsNullOrEmpty(version)) url = url.AppendPath($"v{version}");
+        if (!string.IsNullOrEmpty(section)) url = url.AppendPath(section);
+        if (!string.IsNullOrEmpty(endpoint)) url = url.AppendPath(endpoint);
+
+        return new Uri(url);
     }
 
     internal async Task<RestCallResult<T>> SendRequestInternal<T>(

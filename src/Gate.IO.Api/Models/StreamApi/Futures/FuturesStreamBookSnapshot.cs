@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Models.StreamApi.Futures;
 
 public  class FuturesStreamBookSnapshot
 {
-    [JsonProperty("t"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("t")]
     public DateTime Time { get; set; }
 
     [JsonProperty("id")]
@@ -12,8 +12,8 @@ public  class FuturesStreamBookSnapshot
     public string Symbol { get; set; }
 
     [JsonProperty("bids", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<FuturesOrderBookEntry> Bids { get; set; }
+    public List<GateFuturesOrderBookEntry> Bids { get; set; }=[];
 
     [JsonProperty("asks", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<FuturesOrderBookEntry> Asks { get; set; }
+    public List<GateFuturesOrderBookEntry> Asks { get; set; }=[];
 }

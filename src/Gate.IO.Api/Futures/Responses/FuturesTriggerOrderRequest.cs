@@ -10,7 +10,7 @@ public class FuturesTriggerOrderRequest
     [JsonProperty("initial")]
     public FuturesPriceOrder Order { get; set; }
 
-    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(FuturesTriggerOrderTypeConverter))]
+    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
     public FuturesTriggerOrderType? Type { get; set; }
 }
 
@@ -25,7 +25,7 @@ public class FuturesPriceTrigger
     /// <summary>
     /// Price trigger condition
     /// </summary>
-    [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
+    [JsonProperty("rule")]
     public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>
@@ -37,13 +37,13 @@ public class FuturesPriceTrigger
     /// <summary>
     /// Price Type
     /// </summary>
-    [JsonProperty("price_type"), JsonConverter(typeof(FuturesTriggerOrderPriceTypeConverter))]
+    [JsonProperty("price_type")]
     public FuturesTriggerOrderPriceType PriceType { get; set; }
 
     /// <summary>
     /// How the order will be triggered
     /// </summary>
-    [JsonProperty("strategy_type"), JsonConverter(typeof(FuturesTriggerOrderStrategyTypeConverter))]
+    [JsonProperty("strategy_type")]
     public FuturesTriggerOrderStrategyType StrategyType { get; set; }
 }
 

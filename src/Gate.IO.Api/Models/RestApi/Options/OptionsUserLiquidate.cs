@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Models.RestApi.Options;
 
 public class OptionsUserLiquidate
 {
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     /// <summary>
@@ -17,7 +17,7 @@ public class OptionsUserLiquidate
     [JsonProperty("settle_size")]
     public decimal SettleSize { get; set; }
 
-    [JsonProperty("side"), JsonConverter(typeof(OptionsSideConverter)) ]
+    [JsonProperty("side")]
     public OptionsSide Side { get; set; }
 
     /// <summary>

@@ -35,46 +35,43 @@ public class GateFuturesDeliveryRestApiClient
     internal GateRestApiClient Root { get; }
 
     // Public Clients
-    public GateFuturesDeliverySettleRestApiClient BTC { get; }
     public GateFuturesDeliverySettleRestApiClient USDT { get; }
-    public Dictionary<FuturesDeliverySettle, GateFuturesDeliverySettleRestApiClient> Clients { get; }
-    public GateFuturesDeliverySettleRestApiClient this[FuturesDeliverySettle settle] => Clients[settle];
+    public Dictionary<GateDeliverySettlement, GateFuturesDeliverySettleRestApiClient> Clients { get; }
+    public GateFuturesDeliverySettleRestApiClient this[GateDeliverySettlement settle] => Clients[settle];
 
     internal GateFuturesDeliveryRestApiClient(GateRestApiClient root)
     {
         Root = root;
 
-        BTC = new GateFuturesDeliverySettleRestApiClient(this, FuturesDeliverySettle.BTC);
-        USDT = new GateFuturesDeliverySettleRestApiClient(this, FuturesDeliverySettle.USDT);
-        Clients = new Dictionary<FuturesDeliverySettle, GateFuturesDeliverySettleRestApiClient>
+        USDT = new GateFuturesDeliverySettleRestApiClient(this, GateDeliverySettlement.USDT);
+        Clients = new Dictionary<GateDeliverySettlement, GateFuturesDeliverySettleRestApiClient>
         {
-            { FuturesDeliverySettle.BTC, BTC },
-            { FuturesDeliverySettle.USDT, USDT },
+            { GateDeliverySettlement.USDT, USDT },
         };
     }
 
     #region List all futures contracts
-    internal Task<RestCallResult<IEnumerable<DeliveryContract>>> GetContractsAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
+    internal Task<RestCallResult<List<DeliveryContract>>> GetContractsAsync(GateDeliverySettlement settle, CancellationToken ct = default)
     {
-        var endpoint = settleContractsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<DeliveryContract>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct);
+        var endpoint = settleContractsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<DeliveryContract>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct);
     }
     #endregion
 
     #region Get a single contract
-    internal Task<RestCallResult<DeliveryContract>> GetContractAsync(FuturesDeliverySettle settle, string contract, CancellationToken ct = default)
+    internal Task<RestCallResult<DeliveryContract>> GetContractAsync(GateDeliverySettlement settle, string contract, CancellationToken ct = default)
     {
         var endpoint = settleContractsContractEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
         return Root.SendRequestInternal<DeliveryContract>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct);
     }
     #endregion
 
     #region Futures order book
-    internal Task<RestCallResult<FuturesOrderBook>> GetOrderBookAsync(FuturesDeliverySettle settle, string contract, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesOrderBook>> GetOrderBookAsync(GateDeliverySettlement settle, string contract, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "contract", contract },
             { "interval", interval },
@@ -82,18 +79,18 @@ public class GateFuturesDeliveryRestApiClient
             { "with_id", withId.ToString().ToLower() },
         };
 
-        var endpoint = settleOrderBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<FuturesOrderBook>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        var endpoint = settleOrderBookEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<GateFuturesOrderBook>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
     #endregion
 
     #region Futures trading history
-    internal Task<RestCallResult<IEnumerable<FuturesTrade>>> GetTradesAsync(FuturesDeliverySettle settle, string contract, DateTime from, DateTime to, int limit = 100, long? lastId = null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateDeliverySettlement settle, string contract, DateTime from, DateTime to, int limit = 100, long? lastId = null, CancellationToken ct = default)
     => GetTradesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, lastId, ct);
 
-    internal Task<RestCallResult<IEnumerable<FuturesTrade>>> GetTradesAsync(FuturesDeliverySettle settle, string contract, long? from = null, long? to = null, int limit = 100, long? lastId = null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateDeliverySettlement settle, string contract, long? from = null, long? to = null, int limit = 100, long? lastId = null, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "contract", contract },
             { "limit", limit },
@@ -102,153 +99,153 @@ public class GateFuturesDeliveryRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        var endpoint = settleTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        var endpoint = settleTradesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
     #endregion
 
     #region Get futures candlesticks
-    internal Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string prefix, string contract, FuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateDeliverySettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
     => GetCandlesticksAsync(settle, prefix, contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
 
-    internal Task<RestCallResult<IEnumerable<FuturesCandlestick>>> GetCandlesticksAsync(FuturesDeliverySettle settle, string prefix, string contract, FuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateDeliverySettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "contract", prefix + contract },
-            { "interval", JsonConvert.SerializeObject(interval, new FuturesCandlestickIntervalConverter(false)) },
         };
+        parameters.AddEnum("interval", interval);
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        var endpoint = settleCandlesticksEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesCandlestick>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        var endpoint = settleCandlesticksEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesCandlestick>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
     #endregion
 
     #region List futures tickers
-    internal Task<RestCallResult<IEnumerable<DeliveryTicker>>> GetTickersAsync(FuturesDeliverySettle settle, string contract = "", CancellationToken ct = default)
+    internal Task<RestCallResult<List<DeliveryTicker>>> GetTickersAsync(GateDeliverySettlement settle, string contract = null, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
+        var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("contract", contract);
 
-        var endpoint = settleTickersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<DeliveryTicker>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        var endpoint = settleTickersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<DeliveryTicker>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
     #endregion
 
     #region Futures insurance balance history
-    internal Task<RestCallResult<IEnumerable<FuturesInsuranceBalance>>> GetInsuranceHistoryAsync(FuturesDeliverySettle settle, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesInsuranceBalance>>> GetInsuranceHistoryAsync(GateDeliverySettlement settle, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "limit", limit },
         };
 
-        var endpoint = settleInsuranceEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesInsuranceBalance>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        var endpoint = settleInsuranceEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesInsuranceBalance>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
     #endregion
 
     #region Query futures account
-    internal Task<RestCallResult<IEnumerable<FuturesAccount>>> GetAccountAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesBalance>>> GetAccountAsync(GateDeliverySettlement settle, CancellationToken ct = default)
     {
-        var endpoint = settleAccountsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesAccount>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
+        var endpoint = settleAccountsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesBalance>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
     }
     #endregion
 
     #region Query account book
-    internal Task<RestCallResult<IEnumerable<FuturesAccountBook>>> GetAccountBookAsync(FuturesDeliverySettle settle, FuturesAccountBookType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetAccountBookAsync(GateDeliverySettlement settle, GateFuturesBalanceType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
     => GetAccountBookAsync(settle, type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
 
-    internal Task<RestCallResult<IEnumerable<FuturesAccountBook>>> GetAccountBookAsync(FuturesDeliverySettle settle, FuturesAccountBookType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetAccountBookAsync(GateDeliverySettlement settle, GateFuturesBalanceType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("type", JsonConvert.SerializeObject(type, new FuturesAccountBookTypeConverter(false)));
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalEnum("type", type);
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        var endpoint = settleAccountBookEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesAccountBook>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settleAccountBookEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesBalanceChange>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region List all positions of a user
-    internal Task<RestCallResult<IEnumerable<FuturesPosition>>> GetPositionsAsync(FuturesDeliverySettle settle, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(GateDeliverySettlement settle, CancellationToken ct = default)
     {
-        var endpoint = settlePositionsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesPosition>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
+        var endpoint = settlePositionsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<GateFuturesPosition>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
     }
     #endregion
 
     #region Get single position
-    internal Task<RestCallResult<FuturesPosition>> GetPositionAsync(FuturesDeliverySettle settle, string contract, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> GetPositionAsync(GateDeliverySettlement settle, string contract, CancellationToken ct = default)
     {
         var endpoint = settlePositionsContractEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
+        return Root.SendRequestInternal<GateFuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
     }
     #endregion
 
     #region Update position margin
-    internal Task<RestCallResult<FuturesPosition>> SetPositionMarginAsync(FuturesDeliverySettle settle, string contract, decimal change, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> SetPositionMarginAsync(GateDeliverySettlement settle, string contract, decimal change, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "change", change }
         };
 
         var endpoint = settlePositionsContractMarginEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return Root.SendRequestInternal<GateFuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Update position leverage
-    internal Task<RestCallResult<FuturesPosition>> SetLeverageAsync(FuturesDeliverySettle settle, string contract, int leverage, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> SetLeverageAsync(GateDeliverySettlement settle, string contract, int leverage, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "leverage", leverage }
         };
 
         var endpoint = settlePositionsContractLeverageEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return Root.SendRequestInternal<GateFuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Update position risk limit
-    internal Task<RestCallResult<FuturesPosition>> SetRiskLimitAsync(FuturesDeliverySettle settle, string contract, decimal riskLimit, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> SetRiskLimitAsync(GateDeliverySettlement settle, string contract, decimal riskLimit, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "risk_limit", riskLimit }
         };
 
         var endpoint = settlePositionsContractRiskLimitEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return Root.SendRequestInternal<FuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return Root.SendRequestInternal<GateFuturesPosition>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Create a futures order
     internal Task<RestCallResult<FuturesOrder>> PlaceOrderAsync(
-        FuturesDeliverySettle settle,
+        GateDeliverySettlement settle,
         string contract,
         long size,
         long iceberg = 0,
         decimal? price = null,
         bool? close = null,
         bool? reduceOnly = null,
-        string clientOrderId = "",
+        string clientOrderId = null,
         FuturesTimeInForce? timeInForce = null,
         FuturesOrderAutoSize? autoSize = null,
         CancellationToken ct = default)
@@ -265,12 +262,12 @@ public class GateFuturesDeliveryRestApiClient
             AutoSize = autoSize,
         }, ct);
 
-    internal Task<RestCallResult<FuturesOrder>> PlaceOrderAsync(FuturesDeliverySettle settle, FuturesOrderRequest request, CancellationToken ct = default)
+    internal Task<RestCallResult<FuturesOrder>> PlaceOrderAsync(GateDeliverySettlement settle, FuturesOrderRequest request, CancellationToken ct = default)
     {
         DeliveryHelpers.ValidateContractSymbol(request.Contract);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
-        var parameters = new Dictionary<string, object> {
+        var parameters = new ParameterCollection {
             { "currency_pair", request.Contract },
             { "size", request.Size },
             { "iceberg", request.Iceberg },
@@ -278,50 +275,50 @@ public class GateFuturesDeliveryRestApiClient
         parameters.AddOptionalParameter("price", request.Price);
         parameters.AddOptionalParameter("close", request.Close);
         parameters.AddOptionalParameter("reduce_only", request.ReduceOnly);
-        parameters.AddOptionalParameter("tif", JsonConvert.SerializeObject(request.TimeInForce, new FuturesTimeInForceConverter(false)));
+        parameters.AddOptionalEnum("tif", request.TimeInForce);
         parameters.AddOptionalParameter("text", request.ClientOrderId);
-        parameters.AddOptionalParameter("auto_size", JsonConvert.SerializeObject(request.AutoSize, new FuturesOrderAutoSizeConverter(false)));
+        parameters.AddOptionalEnum("auto_size", request.AutoSize);
 
 
-        var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
+        var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
         return Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
     #endregion
 
     #region List futures orders
-    internal Task<RestCallResult<IEnumerable<FuturesOrder>>> GetOrdersAsync(FuturesDeliverySettle settle, string contract, FuturesOrderStatus status, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesOrder>>> GetOrdersAsync(GateDeliverySettlement settle, string contract, FuturesOrderStatus status, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
-            { "status", JsonConvert.SerializeObject(status, new FuturesOrderStatusConverter(false)) },
             { "contract", contract },
             { "offset", offset },
             { "limit", limit },
             { "count_total", countTotal ? 1 : 0 },
         };
+        parameters.AddEnum("status", status);
         parameters.AddOptionalParameter("last_id", lastId);
 
-        var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Cancel all open orders matched
-    internal Task<RestCallResult<IEnumerable<FuturesOrder>>> CancelOpenOrdersAsync(FuturesDeliverySettle settle, string contract, FuturesOrderSide side, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesOrder>>> CancelOpenOrdersAsync(GateDeliverySettlement settle, string contract, FuturesOrderSide side, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
-            { "side", JsonConvert.SerializeObject(side, new FuturesOrderSideConverter(false)) },
             { "contract", contract },
         };
+        parameters.AddEnum("side", side);
 
-        var endpoint = settleOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesOrder>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Get a single order
-    internal Task<RestCallResult<FuturesOrder>> GetOrderAsync(FuturesDeliverySettle settle, long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
+    internal Task<RestCallResult<FuturesOrder>> GetOrderAsync(GateDeliverySettlement settle, long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
     {
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -330,14 +327,14 @@ public class GateFuturesDeliveryRestApiClient
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
         var endpoint = settleOrdersOrderIdEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
         return Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
     }
     #endregion
 
     #region Cancel a single order
-    internal Task<RestCallResult<FuturesOrder>> CancelOrderAsync(FuturesDeliverySettle settle, long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
+    internal Task<RestCallResult<FuturesOrder>> CancelOrderAsync(GateDeliverySettlement settle, long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
     {
         if (orderId.HasValue && !string.IsNullOrWhiteSpace(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
@@ -346,16 +343,16 @@ public class GateFuturesDeliveryRestApiClient
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
         var endpoint = settleOrdersOrderIdEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.HasValue ? orderId.Value.ToString() : clientOrderId);
         return Root.SendRequestInternal<FuturesOrder>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true);
     }
     #endregion
 
     #region List personal trading history
-    internal Task<RestCallResult<IEnumerable<FuturesUserTrade>>> GetUserTradesAsync(FuturesDeliverySettle settle, string contract = "", long? orderId = null, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesUserTrade>>> GetUserTradesAsync(GateDeliverySettlement settle, string contract = null, long? orderId = null, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "offset", offset },
             { "limit", limit },
@@ -365,58 +362,58 @@ public class GateFuturesDeliveryRestApiClient
         parameters.AddOptionalParameter("last_id", lastId);
         parameters.AddOptionalParameter("order", orderId);
 
-        var endpoint = settleMyTradesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesUserTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settleMyTradesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesUserTrade>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region List position close history
-    internal Task<RestCallResult<IEnumerable<FuturesPositionClose>>> GetPositionClosesAsync(FuturesDeliverySettle settle, string contract = "", int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesPositionClose>>> GetPositionClosesAsync(GateDeliverySettlement settle, string contract = null, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "limit", limit },
         };
         parameters.AddOptionalParameter("contract", contract);
 
-        var endpoint = settlePositionCloseEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesPositionClose>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settlePositionCloseEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesPositionClose>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region List liquidation history
-    internal Task<RestCallResult<IEnumerable<FuturesUserLiquidate>>> GetUserLiquidatesAsync(FuturesDeliverySettle settle, string contract = "", int limit = 100, long? at = null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesUserLiquidate>>> GetUserLiquidatesAsync(GateDeliverySettlement settle, string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "limit", limit },
         };
         parameters.AddOptionalParameter("contract", contract);
         parameters.AddOptionalParameter("at", at);
 
-        var endpoint = settleLiquidatesEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesUserLiquidate>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settleLiquidatesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesUserLiquidate>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region List settlement history
-    internal Task<RestCallResult<IEnumerable<DeliverySettlement>>> GetUserSettlementsAsync(FuturesDeliverySettle settle, string contract = "", int limit = 100, long? at = null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<DeliverySettlement>>> GetUserSettlementsAsync(GateDeliverySettlement settle, string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "limit", limit },
         };
         parameters.AddOptionalParameter("contract", contract);
         parameters.AddOptionalParameter("at", at);
 
-        var endpoint = settleSettlementsEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<DeliverySettlement>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settleSettlementsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<DeliverySettlement>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Create a price-triggered order
     internal Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
-        FuturesDeliverySettle settle,
+        GateDeliverySettlement settle,
         FuturesTriggerOrderType type,
         FuturesTriggerOrderPriceType triggerPriceType,
         FuturesTriggerOrderStrategyType triggerStrategyType,
@@ -446,71 +443,71 @@ public class GateFuturesDeliveryRestApiClient
             }
         }, ct);
 
-    internal async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(FuturesDeliverySettle settle, FuturesTriggerOrderRequest request, CancellationToken ct = default)
+    internal async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(GateDeliverySettlement settle, FuturesTriggerOrderRequest request, CancellationToken ct = default)
     {
         DeliveryHelpers.ValidateContractSymbol(request.Order.Contract);
 
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
 
-        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
+        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
         var result = await Root.SendRequestInternal<FuturesTriggerOrderId>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.OrderId ?? default);
     }
     #endregion
 
     #region List all auto orders
-    internal Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(
-    FuturesDeliverySettle settle,
+    internal Task<RestCallResult<List<FuturesTriggerOrderResponse>>> GetPriceTriggeredOrdersAsync(
+    GateDeliverySettlement settle,
     GateSpotTriggerFilter status,
-    string contract = "",
+    string contract = null,
     int limit = 100,
     int offset = 0,
     CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
-            { "status", JsonConvert.SerializeObject(status, new PriceTriggerFilterConverter(false)) },
             { "limit", limit },
             { "offset", offset },
         };
+        parameters.AddEnum("status", status);
         parameters.AddOptionalParameter("contract", contract);
 
-        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Cancel all open orders
-    internal Task<RestCallResult<IEnumerable<FuturesTriggerOrderResponse>>> CancelPriceTriggeredOrdersAsync(FuturesDeliverySettle settle, string contract, CancellationToken ct = default)
+    internal Task<RestCallResult<List<FuturesTriggerOrderResponse>>> CancelPriceTriggeredOrdersAsync(GateDeliverySettlement settle, string contract, CancellationToken ct = default)
     {
         DeliveryHelpers.ValidateContractSymbol(contract);
 
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "contract", contract }
         };
 
-        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)));
-        return Root.SendRequestInternal<IEnumerable<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
+        return Root.SendRequestInternal<List<FuturesTriggerOrderResponse>>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
     #endregion
 
     #region Get a price-triggered order
-    internal Task<RestCallResult<FuturesTriggerOrderResponse>> GetPriceTriggeredOrderAsync(FuturesDeliverySettle settle, long orderId, CancellationToken ct = default)
+    internal Task<RestCallResult<FuturesTriggerOrderResponse>> GetPriceTriggeredOrderAsync(GateDeliverySettlement settle, long orderId, CancellationToken ct = default)
     {
         var endpoint = settlePriceOrdersOrderIdEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.ToString());
         return Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Get, ct, true);
     }
     #endregion
 
     #region Cancel a price-triggered order
-    internal Task<RestCallResult<FuturesTriggerOrderResponse>> CancelPriceTriggeredOrderAsync(FuturesDeliverySettle settle, long orderId, CancellationToken ct = default)
+    internal Task<RestCallResult<FuturesTriggerOrderResponse>> CancelPriceTriggeredOrderAsync(GateDeliverySettlement settle, long orderId, CancellationToken ct = default)
     {
         var endpoint = settlePriceOrdersOrderIdEndpoint
-            .Replace("{settle}", JsonConvert.SerializeObject(settle, new FuturesDeliverySettleConverter(false)))
+            .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.ToString());
         return Root.SendRequestInternal<FuturesTriggerOrderResponse>(Root.GetUrl(api, version, delivery, endpoint), HttpMethod.Delete, ct, true);
     }

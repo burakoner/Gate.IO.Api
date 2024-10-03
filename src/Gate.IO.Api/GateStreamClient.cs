@@ -1,16 +1,4 @@
-﻿using Gate.IO.Api.Authentication;
-using Gate.IO.Api.Clients.RestApi;
-using Gate.IO.Api.Clients.StreamApi;
-using Gate.IO.Api.Converters;
-using Gate.IO.Api.Enums;
-using Gate.IO.Api.Extensions;
-using Gate.IO.Api.Helpers;
-using Gate.IO.Api.Models.StreamApi;
-using Gate.IO.Api.Spot;
-using Gate.IO.Api.SubAccount;
-using Gate.IO.Api.Wallet;
-
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 public class GateStreamClient
 {

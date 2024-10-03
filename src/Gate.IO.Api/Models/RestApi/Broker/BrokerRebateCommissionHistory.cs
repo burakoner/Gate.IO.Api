@@ -6,12 +6,12 @@ public class BrokerRebateCommissionHistory
     public long Total { get; set; }
 
     [JsonProperty("list")]
-    public IEnumerable<RebateCommissionHistoryRecord> List { get; set; }
+    public List<RebateCommissionHistoryRecord> List { get; set; }=[];
 }
 
 public class RebateCommissionHistoryRecord
 {
-    [JsonProperty("commission_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("commission_time")]
     public DateTime TransactionTime { get; set; }
 
     [JsonProperty("user_id")]

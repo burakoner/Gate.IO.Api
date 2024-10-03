@@ -8,6 +8,6 @@ internal class GateSpotCountdown
     /// <summary>
     /// Timestamp of the end of the countdown, in milliseconds
     /// </summary>
-    [JsonProperty("triggerTime"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("triggerTime")]
     public DateTime Time { get; set; }
 }

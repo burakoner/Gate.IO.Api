@@ -9,7 +9,6 @@ global using ApiSharp.WebSocket;
 global using Gate.IO.Api.Authentication;
 global using Gate.IO.Api.Clients.RestApi;
 global using Gate.IO.Api.Clients.StreamApi;
-global using Gate.IO.Api.Converters;
 global using Gate.IO.Api.Enums;
 global using Gate.IO.Api.Extensions;
 global using Gate.IO.Api.Futures;

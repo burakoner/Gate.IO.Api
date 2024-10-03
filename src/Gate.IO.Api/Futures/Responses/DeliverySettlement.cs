@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Futures;
 
 public class DeliverySettlement
 {
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("contract")]

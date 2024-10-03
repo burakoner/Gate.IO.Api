@@ -41,7 +41,7 @@ public class FuturesOrderRequest
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
-    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(FuturesTimeInForceConverter))]
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore)]
     public FuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -56,6 +56,6 @@ public class FuturesOrderRequest
     /// <summary>
     /// Set side to close dual-mode position. &#x60;close_long&#x60; closes the long side; while &#x60;close_short&#x60; the short one. Note &#x60;size&#x60; also needs to be set to 0
     /// </summary>
-    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(FuturesOrderAutoSizeConverter))]
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore)]
     public FuturesOrderAutoSize? AutoSize { get; set; }
 }

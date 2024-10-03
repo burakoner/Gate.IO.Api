@@ -11,7 +11,7 @@ public class OptionsStreamPositionClose
     [JsonProperty("settle_size")]
     public long SettleSize { get; set; }
     
-    [JsonProperty("side"), JsonConverter(typeof(OptionsSideConverter))]
+    [JsonProperty("side")]
     public OptionsSide Side { get; set; }
 
     [JsonProperty("text")]
@@ -23,7 +23,7 @@ public class OptionsStreamPositionClose
     [JsonProperty("user")]
     public int UserId { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

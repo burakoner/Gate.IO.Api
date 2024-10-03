@@ -14,7 +14,7 @@ public class GateMarginBalanceHistory
     /// <summary>
     /// Balance changed timestamp
     /// </summary>
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     /// <summary>

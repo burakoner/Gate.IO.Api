@@ -14,7 +14,7 @@ public class FuturesUserDeleverage
     [JsonProperty("trade_size")]
     public long TradeSize { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

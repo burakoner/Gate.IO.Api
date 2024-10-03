@@ -4,10 +4,10 @@ namespace Gate.IO.Api.Clients.StreamApi;
 
 public class StreamApiFuturesDeliverySettleClient
 {
-    internal FuturesDeliverySettle Settlement { get; }
+    internal GateDeliverySettlement Settlement { get; }
     internal StreamApiFuturesDeliveryClient MainClient { get; }
 
-    internal StreamApiFuturesDeliverySettleClient(StreamApiFuturesDeliveryClient main, FuturesDeliverySettle settle)
+    internal StreamApiFuturesDeliverySettleClient(StreamApiFuturesDeliveryClient main, GateDeliverySettlement settle)
     {
         MainClient = main;
         Settlement = settle;
@@ -45,7 +45,7 @@ public class StreamApiFuturesDeliverySettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<FuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToOrderBookSnapshotsAsync(this.Settlement, contract, /*int interval,*/  limit, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToCandlesticksAsync(this.Settlement, "mark_", contract, interval, onMessage, ct).ConfigureAwait(false);
 
     //public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToIndexPriceCandlesticksAsync(string contract, FuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
@@ -84,9 +84,9 @@ public class StreamApiFuturesDeliverySettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(int userId, string contract, Action<WebSocketDataEvent<FuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserReduceRiskLimitsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(int userId, Action<WebSocketDataEvent<FuturesPosition>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(int userId, Action<WebSocketDataEvent<GateFuturesPosition>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserPositionsAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(int userId, string contract, Action<WebSocketDataEvent<FuturesPosition>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(int userId, string contract, Action<WebSocketDataEvent<GateFuturesPosition>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserPositionsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(int userId, Action<WebSocketDataEvent<FuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)

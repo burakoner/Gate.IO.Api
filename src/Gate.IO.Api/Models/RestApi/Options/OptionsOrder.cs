@@ -17,25 +17,25 @@ public class OptionsOrder
     /// <summary>
     /// Creation time of order
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Order finished time. Not returned if order is open
     /// </summary>
-    [JsonProperty("finish_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("finish_time")]
     public DateTime? FinishTime { get; set; }
 
     /// <summary>
     /// How the order was finished.
     /// </summary>
-    [JsonProperty("finish_as"), JsonConverter(typeof(OptionsOrderFinishTypeConverter))]
+    [JsonProperty("finish_as")]
     public OptionsOrderFinishType? FinishedAs { get; set; }
 
-    [JsonProperty("status"), JsonConverter(typeof(OptionsOrderStatusConverter))]
+    [JsonProperty("status")]
     public OptionsOrderStatus Status { get; set; }
 
-    [JsonProperty("tif"), JsonConverter(typeof(OptionsTimeInForceConverter))]
+    [JsonProperty("tif")]
     public OptionsTimeInForce TimeInForce{ get; set; }
 
     /// <summary>

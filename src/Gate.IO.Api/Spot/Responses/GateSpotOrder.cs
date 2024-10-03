@@ -29,13 +29,13 @@ public class GateSpotOrder
     /// <summary>
     /// Creation time of order
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Last modification time of order
     /// </summary>
-    [JsonProperty("update_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("update_time")]
     public DateTime UpdateTime { get; set; }
 
     /// <summary>

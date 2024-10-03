@@ -106,7 +106,7 @@ public class StreamApiOptionsClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractCandlesticksAsync(string contract, OptionsCandlestickInterval interval, Action<WebSocketDataEvent<OptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
-        payload.Add(JsonConvert.SerializeObject(interval, new OptionsCandlestickIntervalConverter(false)));
+        payload.Add(MapConverter.GetString(interval));
         payload.Add(contract);
 
         var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
@@ -116,7 +116,7 @@ public class StreamApiOptionsClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingCandlesticksAsync(string underlying, OptionsCandlestickInterval interval, Action<WebSocketDataEvent<OptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
-        payload.Add(JsonConvert.SerializeObject(interval, new OptionsCandlestickIntervalConverter(false)));
+        payload.Add(MapConverter.GetString(interval));
         payload.Add(underlying);
 
         var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));

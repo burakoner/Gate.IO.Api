@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Models.RestApi.Options;
 
 public class OptionsCandlestick
 {
-    [JsonProperty("t"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("t")]
     public DateTime Time { get; set; }
 
     [JsonProperty("o")]

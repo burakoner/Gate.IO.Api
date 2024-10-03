@@ -5,7 +5,7 @@ public class OptionsAccountBook
     /// <summary>
     /// Change time
     /// </summary>
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     /// <summary>
@@ -23,7 +23,7 @@ public class OptionsAccountBook
     /// <summary>
     /// Changing Type: - dnw: Deposit &amp; Withdraw - prem: Trading premium - fee: Trading fee - refr: Referrer rebate - point_dnw: POINT Deposit &amp; Withdraw - point_fee: POINT Trading fee - point_refr: POINT Referrer rebate
     /// </summary>
-    [JsonProperty("type"), JsonConverter(typeof(OptionsAccountBookType))]
+    [JsonProperty("type")]
     public OptionsAccountBookType Type { get; set; }
 
     /// <summary>

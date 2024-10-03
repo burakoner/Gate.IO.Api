@@ -30,7 +30,7 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateMarginBalance>>> GetBalancesAsync(string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateMarginBalance>>> GetBalancesAsync(string symbol = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
@@ -74,8 +74,8 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(
-        string currency = "",
-        string symbol = "",
+        string currency = null,
+        string symbol = null,
         long? from = null,
         long? to = null,
         string type = null,
@@ -104,7 +104,7 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateMarginFundingBalance>>> GetFundingBalancesAsync(
-        string currency = "",
+        string currency = null,
         CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
@@ -144,7 +144,7 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(string currency, string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(string currency, string symbol = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object> {
             { "currency", currency },

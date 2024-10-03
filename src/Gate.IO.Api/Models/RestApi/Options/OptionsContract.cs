@@ -8,13 +8,13 @@ public class OptionsContract
     [JsonProperty("name")]
     public string Name { get; set; }
 
-    [JsonProperty("tag"), JsonConverter(typeof(OptionsContractPeriodConverter))]
+    [JsonProperty("tag")]
     public OptionsContractPeriod Period { get; set; }
 
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
-    [JsonProperty("expiration_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("expiration_time")]
     public DateTime ExpirationTime { get; set; }
 
     /// <summary>

@@ -174,7 +174,7 @@ public class StreamApiBaseClient : WebSocketApiClient
             Id = NextId(),
             Channel = channel,
             Event = StreamRequestEvent.Subscribe,
-            Payload = payload.ToArray(),
+            Payload = payload.ToList(),
         };
 
         if (authenticated)

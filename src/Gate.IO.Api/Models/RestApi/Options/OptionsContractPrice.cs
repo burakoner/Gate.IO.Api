@@ -8,7 +8,7 @@ public class OptionsContractPrice
     [JsonProperty("price")]
     public decimal Price { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

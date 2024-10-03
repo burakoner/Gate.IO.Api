@@ -5,10 +5,10 @@ public class OptionsStreamContract
     [JsonProperty("contract")]
     public string Contract { get; set; }
 
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
-    [JsonProperty("expiration_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("expiration_time")]
     public DateTime ExpirationTime { get; set; }
 
     [JsonProperty("init_margin_high")]
@@ -62,7 +62,7 @@ public class OptionsStreamContract
     [JsonProperty("strike_price")]
     public decimal StrikePrice { get; set; }
 
-    [JsonProperty("tag"), JsonConverter(typeof(OptionsContractPeriodConverter))]
+    [JsonProperty("tag")]
     public OptionsContractPeriod Period { get; set; }
 
     [JsonProperty("taker_fee_rate")]
@@ -71,7 +71,7 @@ public class OptionsStreamContract
     [JsonProperty("underlying")]
     public string Underlying { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

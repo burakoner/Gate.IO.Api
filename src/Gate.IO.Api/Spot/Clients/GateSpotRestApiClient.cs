@@ -87,7 +87,7 @@ public class GateSpotRestApiClient
     /// <param name="timezone"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSpotTicker>>> GetTickersAsync(string symbol = "", GateSpotTickerTimezone? timezone = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotTicker>>> GetTickersAsync(string symbol = null, GateSpotTickerTimezone? timezone = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
@@ -209,7 +209,7 @@ public class GateSpotRestApiClient
     /// <param name="symbol">Specify a currency pair to retrieve precise fee rate</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateSpotUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotUserTradingFee>> GetUserFeeRatesAsync(string symbol = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
@@ -241,7 +241,7 @@ public class GateSpotRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSpotBalance>>> GetBalancesAsync(string currency = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotBalance>>> GetBalancesAsync(string currency = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -358,7 +358,7 @@ public class GateSpotRestApiClient
         decimal? iceberg = null,
         bool? autoBorrow = null,
         bool? autoRepay = null,
-        string clientOrderId = "",
+        string clientOrderId = null,
         GateSpotSelfTradingPreventionAction? stpAction = null,
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
@@ -685,7 +685,7 @@ public class GateSpotRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
         GateSpotAccountType? account = null,
-        string symbol = "",
+        string symbol = null,
         long? from = null,
         long? to = null,
         int page = 1,
@@ -737,7 +737,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<DateTime>> CancelAllAsync(
         int timeout,
-        string symbol = "",
+        string symbol = null,
         CancellationToken ct = default)
     {
         if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
@@ -779,7 +779,7 @@ public class GateSpotRestApiClient
         GateSpotTriggerTimeInForce orderTimeInForce,
         decimal? orderAmount,
         decimal? orderPrice,
-        string orderClientOrderId = "",
+        string orderClientOrderId = null,
         CancellationToken ct = default)
         => PlacePriceTriggeredOrderAsync(new GateSpotPriceTriggeredOrderRequest
         {
@@ -832,7 +832,7 @@ public class GateSpotRestApiClient
     public Task<RestCallResult<List<GateSpotPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(
     GateSpotTriggerFilter status,
     GateSpotAccountType? account = null,
-    string symbol = "",
+    string symbol = null,
     int limit = 100,
     int offset = 0,
     CancellationToken ct = default)
@@ -854,9 +854,9 @@ public class GateSpotRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<IEnumerable<GateSpotPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(
+    public Task<RestCallResult<List<GateSpotPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(
         GateSpotAccountType? account = null,
-        string symbol = "",
+        string symbol = null,
         CancellationToken ct = default)
     {
         if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
@@ -865,7 +865,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("market", symbol);
         parameters.AddOptionalEnum("account", account);
 
-        return Root.SendRequestInternal<IEnumerable<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return Root.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>

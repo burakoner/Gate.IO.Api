@@ -8,6 +8,6 @@ internal class GateSpotTime
     /// <summary>
     /// Server current time(ms)
     /// </summary>
-    [JsonProperty("server_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("server_time")]
     public DateTime Time { get; set; }
 }

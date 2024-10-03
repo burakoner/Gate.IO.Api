@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Futures;
 
-public class FuturesUserLiquidate : FuturesLiquidate
+public class FuturesUserLiquidate : GateFuturesLiquidation
 {
     /// <summary>
     /// Position leverage. Not returned in public endpoints.

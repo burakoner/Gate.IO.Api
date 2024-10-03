@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Models.StreamApi.Options;
 
 public  class OptionsStreamBookTicker
 {
-    [JsonProperty("t"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("t")]
     public DateTime Time { get; set; }
 
     [JsonProperty("u")]

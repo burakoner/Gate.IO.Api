@@ -8,10 +8,10 @@ public class DeliveryContract
     [JsonProperty("underlying")]
     public string Underlying { get; set; }
 
-    [JsonProperty("cycle"), JsonConverter(typeof(DeliveryCycleConverter))]
+    [JsonProperty("cycle")]
     public FuturesDeliveryCycle cycle { get; set; }
 
-    [JsonProperty("type"), JsonConverter(typeof(FuturesContractTypeConverter))]
+    [JsonProperty("type")]
     public FuturesContractType Type { get; set; }
 
     [JsonProperty("quanto_multiplier")]
@@ -26,8 +26,8 @@ public class DeliveryContract
     [JsonProperty("maintenance_rate")]
     public decimal MaintenanceRate { get; set; }
 
-    [JsonProperty("mark_type"), JsonConverter(typeof(FuturesMarkTypeConverter))]
-    public FuturesMarkType MarkType { get; set; }
+    [JsonProperty("mark_type")]
+    public GateFuturesMarkType MarkType { get; set; }
 
     [JsonProperty("mark_price")]
     public decimal MarkPrice { get; set; }
@@ -89,7 +89,7 @@ public class DeliveryContract
     /// <summary>
     /// Contract expiry timestamp
     /// </summary>
-    [JsonProperty("expire_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("expire_time")]
     public DateTime ExpireTime { get; set; }
 
     [JsonProperty("risk_limit_base")]
@@ -128,7 +128,7 @@ public class DeliveryContract
     [JsonProperty("position_size")]
     public long PositionSize { get; set; }
 
-    [JsonProperty("config_change_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("config_change_time")]
     public DateTime ConfigChangeTime { get; set; }
 
     [JsonProperty("in_delisting")]

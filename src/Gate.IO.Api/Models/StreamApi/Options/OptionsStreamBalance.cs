@@ -11,13 +11,13 @@ public class OptionsStreamBalance
     [JsonProperty("text")]
     public string Comment { get; set; }
 
-    [JsonProperty("type"), JsonConverter(typeof(OptionsAccountBookType))]
+    [JsonProperty("type")]
     public OptionsAccountBookType Type { get; set; }
 
     [JsonProperty("user")]
     public int UserId { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

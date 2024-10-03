@@ -5,7 +5,7 @@ public class GateStreamResponse<T>
     [JsonProperty("id")]
     public int Id { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("time_ms")]
@@ -26,8 +26,13 @@ public class GateStreamResponse<T>
 
 public enum StreamResponseEvent
 {
+    [Map("update")]
     Update,
+
+    [Map("subscribe")]
     Subscribe,
+
+    [Map("unsubscribe")]
     Unsubscribe
 }
 

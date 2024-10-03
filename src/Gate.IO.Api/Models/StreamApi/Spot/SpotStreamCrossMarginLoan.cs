@@ -2,7 +2,7 @@ namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamCrossMarginLoan
 {
-    [JsonProperty("timestamp"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("timestamp")]
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("user")]

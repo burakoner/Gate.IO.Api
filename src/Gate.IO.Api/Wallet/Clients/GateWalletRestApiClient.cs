@@ -55,8 +55,8 @@ public class GateWalletRestApiClient
         decimal amount,
         string chain,
         string address,
-        string memo = "",
-        string clientOrderId = "",
+        string memo = null,
+        string clientOrderId = null,
         CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
@@ -69,7 +69,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("memo", memo);
         parameters.AddOptionalParameter("withdraw_order_id", clientOrderId);
 
-        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, ""), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -161,7 +161,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -183,7 +183,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => GetDepositsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
 
     /// <summary>
@@ -196,7 +196,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(string currency = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -205,7 +205,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return Root.SendRequestInternal<IEnumerable<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return Root.SendRequestInternal<List<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -224,8 +224,8 @@ public class GateWalletRestApiClient
         GateWalletAccountType from,
         GateWalletAccountType to,
         decimal amount,
-        string symbol = "",
-        string settle = "",
+        string symbol = null,
+        string settle = null,
         CancellationToken ct = default)
     {
         var parameters = new ParameterCollection()
@@ -348,7 +348,7 @@ public class GateWalletRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletWithdrawal>>> GetWithdrawalStatusAsync(string currency = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletWithdrawal>>> GetWithdrawalStatusAsync(string currency = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("currency", currency);
@@ -391,7 +391,7 @@ public class GateWalletRestApiClient
     /// <param name="settle"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletSubAccountFuturesBalance>>> GetSubAccountFuturesBalancesAsync(List<long> subUserAccounts = null, string settle = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSubAccountFuturesBalance>>> GetSubAccountFuturesBalancesAsync(List<long> subUserAccounts = null, string settle = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
@@ -422,7 +422,7 @@ public class GateWalletRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = "", int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -441,7 +441,7 @@ public class GateWalletRestApiClient
     /// <param name="settle"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public Task<RestCallResult<GateWalletUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", string settle = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateWalletUserTradingFee>> GetUserFeeRatesAsync(string symbol = null, string settle = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);

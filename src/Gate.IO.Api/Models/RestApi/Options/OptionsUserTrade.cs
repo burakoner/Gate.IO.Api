@@ -11,7 +11,7 @@ public class OptionsUserTrade
     /// <summary>
     /// Trading time
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
@@ -47,6 +47,6 @@ public class OptionsUserTrade
     /// <summary>
     /// Trade role. Available values are &#x60;taker&#x60; and &#x60;maker&#x60;
     /// </summary>
-    [JsonProperty("role"), JsonConverter(typeof(OptionsTraderRoleConverter))]
+    [JsonProperty("role")]
     public OptionsTraderRole Role { get; set; }
 }

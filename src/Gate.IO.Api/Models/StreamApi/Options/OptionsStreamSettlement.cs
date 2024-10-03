@@ -20,7 +20,7 @@ public class OptionsStreamSettlement
     [JsonProperty("strike_price")]
     public decimal StrikePrice { get; set; }
 
-    [JsonProperty("tag"), JsonConverter(typeof(OptionsContractPeriodConverter))]
+    [JsonProperty("tag")]
     public OptionsContractPeriod Period { get; set; }
 
     [JsonProperty("trade_id")]
@@ -32,7 +32,7 @@ public class OptionsStreamSettlement
     [JsonProperty("underlying")]
     public string Underlying { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

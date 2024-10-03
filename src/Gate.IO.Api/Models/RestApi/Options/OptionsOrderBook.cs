@@ -5,17 +5,17 @@ public  class OptionsOrderBook
     [JsonProperty("id")]
     public long? Id { get; set; }
 
-    [JsonProperty("current"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("current")]
     public DateTime Current { get; set; }
 
-    [JsonProperty("update"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("update")]
     public DateTime Update { get; set; }
 
     [JsonProperty("asks")]
-    public IEnumerable<OptionsOrderBookEntry> Asks { get; set; } = Array.Empty<OptionsOrderBookEntry>();
+    public List<OptionsOrderBookEntry> Asks { get; set; } =[];
 
     [JsonProperty("bids")]
-    public IEnumerable<OptionsOrderBookEntry> Bids { get; set; } = Array.Empty<OptionsOrderBookEntry>();
+    public List<OptionsOrderBookEntry> Bids { get; set; } =[];
 }
 
 public class OptionsOrderBookEntry

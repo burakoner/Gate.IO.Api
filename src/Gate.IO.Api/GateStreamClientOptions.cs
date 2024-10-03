@@ -6,10 +6,10 @@ public class GateStreamClientOptions : WebSocketApiClientOptions
     public string StreamSpotAddress { get; set; }
 
     // Stream-Perpetual Futures
-    public Dictionary<FuturesPerpetualSettle, string> StreamPerpetualFuturesAddresses { get; set; }
+    public Dictionary<GateFuturesSettlement, string> StreamPerpetualFuturesAddresses { get; set; }
 
     // Stream-Delivery Futures
-    public Dictionary<FuturesDeliverySettle, string> StreamDeliveryFuturesAddresses { get; set; }
+    public Dictionary<GateDeliverySettlement, string> StreamDeliveryFuturesAddresses { get; set; }
 
     // Stream-Options
     public string StreamOptionsAddress { get; set; }
@@ -23,18 +23,17 @@ public class GateStreamClientOptions : WebSocketApiClientOptions
         this.StreamSpotAddress = GateApiAddresses.Default.StreamSpotAddress;
 
         // Stream-Perpetual Futures
-        this.StreamPerpetualFuturesAddresses = new Dictionary<FuturesPerpetualSettle, string>
+        this.StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string>
         {
-            { FuturesPerpetualSettle.BTC, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[FuturesPerpetualSettle.BTC] },
-            { FuturesPerpetualSettle.USD, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[FuturesPerpetualSettle.USD] },
-            { FuturesPerpetualSettle.USDT, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[FuturesPerpetualSettle.USDT] },
+            { GateFuturesSettlement.BTC, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.BTC] },
+            { GateFuturesSettlement.USD, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USD] },
+            { GateFuturesSettlement.USDT, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USDT] },
         };
 
         // Stream-Delivery Futures
-        this.StreamDeliveryFuturesAddresses = new Dictionary<FuturesDeliverySettle, string>
+        this.StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string>
         {
-            { FuturesDeliverySettle.BTC, GateApiAddresses.Default.StreamDeliveryFuturesAddresses[FuturesDeliverySettle.BTC] },
-            { FuturesDeliverySettle.USDT, GateApiAddresses.Default.StreamDeliveryFuturesAddresses[FuturesDeliverySettle.USDT] },
+            { GateDeliverySettlement.USDT, GateApiAddresses.Default.StreamDeliveryFuturesAddresses[GateDeliverySettlement.USDT] },
         };
 
         // Stream-Options

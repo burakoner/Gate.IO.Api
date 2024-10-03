@@ -13,13 +13,13 @@ public  class SpotStreamOrderUpdate
     [JsonProperty("text")]
     public string ClientOrderId { get; set; }
 
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
     
     [JsonProperty("create_time_ms")]
     public long CreateTimeInMilliseconds { get; set; }
 
-    [JsonProperty("update_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("update_time")]
     public DateTime UpdateTime { get; set; }
 
     [JsonProperty("update_time_ms")]

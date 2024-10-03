@@ -4,7 +4,7 @@ namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamBookDifference
 {
-    [JsonProperty("t"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("t")]
     public DateTime Time { get; set; }
 
     //[JsonProperty("e")]
@@ -20,8 +20,8 @@ public  class SpotStreamBookDifference
     public long OrderBookLastUpdateId { get; set; }
 
     [JsonProperty("b", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<GateSpotOrderBookEntry> Bids { get; set; }
+    public List<GateSpotOrderBookEntry> Bids { get; set; }=[];
 
     [JsonProperty("a", NullValueHandling = NullValueHandling.Ignore)]
-    public IEnumerable<GateSpotOrderBookEntry> Asks { get; set; }
+    public List<GateSpotOrderBookEntry> Asks { get; set; }=[];
 }

@@ -14,13 +14,13 @@ public class GateCrossMarginLoan
     /// <summary>
     /// Creation timestamp, in milliseconds
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Update timestamp, in milliseconds
     /// </summary>
-    [JsonProperty("update_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("update_time")]
     public DateTime UpdateTime { get; set; }
 
     /// <summary>

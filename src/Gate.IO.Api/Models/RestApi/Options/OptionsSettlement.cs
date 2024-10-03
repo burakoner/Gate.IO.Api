@@ -5,7 +5,7 @@ public class OptionsSettlement
     /// <summary>
     /// Last changed time of configuration
     /// </summary>
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     /// <summary>

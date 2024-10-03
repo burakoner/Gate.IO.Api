@@ -13,7 +13,7 @@ public class SpotStreamTrade
     /// <summary>
     /// Trading time
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>

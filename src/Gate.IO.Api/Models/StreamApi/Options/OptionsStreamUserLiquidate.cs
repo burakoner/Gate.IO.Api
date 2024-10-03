@@ -14,7 +14,7 @@ public class OptionsStreamUserLiquidate
     [JsonProperty("order_margin")]
     public decimal OrderMargin { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
     
     [JsonProperty("time_ms")]

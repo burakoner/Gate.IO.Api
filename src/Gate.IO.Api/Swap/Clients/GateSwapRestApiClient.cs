@@ -44,7 +44,7 @@ public class GateSwapRestApiClient
     /// <param name="limit">Maximum response items. Default: 100, minimum: 1, Maximum: 1000</param>
     /// <param name="ct">CancellationToken</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSwapMarket>>> GetMarketsAsync(string currency = "", int page = 1, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSwapMarket>>> GetMarketsAsync(string currency = null, int page = 1, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -115,8 +115,8 @@ public class GateSwapRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSwapOrder>>> GetOrdersAsync(
         GateSwapOrderStatus? status = null,
-        string sellCurrency = "",
-        string buyCurrency = "",
+        string sellCurrency = null,
+        string buyCurrency = null,
         int page = 1,
         int limit = 100,
         bool reverse = true,

@@ -26,7 +26,7 @@ public class OptionsStreamUserSettlement
     [JsonProperty("user")]
     public int UserId { get; set; }
 
-    [JsonProperty("time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("time")]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

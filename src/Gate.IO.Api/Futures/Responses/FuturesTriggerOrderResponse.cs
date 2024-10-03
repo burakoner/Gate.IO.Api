@@ -17,13 +17,13 @@ public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
     /// <summary>
     /// Creation time
     /// </summary>
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Finished time
     /// </summary>
-    [JsonProperty("finish_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("finish_time")]
     public DateTime? FinishTime { get; set; }
 
     [JsonProperty("trade_id")]
@@ -32,10 +32,10 @@ public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
     /// <summary>
     /// Status
     /// </summary>
-    [JsonProperty("status"), JsonConverter(typeof(FuturesPriceTriggerStatusConverter))]
+    [JsonProperty("status")]
     public FuturesPriceTriggerStatus Status { get; set; }
 
-    [JsonProperty("finish_as"), JsonConverter(typeof(FuturesOrderFinishTypeConverter))]
+    [JsonProperty("finish_as")]
     public FuturesOrderFinishType? FinishedAs { get; set; }
 
     /// <summary>

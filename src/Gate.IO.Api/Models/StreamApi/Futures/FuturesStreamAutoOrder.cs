@@ -11,13 +11,13 @@ public class FuturesStreamAutoOrder
     [JsonProperty("trade_id")]
     public long? TradeId { get; set; }
 
-    [JsonProperty("status"), JsonConverter(typeof(FuturesPriceTriggerStatusConverter))]
+    [JsonProperty("status")]
     public FuturesPriceTriggerStatus Status { get; set; }
 
     [JsonProperty("reason")]
     public string Reason { get; set; }
 
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     [JsonProperty("name")]
@@ -35,7 +35,7 @@ public class FuturesStreamAutoOrder
     [JsonProperty("initial")]
     public FuturesStreamAutoOrderInitial Order { get; set; }
 
-    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(FuturesTriggerOrderTypeConverter))]
+    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
     public FuturesTriggerOrderType? Type { get; set; }
 
     [JsonProperty("me_order_id")]
@@ -44,7 +44,7 @@ public class FuturesStreamAutoOrder
 
 public class FuturesStreamAutoOrderStopTrigger
 {
-    [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
+    [JsonProperty("rule")]
     public GateSpotTriggerCondition? Rule { get; set; }
 
     [JsonProperty("trigger_price")]
@@ -56,16 +56,16 @@ public class FuturesStreamAutoOrderStopTrigger
 
 public class FuturesStreamAutoOrderTrigger
 {
-    [JsonProperty("strategy_type"), JsonConverter(typeof(FuturesTriggerOrderStrategyTypeConverter))]
+    [JsonProperty("strategy_type")]
     public FuturesTriggerOrderStrategyType StrategyType { get; set; }
 
-    [JsonProperty("price_type"), JsonConverter(typeof(FuturesTriggerOrderPriceTypeConverter))]
+    [JsonProperty("price_type")]
     public FuturesTriggerOrderPriceType PriceType { get; set; }
 
     [JsonProperty("price")]
     public decimal? Price { get; set; }
 
-    [JsonProperty("rule"), JsonConverter(typeof(PriceTriggerConditionConverter))]
+    [JsonProperty("rule")]
     public GateSpotTriggerCondition? Rule { get; set; }
 
     [JsonProperty("expiration")]
@@ -83,7 +83,7 @@ public class FuturesStreamAutoOrderInitial
     [JsonProperty("price")]
     public decimal? Price { get; set; }
 
-    [JsonProperty("tif"), JsonConverter(typeof(FuturesTimeInForceConverter))]
+    [JsonProperty("tif")]
     public FuturesTimeInForce? TimeInForce { get; set; }
 
     [JsonProperty("text")]

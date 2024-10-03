@@ -5,7 +5,7 @@ public class FuturesUserTrade
     [JsonProperty("id")]
     public long Id { get; set; }
 
-    [JsonProperty("create_time"), JsonConverter(typeof(DateTimeConverter))]
+    [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
 
     [JsonProperty("contract")]
@@ -35,6 +35,6 @@ public class FuturesUserTrade
     [JsonProperty("point_fee")]
     public decimal PointFee { get; set; }
 
-    [JsonProperty("role"), JsonConverter(typeof(FuturesTraderRoleConverter))]
+    [JsonProperty("role")]
     public FuturesTraderRole Role { get; set; }
 }

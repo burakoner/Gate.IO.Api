@@ -94,7 +94,7 @@ public class GateCrossMarginRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossMarginAccountBook>>> GetBalanceHistoryAsync(
-        string currency = "",
+        string currency = null,
         long? from = null,
         long? to = null,
         string type = null,
@@ -126,7 +126,7 @@ public class GateCrossMarginRestApiClient
     public Task<RestCallResult<GateCrossMarginLoan>> LoanAsync(
         string currency,
         decimal amount,
-        string clientOrderId = "",
+        string clientOrderId = null,
         CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object> {
@@ -148,7 +148,7 @@ public class GateCrossMarginRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossMarginLoan>>> GetLoansAsync(
-        string currency = "",
+        string currency = null,
         int limit = 100,
         int offset = 0,
         bool reverse = true,
@@ -203,7 +203,7 @@ public class GateCrossMarginRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossMarginRepayment>>> GetRepaymentsAsync(
-        string currency = "", long? loanId = null, int limit = 100, int offset = 0, bool reverse = true, CancellationToken ct = default)
+        string currency = null, long? loanId = null, int limit = 100, int offset = 0, bool reverse = true, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object> {
             { "limit", limit },

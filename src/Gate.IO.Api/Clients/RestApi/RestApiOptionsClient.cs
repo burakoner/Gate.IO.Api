@@ -37,29 +37,26 @@ public class RestApiOptionsClient
     }
 
     #region List all underlyings
-    public async Task<RestCallResult<IEnumerable<OptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<IEnumerable<OptionsUnderlying>>(Root.GetUrl(api, version, options, underlyingsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsUnderlying>>(Root.GetUrl(api, version, options, underlyingsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
     #region List all expiration times
-    public async Task<RestCallResult<IEnumerable<long>>> GetExpirationsAsync(string underlying, CancellationToken ct = default)
+    public async Task<RestCallResult<List<long>>> GetExpirationsAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "underlying", underlying }
         };
 
-        //var jsonSerializer = new JsonSerializer();
-        //jsonSerializer.Converters.Add(new DateTimeConverter());
-        //return await Root.SendRequestInternal<IEnumerable<DateTime>>(RootClient.GetUrl(api, version, options, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters, deserializer: jsonSerializer).ConfigureAwait(false);
-        return await Root.SendRequestInternal<IEnumerable<long>>(Root.GetUrl(api, version, options, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<long>>(Root.GetUrl(api, version, options, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List all the contracts with specified underlying and expiration time
-    public async Task<RestCallResult<IEnumerable<OptionsContract>>> GetContractsAsync(string underlying, long? expiration = null, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsContract>>> GetContractsAsync(string underlying, long? expiration = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -67,7 +64,7 @@ public class RestApiOptionsClient
         };
         parameters.AddOptionalParameter("expiration", expiration);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsContract>>(Root.GetUrl(api, version, options, contractsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsContract>>(Root.GetUrl(api, version, options, contractsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -79,10 +76,10 @@ public class RestApiOptionsClient
     #endregion
 
     #region List settlement history
-    public async Task<RestCallResult<IEnumerable<OptionsSettlement>>> GetSettlementsAsync(string underlying, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsSettlement>>> GetSettlementsAsync(string underlying, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => await GetSettlementsAsync(underlying, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsSettlement>>> GetSettlementsAsync(string underlying, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsSettlement>>> GetSettlementsAsync(string underlying, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -93,7 +90,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsSettlement>>(Root.GetUrl(api, version, options, settlementsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsSettlement>>(Root.GetUrl(api, version, options, settlementsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -111,10 +108,10 @@ public class RestApiOptionsClient
     #endregion
 
     #region List my options settlements
-    public async Task<RestCallResult<IEnumerable<OptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => await GetUserSettlementsAsync(underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -126,7 +123,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsUserSettlement>>(Root.GetUrl(api, version, options, mySettlementsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsUserSettlement>>(Root.GetUrl(api, version, options, mySettlementsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -146,14 +143,14 @@ public class RestApiOptionsClient
     #endregion
 
     #region List tickers of options contracts
-    public async Task<RestCallResult<IEnumerable<OptionsContractTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsContractTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "underlying", underlying },
         };
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsContractTicker>>(Root.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsContractTicker>>(Root.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -166,58 +163,58 @@ public class RestApiOptionsClient
     #endregion
 
     #region Get options candlesticks
-    public async Task<RestCallResult<IEnumerable<OptionsCandlestick>>> GetCandlesticksAsync(string contract, OptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsCandlestick>>> GetCandlesticksAsync(string contract, OptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
     => await GetCandlesticksAsync(contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsCandlestick>>> GetCandlesticksAsync(string contract, OptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsCandlestick>>> GetCandlesticksAsync(string contract, OptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "contract", contract },
-            { "interval", JsonConvert.SerializeObject(interval, new OptionsCandlestickIntervalConverter(false)) },
         };
+        parameters.AddEnum("interval", interval);
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsCandlestick>>(Root.GetUrl(api, version, options, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsCandlestick>>(Root.GetUrl(api, version, options, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Mark price candlesticks of an underlying
-    public async Task<RestCallResult<IEnumerable<OptionsCandlestick>>> GetUnderlyingCandlesticksAsync(string underlying, OptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsCandlestick>>> GetUnderlyingCandlesticksAsync(string underlying, OptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
     => await GetUnderlyingCandlesticksAsync(underlying, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsCandlestick>>> GetUnderlyingCandlesticksAsync(string underlying, OptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsCandlestick>>> GetUnderlyingCandlesticksAsync(string underlying, OptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "underlying", underlying },
-            { "interval", JsonConvert.SerializeObject(interval, new OptionsCandlestickIntervalConverter(false)) },
         };
+        parameters.AddEnum("interval", interval);
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsCandlestick>>(Root.GetUrl(api, version, options, underlyingCandlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsCandlestick>>(Root.GetUrl(api, version, options, underlyingCandlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Options trade history
-    public async Task<RestCallResult<IEnumerable<OptionsTrade>>> GetTradesAsync(string contract, OptionsType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsTrade>>> GetTradesAsync(string contract, OptionsType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => await GetTradesAsync(contract, type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsTrade>>> GetTradesAsync(string contract, OptionsType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsTrade>>> GetTradesAsync(string contract, OptionsType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
+        var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("contract", contract);
-        parameters.AddOptionalParameter("type", JsonConvert.SerializeObject(type, new OptionsTypeConverter(false)));
+        parameters.AddOptionalEnum("type", type);
         parameters.AddOptionalParameter("offset", offset);
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsTrade>>(Root.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsTrade>>(Root.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -229,48 +226,48 @@ public class RestApiOptionsClient
     #endregion
 
     #region List account changing history
-    public async Task<RestCallResult<IEnumerable<OptionsAccountBook>>> GetAccountBookAsync(OptionsAccountBookType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsAccountBook>>> GetAccountBookAsync(OptionsAccountBookType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => await GetAccountBookAsync(type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsAccountBook>>> GetAccountBookAsync(OptionsAccountBookType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsAccountBook>>> GetAccountBookAsync(OptionsAccountBookType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("type", JsonConvert.SerializeObject(type, new OptionsAccountBookTypeConverter(false)));
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalEnum("type", type);
         parameters.AddOptionalParameter("offset", offset);
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsAccountBook>>(Root.GetUrl(api, version, options, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsAccountBook>>(Root.GetUrl(api, version, options, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List user's positions of specified underlying
-    public async Task<RestCallResult<IEnumerable<OptionsPosition>>> GetUnderlyingPositionsAsync(string underlying, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsPosition>>> GetUnderlyingPositionsAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("underlying", underlying);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsPosition>>(Root.GetUrl(api, version, options, positionsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsPosition>>(Root.GetUrl(api, version, options, positionsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Get specified contract position
-    public async Task<RestCallResult<IEnumerable<OptionsPosition>>> GetContractPositionsAsync(string contract, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsPosition>>> GetContractPositionsAsync(string contract, CancellationToken ct = default)
     {
         var endpoint = positionsContractEndpoint.Replace("{contract}", contract);
-        return await Root.SendRequestInternal<IEnumerable<OptionsPosition>>(Root.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsPosition>>(Root.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
     #region List user's liquidation history of specified underlying
-    public async Task<RestCallResult<IEnumerable<OptionsUserLiquidate>>> GetUserLiquidatesAsync(string underlying, string contract = "", CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsUserLiquidate>>> GetUserLiquidatesAsync(string underlying, string contract = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsUserLiquidate>>(Root.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsUserLiquidate>>(Root.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -283,13 +280,14 @@ public class RestApiOptionsClient
         bool? close = null,
         bool? reduceOnly = null,
         OptionsTimeInForce? timeInForce= null,
-        string clientOrderId = "",
+        string clientOrderId = null,
         CancellationToken ct = default)
     {
         OptionsHelpers.ValidateContractSymbol(contract);
         ExchangeHelpers.ValidateClientOrderId(clientOrderId, true);
 
-        var parameters = new Dictionary<string, object> {
+        var parameters = new ParameterCollection
+        {
             { "contract", contract },
             { "contract", size },
         };
@@ -297,7 +295,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("price", price?.ToGateString());
         parameters.AddOptionalParameter("close", close);
         parameters.AddOptionalParameter("reduce_only", reduceOnly);
-        parameters.AddOptionalParameter("tif", JsonConvert.SerializeObject(timeInForce, new OptionsTimeInForceConverter(false)));
+        parameters.AddOptionalEnum("tif", timeInForce);
         parameters.AddOptionalParameter("text", clientOrderId);
 
         return await Root.SendRequestInternal<OptionsOrder>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
@@ -305,7 +303,7 @@ public class RestApiOptionsClient
     #endregion
 
     #region List options orders
-    public async Task<RestCallResult<IEnumerable<OptionsOrder>>> GetOrdersAsync(
+    public async Task<RestCallResult<List<OptionsOrder>>> GetOrdersAsync(
     OptionsOrderStatus status,
     string underlying,
     string contract,
@@ -316,44 +314,44 @@ public class RestApiOptionsClient
     CancellationToken ct = default)
         => await GetOrdersAsync(status, underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsOrder>>> GetOrdersAsync(
+    public async Task<RestCallResult<List<OptionsOrder>>> GetOrdersAsync(
         OptionsOrderStatus status,
-        string underlying="",
-        string contract="",
+        string underlying=null,
+        string contract=null,
         long? from = null,
         long? to = null,
         int limit = 100,
         int offset = 0,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
-            { "status", JsonConvert.SerializeObject(status, new OptionsOrderStatusConverter(false)) },
             { "limit", limit },
             { "offset", offset },
         };
+        parameters.AddEnum("status", status);
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel all open orders matched
-    public async Task<RestCallResult<IEnumerable<OptionsOrder>>> CancelOrdersAsync(
-        string underlying = "",
-        string contract = "",
+    public async Task<RestCallResult<List<OptionsOrder>>> CancelOrdersAsync(
+        string underlying = null,
+        string contract = null,
         OptionsOrderSide? side = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("side", JsonConvert.SerializeObject(side, new OptionsOrderSideConverter(false)));
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalEnum("side", side);
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -372,7 +370,7 @@ public class RestApiOptionsClient
     #endregion
 
     #region List personal trading history
-    public async Task<RestCallResult<IEnumerable<OptionsUserTrade>>> GetUserTradesAsync(
+    public async Task<RestCallResult<List<OptionsUserTrade>>> GetUserTradesAsync(
     string underlying,
     string contract,
     DateTime from,
@@ -382,9 +380,9 @@ public class RestApiOptionsClient
     CancellationToken ct = default)
         => await GetUserTradesAsync(underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
 
-    public async Task<RestCallResult<IEnumerable<OptionsUserTrade>>> GetUserTradesAsync(
+    public async Task<RestCallResult<List<OptionsUserTrade>>> GetUserTradesAsync(
         string underlying,
-        string contract = "",
+        string contract = null,
         long? from = null,
         long? to = null,
         int limit = 100,
@@ -401,7 +399,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<IEnumerable<OptionsUserTrade>>(Root.GetUrl(api, version, options, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<OptionsUserTrade>>(Root.GetUrl(api, version, options, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
