@@ -22,13 +22,10 @@ public class GateCrossMarginRestApiClient
     private const string borrowableEndpoint = "borrowable";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
     // Constructor
-    internal GateCrossMarginRestApiClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    internal GateCrossMarginRestApiClient(GateRestApiClient root) => _ = root;
 
     /// <summary>
     /// Currencies supported by cross margin.
@@ -37,7 +34,7 @@ public class GateCrossMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossMarginCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<List<GateCrossMarginCurrency>>(Root.GetUrl(api, version, cross, currenciesEndpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<List<GateCrossMarginCurrency>>(_.GetUrl(api, version, cross, currenciesEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -48,7 +45,7 @@ public class GateCrossMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateCrossMarginCurrency>> GetCurrencyAsync(string currency, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateCrossMarginCurrency>(Root.GetUrl(api, version, cross, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct);
+        return _.SendRequestInternal<GateCrossMarginCurrency>(_.GetUrl(api, version, cross, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -58,7 +55,7 @@ public class GateCrossMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateCrossMarginBalances>> GetBalancesAsync(CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateCrossMarginBalances>(Root.GetUrl(api, version, cross, accountsEndpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateCrossMarginBalances>(_.GetUrl(api, version, cross, accountsEndpoint), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -112,7 +109,7 @@ public class GateCrossMarginRestApiClient
         parameters.AddOptional("to", to);
         parameters.AddOptional("type", type);
 
-        return Root.SendRequestInternal<List<GateCrossMarginAccountBook>>(Root.GetUrl(api, version, cross, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateCrossMarginAccountBook>>(_.GetUrl(api, version, cross, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -135,7 +132,7 @@ public class GateCrossMarginRestApiClient
         };
         parameters.AddOptionalParameter("text", clientOrderId);
 
-        return Root.SendRequestInternal<GateCrossMarginLoan>(Root.GetUrl(api, version, cross, loansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateCrossMarginLoan>(_.GetUrl(api, version, cross, loansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -161,7 +158,7 @@ public class GateCrossMarginRestApiClient
         };
         parameters.AddOptionalParameter("currency", currency);
 
-        return Root.SendRequestInternal<List<GateCrossMarginLoan>>(Root.GetUrl(api, version, cross, loansEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateCrossMarginLoan>>(_.GetUrl(api, version, cross, loansEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -172,7 +169,7 @@ public class GateCrossMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateCrossMarginLoan>> GetLoanAsync(long loanId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateCrossMarginLoan>(Root.GetUrl(api, version, cross, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateCrossMarginLoan>(_.GetUrl(api, version, cross, loansEndpoint.AppendPath(loanId.ToString())), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -189,7 +186,7 @@ public class GateCrossMarginRestApiClient
             { "amount", amount.ToGateString() },
         };
 
-        return Root.SendRequestInternal<GateCrossMarginLoan>(Root.GetUrl(api, version, cross, repaymentsEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateCrossMarginLoan>(_.GetUrl(api, version, cross, repaymentsEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -213,7 +210,7 @@ public class GateCrossMarginRestApiClient
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("loan_id", loanId);
 
-        return Root.SendRequestInternal<List<GateCrossMarginRepayment>>(Root.GetUrl(api, version, cross, repaymentsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateCrossMarginRepayment>>(_.GetUrl(api, version, cross, repaymentsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: Interest records for the cross margin account
@@ -230,7 +227,7 @@ public class GateCrossMarginRestApiClient
             { "currency", currency },
         };
 
-        return Root.SendRequestInternal<GateCrossMarginAmount>(Root.GetUrl(api, version, cross, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateCrossMarginAmount>(_.GetUrl(api, version, cross, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: Estimated interest rates
@@ -247,6 +244,6 @@ public class GateCrossMarginRestApiClient
             { "currency", currency },
         };
 
-        return Root.SendRequestInternal<GateCrossMarginAmount>(Root.GetUrl(api, version, cross, borrowableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateCrossMarginAmount>(_.GetUrl(api, version, cross, borrowableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 }

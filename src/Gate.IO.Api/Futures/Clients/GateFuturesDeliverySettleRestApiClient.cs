@@ -62,28 +62,28 @@ public class GateFuturesDeliverySettleRestApiClient
     public Task<RestCallResult<GateFuturesPosition>> SetPositionMarginAsync(string contract, decimal change, CancellationToken ct = default)
         => MainClient.SetPositionMarginAsync(Settlement, contract, change, ct);
 
-    public Task<RestCallResult<GateFuturesPosition>> SetLeverageAsync(string contract, int leverage, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesPosition>> SetLeverageAsync(string contract, decimal leverage, CancellationToken ct = default)
         => MainClient.SetLeverageAsync(Settlement, contract, leverage, ct);
 
     public Task<RestCallResult<GateFuturesPosition>> SetRiskLimitAsync(string contract, decimal riskLimit, CancellationToken ct = default)
         => MainClient.SetRiskLimitAsync(Settlement, contract, riskLimit, ct);
 
-    public Task<RestCallResult<FuturesOrder>> PlaceOrderAsync(string contract, long size, long iceberg = 0, decimal? price = null, bool? close = null, bool? reduceOnly = null, string clientOrderId = null, FuturesTimeInForce? timeInForce = null, FuturesOrderAutoSize? autoSize = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(string contract, long size, long iceberg = 0, decimal? price = null, bool? close = null, bool? reduceOnly = null, string clientOrderId = null, GateFuturesTimeInForce? timeInForce = null, GateFuturesOrderAutoSize? autoSize = null, CancellationToken ct = default)
         => MainClient.PlaceOrderAsync(Settlement, contract, size, iceberg, price, close, reduceOnly, clientOrderId, timeInForce, autoSize, ct);
 
-    public Task<RestCallResult<FuturesOrder>> PlaceOrderAsync(FuturesOrderRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateFuturesOrderRequest request, CancellationToken ct = default)
         => MainClient.PlaceOrderAsync(Settlement, request, ct);
 
-    public Task<RestCallResult<List<FuturesOrder>>> GetOrdersAsync(string contract, FuturesOrderStatus status, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(string contract, GateFuturesOrderStatus status, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
         => MainClient.GetOrdersAsync(Settlement, contract, status, limit, offset, lastId, countTotal, ct);
 
-    public Task<RestCallResult<List<FuturesOrder>>> CancelOpenOrdersAsync(string contract, FuturesOrderSide side, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesOrder>>> CancelOpenOrdersAsync(string contract, FuturesOrderSide side, CancellationToken ct = default)
         => MainClient.CancelOpenOrdersAsync(Settlement, contract, side, ct);
 
-    public Task<RestCallResult<FuturesOrder>> GetOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> GetOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
         => MainClient.GetOrderAsync(Settlement, orderId, clientOrderId, ct);
 
-    public Task<RestCallResult<FuturesOrder>> CancelOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> CancelOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
         => MainClient.CancelOrderAsync(Settlement, orderId, clientOrderId, ct);
 
     public Task<RestCallResult<List<FuturesUserTrade>>> GetUserTradesAsync(string contract = null, long? orderId = null, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)

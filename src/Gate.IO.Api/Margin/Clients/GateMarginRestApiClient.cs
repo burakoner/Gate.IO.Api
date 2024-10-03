@@ -17,6 +17,7 @@ public class GateMarginRestApiClient
 
     // TODO: Unified
 
+    // Constructor
     internal GateMarginRestApiClient(GateRestApiClient root)
     {
         this.Cross = new GateCrossMarginRestApiClient(root);

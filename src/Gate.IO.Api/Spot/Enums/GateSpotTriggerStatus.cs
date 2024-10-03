@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotPriceTriggeredOrderStatus
 /// </summary>
-public enum GateSpotPriceTriggeredOrderStatus
+public enum GateSpotTriggerStatus
 {
     /// <summary>
     /// Open

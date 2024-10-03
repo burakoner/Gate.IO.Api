@@ -3,7 +3,7 @@
 /// <summary>
 /// How the order was finished.
 /// </summary>
-public enum FuturesOrderFinishType
+public enum GateFuturesOrderFinishAs
 {
     /// <summary>
     /// Enum Filled for value: filled
@@ -51,5 +51,11 @@ public enum FuturesOrderFinishType
     /// Enum Reduceout for value: reduce_out
     /// </summary>
     [Map("reduce_out")]
-    ReduceOut
+    ReduceOut,
+
+    /// <summary>
+    /// cancelled because self trade prevention
+    /// </summary>
+    [Map("stp")]
+    SelfTradePrevention
 }

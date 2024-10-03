@@ -69,7 +69,7 @@ public class GateWalletSubAccountCrossMarginBalanceAvailable
     /// Position leverage
     /// </summary>
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public decimal Leverage { get; set; }
 
     /// <summary>
     /// Total unpaid interests in USDT, i.e., the sum of all currencies' interest*price*discount

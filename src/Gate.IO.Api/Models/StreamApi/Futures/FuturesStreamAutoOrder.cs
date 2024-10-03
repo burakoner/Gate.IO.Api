@@ -84,7 +84,7 @@ public class FuturesStreamAutoOrderInitial
     public decimal? Price { get; set; }
 
     [JsonProperty("tif")]
-    public FuturesTimeInForce? TimeInForce { get; set; }
+    public GateFuturesTimeInForce? TimeInForce { get; set; }
 
     [JsonProperty("text")]
     public string ClientOrderId { get; set; }

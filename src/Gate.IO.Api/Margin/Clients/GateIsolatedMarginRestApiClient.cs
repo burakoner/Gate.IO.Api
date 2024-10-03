@@ -17,12 +17,10 @@ public class GateIsolatedMarginRestApiClient
     private const string transferableEndpoint = "transferable";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
-    internal GateIsolatedMarginRestApiClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    // Constructor
+    internal GateIsolatedMarginRestApiClient(GateRestApiClient root) => _ = root;
 
     /// <summary>
     /// Margin account list
@@ -35,7 +33,7 @@ public class GateIsolatedMarginRestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return Root.SendRequestInternal<List<GateMarginBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateMarginBalance>>(_.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -94,7 +92,7 @@ public class GateIsolatedMarginRestApiClient
         parameters.AddOptional("to", to);
         parameters.AddOptional("type", type);
 
-        return Root.SendRequestInternal<List<GateMarginBalanceHistory>>(Root.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateMarginBalanceHistory>>(_.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -110,7 +108,7 @@ public class GateIsolatedMarginRestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return Root.SendRequestInternal<List<GateMarginFundingBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateMarginFundingBalance>>(_.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -124,7 +122,7 @@ public class GateIsolatedMarginRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddEnum("status", status);
 
-        return Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateMarginAutoRepayment>(_.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -134,7 +132,7 @@ public class GateIsolatedMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateMarginAutoRepayment>> GetAutoRepaymentAsync(CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateMarginAutoRepayment>(_.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -151,7 +149,7 @@ public class GateIsolatedMarginRestApiClient
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return Root.SendRequestInternal<GateMarginAmount>(Root.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateMarginAmount>(_.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
 

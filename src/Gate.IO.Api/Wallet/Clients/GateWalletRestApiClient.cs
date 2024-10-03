@@ -30,13 +30,10 @@ public class GateWalletRestApiClient
     private const string totalBalanceEndpoint = "total_balance";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
     // Constructor
-    internal GateWalletRestApiClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    internal GateWalletRestApiClient(GateRestApiClient root) => _ = root;
 
     /// <summary>
     /// Withdraw
@@ -69,7 +66,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("memo", memo);
         parameters.AddOptionalParameter("withdraw_order_id", clientOrderId);
 
-        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, version, withdrawalsSection, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -94,7 +91,7 @@ public class GateWalletRestApiClient
             { "amount", amount.ToGateString() },
         };
 
-        return Root.SendRequestInternal<GateWalletPush>(Root.GetUrl(api, version, withdrawalsSection, pushEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateWalletPush>(_.GetUrl(api, version, withdrawalsSection, pushEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -105,7 +102,7 @@ public class GateWalletRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, withdrawalId.ToString()), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, version, withdrawalsSection, withdrawalId.ToString()), HttpMethod.Delete, ct, true);
     }
 
     /// <summary>
@@ -120,7 +117,7 @@ public class GateWalletRestApiClient
         {
             { "currency", currency },
         };
-        return Root.SendRequestInternal<List<GateWalletCurencyChain>>(Root.GetUrl(api, version, walletSection, currencyChainsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletCurencyChain>>(_.GetUrl(api, version, walletSection, currencyChainsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -135,7 +132,7 @@ public class GateWalletRestApiClient
         {
             { "currency", currency },
         };
-        return Root.SendRequestInternal<GateWalletDepositAddress>(Root.GetUrl(api, version, walletSection, depositAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateWalletDepositAddress>(_.GetUrl(api, version, walletSection, depositAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -170,7 +167,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return Root.SendRequestInternal<List<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, withdrawalsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletTransaction>>(_.GetUrl(api, version, walletSection, withdrawalsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -205,7 +202,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return Root.SendRequestInternal<List<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletTransaction>>(_.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -238,7 +235,7 @@ public class GateWalletRestApiClient
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptional("settle", settle);
 
-        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, transfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateWalletTransactionId>(_.GetUrl(api, version, walletSection, transfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -271,7 +268,7 @@ public class GateWalletRestApiClient
         parameters.AddOptional("client_order_id", clientOrderId);
         parameters.AddOptionalEnum("sub_account_type", subAccountType);
 
-        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateWalletTransactionId>(_.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -306,7 +303,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return Root.SendRequestInternal<List<GateWalletTransferRecord>>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletTransferRecord>>(_.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -339,7 +336,7 @@ public class GateWalletRestApiClient
         parameters.AddEnum("sub_account_from_type", senderSubAccountType);
         parameters.AddEnum("sub_account_to_type", recipientSubAccountType);
 
-        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountToSubAccountEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateWalletTransactionId>(_.GetUrl(api, version, walletSection, subAccountToSubAccountEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -353,7 +350,7 @@ public class GateWalletRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("currency", currency);
 
-        return Root.SendRequestInternal<List<GateWalletWithdrawal>>(Root.GetUrl(api, version, walletSection, withdrawStatusEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletWithdrawal>>(_.GetUrl(api, version, walletSection, withdrawStatusEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -367,7 +364,7 @@ public class GateWalletRestApiClient
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return Root.SendRequestInternal<List<GateWalletSubAccountBalance>>(Root.GetUrl(api, version, walletSection, subAccountBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletSubAccountBalance>>(_.GetUrl(api, version, walletSection, subAccountBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -381,7 +378,7 @@ public class GateWalletRestApiClient
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return Root.SendRequestInternal<List<GateWalletSubAccountMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletSubAccountMarginBalance>>(_.GetUrl(api, version, walletSection, subAccountMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -397,7 +394,7 @@ public class GateWalletRestApiClient
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
         parameters.AddOptionalParameter("settle", settle);
 
-        return Root.SendRequestInternal<List<GateWalletSubAccountFuturesBalance>>(Root.GetUrl(api, version, walletSection, subAccountFuturesBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletSubAccountFuturesBalance>>(_.GetUrl(api, version, walletSection, subAccountFuturesBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -411,7 +408,7 @@ public class GateWalletRestApiClient
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return Root.SendRequestInternal<List<GateWalletSubAccountCrossMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountCrossMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletSubAccountCrossMarginBalance>>(_.GetUrl(api, version, walletSection, subAccountCrossMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -431,7 +428,7 @@ public class GateWalletRestApiClient
         };
         parameters.AddOptionalParameter("chain", chain);
 
-        return Root.SendRequestInternal<List<GateWalletSavedAddress>>(Root.GetUrl(api, version, walletSection, savedAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletSavedAddress>>(_.GetUrl(api, version, walletSection, savedAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -447,7 +444,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("settle", settle);
 
-        return Root.SendRequestInternal<GateWalletUserTradingFee>(Root.GetUrl(api, version, walletSection, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateWalletUserTradingFee>(_.GetUrl(api, version, walletSection, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -461,7 +458,7 @@ public class GateWalletRestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return Root.SendRequestInternal<GateWalletTotalBalance>(Root.GetUrl(api, version, walletSection, totalBalanceEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateWalletTotalBalance>(_.GetUrl(api, version, walletSection, totalBalanceEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: List small balance

@@ -117,15 +117,15 @@ public class StreamApiFuturesDeliveryClient
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamDeliveryFuturesAddresses[settle], futuresCandlesticksChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserOrdersAsync(GateDeliverySettlement settle, int userId, Action<WebSocketDataEvent<FuturesOrder>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserOrdersAsync(GateDeliverySettlement settle, int userId, Action<WebSocketDataEvent<GateFuturesOrder>> onMessage, CancellationToken ct = default)
         => await SubscribeToUserOrdersAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserOrdersAsync(GateDeliverySettlement settle, int userId, string contract, Action<WebSocketDataEvent<FuturesOrder>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserOrdersAsync(GateDeliverySettlement settle, int userId, string contract, Action<WebSocketDataEvent<GateFuturesOrder>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesOrder>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesOrder>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamDeliveryFuturesAddresses[settle], futuresUserOrdersChannel, payload, true, handler, ct).ConfigureAwait(false);
     }

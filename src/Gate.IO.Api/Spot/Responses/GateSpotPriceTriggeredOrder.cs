@@ -39,7 +39,7 @@ public class GateSpotPriceTriggeredOrder : GateSpotPriceTriggeredOrderRequest
     /// Status
     /// </summary>
     [JsonProperty("status")]
-    public GateSpotPriceTriggeredOrderStatus Status { get; set; }
+    public GateSpotTriggerStatus Status { get; set; }
 
     /// <summary>
     /// Additional remarks on how the order was finished

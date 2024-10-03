@@ -14,12 +14,10 @@ public class RestApiRebateClient
     private const string commissionHistoryEndpoint = "agency/commission_history";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
-    internal RestApiRebateClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    // Constructor
+    internal RestApiRebateClient(GateRestApiClient root) => _ = root;
 
     #region The broker obtains the transaction history of the recommended user
     public async Task<RestCallResult<List<BrokerRebateTransactionHistory>>> GetTransactionHistoryAsync(
@@ -51,7 +49,7 @@ public class RestApiRebateClient
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await Root.SendRequestInternal<List<BrokerRebateTransactionHistory>>(Root.GetUrl(api, version, rebate, transactionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<BrokerRebateTransactionHistory>>(_.GetUrl(api, version, rebate, transactionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -85,7 +83,7 @@ public class RestApiRebateClient
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await Root.SendRequestInternal<List<BrokerRebateTransactionHistory>>(Root.GetUrl(api, version, rebate, commissionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<BrokerRebateTransactionHistory>>(_.GetUrl(api, version, rebate, commissionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 

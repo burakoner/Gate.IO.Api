@@ -36,7 +36,7 @@ public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
     public FuturesPriceTriggerStatus Status { get; set; }
 
     [JsonProperty("finish_as")]
-    public FuturesOrderFinishType? FinishedAs { get; set; }
+    public GateFuturesOrderFinishAs? FinishedAs { get; set; }
 
     /// <summary>
     /// Additional remarks on how the order was finished

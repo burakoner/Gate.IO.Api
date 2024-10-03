@@ -78,7 +78,7 @@ public class GateSpotOrderRequest
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
     [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore)]
-    public GateSpotSelfTradingPreventionAction? SelfTradingPreventionAction { get; set; }
+    public GateSpotSelfTradeAction? SelfTradeAction { get; set; }
 
     /// <summary>
     /// Processing Mode

@@ -13,18 +13,14 @@ public class RestApiBrokerClient
     private const string infoEndpoint = "info";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
     // Constructor
-    internal RestApiBrokerClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
-
+    internal RestApiBrokerClient(GateRestApiClient root) => _ = root;
     #region The broker inquires its own configuration
     public async Task<RestCallResult<List<BrokerRebateTransactionHistory>>> GetBrokerInformationAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<List<BrokerRebateTransactionHistory>>(Root.GetUrl(api, version, broker, infoEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<BrokerRebateTransactionHistory>>(_.GetUrl(api, version, broker, infoEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 

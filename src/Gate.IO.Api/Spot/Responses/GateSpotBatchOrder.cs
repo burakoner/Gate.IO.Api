@@ -221,11 +221,11 @@ public class GateSpotBatchOrder
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
     [JsonProperty("stp_act")]
-    public GateSpotSelfTradingPreventionAction? SelfTradingPreventionAction { get; set; }
+    public GateSpotSelfTradeAction? SelfTradingPreventionAction { get; set; }
 
     /// <summary>
     /// Order completion statuses include:
     /// </summary>
     [JsonProperty("finish_as")]
-    public GateSpotFiniashAs? FiniashAs { get; set; }
+    public GateSpotFinishAs? FinishAs { get; set; }
 }

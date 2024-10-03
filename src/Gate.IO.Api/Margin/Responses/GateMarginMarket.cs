@@ -27,7 +27,7 @@ public  class GateMarginMarket
     /// Leverage
     /// </summary>
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public decimal Leverage { get; set; }
 
     /// <summary>
     /// Minimum amount of base currency to trade, &#x60;null&#x60; means no limit

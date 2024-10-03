@@ -15,6 +15,7 @@ public class GateFuturesRestApiClient
     /// </summary>
     public GateFuturesDeliveryRestApiClient Delivery { get; }
 
+    // Constructor
     internal GateFuturesRestApiClient(GateRestApiClient root)
     {
         Perpetual = new GateFuturesPerpetualRestApiClient(root);

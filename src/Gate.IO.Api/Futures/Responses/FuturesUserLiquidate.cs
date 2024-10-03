@@ -6,7 +6,7 @@ public class FuturesUserLiquidate : GateFuturesLiquidation
     /// Position leverage. Not returned in public endpoints.
     /// </summary>
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public decimal Leverage { get; set; }
 
     /// <summary>
     /// Position margin. Not returned in public endpoints.

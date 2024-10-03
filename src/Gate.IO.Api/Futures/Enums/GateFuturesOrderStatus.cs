@@ -1,6 +1,9 @@
 ﻿namespace Gate.IO.Api.Futures;
 
-public enum FuturesOrderStatus
+/// <summary>
+/// GateFuturesOrderStatus
+/// </summary>
+public enum GateFuturesOrderStatus
 {
     /// <summary>
     /// Enum Open for value: open

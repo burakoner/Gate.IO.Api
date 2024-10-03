@@ -12,7 +12,7 @@ public class DeliverySettlement
     public long Size { get; set; }
 
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public decimal Leverage { get; set; }
 
     [JsonProperty("margin")]
     public decimal Margin { get; set; }

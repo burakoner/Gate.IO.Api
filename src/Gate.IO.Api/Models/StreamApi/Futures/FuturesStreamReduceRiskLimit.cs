@@ -18,7 +18,7 @@ public class FuturesStreamReduceRiskLimit
     public string Contract { get; set; }
 
     [JsonProperty("leverage_max")]
-    public int LeverageMax { get; set; }
+    public decimal LeverageMax { get; set; }
 
     [JsonProperty("liq_price")]
     public decimal LiqPrice { get; set; }

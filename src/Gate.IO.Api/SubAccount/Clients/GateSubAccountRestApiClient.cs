@@ -16,12 +16,10 @@ public class GateSubAccountRestApiClient
     private const string unlockEndpoint = "unlock";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
-    internal GateSubAccountRestApiClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    // Constructor
+    internal GateSubAccountRestApiClient(GateRestApiClient root) => _ = root;
 
     /// <summary>
     /// Create a new sub-account
@@ -47,7 +45,7 @@ public class GateSubAccountRestApiClient
         parameters.AddOptionalParameter("password", password);
         parameters.AddOptionalParameter("remark", remark);
 
-        return Root.SendRequestInternal<GateSubAccount>(Root.GetUrl(api, version, subaccounts, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, subaccounts, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -57,7 +55,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSubAccount>>> GetSubAccountsAsync(CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<List<GateSubAccount>>(Root.GetUrl(api, version, subaccounts, null), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateSubAccount>>(_.GetUrl(api, version, subaccounts, null), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -68,7 +66,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSubAccount>> GetSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateSubAccount>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), null), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), null), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -95,7 +93,7 @@ public class GateSubAccountRestApiClient
         parameters.AddOptionalParameter("perms", permissions);
         parameters.AddOptionalParameter("ip_whitelist", ipWhitelist);
 
-        return Root.SendRequestInternal<GateSubAccountApiKey>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -106,7 +104,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSubAccountApiKey>>> GetApiKeysAsync(long subAccountId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<List<GateSubAccountApiKey>>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateSubAccountApiKey>>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -135,8 +133,8 @@ public class GateSubAccountRestApiClient
         parameters.AddOptionalParameter("perms", permissions);
         parameters.AddOptionalParameter("ip_whitelist", ipWhitelist);
 
-        return Root.SendRequestInternal<GateSubAccountApiKey>(
-            Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null),
+        return _.SendRequestInternal<GateSubAccountApiKey>(
+            _.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null),
             HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
@@ -149,7 +147,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> DeleteApiKeyAsync(long subAccountId, string apikey, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<object>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Delete, ct, true);
     }
 
     /// <summary>
@@ -161,7 +159,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSubAccountApiKey>> GetApiKeyAsync(long subAccountId, string apikey, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateSubAccountApiKey>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -172,7 +170,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> LockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<object>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), lockEndpoint), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), lockEndpoint), HttpMethod.Put, ct, true);
     }
 
     /// <summary>
@@ -183,7 +181,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> UnlockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<object>(Root.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), unlockEndpoint), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, subaccounts.AppendPath(subAccountId.ToString()), unlockEndpoint), HttpMethod.Put, ct, true);
     }
 
     // TODO: Get sub-account mode

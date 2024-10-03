@@ -27,7 +27,7 @@ public class GateFuturesPosition
     /// Position leverage. 0 means cross margin; positive number means isolated margin
     /// </summary>
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public decimal Leverage { get; set; }
 
     /// <summary>
     /// Position risk limit
@@ -39,7 +39,7 @@ public class GateFuturesPosition
     /// Maximum leverage under current risk limit
     /// </summary>
     [JsonProperty("leverage_max")]
-    public int LeverageMax { get; set; }
+    public decimal LeverageMax { get; set; }
 
     /// <summary>
     /// Maintenance rate under current risk limit

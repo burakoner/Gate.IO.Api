@@ -1,6 +1,9 @@
 namespace Gate.IO.Api.Futures;
 
-public class FuturesOrderRequest
+/// <summary>
+/// GateFuturesOrderRequest
+/// </summary>
+public class GateFuturesOrderRequest
 {
     /// <summary>
     /// Futures contract
@@ -17,8 +20,8 @@ public class FuturesOrderRequest
     /// <summary>
     /// Display size for iceberg order. 0 for non-iceberg. Note that you will have to pay the taker fee for the hidden size
     /// </summary>
-    [JsonProperty("iceberg")]
-    public long Iceberg { get; set; }
+    [JsonProperty("iceberg", NullValueHandling = NullValueHandling.Ignore)]
+    public long? Iceberg { get; set; }
 
     /// <summary>
     /// Order price. 0 for market order with &#x60;tif&#x60; set as &#x60;ioc&#x60;
@@ -42,7 +45,7 @@ public class FuturesOrderRequest
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
     [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore)]
-    public FuturesTimeInForce? TimeInForce { get; set; }
+    public GateFuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
     /// User defined information. If not empty, must follow the rules below:  
@@ -51,11 +54,17 @@ public class FuturesOrderRequest
     /// 3. can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)
     /// </summary>
     [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
-    public string ClientOrderId { get; set; }
+    public string ClientOrderId { get; set; } = null;
 
     /// <summary>
     /// Set side to close dual-mode position. &#x60;close_long&#x60; closes the long side; while &#x60;close_short&#x60; the short one. Note &#x60;size&#x60; also needs to be set to 0
     /// </summary>
     [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore)]
-    public FuturesOrderAutoSize? AutoSize { get; set; }
+    public GateFuturesOrderAutoSize? AutoSize { get; set; }
+
+    /// <summary>
+    /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
+    /// </summary>
+    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore)]
+    public GateFuturesSelfTradeAction? SelfTradeAction { get; set; }
 }

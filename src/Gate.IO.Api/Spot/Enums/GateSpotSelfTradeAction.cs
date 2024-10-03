@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotSelfTradingPreventionAction
 /// </summary>
-public enum GateSpotSelfTradingPreventionAction
+public enum GateSpotSelfTradeAction
 {
     /// <summary>
     /// CancelNewest

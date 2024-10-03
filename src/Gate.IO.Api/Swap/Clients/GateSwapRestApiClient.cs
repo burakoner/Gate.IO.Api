@@ -17,12 +17,10 @@ public class GateSwapRestApiClient
     private const string ordersPreviewEndpoint = "orders/preview";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
-    internal GateSwapRestApiClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    // Constructor
+    internal GateSwapRestApiClient(GateRestApiClient root) => _ = root;
 
     /// <summary>
     /// List all supported currencies in flash swap
@@ -31,7 +29,7 @@ public class GateSwapRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSwapCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<List<GateSwapCurrency>>(Root.GetUrl(api, version, swap, currenciesEndpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<List<GateSwapCurrency>>(_.GetUrl(api, version, swap, currenciesEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -53,7 +51,7 @@ public class GateSwapRestApiClient
         };
         parameters.AddOptionalParameter("currency", currency);
 
-        return Root.SendRequestInternal<List<GateSwapMarket>>(Root.GetUrl(api, version, swap, currencyPairsEndpoint), HttpMethod.Get, ct, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSwapMarket>>(_.GetUrl(api, version, swap, currencyPairsEndpoint), HttpMethod.Get, ct, queryParameters: parameters);
     }
 
     /// <summary>
@@ -99,7 +97,7 @@ public class GateSwapRestApiClient
         parameters.Add("buy_currency", request.BuyCurrency);
         parameters.AddOptionalString("buy_amount", request.BuyAmount);
 
-        return Root.SendRequestInternal<GateSwapOrder>(Root.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -132,7 +130,7 @@ public class GateSwapRestApiClient
         parameters.AddOptional("sell_currency", sellCurrency);
         parameters.AddOptional("buy_currency", buyCurrency);
 
-        return Root.SendRequestInternal<List<GateSwapOrder>>(Root.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSwapOrder>>(_.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -143,7 +141,7 @@ public class GateSwapRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return Root.SendRequestInternal<GateSwapOrder>(Root.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -186,6 +184,6 @@ public class GateSwapRestApiClient
         parameters.Add("buy_currency", request.BuyCurrency);
         parameters.AddOptionalString("buy_amount", request.BuyAmount);
 
-        return Root.SendRequestInternal<GateSwapOrderPreview>(Root.GetUrl(api, version, swap, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSwapOrderPreview>(_.GetUrl(api, version, swap, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 }

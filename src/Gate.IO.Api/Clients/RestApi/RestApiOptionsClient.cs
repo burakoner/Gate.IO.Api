@@ -29,17 +29,15 @@ public class RestApiOptionsClient
     private const string myTradesEndpoint = "my_trades";
 
     // Root Client
-    internal GateRestApiClient Root { get; }
+    internal GateRestApiClient _ { get; }
 
-    internal RestApiOptionsClient(GateRestApiClient root)
-    {
-        Root = root;
-    }
+    // Constructor
+    internal RestApiOptionsClient(GateRestApiClient root) => _ = root;
 
     #region List all underlyings
     public async Task<RestCallResult<List<OptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<List<OptionsUnderlying>>(Root.GetUrl(api, version, options, underlyingsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsUnderlying>>(_.GetUrl(api, version, options, underlyingsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
     #endregion
 
@@ -51,7 +49,7 @@ public class RestApiOptionsClient
             { "underlying", underlying }
         };
 
-        return await Root.SendRequestInternal<List<long>>(Root.GetUrl(api, version, options, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<long>>(_.GetUrl(api, version, options, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -64,14 +62,14 @@ public class RestApiOptionsClient
         };
         parameters.AddOptionalParameter("expiration", expiration);
 
-        return await Root.SendRequestInternal<List<OptionsContract>>(Root.GetUrl(api, version, options, contractsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsContract>>(_.GetUrl(api, version, options, contractsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Query specified contract detail
     public async Task<RestCallResult<OptionsContract>> GetContractAsync(string contract, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<OptionsContract>(Root.GetUrl(api, version, options, contractsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsContract>(_.GetUrl(api, version, options, contractsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false).ConfigureAwait(false);
     }
     #endregion
 
@@ -90,7 +88,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsSettlement>>(Root.GetUrl(api, version, options, settlementsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsSettlement>>(_.GetUrl(api, version, options, settlementsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -103,7 +101,7 @@ public class RestApiOptionsClient
             { "at", at },
         };
 
-        return await Root.SendRequestInternal<OptionsSettlement>(Root.GetUrl(api, version, options, settlementsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsSettlement>(_.GetUrl(api, version, options, settlementsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -123,7 +121,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsUserSettlement>>(Root.GetUrl(api, version, options, mySettlementsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsUserSettlement>>(_.GetUrl(api, version, options, mySettlementsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -138,7 +136,7 @@ public class RestApiOptionsClient
             { "with_id", withId.ToString().ToLower() },
         };
 
-        return await Root.SendRequestInternal<OptionsOrderBook>(Root.GetUrl(api, version, options, orderBookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsOrderBook>(_.GetUrl(api, version, options, orderBookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -150,7 +148,7 @@ public class RestApiOptionsClient
             { "underlying", underlying },
         };
 
-        return await Root.SendRequestInternal<List<OptionsContractTicker>>(Root.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsContractTicker>>(_.GetUrl(api, version, options, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -158,7 +156,7 @@ public class RestApiOptionsClient
     public async Task<RestCallResult<OptionsUnderlyingTicker>> GetUnderlyingTickersAsync(string underlying, CancellationToken ct = default)
     {
         var endpoint = underlyingTickersUnderlyingEndpoint.Replace("{underlying}", underlying);
-        return await Root.SendRequestInternal<OptionsUnderlyingTicker>(Root.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsUnderlyingTicker>(_.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, false).ConfigureAwait(false);
     }
     #endregion
 
@@ -177,7 +175,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsCandlestick>>(Root.GetUrl(api, version, options, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsCandlestick>>(_.GetUrl(api, version, options, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -196,7 +194,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsCandlestick>>(Root.GetUrl(api, version, options, underlyingCandlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsCandlestick>>(_.GetUrl(api, version, options, underlyingCandlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -214,14 +212,14 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsTrade>>(Root.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsTrade>>(_.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region List options account
     public async Task<RestCallResult<OptionsAccount>> GetAccountAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<OptionsAccount>(Root.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsAccount>(_.GetUrl(api, version, options, tradesEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -238,7 +236,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsAccountBook>>(Root.GetUrl(api, version, options, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsAccountBook>>(_.GetUrl(api, version, options, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -248,7 +246,7 @@ public class RestApiOptionsClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("underlying", underlying);
 
-        return await Root.SendRequestInternal<List<OptionsPosition>>(Root.GetUrl(api, version, options, positionsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsPosition>>(_.GetUrl(api, version, options, positionsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -256,7 +254,7 @@ public class RestApiOptionsClient
     public async Task<RestCallResult<List<OptionsPosition>>> GetContractPositionsAsync(string contract, CancellationToken ct = default)
     {
         var endpoint = positionsContractEndpoint.Replace("{contract}", contract);
-        return await Root.SendRequestInternal<List<OptionsPosition>>(Root.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsPosition>>(_.GetUrl(api, version, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -267,7 +265,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await Root.SendRequestInternal<List<OptionsUserLiquidate>>(Root.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsUserLiquidate>>(_.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -279,7 +277,7 @@ public class RestApiOptionsClient
         decimal? price = null,
         bool? close = null,
         bool? reduceOnly = null,
-        OptionsTimeInForce? timeInForce= null,
+        OptionsTimeInForce? timeInForce = null,
         string clientOrderId = null,
         CancellationToken ct = default)
     {
@@ -298,7 +296,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalEnum("tif", timeInForce);
         parameters.AddOptionalParameter("text", clientOrderId);
 
-        return await Root.SendRequestInternal<OptionsOrder>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsOrder>(_.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -316,8 +314,8 @@ public class RestApiOptionsClient
 
     public async Task<RestCallResult<List<OptionsOrder>>> GetOrdersAsync(
         OptionsOrderStatus status,
-        string underlying=null,
-        string contract=null,
+        string underlying = null,
+        string contract = null,
         long? from = null,
         long? to = null,
         int limit = 100,
@@ -335,7 +333,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsOrder>>(_.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
@@ -351,21 +349,21 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await Root.SendRequestInternal<List<OptionsOrder>>(Root.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsOrder>>(_.GetUrl(api, version, options, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
     #region Get a single order
     public async Task<RestCallResult<OptionsOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<OptionsOrder>(Root.GetUrl(api, version, options, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsOrder>(_.GetUrl(api, version, options, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 
     #region Cancel a single order
     public async Task<RestCallResult<OptionsOrder>> CancelOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<OptionsOrder>(Root.GetUrl(api, version, options, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<OptionsOrder>(_.GetUrl(api, version, options, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
     #endregion
 
@@ -399,7 +397,7 @@ public class RestApiOptionsClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await Root.SendRequestInternal<List<OptionsUserTrade>>(Root.GetUrl(api, version, options, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsUserTrade>>(_.GetUrl(api, version, options, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
     #endregion
 
