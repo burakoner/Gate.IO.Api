@@ -26,7 +26,7 @@ public  class SpotStreamOrderUpdate
     public long UpdateTimeInMilliseconds { get; set; }
 
     [JsonProperty("event")]
-    public SpotOrderUpdateEvent Event { get; set; }
+    public GateSpotOrderUpdateEvent Event { get; set; }
 
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }

@@ -2,15 +2,15 @@
 
 namespace Gate.IO.Api.Converters;
 
-internal class OrderUpdateEventConverter : BaseConverter<SpotOrderUpdateEvent>
+internal class OrderUpdateEventConverter : BaseConverter<GateSpotOrderUpdateEvent>
 {
     public OrderUpdateEventConverter() : this(true) { }
     public OrderUpdateEventConverter(bool quotes) : base(quotes) { }
 
-    protected override List<KeyValuePair<SpotOrderUpdateEvent, string>> Mapping => new()
+    protected override List<KeyValuePair<GateSpotOrderUpdateEvent, string>> Mapping => new()
     {
-        new KeyValuePair<SpotOrderUpdateEvent, string>(SpotOrderUpdateEvent.Put, "put"),
-        new KeyValuePair<SpotOrderUpdateEvent, string>(SpotOrderUpdateEvent.Update, "update"),
-        new KeyValuePair<SpotOrderUpdateEvent, string>(SpotOrderUpdateEvent.Finish, "finish"),
+        new KeyValuePair<GateSpotOrderUpdateEvent, string>(GateSpotOrderUpdateEvent.Put, "put"),
+        new KeyValuePair<GateSpotOrderUpdateEvent, string>(GateSpotOrderUpdateEvent.Update, "update"),
+        new KeyValuePair<GateSpotOrderUpdateEvent, string>(GateSpotOrderUpdateEvent.Finish, "finish"),
     };
 }

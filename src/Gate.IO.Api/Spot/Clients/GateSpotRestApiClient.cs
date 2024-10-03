@@ -64,9 +64,9 @@ public class GateSpotRestApiClient
     /// </summary>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<SpotMarket>>> GetPairsAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateSpotMarket>>> GetPairsAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<List<SpotMarket>>(Root.GetUrl(api, version, spot, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<List<GateSpotMarket>>(Root.GetUrl(api, version, spot, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -75,9 +75,9 @@ public class GateSpotRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<SpotMarket>> GetPairAsync(string symbol, CancellationToken ct = default)
+    public async Task<RestCallResult<GateSpotMarket>> GetPairAsync(string symbol, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<SpotMarket>(Root.GetUrl(api, version, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await Root.SendRequestInternal<GateSpotMarket>(Root.GetUrl(api, version, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -511,7 +511,7 @@ public class GateSpotRestApiClient
     /// <param name="requests"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<SpotCancelOrderRequest> requests, CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelOrderRequest> requests, CancellationToken ct = default)
     {
         foreach (var request in requests)
             SpotHelpers.ValidateMarketSymbol(request.Symbol);

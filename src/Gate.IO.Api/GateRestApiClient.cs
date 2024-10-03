@@ -1,8 +1,4 @@
-﻿using Gate.IO.Api.Spot;
-using Gate.IO.Api.SubAccount;
-using Gate.IO.Api.Wallet;
-
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 /// <summary>
 /// Gate.IO REST API Client
@@ -30,26 +26,49 @@ public sealed class GateRestApiClient : RestApiClient
     /// </summary>
     public GateSpotRestApiClient Spot { get; }
 
-    public RestApiMarginClient Margin { get; }
-    public RestApiFuturesClient Futures { get; }
+    /// <summary>
+    /// Margin Client
+    /// </summary>
+    public GateMarginRestApiClient Margin { get; }
+
+    /// <summary>
+    /// Flash Swap Client
+    /// </summary>
     public RestApiSwapClient Swap { get; }
+    public RestApiFuturesClient Futures { get; }
     public RestApiOptionsClient Options { get; }
     public RestApiRebateClient Rebate { get; }
     public RestApiBrokerClient Broker { get; }
 
+    /// <summary>
+    /// Gate.IO REST API Client Constructor
+    /// </summary>
     public GateRestApiClient() : this(null, new GateRestApiClientOptions())
     {
     }
 
+    /// <summary>
+    /// Gate.IO REST API Client Constructor
+    /// </summary>
+    /// <param name="logger">ILogger Instance</param>
     public GateRestApiClient(ILogger logger) : this(logger, new GateRestApiClientOptions())
     {
     }
 
+    /// <summary>
+    /// Gate.IO REST API Client Constructor
+    /// </summary>
+    /// <param name="options">GateRestApiClientOptions Instance</param>
     public GateRestApiClient(GateRestApiClientOptions options) : this(null, options)
     {
     }
 
-    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options):base(logger, options)
+    /// <summary>
+    /// Gate.IO REST API Client Constructor
+    /// </summary>
+    /// <param name="logger">ILogger Instance</param>
+    /// <param name="options">GateRestApiClientOptions Instance</param>
+    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options) : base(logger, options)
     {
         Logger = logger;
         RequestBodyFormat = RestRequestBodyFormat.Json;
@@ -58,7 +77,7 @@ public sealed class GateRestApiClient : RestApiClient
         Wallet = new GateWalletRestApiClient(this);
         SubAccount = new GateSubAccountRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
-        Margin = new RestApiMarginClient(this);
+        Margin = new GateMarginRestApiClient(this);
         Futures = new RestApiFuturesClient(this);
         Swap = new RestApiSwapClient(this);
         Options = new RestApiOptionsClient(this);
@@ -88,7 +107,7 @@ public sealed class GateRestApiClient : RestApiClient
         return new ServerError(0, (string)error["message"]!, (string)error["label"]!);
     }
     #endregion
-    
+
     #region Internal Methods
     internal Uri GetUrl(string api, string version, string section, string endpoint)
     {
