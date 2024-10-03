@@ -1,5 +1,3 @@
-using Gate.IO.Api.Models.RestApi.Futures;
-
 namespace Gate.IO.Api.Models.StreamApi.Futures;
 
 public  class FuturesStreamBookSnapshot

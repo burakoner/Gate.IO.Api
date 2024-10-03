@@ -1,7 +1,4 @@
-﻿using Gate.IO.Api.Models.RestApi.Futures;
-using Gate.IO.Api.Models.RestApi.Spot;
-
-namespace Gate.IO.Api.Futures.Clients;
+﻿namespace Gate.IO.Api.Futures;
 
 public class GateFuturesDeliveryRestApiClient
 {

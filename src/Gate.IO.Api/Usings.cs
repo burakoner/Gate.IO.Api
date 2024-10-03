@@ -12,6 +12,7 @@ global using Gate.IO.Api.Clients.StreamApi;
 global using Gate.IO.Api.Converters;
 global using Gate.IO.Api.Enums;
 global using Gate.IO.Api.Extensions;
+global using Gate.IO.Api.Futures;
 global using Gate.IO.Api.Helpers;
 global using Gate.IO.Api.Margin;
 global using Gate.IO.Api.Models.StreamApi;

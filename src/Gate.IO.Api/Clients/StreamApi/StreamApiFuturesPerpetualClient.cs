@@ -1,5 +1,4 @@
-﻿using Gate.IO.Api.Models.RestApi.Futures;
-using Gate.IO.Api.Models.StreamApi.Futures;
+﻿using Gate.IO.Api.Models.StreamApi.Futures;
 
 namespace Gate.IO.Api.Clients.StreamApi;
 

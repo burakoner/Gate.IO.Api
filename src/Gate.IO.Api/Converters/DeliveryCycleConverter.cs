@@ -1,15 +1,15 @@
 ﻿namespace Gate.IO.Api.Converters;
 
-internal class DeliveryCycleConverter : BaseConverter<DeliveryCycle>
+internal class DeliveryCycleConverter : BaseConverter<FuturesDeliveryCycle>
 {
     public DeliveryCycleConverter() : this(true) { }
     public DeliveryCycleConverter(bool quotes) : base(quotes) { }
 
-    protected override List<KeyValuePair<DeliveryCycle, string>> Mapping => new()
+    protected override List<KeyValuePair<FuturesDeliveryCycle, string>> Mapping => new()
     {
-        new KeyValuePair<DeliveryCycle, string>(DeliveryCycle.Weekly, "WEEKLY"),
-        new KeyValuePair<DeliveryCycle, string>(DeliveryCycle.BiWeekly, "BI-WEEKLY"),
-        new KeyValuePair<DeliveryCycle, string>(DeliveryCycle.Quarterly, "QUARTERLY"),
-        new KeyValuePair<DeliveryCycle, string>(DeliveryCycle.BiQuarterly, "BI-QUARTERLY"),
+        new KeyValuePair<FuturesDeliveryCycle, string>(FuturesDeliveryCycle.Weekly, "WEEKLY"),
+        new KeyValuePair<FuturesDeliveryCycle, string>(FuturesDeliveryCycle.BiWeekly, "BI-WEEKLY"),
+        new KeyValuePair<FuturesDeliveryCycle, string>(FuturesDeliveryCycle.Quarterly, "QUARTERLY"),
+        new KeyValuePair<FuturesDeliveryCycle, string>(FuturesDeliveryCycle.BiQuarterly, "BI-QUARTERLY"),
     };
 }

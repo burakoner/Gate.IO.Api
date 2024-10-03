@@ -1,4 +1,4 @@
-﻿namespace Gate.IO.Api.Futures.Clients;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Gate.IO Futures REST API Client

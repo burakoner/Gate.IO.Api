@@ -53,9 +53,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Futures\Responses\" />
     <Folder Include="Futures\Requests\" />
-    <Folder Include="Futures\Enums\" />
+    <Folder Include="Models\RestApi\Futures\" />
   </ItemGroup>
 
 </Project>

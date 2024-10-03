@@ -1,6 +1,4 @@
-﻿using Gate.IO.Api.Models.RestApi.Futures;
-
-namespace Gate.IO.Api.Futures.Clients;
+﻿namespace Gate.IO.Api.Futures;
 
 public class GateFuturesDeliverySettleRestApiClient
 {

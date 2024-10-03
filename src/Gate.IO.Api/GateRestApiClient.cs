@@ -1,6 +1,4 @@
-﻿using Gate.IO.Api.Futures.Clients;
-
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 /// <summary>
 /// Gate.IO REST API Client
