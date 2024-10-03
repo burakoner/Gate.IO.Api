@@ -52,4 +52,10 @@
 	<PackageReference Include="ApiSharp" Version="3.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Futures\Responses\" />
+    <Folder Include="Futures\Requests\" />
+    <Folder Include="Futures\Enums\" />
+  </ItemGroup>
+
 </Project>

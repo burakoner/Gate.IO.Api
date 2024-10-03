@@ -43,9 +43,9 @@ public class GateSpotRestApiClient
     /// </summary>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<List<GateSpotCurrency>>(Root.GetUrl(api, version, spot, currenciesEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotCurrency>>(Root.GetUrl(api, version, spot, currenciesEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -54,9 +54,9 @@ public class GateSpotRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotCurrency>> GetCurrencyAsync(string currency, CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotCurrency>> GetCurrencyAsync(string currency, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<GateSpotCurrency>(Root.GetUrl(api, version, spot, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotCurrency>(Root.GetUrl(api, version, spot, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -64,9 +64,9 @@ public class GateSpotRestApiClient
     /// </summary>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotMarket>>> GetMarketsAsync(CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotMarket>>> GetMarketsAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<List<GateSpotMarket>>(Root.GetUrl(api, version, spot, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotMarket>>(Root.GetUrl(api, version, spot, currencyPairsEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -75,9 +75,9 @@ public class GateSpotRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotMarket>> GetMarketAsync(string symbol, CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotMarket>> GetMarketAsync(string symbol, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<GateSpotMarket>(Root.GetUrl(api, version, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotMarket>(Root.GetUrl(api, version, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -87,13 +87,13 @@ public class GateSpotRestApiClient
     /// <param name="timezone"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotTicker>>> GetTickersAsync(string symbol = "", GateSpotTickerTimezone? timezone = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotTicker>>> GetTickersAsync(string symbol = "", GateSpotTickerTimezone? timezone = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("timezone", timezone);
 
-        return await Root.SendRequestInternal<List<GateSpotTicker>>(Root.GetUrl(api, version, spot, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotTicker>>(Root.GetUrl(api, version, spot, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -105,7 +105,7 @@ public class GateSpotRestApiClient
     /// <param name="withId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotOrderBook>> GetOrderBookAsync(string symbol, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotOrderBook>> GetOrderBookAsync(string symbol, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -115,7 +115,7 @@ public class GateSpotRestApiClient
             { "with_id", withId.ToString().ToLower() },
         };
 
-        return await Root.SendRequestInternal<GateSpotOrderBook>(Root.GetUrl(api, version, spot, orderbookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrderBook>(Root.GetUrl(api, version, spot, orderbookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -130,8 +130,8 @@ public class GateSpotRestApiClient
     /// <param name="page"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotTrade>>> GetTradesAsync(string symbol, DateTime from, DateTime to, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
-    => await GetTradesAsync(symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, lastId, reverse, page, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateSpotTrade>>> GetTradesAsync(string symbol, DateTime from, DateTime to, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
+    => GetTradesAsync(symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, lastId, reverse, page, ct);
 
     /// <summary>
     /// Retrieve market trades
@@ -145,7 +145,7 @@ public class GateSpotRestApiClient
     /// <param name="page"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotTrade>>> GetTradesAsync(string symbol, long? from = null, long? to = null, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotTrade>>> GetTradesAsync(string symbol, long? from = null, long? to = null, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
     {
         limit.ValidateIntBetween(nameof(limit), 1, 1000);
         var parameters = new Dictionary<string, object>
@@ -164,7 +164,7 @@ public class GateSpotRestApiClient
         //    Root.ClientOptions.ApiCredentials.Key != null &&
         //    Root.ClientOptions.ApiCredentials.Secret != null;
 
-        return await Root.SendRequestInternal<List<GateSpotTrade>>(Root.GetUrl(api, version, spot, tradesEndpoint), HttpMethod.Get, ct, sign, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotTrade>>(Root.GetUrl(api, version, spot, tradesEndpoint), HttpMethod.Get, ct, sign, queryParameters: parameters);
     }
 
     /// <summary>
@@ -177,8 +177,8 @@ public class GateSpotRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotCandlestick>>> GetCandlesticksAsync(string symbol, GateSpotCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => await GetCandlesticksAsync(symbol, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateSpotCandlestick>>> GetCandlesticksAsync(string symbol, GateSpotCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    => GetCandlesticksAsync(symbol, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
 
     /// <summary>
     /// Market candlesticks
@@ -190,7 +190,7 @@ public class GateSpotRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotCandlestick>>> GetCandlesticksAsync(string symbol, GateSpotCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotCandlestick>>> GetCandlesticksAsync(string symbol, GateSpotCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.Add("currency_pair", symbol);
@@ -199,7 +199,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("to", to);
         if (!from.HasValue && !to.HasValue) parameters.AddOptional("limit", limit);
 
-        return await Root.SendRequestInternal<List<GateSpotCandlestick>>(Root.GetUrl(api, version, spot, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotCandlestick>>(Root.GetUrl(api, version, spot, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -209,12 +209,12 @@ public class GateSpotRestApiClient
     /// <param name="symbol">Specify a currency pair to retrieve precise fee rate</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await Root.SendRequestInternal<GateSpotUserTradingFee>(Root.GetUrl(api, version, spot, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotUserTradingFee>(Root.GetUrl(api, version, spot, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -224,7 +224,7 @@ public class GateSpotRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<Dictionary<string, GateSpotUserTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
+    public Task<RestCallResult<Dictionary<string, GateSpotUserTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
     {
         if (symbols.Count() > 50) throw new ArgumentException("A request can only query up to 50 currency pairs");
 
@@ -232,7 +232,7 @@ public class GateSpotRestApiClient
             { "currency_pairs", string.Join(",", symbols) }
         };
 
-        return await Root.SendRequestInternal<Dictionary<string, GateSpotUserTradingFee>>(Root.GetUrl(api, version, spot, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<Dictionary<string, GateSpotUserTradingFee>>(Root.GetUrl(api, version, spot, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -241,12 +241,12 @@ public class GateSpotRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotBalance>>> GetBalancesAsync(string currency = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotBalance>>> GetBalancesAsync(string currency = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await Root.SendRequestInternal<List<GateSpotBalance>>(Root.GetUrl(api, version, spot, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotBalance>>(Root.GetUrl(api, version, spot, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: Query account book
@@ -258,7 +258,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<List<GateSpotBatchOrder>>> PlaceOrdersAsync(IEnumerable<GateSpotOrderRequest> requests, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotBatchOrder>>> PlaceOrdersAsync(IEnumerable<GateSpotOrderRequest> requests, CancellationToken ct = default)
     {
         foreach (var request in requests)
         {
@@ -282,7 +282,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
 
-        return await Root.SendRequestInternal<List<GateSpotBatchOrder>>(Root.GetUrl(api, version, spot, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotBatchOrder>>(Root.GetUrl(api, version, spot, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -293,7 +293,7 @@ public class GateSpotRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotOpenOrders>>> GetOpenOrdersAsync(GateSpotAccountType? account = null, int page = 1, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotOpenOrders>>> GetOpenOrdersAsync(GateSpotAccountType? account = null, int page = 1, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection()
         {
@@ -303,7 +303,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("account", account);
 
 
-        return await Root.SendRequestInternal<List<GateSpotOpenOrders>>(Root.GetUrl(api, version, spot, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotOpenOrders>>(Root.GetUrl(api, version, spot, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -312,7 +312,7 @@ public class GateSpotRestApiClient
     /// <param name="request"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotOrder>> CloseLiquidatedPositionsAsync(GateSpotCloseRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotOrder>> CloseLiquidatedPositionsAsync(GateSpotCloseRequest request, CancellationToken ct = default)
     {
         SpotHelpers.ValidateMarketSymbol(request.Symbol);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
@@ -326,7 +326,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("text", request.ClientOrderId);
         parameters.AddOptionalEnum("action_mode", request.ProcessingMode);
 
-        return await Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -347,7 +347,7 @@ public class GateSpotRestApiClient
     /// <param name="actionMode"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(
+    public Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(
         string symbol,
         GateSpotAccountType account,
         GateSpotOrderType type,
@@ -362,7 +362,7 @@ public class GateSpotRestApiClient
         GateSpotSelfTradingPreventionAction? stpAction = null,
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
-        => await PlaceOrderAsync(new GateSpotOrderRequest
+        => PlaceOrderAsync(new GateSpotOrderRequest
         {
             Account = account,
             Symbol = symbol,
@@ -377,7 +377,7 @@ public class GateSpotRestApiClient
             ClientOrderId = clientOrderId,
             SelfTradingPreventionAction = stpAction,
             ActionMode = actionMode,
-        }, ct).ConfigureAwait(false);
+        }, ct);
 
     /// <summary>
     /// 
@@ -386,7 +386,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(GateSpotOrderRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(GateSpotOrderRequest request, CancellationToken ct = default)
     {
         SpotHelpers.ValidateMarketSymbol(request.Symbol);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
@@ -422,11 +422,11 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("stp_act", request.SelfTradingPreventionAction);
         parameters.AddOptionalEnum("action_mode", request.ActionMode);
 
-        return await Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /*
-    public async Task<RestCallResult<List<SpotOrder>>> GetOrdersAsync(
+    public Task<RestCallResult<List<SpotOrder>>> GetOrdersAsync(
     string symbol,
     GateSpotOrderQueryStatus status,
     GateSpotAccountType? account = GateSpotAccountType.Spot,
@@ -436,7 +436,7 @@ public class GateSpotRestApiClient
     int page = 1,
     int limit = 100,
     CancellationToken ct = default)
-        => await GetOrdersAsync(symbol, status, account, side, from?.ConvertToMilliseconds(), to?.ConvertToMilliseconds(), page, limit, ct).ConfigureAwait(false);
+        =>  GetOrdersAsync(symbol, status, account, side, from?.ConvertToMilliseconds(), to?.ConvertToMilliseconds(), page, limit, ct);
     */
 
     /// <summary>
@@ -452,7 +452,7 @@ public class GateSpotRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotOrder>>> GetOrdersAsync(
+    public Task<RestCallResult<List<GateSpotOrder>>> GetOrdersAsync(
         string symbol,
         GateSpotOrderQueryStatus status,
         GateSpotAccountType? account = null,
@@ -475,7 +475,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("from", from);
         parameters.AddOptional("to", to);
 
-        return await Root.SendRequestInternal<List<GateSpotOrder>>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotOrder>>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -487,7 +487,7 @@ public class GateSpotRestApiClient
     /// <param name="actionMode"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotOrder>>> CancelOrdersAsync(
+    public Task<RestCallResult<List<GateSpotOrder>>> CancelOrdersAsync(
         string symbol = null,
         GateSpotAccountType? account = null,
         GateSpotOrderSide? side = null,
@@ -502,7 +502,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("side", side);
         parameters.AddOptionalEnum("action_mode", actionMode);
 
-        return await Root.SendRequestInternal<List<GateSpotOrder>>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotOrder>>(Root.GetUrl(api, version, spot, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -511,7 +511,7 @@ public class GateSpotRestApiClient
     /// <param name="requests"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelOrderRequest> requests, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelOrderRequest> requests, CancellationToken ct = default)
     {
         foreach (var request in requests)
             SpotHelpers.ValidateMarketSymbol(request.Symbol);
@@ -519,7 +519,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
 
-        return await Root.SendRequestInternal<List<GateSpotCancelOrder>>(Root.GetUrl(api, version, spot, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotCancelOrder>>(Root.GetUrl(api, version, spot, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -532,7 +532,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotOrder>> GetOrderAsync(
+    public Task<RestCallResult<GateSpotOrder>> GetOrderAsync(
         string symbol,
         long? orderId = null,
         string clientOrderId = null,
@@ -540,7 +540,7 @@ public class GateSpotRestApiClient
         CancellationToken ct = default)
     {
         SpotHelpers.ValidateMarketSymbol(symbol);
-        
+
         if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
@@ -554,7 +554,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("account", account);
 
         var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
-        return await Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
 #if NETSTANDARD2_1
@@ -572,8 +572,8 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotOrder>> AmendOrderAsync(
-        string symbol= null,
+    public Task<RestCallResult<GateSpotOrder>> AmendOrderAsync(
+        string symbol = null,
         long? orderId = null,
         string clientOrderId = null,
         decimal? amount = null,
@@ -601,10 +601,10 @@ public class GateSpotRestApiClient
 
         var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
         var uri = Root.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid));
-        if(!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
-        if(account!=null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
+        if (!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
+        if (account != null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
 
-        return await Root.SendRequestInternal<GateSpotOrder>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrder>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters);
     }
 #endif
 
@@ -619,7 +619,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotOrder>> CancelOrderAsync(
+    public Task<RestCallResult<GateSpotOrder>> CancelOrderAsync(
         string symbol,
         long? orderId = null,
         string clientOrderId = null,
@@ -641,7 +641,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("action_mode", actionMode);
 
         var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
-        return await Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotOrder>(Root.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -657,7 +657,7 @@ public class GateSpotRestApiClient
     /// <param name="clientOrderId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
+    public Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
     GateSpotAccountType account,
     string symbol,
     DateTime from,
@@ -667,7 +667,7 @@ public class GateSpotRestApiClient
     long? orderId = null,
     string clientOrderId = null,
     CancellationToken ct = default)
-        => await GetTradeHistoryAsync(account, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), page, limit, orderId, clientOrderId, ct).ConfigureAwait(false);
+        => GetTradeHistoryAsync(account, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), page, limit, orderId, clientOrderId, ct);
 
     /// <summary>
     /// List personal trading history
@@ -683,7 +683,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
+    public Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
         GateSpotAccountType? account = null,
         string symbol = "",
         long? from = null,
@@ -695,7 +695,7 @@ public class GateSpotRestApiClient
         CancellationToken ct = default)
     {
         if (!string.IsNullOrEmpty(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
-        
+
         if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
             throw new ArgumentException("Either orderId or origClientOrderId must be sent");
 
@@ -714,9 +714,9 @@ public class GateSpotRestApiClient
         parameters.AddOptional("from", from);
         parameters.AddOptional("to", to);
 
-        return await Root.SendRequestInternal<List<GateSpotTradeHistory>>(Root.GetUrl(api, version, spot, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotTradeHistory>>(Root.GetUrl(api, version, spot, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
-    
+
     /// <summary>
     /// Get server current time
     /// </summary>
@@ -724,7 +724,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
     {
-        var result = await Root.SendRequestInternal<GateSpotTime>(Root.GetUrl(api, version, spot, timeEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<GateSpotTime>(Root.GetUrl(api, version, spot, timeEndpoint), HttpMethod.Get, ct);
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -746,7 +746,7 @@ public class GateSpotRestApiClient
             { "timeout", timeout },
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
-        var result = await Root.SendRequestInternal<GateSpotCountdown>(Root.GetUrl(api, version, spot, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<GateSpotCountdown>(Root.GetUrl(api, version, spot, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -768,7 +768,7 @@ public class GateSpotRestApiClient
     /// <param name="orderClientOrderId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
+    public Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
         string symbol,
         decimal triggerPrice,
         GateSpotTriggerCondition triggerCondition,
@@ -781,7 +781,7 @@ public class GateSpotRestApiClient
         decimal? orderPrice,
         string orderClientOrderId = "",
         CancellationToken ct = default)
-        => await PlacePriceTriggeredOrderAsync(new GateSpotPriceTriggeredOrderRequest
+        => PlacePriceTriggeredOrderAsync(new GateSpotPriceTriggeredOrderRequest
         {
             Symbol = symbol,
             Trigger = new GateSpotTriggerPrice
@@ -800,7 +800,7 @@ public class GateSpotRestApiClient
                 Price = orderPrice?.ToGateString(),
                 ClientOrderId = orderClientOrderId,
             }
-        }, ct).ConfigureAwait(false);
+        }, ct);
 
     /// <summary>
     /// Create a price-triggered order
@@ -815,7 +815,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
 
-        var result = await Root.SendRequestInternal<GateSpotPriceTriggeredOrderId>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await Root.SendRequestInternal<GateSpotPriceTriggeredOrderId>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.OrderId ?? default);
     }
 
@@ -829,7 +829,7 @@ public class GateSpotRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(
+    public Task<RestCallResult<List<GateSpotPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(
     GateSpotTriggerFilter status,
     GateSpotAccountType? account = null,
     string symbol = "",
@@ -844,7 +844,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("limit", limit);
         parameters.AddOptional("offset", offset);
 
-        return await Root.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -854,9 +854,9 @@ public class GateSpotRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<IEnumerable<GateSpotPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(
-        GateSpotAccountType? account = null, 
-        string symbol = "", 
+    public Task<RestCallResult<IEnumerable<GateSpotPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(
+        GateSpotAccountType? account = null,
+        string symbol = "",
         CancellationToken ct = default)
     {
         if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
@@ -865,7 +865,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("market", symbol);
         parameters.AddOptionalEnum("account", account);
 
-        return await Root.SendRequestInternal<IEnumerable<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<IEnumerable<GateSpotPriceTriggeredOrder>>(Root.GetUrl(api, version, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -876,7 +876,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotPriceTriggeredOrder>> GetPriceTriggeredOrderAsync(
+    public Task<RestCallResult<GateSpotPriceTriggeredOrder>> GetPriceTriggeredOrderAsync(
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
@@ -888,7 +888,7 @@ public class GateSpotRestApiClient
             throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
 
         var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
-        return await Root.SendRequestInternal<GateSpotPriceTriggeredOrder>(Root.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotPriceTriggeredOrder>(Root.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -899,7 +899,7 @@ public class GateSpotRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSpotPriceTriggeredOrder>> CancelPriceTriggeredOrderAsync(
+    public Task<RestCallResult<GateSpotPriceTriggeredOrder>> CancelPriceTriggeredOrderAsync(
         long? orderId = null,
         string clientOrderId = null,
         CancellationToken ct = default)
@@ -911,6 +911,6 @@ public class GateSpotRestApiClient
             throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
 
         var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
-        return await Root.SendRequestInternal<GateSpotPriceTriggeredOrder>(Root.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSpotPriceTriggeredOrder>(Root.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true);
     }
 }

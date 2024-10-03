@@ -113,7 +113,7 @@ public class GateSwapRestApiClient
     /// <param name="reverse"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSwapOrder>>> GetOrdersAsync(
+    public Task<RestCallResult<List<GateSwapOrder>>> GetOrdersAsync(
         GateSwapOrderStatus? status = null,
         string sellCurrency = "",
         string buyCurrency = "",
@@ -132,7 +132,7 @@ public class GateSwapRestApiClient
         parameters.AddOptional("sell_currency", sellCurrency);
         parameters.AddOptional("buy_currency", buyCurrency);
 
-        return await Root.SendRequestInternal<List<GateSwapOrder>>(Root.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateSwapOrder>>(Root.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -141,9 +141,9 @@ public class GateSwapRestApiClient
     /// <param name="orderId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSwapOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
+    public Task<RestCallResult<GateSwapOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<GateSwapOrder>(Root.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSwapOrder>(Root.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -155,19 +155,19 @@ public class GateSwapRestApiClient
     /// <param name="buyAmount"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(
+    public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(
         string sellCurrency,
         decimal sellAmount,
         string buyCurrency,
         decimal buyAmount,
         CancellationToken ct = default)
-        => await PreviewOrderAsync(new GateSwapOrderRequest
+        => PreviewOrderAsync(new GateSwapOrderRequest
         {
             SellCurrency = sellCurrency,
             SellAmount = sellAmount,
             BuyCurrency = buyCurrency,
             BuyAmount = buyAmount,
-        }, ct).ConfigureAwait(false);
+        }, ct);
 
     /// <summary>
     /// Initiate a flash swap order preview
@@ -176,7 +176,7 @@ public class GateSwapRestApiClient
     /// <param name="ct"></param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
-    public async Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
     {
         if (request.PreviewId.HasValue) throw new ArgumentException("PreviewId must be null for preview endpoint", nameof(request.PreviewId));
 
@@ -186,6 +186,6 @@ public class GateSwapRestApiClient
         parameters.Add("buy_currency", request.BuyCurrency);
         parameters.AddOptionalString("buy_amount", request.BuyAmount);
 
-        return await Root.SendRequestInternal<GateSwapOrderPreview>(Root.GetUrl(api, version, swap, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateSwapOrderPreview>(Root.GetUrl(api, version, swap, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 }

@@ -50,7 +50,7 @@ public class GateWalletRestApiClient
     /// <param name="clientOrderId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTransaction>> WithdrawAsync(
+    public Task<RestCallResult<GateWalletTransaction>> WithdrawAsync(
         string currency,
         decimal amount,
         string chain,
@@ -69,7 +69,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("memo", memo);
         parameters.AddOptionalParameter("withdraw_order_id", clientOrderId);
 
-        return await Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, ""), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, ""), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -81,7 +81,7 @@ public class GateWalletRestApiClient
     /// <param name="amount"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletPush>> PushAsync(
+    public Task<RestCallResult<GateWalletPush>> PushAsync(
         long receiverUid,
         string currency,
         decimal amount,
@@ -94,7 +94,7 @@ public class GateWalletRestApiClient
             { "amount", amount.ToGateString() },
         };
 
-        return await Root.SendRequestInternal<GateWalletPush>(Root.GetUrl(api, version, withdrawalsSection, pushEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletPush>(Root.GetUrl(api, version, withdrawalsSection, pushEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -103,9 +103,9 @@ public class GateWalletRestApiClient
     /// <param name="withdrawalId"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
+    public Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, withdrawalId.ToString()), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTransaction>(Root.GetUrl(api, version, withdrawalsSection, withdrawalId.ToString()), HttpMethod.Delete, ct, true);
     }
 
     /// <summary>
@@ -114,13 +114,13 @@ public class GateWalletRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletCurencyChain>>> GetCurrencyChainsAsync(string currency, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletCurencyChain>>> GetCurrencyChainsAsync(string currency, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "currency", currency },
         };
-        return await Root.SendRequestInternal<List<GateWalletCurencyChain>>(Root.GetUrl(api, version, walletSection, currencyChainsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletCurencyChain>>(Root.GetUrl(api, version, walletSection, currencyChainsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -129,13 +129,13 @@ public class GateWalletRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletDepositAddress>> GetDepositAddressAsync(string currency, CancellationToken ct = default)
+    public Task<RestCallResult<GateWalletDepositAddress>> GetDepositAddressAsync(string currency, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "currency", currency },
         };
-        return await Root.SendRequestInternal<GateWalletDepositAddress>(Root.GetUrl(api, version, walletSection, depositAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletDepositAddress>(Root.GetUrl(api, version, walletSection, depositAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -148,8 +148,8 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetWithdrawalsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    => GetWithdrawalsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
 
     /// <summary>
     /// Retrieve withdrawal records
@@ -161,7 +161,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -170,7 +170,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return await Root.SendRequestInternal<List<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, withdrawalsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, withdrawalsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -183,8 +183,8 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetDepositsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    => GetDepositsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
 
     /// <summary>
     /// Retrieve deposit records
@@ -196,7 +196,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<IEnumerable<GateWalletTransaction>>> GetDepositsAsync(string currency = "", long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
@@ -205,7 +205,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return await Root.SendRequestInternal<IEnumerable<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<IEnumerable<GateWalletTransaction>>(Root.GetUrl(api, version, walletSection, depositsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -219,7 +219,7 @@ public class GateWalletRestApiClient
     /// <param name="settle"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTransactionId>> TransfersBetweenTradingAccountsAsync(
+    public Task<RestCallResult<GateWalletTransactionId>> TransfersBetweenTradingAccountsAsync(
         string currency,
         GateWalletAccountType from,
         GateWalletAccountType to,
@@ -238,7 +238,7 @@ public class GateWalletRestApiClient
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptional("settle", settle);
 
-        return await Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, transfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, transfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -252,7 +252,7 @@ public class GateWalletRestApiClient
     /// <param name="subAccountType"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTransactionId>> TransferBetweenMainAndSubAccountsAsync(
+    public Task<RestCallResult<GateWalletTransactionId>> TransferBetweenMainAndSubAccountsAsync(
         string currency,
         long subAccountId,
         GateWalletTransferDirection direction,
@@ -271,7 +271,7 @@ public class GateWalletRestApiClient
         parameters.AddOptional("client_order_id", clientOrderId);
         parameters.AddOptionalEnum("sub_account_type", subAccountType);
 
-        return await Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -284,8 +284,8 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetTransfersBetweenMainAndSubAccountsAsync(subUserAccounts, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+    => GetTransfersBetweenMainAndSubAccountsAsync(subUserAccounts, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
 
     /// <summary>
     /// Retrieve transfer records between main and sub accounts
@@ -297,7 +297,7 @@ public class GateWalletRestApiClient
     /// <param name="offset"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
@@ -306,7 +306,7 @@ public class GateWalletRestApiClient
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("offset", offset);
 
-        return await Root.SendRequestInternal<List<GateWalletTransferRecord>>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletTransferRecord>>(Root.GetUrl(api, version, walletSection, subAccountTransfersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -320,7 +320,7 @@ public class GateWalletRestApiClient
     /// <param name="amount"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTransactionId>> TransferBetweenSubAccountsAsync(
+    public Task<RestCallResult<GateWalletTransactionId>> TransferBetweenSubAccountsAsync(
         string currency,
         long senderSubAccountId,
         GateWalletSubAccountType senderSubAccountType,
@@ -339,7 +339,7 @@ public class GateWalletRestApiClient
         parameters.AddEnum("sub_account_from_type", senderSubAccountType);
         parameters.AddEnum("sub_account_to_type", recipientSubAccountType);
 
-        return await Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountToSubAccountEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTransactionId>(Root.GetUrl(api, version, walletSection, subAccountToSubAccountEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -348,12 +348,12 @@ public class GateWalletRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletWithdrawal>>> GetWithdrawalStatusAsync(string currency = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletWithdrawal>>> GetWithdrawalStatusAsync(string currency = "", CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await Root.SendRequestInternal<List<GateWalletWithdrawal>>(Root.GetUrl(api, version, walletSection, withdrawStatusEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletWithdrawal>>(Root.GetUrl(api, version, walletSection, withdrawStatusEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -362,12 +362,12 @@ public class GateWalletRestApiClient
     /// <param name="subUserAccounts"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletSubAccountBalance>>> GetSubAccountBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSubAccountBalance>>> GetSubAccountBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return await Root.SendRequestInternal<List<GateWalletSubAccountBalance>>(Root.GetUrl(api, version, walletSection, subAccountBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletSubAccountBalance>>(Root.GetUrl(api, version, walletSection, subAccountBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -376,12 +376,12 @@ public class GateWalletRestApiClient
     /// <param name="subUserAccounts"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletSubAccountMarginBalance>>> GetSubAccountMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSubAccountMarginBalance>>> GetSubAccountMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return await Root.SendRequestInternal<List<GateWalletSubAccountMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletSubAccountMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -391,13 +391,13 @@ public class GateWalletRestApiClient
     /// <param name="settle"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletSubAccountFuturesBalance>>> GetSubAccountFuturesBalancesAsync(List<long> subUserAccounts = null, string settle = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSubAccountFuturesBalance>>> GetSubAccountFuturesBalancesAsync(List<long> subUserAccounts = null, string settle = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
         parameters.AddOptionalParameter("settle", settle);
 
-        return await Root.SendRequestInternal<List<GateWalletSubAccountFuturesBalance>>(Root.GetUrl(api, version, walletSection, subAccountFuturesBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletSubAccountFuturesBalance>>(Root.GetUrl(api, version, walletSection, subAccountFuturesBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -406,12 +406,12 @@ public class GateWalletRestApiClient
     /// <param name="subUserAccounts"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletSubAccountCrossMarginBalance>>> GetSubAccountCrossMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSubAccountCrossMarginBalance>>> GetSubAccountCrossMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         if (subUserAccounts != null && subUserAccounts.Count > 0) parameters.AddOptionalParameter("sub_uid", string.Join(",", subUserAccounts));
 
-        return await Root.SendRequestInternal<List<GateWalletSubAccountCrossMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountCrossMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletSubAccountCrossMarginBalance>>(Root.GetUrl(api, version, walletSection, subAccountCrossMarginBalancesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -422,7 +422,7 @@ public class GateWalletRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = "", int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = "", int limit = 100, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
@@ -431,7 +431,7 @@ public class GateWalletRestApiClient
         };
         parameters.AddOptionalParameter("chain", chain);
 
-        return await Root.SendRequestInternal<List<GateWalletSavedAddress>>(Root.GetUrl(api, version, walletSection, savedAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateWalletSavedAddress>>(Root.GetUrl(api, version, walletSection, savedAddressEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -441,13 +441,13 @@ public class GateWalletRestApiClient
     /// <param name="settle"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", string settle = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateWalletUserTradingFee>> GetUserFeeRatesAsync(string symbol = "", string settle = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("settle", settle);
 
-        return await Root.SendRequestInternal<GateWalletUserTradingFee>(Root.GetUrl(api, version, walletSection, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletUserTradingFee>(Root.GetUrl(api, version, walletSection, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -456,12 +456,12 @@ public class GateWalletRestApiClient
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateWalletTotalBalance>> GetTotalBalanceAsync(string currency = "USDT", CancellationToken ct = default)
+    public Task<RestCallResult<GateWalletTotalBalance>> GetTotalBalanceAsync(string currency = "USDT", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await Root.SendRequestInternal<GateWalletTotalBalance>(Root.GetUrl(api, version, walletSection, totalBalanceEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateWalletTotalBalance>(Root.GetUrl(api, version, walletSection, totalBalanceEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: List small balance

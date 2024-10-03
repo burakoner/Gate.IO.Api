@@ -1,9 +1,11 @@
-﻿namespace Gate.IO.Api;
+﻿using Gate.IO.Api.Futures.Clients;
+
+namespace Gate.IO.Api;
 
 /// <summary>
 /// Gate.IO REST API Client
 /// </summary>
-public sealed class GateRestApiClient : RestApiClient
+public class GateRestApiClient : RestApiClient
 {
     // Options
     internal ILogger Logger { get; }
@@ -35,7 +37,11 @@ public sealed class GateRestApiClient : RestApiClient
     /// Flash Swap Client
     /// </summary>
     public GateSwapRestApiClient Swap { get; }
-    public RestApiFuturesClient Futures { get; }
+
+    /// <summary>
+    /// Futures Client
+    /// </summary>
+    public GateFuturesRestApiClient Futures { get; }
     public RestApiOptionsClient Options { get; }
     public RestApiRebateClient Rebate { get; }
     public RestApiBrokerClient Broker { get; }
@@ -78,7 +84,7 @@ public sealed class GateRestApiClient : RestApiClient
         SubAccount = new GateSubAccountRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
-        Futures = new RestApiFuturesClient(this);
+        Futures = new GateFuturesRestApiClient(this);
         Swap = new GateSwapRestApiClient(this);
         Options = new RestApiOptionsClient(this);
         Rebate = new RestApiRebateClient(this);

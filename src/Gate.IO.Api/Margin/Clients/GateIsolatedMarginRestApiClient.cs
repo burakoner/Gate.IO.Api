@@ -30,12 +30,12 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateMarginBalance>>> GetBalancesAsync(string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<List<GateMarginBalance>>> GetBalancesAsync(string symbol = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await Root.SendRequestInternal<List<GateMarginBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateMarginBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -50,16 +50,16 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(
+    public Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(
         string currency,
         string symbol,
         DateTime from,
         DateTime to,
-        string type = null, 
+        string type = null,
         int page = 1,
         int limit = 100,
         CancellationToken ct = default)
-        => await GetBalanceHistoryAsync(currency, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), type, page, limit, ct).ConfigureAwait(false);
+        => GetBalanceHistoryAsync(currency, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), type, page, limit, ct);
 
     /// <summary>
     /// List margin account balance change history
@@ -73,12 +73,12 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="limit"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(
+    public Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(
         string currency = "",
         string symbol = "",
         long? from = null,
         long? to = null,
-        string type = null, 
+        string type = null,
         int page = 1,
         int limit = 100,
         CancellationToken ct = default)
@@ -94,23 +94,23 @@ public class GateIsolatedMarginRestApiClient
         parameters.AddOptional("to", to);
         parameters.AddOptional("type", type);
 
-        return await Root.SendRequestInternal<List<GateMarginBalanceHistory>>(Root.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateMarginBalanceHistory>>(Root.GetUrl(api, version, margin, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
-    
+
     /// <summary>
     /// Funding account list
     /// </summary>
     /// <param name="currency"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateMarginFundingBalance>>> GetFundingBalancesAsync(
-        string currency = "", 
+    public Task<RestCallResult<List<GateMarginFundingBalance>>> GetFundingBalancesAsync(
+        string currency = "",
         CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return await Root.SendRequestInternal<List<GateMarginFundingBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<List<GateMarginFundingBalance>>(Root.GetUrl(api, version, margin, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -119,24 +119,24 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="status"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateMarginAutoRepayment>> SetAutoRepaymentAsync(GateMarginAutoRepaymentStatus status, CancellationToken ct = default)
+    public Task<RestCallResult<GateMarginAutoRepayment>> SetAutoRepaymentAsync(GateMarginAutoRepaymentStatus status, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddEnum("status", status);
 
-        return await Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
-    
+
     /// <summary>
     /// Retrieve user auto repayment setting
     /// </summary>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateMarginAutoRepayment>> GetAutoRepaymentAsync(CancellationToken ct = default)
+    public Task<RestCallResult<GateMarginAutoRepayment>> GetAutoRepaymentAsync(CancellationToken ct = default)
     {
-        return await Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateMarginAutoRepayment>(Root.GetUrl(api, version, margin, autoRepayEndpoint), HttpMethod.Get, ct, true);
     }
-    
+
     /// <summary>
     /// Get the max transferable amount for a specific margin currency
     /// </summary>
@@ -144,14 +144,14 @@ public class GateIsolatedMarginRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(string currency, string symbol = "", CancellationToken ct = default)
+    public Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(string currency, string symbol = "", CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object> {
             { "currency", currency },
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
 
-        return await Root.SendRequestInternal<GateMarginAmount>(Root.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return Root.SendRequestInternal<GateMarginAmount>(Root.GetUrl(api, version, margin, transferableEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
 
