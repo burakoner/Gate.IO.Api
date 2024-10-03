@@ -17,6 +17,7 @@ global using Gate.IO.Api.Margin;
 global using Gate.IO.Api.Models.StreamApi;
 global using Gate.IO.Api.Spot;
 global using Gate.IO.Api.SubAccount;
+global using Gate.IO.Api.Swap;
 global using Gate.IO.Api.Wallet;
 global using Microsoft.Extensions.Logging;
 global using Newtonsoft.Json;

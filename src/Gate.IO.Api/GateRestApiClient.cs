@@ -34,7 +34,7 @@ public sealed class GateRestApiClient : RestApiClient
     /// <summary>
     /// Flash Swap Client
     /// </summary>
-    public RestApiSwapClient Swap { get; }
+    public GateSwapRestApiClient Swap { get; }
     public RestApiFuturesClient Futures { get; }
     public RestApiOptionsClient Options { get; }
     public RestApiRebateClient Rebate { get; }
@@ -79,7 +79,7 @@ public sealed class GateRestApiClient : RestApiClient
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
         Futures = new RestApiFuturesClient(this);
-        Swap = new RestApiSwapClient(this);
+        Swap = new GateSwapRestApiClient(this);
         Options = new RestApiOptionsClient(this);
         Rebate = new RestApiRebateClient(this);
         Broker = new RestApiBrokerClient(this);

@@ -64,7 +64,7 @@ public class GateSpotRestApiClient
     /// </summary>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateSpotMarket>>> GetPairsAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateSpotMarket>>> GetMarketsAsync(CancellationToken ct = default)
     {
         return await Root.SendRequestInternal<List<GateSpotMarket>>(Root.GetUrl(api, version, spot, currencyPairsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
     }
@@ -75,7 +75,7 @@ public class GateSpotRestApiClient
     /// <param name="symbol"></param>
     /// <param name="ct"></param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateSpotMarket>> GetPairAsync(string symbol, CancellationToken ct = default)
+    public async Task<RestCallResult<GateSpotMarket>> GetMarketAsync(string symbol, CancellationToken ct = default)
     {
         return await Root.SendRequestInternal<GateSpotMarket>(Root.GetUrl(api, version, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct).ConfigureAwait(false);
     }

@@ -52,8 +52,4 @@
 	<PackageReference Include="ApiSharp" Version="3.0.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Margin\Requests\" />
-  </ItemGroup>
-
 </Project>
