@@ -224,7 +224,8 @@ public class GateSpotRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<Dictionary<string, GateSpotUserTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
     {
-        if (symbols.Count() > 50) throw new ArgumentException("A request can only query up to 50 currency pairs");
+        if (symbols.Count() > 50) 
+            throw new ArgumentException("A request can only query up to 50 currency pairs");
 
         var parameters = new Dictionary<string, object> {
             { "currency_pairs", string.Join(",", symbols) }
@@ -539,19 +540,13 @@ public class GateSpotRestApiClient
     {
         SpotHelpers.ValidateMarketSymbol(symbol);
 
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
         var parameters = new ParameterCollection()
         {
             { "currency_pair", symbol },
         };
         parameters.AddOptionalEnum("account", account);
 
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
@@ -583,12 +578,6 @@ public class GateSpotRestApiClient
     {
         SpotHelpers.ValidateMarketSymbol(symbol);
 
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("account", account);
@@ -597,7 +586,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("amend_text", amendText);
         parameters.AddOptionalEnum("action_mode", actionMode);
 
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         var uri = _.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid));
         if (!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
         if (account != null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
@@ -627,18 +616,12 @@ public class GateSpotRestApiClient
     {
         SpotHelpers.ValidateMarketSymbol(symbol);
 
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("account", account);
         parameters.AddOptionalEnum("action_mode", actionMode);
 
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
@@ -694,13 +677,7 @@ public class GateSpotRestApiClient
     {
         if (!string.IsNullOrEmpty(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
 
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         var parameters = new ParameterCollection
         {
             { "page", page },
@@ -879,13 +856,7 @@ public class GateSpotRestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true);
     }
 
@@ -902,13 +873,7 @@ public class GateSpotRestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        if (!orderId.HasValue && string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Either orderId or origClientOrderId must be sent");
-
-        if (orderId.HasValue && !string.IsNullOrEmpty(clientOrderId))
-            throw new ArgumentException("Only of of orderId and origClientOrderId can be sent");
-
-        var oid = orderId.HasValue ? orderId.Value.ToString() : clientOrderId;
+        var oid = _.CheckOrderId(orderId, clientOrderId);
         return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, version, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true);
     }
 }

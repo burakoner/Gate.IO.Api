@@ -141,6 +141,16 @@ public class GateRestApiClient : RestApiClient
         Thread.CurrentThread.CurrentUICulture = CI;
         return await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
     }
+
+    internal string CheckOrderId(long? orderId, string clientOrderId)
+    {
+        if (orderId == null && string.IsNullOrEmpty(clientOrderId))
+            throw new ArgumentException("Either orderId or clientOrderId must be provided");
+        if (orderId != null && !string.IsNullOrEmpty(clientOrderId))
+            throw new ArgumentException("Either orderId or clientOrderId must be provided, not both");
+
+        return orderId != null ? orderId.ToString() : clientOrderId;
+    }
     #endregion
 
     #region Public Methods

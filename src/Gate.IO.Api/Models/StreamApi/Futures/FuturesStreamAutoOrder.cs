@@ -12,7 +12,7 @@ public class FuturesStreamAutoOrder
     public long? TradeId { get; set; }
 
     [JsonProperty("status")]
-    public FuturesPriceTriggerStatus Status { get; set; }
+    public GateFuturesPriceTriggerStatus Status { get; set; }
 
     [JsonProperty("reason")]
     public string Reason { get; set; }
@@ -36,7 +36,7 @@ public class FuturesStreamAutoOrder
     public FuturesStreamAutoOrderInitial Order { get; set; }
 
     [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
-    public FuturesTriggerOrderType? Type { get; set; }
+    public GateFuturesTriggerType? Type { get; set; }
 
     [JsonProperty("me_order_id")]
     public long MeOrderId { get; set; }
@@ -57,10 +57,10 @@ public class FuturesStreamAutoOrderStopTrigger
 public class FuturesStreamAutoOrderTrigger
 {
     [JsonProperty("strategy_type")]
-    public FuturesTriggerOrderStrategyType StrategyType { get; set; }
+    public GateFuturesTriggerStrategy StrategyType { get; set; }
 
     [JsonProperty("price_type")]
-    public FuturesTriggerOrderPriceType PriceType { get; set; }
+    public GateFuturesTriggerPrice PriceType { get; set; }
 
     [JsonProperty("price")]
     public decimal? Price { get; set; }

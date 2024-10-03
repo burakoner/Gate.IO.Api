@@ -3,17 +3,17 @@
 /// <summary>
 /// Trade role. No value in public endpoints
 /// </summary>
-public enum FuturesTraderRole
+public enum GateFuturesTradeRole
 {
     /// <summary>
     /// Enum Taker for value: taker
     /// </summary>
     [Map("taker")]
-    Taker = 1,
+    Taker,
 
     /// <summary>
     /// Enum Maker for value: maker
     /// </summary>
     [Map("maker")]
-    Maker = 2
+    Maker
 }

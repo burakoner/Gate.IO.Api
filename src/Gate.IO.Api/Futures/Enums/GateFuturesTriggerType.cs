@@ -1,6 +1,9 @@
 ﻿namespace Gate.IO.Api.Futures;
 
-public enum FuturesTriggerOrderType
+/// <summary>
+/// FuturesTriggerOrderType
+/// </summary>
+public enum GateFuturesTriggerType
 {
     /// <summary>
     /// order take-profit/stop-loss, close long position

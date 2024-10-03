@@ -176,7 +176,8 @@ public class GateSwapRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
     {
-        if (request.PreviewId.HasValue) throw new ArgumentException("PreviewId must be null for preview endpoint", nameof(request.PreviewId));
+        if (request.PreviewId.HasValue) 
+            throw new ArgumentException("PreviewId must be null for preview endpoint", nameof(request.PreviewId));
 
         var parameters = new ParameterCollection();
         parameters.Add("sell_currency", request.SellCurrency);

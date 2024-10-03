@@ -12,7 +12,7 @@ public class DeliveryContract
     public FuturesDeliveryCycle cycle { get; set; }
 
     [JsonProperty("type")]
-    public FuturesContractType Type { get; set; }
+    public GateFuturesContractType Type { get; set; }
 
     [JsonProperty("quanto_multiplier")]
     public decimal QuantoMultiplier { get; set; }

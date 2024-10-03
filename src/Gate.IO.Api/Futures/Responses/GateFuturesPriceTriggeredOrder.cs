@@ -1,6 +1,9 @@
 namespace Gate.IO.Api.Futures;
 
-public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
+/// <summary>
+/// GateFuturesPriceTriggeredOrder
+/// </summary>
+public class GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderRequest
 {
     /// <summary>
     /// Auto order ID
@@ -26,6 +29,9 @@ public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
     [JsonProperty("finish_time")]
     public DateTime? FinishTime { get; set; }
 
+    /// <summary>
+    /// ID of the newly created order on condition triggered
+    /// </summary>
     [JsonProperty("trade_id")]
     public long? TradeId { get; set; }
 
@@ -33,14 +39,23 @@ public class FuturesTriggerOrderResponse : FuturesTriggerOrderRequest
     /// Status
     /// </summary>
     [JsonProperty("status")]
-    public FuturesPriceTriggerStatus Status { get; set; }
+    public GateFuturesPriceTriggerStatus Status { get; set; }
 
+    /// <summary>
+    /// How order is finished
+    /// </summary>
     [JsonProperty("finish_as")]
-    public GateFuturesOrderFinishAs? FinishedAs { get; set; }
+    public GateFuturesOrderFinishAs? FinishAs { get; set; }
 
     /// <summary>
     /// Additional remarks on how the order was finished
     /// </summary>
     [JsonProperty("reason")]
     public string Reason { get; set; }
+
+    /// <summary>
+    /// Corresponding order ID of order take-profit/stop-loss.
+    /// </summary>
+    [JsonProperty("me_order_id")]
+    public long MeOrderId { get; set; }
 }

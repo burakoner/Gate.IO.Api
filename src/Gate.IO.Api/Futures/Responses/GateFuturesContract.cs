@@ -15,7 +15,7 @@ public class GateFuturesContract
     /// Futures contract type
     /// </summary>
     [JsonProperty("type")]
-    public FuturesContractType Type { get; set; }
+    public GateFuturesContractType Type { get; set; }
 
     /// <summary>
     /// Multiplier used in converting from invoicing to settlement currency
