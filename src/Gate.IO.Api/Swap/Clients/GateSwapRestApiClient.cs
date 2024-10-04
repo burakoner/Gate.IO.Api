@@ -8,7 +8,7 @@ public class GateSwapRestApiClient
     // Api
     private const string api = "api";
     private const string version = "4";
-    private const string swap = "flash_swap";
+    private const string section = "flash_swap";
 
     // Endpoints
     private const string currenciesEndpoint = "currencies";
@@ -25,11 +25,12 @@ public class GateSwapRestApiClient
     /// <summary>
     /// List all supported currencies in flash swap
     /// </summary>
-    /// <param name="ct"></param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    [Obsolete]
     public Task<RestCallResult<List<GateSwapCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateSwapCurrency>>(_.GetUrl(api, version, swap, currenciesEndpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<List<GateSwapCurrency>>(_.GetUrl(api, version, section, currenciesEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -51,19 +52,19 @@ public class GateSwapRestApiClient
         };
         parameters.AddOptionalParameter("currency", currency);
 
-        return _.SendRequestInternal<List<GateSwapMarket>>(_.GetUrl(api, version, swap, currencyPairsEndpoint), HttpMethod.Get, ct, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSwapMarket>>(_.GetUrl(api, version, section, currencyPairsEndpoint), HttpMethod.Get, ct, queryParameters: parameters);
     }
 
     /// <summary>
     /// Create a flash swap order
     /// Initiate a flash swap preview in advance because order creation requires a preview result
     /// </summary>
-    /// <param name="previewId"></param>
-    /// <param name="sellCurrency"></param>
-    /// <param name="sellAmount"></param>
-    /// <param name="buyCurrency"></param>
-    /// <param name="buyAmount"></param>
-    /// <param name="ct"></param>
+    /// <param name="previewId">Preview result ID</param>
+    /// <param name="sellCurrency">The name of the asset being sold, as obtained from the "GET /flash_swap/currency_pairs" API, which retrieves a list of supported flash swap currency pairs.</param>
+    /// <param name="sellAmount">Amount to sell (based on the preview result)</param>
+    /// <param name="buyCurrency">The name of the asset being purchased, as obtained from the "GET /flash_swap/currency_pairs" API, which provides a list of supported flash swap currency pairs.</param>
+    /// <param name="buyAmount">Amount to buy (based on the preview result)</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrder>> PlaceOrderAsync(
         long previewId,
@@ -85,8 +86,8 @@ public class GateSwapRestApiClient
     /// Create a flash swap order
     /// Initiate a flash swap preview in advance because order creation requires a preview result
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="ct"></param>
+    /// <param name="request">Order Request</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrder>> PlaceOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
     {
@@ -97,19 +98,19 @@ public class GateSwapRestApiClient
         parameters.Add("buy_currency", request.BuyCurrency);
         parameters.AddOptionalString("buy_amount", request.BuyAmount);
 
-        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
     /// List all flash swap orders
     /// </summary>
-    /// <param name="status"></param>
-    /// <param name="sellCurrency"></param>
-    /// <param name="buyCurrency"></param>
-    /// <param name="page"></param>
-    /// <param name="limit"></param>
-    /// <param name="reverse"></param>
-    /// <param name="ct"></param>
+    /// <param name="status">Flash swap order status</param>
+    /// <param name="sellCurrency">Currency to sell which can be retrieved from supported currency list API GET /flash_swap/currencies</param>
+    /// <param name="buyCurrency">Currency to buy which can be retrieved from supported currency list API GET /flash_swap/currencies</param>
+    /// <param name="page">Page number</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="reverse">If results are sorted by id in reverse order. Default to true</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateSwapOrder>>> GetOrdersAsync(
         GateSwapOrderStatus? status = null,
@@ -130,28 +131,28 @@ public class GateSwapRestApiClient
         parameters.AddOptional("sell_currency", sellCurrency);
         parameters.AddOptional("buy_currency", buyCurrency);
 
-        return _.SendRequestInternal<List<GateSwapOrder>>(_.GetUrl(api, version, swap, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSwapOrder>>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
     /// Get a single order
     /// </summary>
-    /// <param name="orderId"></param>
-    /// <param name="ct"></param>
+    /// <param name="orderId">Flash swap order ID</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, swap, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSwapOrder>(_.GetUrl(api, version, section, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
     /// Initiate a flash swap order preview
     /// </summary>
-    /// <param name="sellCurrency"></param>
-    /// <param name="sellAmount"></param>
-    /// <param name="buyCurrency"></param>
-    /// <param name="buyAmount"></param>
-    /// <param name="ct"></param>
+    /// <param name="sellCurrency">The name of the asset being sold, as obtained from the "GET /flash_swap/currency_pairs" API, which retrieves a list of supported flash swap currency pairs.</param>
+    /// <param name="sellAmount">Amount to sell.</param>
+    /// <param name="buyCurrency">The name of the asset being purchased, as obtained from the "GET /flash_swap/currency_pairs" API, which provides a list of supported flash swap currency pairs.</param>
+    /// <param name="buyAmount">Amount to buy.</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(
         string sellCurrency,
@@ -170,8 +171,8 @@ public class GateSwapRestApiClient
     /// <summary>
     /// Initiate a flash swap order preview
     /// </summary>
-    /// <param name="request"></param>
-    /// <param name="ct"></param>
+    /// <param name="request">Preview Request</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
@@ -185,6 +186,6 @@ public class GateSwapRestApiClient
         parameters.Add("buy_currency", request.BuyCurrency);
         parameters.AddOptionalString("buy_amount", request.BuyAmount);
 
-        return _.SendRequestInternal<GateSwapOrderPreview>(_.GetUrl(api, version, swap, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSwapOrderPreview>(_.GetUrl(api, version, section, ordersPreviewEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 }

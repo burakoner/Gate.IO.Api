@@ -148,9 +148,9 @@ public class StreamApiFuturesPerpetualClient
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserTradesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidatesAsync(GateFuturesSettlement settle, int userId, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
-        => await SubscribeToUserLiquidatesAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidatesAsync(GateFuturesSettlement settle, int userId, string contract, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(GateFuturesSettlement settle, int userId, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
+        => await SubscribeToUserLiquidationsAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(GateFuturesSettlement settle, int userId, string contract, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());

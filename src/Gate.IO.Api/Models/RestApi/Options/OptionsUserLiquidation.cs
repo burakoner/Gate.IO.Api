@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.RestApi.Options;
 
-public class OptionsUserLiquidate
+public class OptionsUserLiquidation
 {
     [JsonProperty("time")]
     public DateTime Time { get; set; }

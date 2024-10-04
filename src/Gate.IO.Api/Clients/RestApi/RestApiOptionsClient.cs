@@ -259,13 +259,13 @@ public class RestApiOptionsClient
     #endregion
 
     #region List user's liquidation history of specified underlying
-    public async Task<RestCallResult<List<OptionsUserLiquidate>>> GetUserLiquidatesAsync(string underlying, string contract = null, CancellationToken ct = default)
+    public async Task<RestCallResult<List<OptionsUserLiquidation>>> GetUserLiquidatesAsync(string underlying, string contract = null, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await _.SendRequestInternal<List<OptionsUserLiquidate>>(_.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<OptionsUserLiquidation>>(_.GetUrl(api, version, options, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
     #endregion
 

@@ -8,7 +8,7 @@ public class GateFuturesPerpetualRestApiClient
     // Api
     private const string api = "api";
     private const string version = "4";
-    private const string futures = "futures";
+    private const string section = "futures";
 
     // Endpoints
     private const string settleContractsEndpoint = "{settle}/contracts";
@@ -49,12 +49,28 @@ public class GateFuturesPerpetualRestApiClient
     // Root Client
     internal GateRestApiClient _ { get; }
 
-    // Public Clients
+    /// <summary>
+    /// BTC Settled Perpetual Futures Client
+    /// </summary>
     public GateFuturesPerpetualSettleRestApiClient BTC { get; }
+
+    /// <summary>
+    /// USD Settled Perpetual Futures Client
+    /// </summary>
     public GateFuturesPerpetualSettleRestApiClient USD { get; }
+
+    /// <summary>
+    /// USDT Settled Perpetual Futures Client
+    /// </summary>
     public GateFuturesPerpetualSettleRestApiClient USDT { get; }
-    public GateFuturesPerpetualSettleRestApiClient this[GateFuturesSettlement settle] => _clients[settle];
-    private Dictionary<GateFuturesSettlement, GateFuturesPerpetualSettleRestApiClient> _clients { get; }
+
+    /// <summary>
+    /// Get a perpetual futures settle client
+    /// </summary>
+    /// <param name="settle">Perpetual Settlement Asset</param>
+    /// <returns></returns>
+    public GateFuturesPerpetualSettleRestApiClient this[GateFuturesSettlement settle] => Clients[settle];
+    private Dictionary<GateFuturesSettlement, GateFuturesPerpetualSettleRestApiClient> Clients { get; }
 
     // Constructor
     internal GateFuturesPerpetualRestApiClient(GateRestApiClient root)
@@ -64,7 +80,7 @@ public class GateFuturesPerpetualRestApiClient
         BTC = new GateFuturesPerpetualSettleRestApiClient(this, GateFuturesSettlement.BTC);
         USD = new GateFuturesPerpetualSettleRestApiClient(this, GateFuturesSettlement.USD);
         USDT = new GateFuturesPerpetualSettleRestApiClient(this, GateFuturesSettlement.USDT);
-        _clients = new Dictionary<GateFuturesSettlement, GateFuturesPerpetualSettleRestApiClient>
+        Clients = new Dictionary<GateFuturesSettlement, GateFuturesPerpetualSettleRestApiClient>
         {
             { GateFuturesSettlement.BTC, BTC },
             { GateFuturesSettlement.USD, USD },
@@ -81,7 +97,7 @@ public class GateFuturesPerpetualRestApiClient
             { "limit", limit },
         };
         var endpoint = settleContractsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesContract>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesContract>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Get a single contract
@@ -90,7 +106,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleContractsContractEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesContract>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<GateFuturesContract>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct);
     }
 
     // Futures order book
@@ -105,7 +121,7 @@ public class GateFuturesPerpetualRestApiClient
         };
 
         var endpoint = settleOrderBookEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<GateFuturesOrderBook>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesOrderBook>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Futures trading history
@@ -126,7 +142,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleTradesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesTrade>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesTrade>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Get futures candlesticks
@@ -146,7 +162,7 @@ public class GateFuturesPerpetualRestApiClient
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
 
         var endpoint = settleCandlesticksEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesCandlestick>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesCandlestick>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Premium Index K-Line
@@ -166,7 +182,7 @@ public class GateFuturesPerpetualRestApiClient
         if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
 
         var endpoint = settlePremiumIndexEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesCandlestickPremium>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesCandlestickPremium>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // List futures tickers
@@ -176,7 +192,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settleTickersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesTicker>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesTicker>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Funding rate history
@@ -195,7 +211,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleFundingRateEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesFundingRate>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesFundingRate>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Futures insurance balance history
@@ -207,7 +223,7 @@ public class GateFuturesPerpetualRestApiClient
         };
 
         var endpoint = settleInsuranceEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesInsuranceBalance>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesInsuranceBalance>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Futures stats
@@ -226,7 +242,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("from", from);
 
         var endpoint = settleContractStatsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesStats>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesStats>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Get index constituents
@@ -235,15 +251,15 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleIndexConstituentsIndexEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{index}", index);
-        return _.SendRequestInternal<GateFuturesIndexConstituents>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<GateFuturesIndexConstituents>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct);
     }
 
     // Retrieve liquidation history
-    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidatesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => GetLiquidatesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
+    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    => GetLiquidationsAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
 
     // Retrieve liquidation history
-    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidatesAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -254,16 +270,16 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("to", to);
 
         var endpoint = settleLiqOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesLiquidation>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesLiquidation>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // TODO: List risk limit tiers
 
     // Query futures account
-    internal Task<RestCallResult<GateFuturesBalance>> GetBalanceAsync(GateFuturesSettlement settle, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesBalance>> GetBalancesAsync(GateFuturesSettlement settle, CancellationToken ct = default)
     {
         var endpoint = settleAccountsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<GateFuturesBalance>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateFuturesBalance>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Query account book
@@ -282,7 +298,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptional("offset", offset);
 
         var endpoint = settleAccountBookEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesBalanceChange>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesBalanceChange>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // List all positions of a user
@@ -294,7 +310,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptional("offset", offset);
 
         var endpoint = settlePositionsEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesPosition>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateFuturesPosition>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Get single position
@@ -303,7 +319,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePositionsContractEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Update position margin
@@ -315,7 +331,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePositionsContractMarginEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Update position leverage
@@ -328,7 +344,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePositionsContractLeverageEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Update position risk limit
@@ -340,7 +356,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePositionsContractRiskLimitEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Enable or disable dual mode
@@ -353,7 +369,7 @@ public class GateFuturesPerpetualRestApiClient
 
         var endpoint = settleDualModeEndpoint
             .Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<GateFuturesBalance>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesBalance>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Retrieve position detail in dual mode
@@ -362,7 +378,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleDualCompPositionsContractEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<List<GateFuturesPosition>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateFuturesPosition>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Update position margin in dual mode
@@ -375,7 +391,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleDualCompPositionsContractMarginEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Update position leverage in dual mode
@@ -388,7 +404,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleDualCompPositionsContractLeverageEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Update position risk limit in dual mode
@@ -400,11 +416,23 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleDualCompPositionsContractRiskLimitEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
-        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     // Create a futures order
-    internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateFuturesSettlement settle, string contract, long size, long? iceberg = null, decimal? price = null, bool? close = null, bool? reduceOnly = null, string clientOrderId = null, GateFuturesTimeInForce? timeInForce = null, GateFuturesOrderAutoSize? autoSize = null, GateFuturesSelfTradeAction? selfTradeAction = null, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(
+        GateFuturesSettlement settle, 
+        string contract, 
+        long size, 
+        long? iceberg = null, 
+        decimal? price = null, 
+        bool? close = null, 
+        bool? reduceOnly = null, 
+        string clientOrderId = null, 
+        GateFuturesTimeInForce? timeInForce = null, 
+        GateFuturesOrderAutoSize? autoSize = null, 
+        GateFuturesSelfTradeAction? selfTradeAction = null, 
+        CancellationToken ct = default)
         => PlaceOrderAsync(settle, new GateFuturesOrderRequest
         {
             Contract = contract,
@@ -438,7 +466,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalEnum("stp_act", request.SelfTradeAction);
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     // List futures orders
@@ -454,7 +482,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("last_id", lastId);
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // Cancel all open orders matched
@@ -467,7 +495,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalEnum("side", side);
 
         var endpoint = settleOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     // TODO: List Futures Orders By Time Range
@@ -485,7 +513,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.SetBody(requests);
 
         var endpoint = settleBatchOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesBatchOrder>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesBatchOrder>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     // Get a single order
@@ -494,7 +522,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
-        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Cancel a single order
@@ -503,14 +531,14 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
-        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Delete, ct, true);
     }
 
     // Amend an order
-    internal Task<RestCallResult<GateFuturesOrder>> AmendOrderAsync(GateFuturesSettlement settle, 
-        long? orderId = null, 
-        string clientOrderId = null, 
-        long? size = null, 
+    internal Task<RestCallResult<GateFuturesOrder>> AmendOrderAsync(GateFuturesSettlement settle,
+        long? orderId = null,
+        string clientOrderId = null,
+        long? size = null,
         decimal? price = null,
         string amendText = null,
         string businessInfo = null,
@@ -527,7 +555,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settleOrdersOrderIdEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
-        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
     // List personal trading history
@@ -543,15 +571,15 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("order", orderId);
 
         var endpoint = settleMyTradesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesUserTrade>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesUserTrade>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // List personal trading history by time range
-    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesTradeRole? role= null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => GetUserTradesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), role, limit, offset, ct);
-    
+
     // List personal trading history by time range
-    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesTradeRole? role= null,int limit = 100, int offset = 0, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -564,15 +592,15 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalEnum("role", role);
 
         var endpoint = settleMyTradesTimerangeEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesUserTrade>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesUserTrade>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // List position close history
-    internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesPositionSide? side=null, decimal? pnl=null,int limit = 100, int offset = 0, CancellationToken ct = default)
-        => GetPositionClosesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), side,pnl,limit, offset, ct);
-    
+    internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesPositionSide? side = null, decimal? pnl = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => GetPositionClosesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), side, pnl, limit, offset, ct);
+
     // List position close history
-    internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesPositionSide? side=null, decimal? pnl=null,int limit = 100, int offset = 0, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesPositionSide? side = null, decimal? pnl = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -586,11 +614,11 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalString("pnl", pnl);
 
         var endpoint = settlePositionCloseEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesPositionClose>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesPositionClose>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // List liquidation history
-    internal Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidatesAsync(GateFuturesSettlement settle, string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(GateFuturesSettlement settle, string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -600,7 +628,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("at", at);
 
         var endpoint = settleLiquidatesEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesUserLiquidation>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesUserLiquidation>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // List Auto-Deleveraging History
@@ -616,7 +644,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settleCountdownCancelAllEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        var result = await _.SendRequestInternal<GateFuturesCountdown>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateFuturesCountdown>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -675,6 +703,7 @@ public class GateFuturesPerpetualRestApiClient
             }
         }, ct);
 
+    // Create a price-triggered order
     internal async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
     {
         PerpetualHelpers.ValidateContractSymbol(request.Order.Contract);
@@ -683,18 +712,18 @@ public class GateFuturesPerpetualRestApiClient
         parameters.SetBody(request);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        var result = await _.SendRequestInternal<GateFuturesPriceTriggeredOrderId>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateFuturesPriceTriggeredOrderId>(_.GetUrl(api, version, section, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.OrderId ?? default);
     }
 
     // List all auto orders
     internal Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(
-    GateFuturesSettlement settle,
-    GateSpotTriggerFilter status,
-    string contract = null,
-    int limit = 100,
-    int offset = 0,
-    CancellationToken ct = default)
+        GateFuturesSettlement settle,
+        GateSpotTriggerFilter status,
+        string contract = null,
+        int limit = 100,
+        int offset = 0,
+        CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -705,11 +734,11 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptionalParameter("contract", contract);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesPriceTriggeredOrder>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesPriceTriggeredOrder>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // Cancel all open orders
-    internal Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(GateFuturesSettlement settle, string contract=null, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(GateFuturesSettlement settle, string contract = null, CancellationToken ct = default)
     {
         PerpetualHelpers.ValidateContractSymbol(contract);
 
@@ -717,7 +746,7 @@ public class GateFuturesPerpetualRestApiClient
         parameters.AddOptional("contract", contract);
 
         var endpoint = settlePriceOrdersEndpoint.Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesPriceTriggeredOrder>>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesPriceTriggeredOrder>>(_.GetUrl(api, version, section, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     // Get a price-triggered order
@@ -726,7 +755,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.ToString());
-        return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Cancel a price-triggered order
@@ -735,7 +764,7 @@ public class GateFuturesPerpetualRestApiClient
         var endpoint = settlePriceOrdersOrderIdEndpoint
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{order_id}", orderId.ToString());
-        return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, version, futures, endpoint), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, version, section, endpoint), HttpMethod.Delete, ct, true);
     }
 
 }

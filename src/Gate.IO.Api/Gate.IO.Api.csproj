@@ -8,24 +8,22 @@
   <PropertyGroup>
     <PackageId>Gate.IO.Api</PackageId>
 	<Authors>Burak Öner</Authors>
-	<Version>4.4.1003</Version>
-	<FileVersion>4.4.1003</FileVersion>
-	<PackageVersion>4.4.1003</PackageVersion>
-	<AssemblyVersion>4.4.1003</AssemblyVersion>
+	<Version>4.4.1004</Version>
+	<FileVersion>4.4.1004</FileVersion>
+	<PackageVersion>4.4.1004</PackageVersion>
+	<AssemblyVersion>4.4.1004</AssemblyVersion>
 	<Description>Gate.IO API v4 Wrapper. Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
 	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 	<PackageTags>Gate Gate.IO Binance Coinbase Kraken KuCoin Bitstamp Huobi OKX Okex ApiSharp Api Sharp Coin Token BNB BTC ETH Bitcoin Ether Ethereum Rest Web Socket Websocket Stream Webstream Client Wrapper Connector Crypto Currency Cryptocurrency Exchange Trade Trading Spot Margin Futures Derivates Stock Options Swap</PackageTags>
 	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<NeutralLanguage>en</NeutralLanguage>
 	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<PackageReleaseNotes>
-		Version 4.4.1003 - 03 Oct 2024
-	</PackageReleaseNotes>
+	<NeutralLanguage>en</NeutralLanguage>
 	<PackageIcon>Gate.IO.png</PackageIcon>
-	<PackageIconUrl />
+	<PackageReleaseNotes>Please refer to changelog at Github https://github.com/burakoner/Gate.IO.Api/blob/master/CHANGELOG.md</PackageReleaseNotes>
 	<PackageProjectUrl>https://github.com/burakoner/Gate.IO.Api</PackageProjectUrl>
 	<RepositoryUrl>https://github.com/burakoner/Gate.IO.Api</RepositoryUrl>
 	<GenerateDocumentationFile>True</GenerateDocumentationFile>
+	<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
@@ -48,12 +46,17 @@
 	<None Include="Gate.IO.png" Pack="true" PackagePath="" />
   </ItemGroup>
 
+  <PropertyGroup>
+	<PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
   <ItemGroup>
-	<PackageReference Include="ApiSharp" Version="3.0.0" />
+	<None Include="../../CHANGELOG.md" Pack="true" PackagePath="\" />
+	<None Include="../../README.md" Pack="true" PackagePath="\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\RestApi\Futures\" />
+	<PackageReference Include="ApiSharp" Version="3.0.0" />
   </ItemGroup>
 
 </Project>

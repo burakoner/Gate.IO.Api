@@ -39,13 +39,13 @@ public class GateWalletRestApiClient
     /// Withdraw
     /// Withdrawals to Gate addresses do not incur transaction fees.
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="amount"></param>
-    /// <param name="chain"></param>
-    /// <param name="address"></param>
-    /// <param name="memo"></param>
-    /// <param name="clientOrderId"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="amount">Currency amount</param>
+    /// <param name="chain">Name of the chain used in withdrawals</param>
+    /// <param name="address">Withdrawal address. Required for withdrawals</param>
+    /// <param name="memo">Additional remarks with regards to the withdrawal</param>
+    /// <param name="clientOrderId">Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransaction>> WithdrawAsync(
         string currency,
@@ -73,10 +73,10 @@ public class GateWalletRestApiClient
     /// UID transfer
     /// Transfers between main spot accounts are allowed; however, both parties cannot be sub-accounts
     /// </summary>
-    /// <param name="receiverUid"></param>
-    /// <param name="currency"></param>
-    /// <param name="amount"></param>
-    /// <param name="ct"></param>
+    /// <param name="receiverUid">Recipient UID</param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="amount">Transfer amount</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletPush>> PushAsync(
         long receiverUid,
@@ -97,8 +97,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Cancel withdrawal with specified ID
     /// </summary>
-    /// <param name="withdrawalId"></param>
-    /// <param name="ct"></param>
+    /// <param name="withdrawalId">Withdrawal Id</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
     {
@@ -108,8 +108,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// List chains supported for specified currency
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletCurencyChain>>> GetCurrencyChainsAsync(string currency, CancellationToken ct = default)
     {
@@ -123,8 +123,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Generate currency deposit address
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletDepositAddress>> GetDepositAddressAsync(string currency, CancellationToken ct = default)
     {
@@ -138,12 +138,12 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve withdrawal records
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => GetWithdrawalsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
@@ -151,12 +151,12 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve withdrawal records
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
@@ -173,12 +173,12 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve deposit records
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Filter by currency. Return all currency records if not specified</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">The maximum number of entries returned in the list is limited to 500 transactions.</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(string currency, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => GetDepositsAsync(currency, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
@@ -186,12 +186,12 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve deposit records
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Filter by currency. Return all currency records if not specified</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">The maximum number of entries returned in the list is limited to 500 transactions.</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(string currency = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
@@ -208,13 +208,13 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Transfer between trading accounts
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="amount"></param>
-    /// <param name="symbol"></param>
-    /// <param name="settle"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Transfer currency. For futures account, currency can be set to POINT or settle currency</param>
+    /// <param name="from">Account to transfer from</param>
+    /// <param name="to">Account to transfer to</param>
+    /// <param name="amount">Transfer amount</param>
+    /// <param name="symbol">Margin currency pair. Required if transfer from or to margin account</param>
+    /// <param name="settle">Futures settle currency. Required if transferring from or to futures account</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransactionId>> TransfersBetweenTradingAccountsAsync(
         string currency,
@@ -241,13 +241,13 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Transfer between main and sub accounts
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="subAccountId"></param>
-    /// <param name="direction"></param>
-    /// <param name="amount"></param>
-    /// <param name="clientOrderId"></param>
-    /// <param name="subAccountType"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Transfer currency name</param>
+    /// <param name="subAccountId">Sub account user ID</param>
+    /// <param name="direction">Transfer direction. to - transfer into sub account; from - transfer out from sub account</param>
+    /// <param name="amount">Transfer amount</param>
+    /// <param name="clientOrderId">The custom ID provided by the customer serves as a safeguard against duplicate transfers. It can be a combination of letters (case-sensitive), numbers, hyphens '-', and underscores '_', with a length ranging from 1 to 64 characters.</param>
+    /// <param name="subAccountType">Target sub user's account. spot - spot account, futures - perpetual contract account, delivery - delivery account</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransactionId>> TransferBetweenMainAndSubAccountsAsync(
         string currency,
@@ -273,26 +273,30 @@ public class GateWalletRestApiClient
 
     /// <summary>
     /// Retrieve transfer records between main and sub accounts
+    /// Retrieve transfer records between main and sub accounts
+    /// Record time range cannot exceed 30 days
     /// </summary>
-    /// <param name="subUserAccounts"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="subUserAccounts">User ID of sub-account, you can query multiple records separated by ,. If not specified, it will return the records of all sub accounts</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
     => GetTransfersBetweenMainAndSubAccountsAsync(subUserAccounts, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct);
 
     /// <summary>
     /// Retrieve transfer records between main and sub accounts
+    /// Retrieve transfer records between main and sub accounts
+    /// Record time range cannot exceed 30 days
     /// </summary>
-    /// <param name="subUserAccounts"></param>
-    /// <param name="from"></param>
-    /// <param name="to"></param>
-    /// <param name="limit"></param>
-    /// <param name="offset"></param>
-    /// <param name="ct"></param>
+    /// <param name="subUserAccounts">User ID of sub-account, you can query multiple records separated by ,. If not specified, it will return the records of all sub accounts</param>
+    /// <param name="from">Time range beginning, default to 7 days before current time</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransferRecord>>> GetTransfersBetweenMainAndSubAccountsAsync(List<long> subUserAccounts = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
@@ -308,14 +312,15 @@ public class GateWalletRestApiClient
 
     /// <summary>
     /// Sub-account transfers to sub-account
+    /// It is possible to perform balance transfers between two sub-accounts under the same main account. You can use either the API Key of the main account or the API Key of the sub-account to initiate the transfer.
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="senderSubAccountId"></param>
-    /// <param name="recipientSubAccountId"></param>
-    /// <param name="senderSubAccountType"></param>
-    /// <param name="recipientSubAccountType"></param>
-    /// <param name="amount"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Transfer currency name</param>
+    /// <param name="senderSubAccountId">Transfer from the user id of the sub-account</param>
+    /// <param name="senderSubAccountType">Transfer from the account. (deprecate, use sub_account_from_type and sub_account_to_type instead)</param>
+    /// <param name="recipientSubAccountId">Transfer to the user id of the sub-account</param>
+    /// <param name="recipientSubAccountType">The sub-account's outgoing trading account, spot - spot account, futures - perpetual contract account, delivery - delivery contract account.</param>
+    /// <param name="amount">Transfer amount</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransactionId>> TransferBetweenSubAccountsAsync(
         string currency,
@@ -342,8 +347,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve withdrawal status
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Retrieve data of the specified currency</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletWithdrawal>>> GetWithdrawalStatusAsync(string currency = null, CancellationToken ct = default)
     {
@@ -356,8 +361,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve sub account balances
     /// </summary>
-    /// <param name="subUserAccounts"></param>
-    /// <param name="ct"></param>
+    /// <param name="subUserAccounts">User ID of sub-account, you can query multiple records separated by ,. If not specified, it will return the records of all sub accounts</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletSubAccountBalance>>> GetSubAccountBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
@@ -371,7 +376,7 @@ public class GateWalletRestApiClient
     /// Query sub accounts' margin balances
     /// </summary>
     /// <param name="subUserAccounts"></param>
-    /// <param name="ct"></param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletSubAccountMarginBalance>>> GetSubAccountMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
@@ -384,9 +389,9 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Query sub accounts' futures account balances
     /// </summary>
-    /// <param name="subUserAccounts"></param>
-    /// <param name="settle"></param>
-    /// <param name="ct"></param>
+    /// <param name="subUserAccounts">User ID of sub-account, you can query multiple records separated by ,. If not specified, it will return the records of all sub accounts</param>
+    /// <param name="settle">Query only balances of specified settle currency</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletSubAccountFuturesBalance>>> GetSubAccountFuturesBalancesAsync(List<long> subUserAccounts = null, string settle = null, CancellationToken ct = default)
     {
@@ -400,8 +405,8 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Query subaccount's cross_margin account info
     /// </summary>
-    /// <param name="subUserAccounts"></param>
-    /// <param name="ct"></param>
+    /// <param name="subUserAccounts">User ID of sub-account, you can query multiple records separated by ,. If not specified, it will return the records of all sub accounts</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletSubAccountCrossMarginBalance>>> GetSubAccountCrossMarginBalancesAsync(List<long> subUserAccounts = null, CancellationToken ct = default)
     {
@@ -414,10 +419,10 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Query saved address
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="chain"></param>
-    /// <param name="limit"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency name</param>
+    /// <param name="chain">Chain name</param>
+    /// <param name="limit">Maximum number returned, 100 at most</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = null, int limit = 100, CancellationToken ct = default)
     {
@@ -434,9 +439,9 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Retrieve personal trading fee
     /// </summary>
-    /// <param name="symbol"></param>
-    /// <param name="settle"></param>
-    /// <param name="ct"></param>
+    /// <param name="symbol">Specify a currency pair to retrieve precise fee rate</param>
+    /// <param name="settle">Specify the settlement currency of the contract to get more accurate rate settings</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletUserTradingFee>> GetUserFeeRatesAsync(string symbol = null, string settle = null, CancellationToken ct = default)
     {
@@ -449,9 +454,16 @@ public class GateWalletRestApiClient
 
     /// <summary>
     /// Retrieve user's total balances
+    /// 
+    /// This endpoint returns an approximate sum of exchanged amount from all currencies to input currency for each account.The exchange rate and account balance could have been cached for at most 1 minute. It is not recommended to use its result for any trading calculation.
+    /// For trading calculation, use the corresponding account query endpoint for each account type. For example:
+    /// 
+    /// GET /spot/accounts to query spot account balance
+    /// GET /margin/accounts to query margin account balance
+    /// GET /futures/{settle}/accounts to query futures account balance
     /// </summary>
-    /// <param name="currency"></param>
-    /// <param name="ct"></param>
+    /// <param name="currency">Currency unit used to calculate the balance amount. BTC, CNY, USD and USDT are allowed. USDT is the default.</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTotalBalance>> GetTotalBalanceAsync(string currency = "USDT", CancellationToken ct = default)
     {

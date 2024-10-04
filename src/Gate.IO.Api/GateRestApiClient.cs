@@ -1,4 +1,11 @@
-﻿namespace Gate.IO.Api;
+﻿using Gate.IO.Api.Spot;
+using Gate.IO.Api.SubAccount;
+using Gate.IO.Api.Swap;
+using Gate.IO.Api.Wallet;
+using Gate.IO.Api.Margin;
+using Gate.IO.Api.Futures;
+
+namespace Gate.IO.Api;
 
 /// <summary>
 /// Gate.IO REST API Client

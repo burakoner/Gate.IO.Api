@@ -182,13 +182,13 @@ public class StreamApiOptionsClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserTradesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidatesAsync(int userId, string contract, Action<WebSocketDataEvent<OptionsStreamUserLiquidate>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(int userId, string contract, Action<WebSocketDataEvent<OptionsStreamUserLiquidation>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamUserLiquidate>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamUserLiquidation>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserLiquidatesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }

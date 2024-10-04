@@ -61,10 +61,10 @@ public class StreamApiFuturesDeliverySettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserTradesAsync(int userId, string contract, Action<WebSocketDataEvent<GateFuturesUserTrade>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserTradesAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidatesAsync(int userId, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
-        => await MainClient.SubscribeToUserLiquidatesAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidatesAsync(int userId, string contract, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
-        => await MainClient.SubscribeToUserLiquidatesAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(int userId, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToUserLiquidationsAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(int userId, string contract, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToUserLiquidationsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(int userId, Action<WebSocketDataEvent<FuturesUserDeleverage>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserDeleveragesAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
