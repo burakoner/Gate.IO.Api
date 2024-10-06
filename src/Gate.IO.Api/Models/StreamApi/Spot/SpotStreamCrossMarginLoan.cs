@@ -6,7 +6,7 @@ public  class SpotStreamCrossMarginLoan
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("currency")]
     public string Currency { get; set; }

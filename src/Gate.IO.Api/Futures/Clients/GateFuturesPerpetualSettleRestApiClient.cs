@@ -283,7 +283,7 @@ public class GateFuturesPerpetualSettleRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(string contract, DateTime from, DateTime to, GateFuturesBalanceType type, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(string contract, DateTime from, DateTime to, GateFuturesBalanceChangeType type, int limit = 100, int offset = 0, CancellationToken ct = default)
         => _.GetBalanceHistoryAsync(Settlement, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), type, limit, offset, ct);
     
     /// <summary>
@@ -298,7 +298,7 @@ public class GateFuturesPerpetualSettleRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(string contract = null, long? from = null, long? to = null, GateFuturesBalanceType? type = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(string contract = null, long? from = null, long? to = null, GateFuturesBalanceChangeType? type = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => _.GetBalanceHistoryAsync(Settlement, contract, from, to, type, limit, offset, ct);
 
     /// <summary>

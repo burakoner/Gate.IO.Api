@@ -129,10 +129,10 @@ public class GateCrossMarginRestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object> {
+        var parameters = new ParameterCollection {
             { "currency", currency },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
         parameters.AddOptionalParameter("text", clientOrderId);
 
         return _.SendRequestInternal<GateCrossMarginLoan>(_.GetUrl(api, version, section, loansEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
@@ -186,10 +186,11 @@ public class GateCrossMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateCrossMarginLoan>> RepayAsync(string currency, decimal amount, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object> {
+        var parameters = new ParameterCollection
+        {
             { "currency", currency },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
 
         return _.SendRequestInternal<GateCrossMarginLoan>(_.GetUrl(api, version, section, repaymentsEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }

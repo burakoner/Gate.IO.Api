@@ -1,9 +1,4 @@
-﻿using Gate.IO.Api.Spot;
-using Gate.IO.Api.SubAccount;
-using Gate.IO.Api.Swap;
-using Gate.IO.Api.Wallet;
-using Gate.IO.Api.Margin;
-using Gate.IO.Api.Futures;
+﻿using Gate.IO.Api.Rebate;
 
 namespace Gate.IO.Api;
 
@@ -47,9 +42,22 @@ public class GateRestApiClient : RestApiClient
     /// Futures Client
     /// </summary>
     public GateFuturesRestApiClient Futures { get; }
-    public RestApiOptionsClient Options { get; }
-    public RestApiRebateClient Rebate { get; }
-    public RestApiBrokerClient Broker { get; }
+
+    /// <summary>
+    /// Options Client
+    /// </summary>
+    public GateOptionsRestApiClient Options { get; }
+
+    // TODO: EarnUni
+    // TODO: Collateral-loan
+    // TODO: Multi-collateral-loan
+    // TODO: Earn
+    // TODO: Account
+
+    /// <summary>
+    /// Rebate Client
+    /// </summary>
+    public GateRebateRestApiClient Rebate { get; }
 
     /// <summary>
     /// Gate.IO REST API Client Constructor
@@ -91,9 +99,8 @@ public class GateRestApiClient : RestApiClient
         Margin = new GateMarginRestApiClient(this);
         Futures = new GateFuturesRestApiClient(this);
         Swap = new GateSwapRestApiClient(this);
-        Options = new RestApiOptionsClient(this);
-        Rebate = new RestApiRebateClient(this);
-        Broker = new RestApiBrokerClient(this);
+        Options = new GateOptionsRestApiClient(this);
+        Rebate = new GateRebateRestApiClient(this);
     }
 
     #region Override Methods

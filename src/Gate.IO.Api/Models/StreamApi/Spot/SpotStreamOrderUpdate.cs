@@ -1,5 +1,3 @@
-using Gate.IO.Api.Spot;
-
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamOrderUpdate

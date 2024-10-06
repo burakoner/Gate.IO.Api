@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Options;
 public class OptionsStreamUserLiquidation
 {
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("init_margin")]
     public decimal InitialMargin { get; set; }

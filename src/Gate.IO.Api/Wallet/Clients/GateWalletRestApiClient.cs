@@ -56,13 +56,13 @@ public class GateWalletRestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "currency", currency },
-            { "amount", amount.ToGateString() },
             { "chain", chain },
             { "address", address },
         };
+        parameters.AddString("amount", amount);
         parameters.AddOptionalParameter("memo", memo);
         parameters.AddOptionalParameter("withdraw_order_id", clientOrderId);
 
@@ -84,12 +84,12 @@ public class GateWalletRestApiClient
         decimal amount,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "receive_uid", receiverUid },
             { "currency", currency },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
 
         return _.SendRequestInternal<GateWalletPush>(_.GetUrl(api, version, withdrawalsSection, pushEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -228,8 +228,8 @@ public class GateWalletRestApiClient
         var parameters = new ParameterCollection()
         {
             { "currency", currency },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
         parameters.AddEnum("from", from);
         parameters.AddEnum("to", to);
         parameters.AddOptional("currency_pair", symbol);
@@ -262,8 +262,8 @@ public class GateWalletRestApiClient
         {
             { "currency", currency },
             { "sub_account", subAccountId },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
         parameters.AddEnum("direction", direction);
         parameters.AddOptional("client_order_id", clientOrderId);
         parameters.AddOptionalEnum("sub_account_type", subAccountType);
@@ -336,8 +336,8 @@ public class GateWalletRestApiClient
             { "currency", currency },
             { "sub_account_from", senderSubAccountId },
             { "sub_account_to", recipientSubAccountId },
-            { "amount", amount.ToGateString() },
         };
+        parameters.AddString("amount", amount);
         parameters.AddEnum("sub_account_from_type", senderSubAccountType);
         parameters.AddEnum("sub_account_to_type", recipientSubAccountType);
 

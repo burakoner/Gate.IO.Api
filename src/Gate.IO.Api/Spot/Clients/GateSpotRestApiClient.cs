@@ -336,9 +336,9 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection()
         {
             { "currency_pair", request.Symbol },
-            { "amount", request.Amount.ToGateString() },
-            { "price", request.Price.ToGateString() },
         };
+        parameters.AddString("price", request.Price);
+        parameters.AddString("amount", request.Amount);
         parameters.AddOptional("text", request.ClientOrderId);
         parameters.AddOptionalEnum("action_mode", request.ProcessingMode);
 
@@ -443,15 +443,14 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection()
         {
             { "currency_pair", request.Symbol },
-            { "amount", request.Amount.ToGateString() },
         };
-
+        parameters.AddString("amount", request.Amount);
         parameters.AddEnum("side", request.Side);
         parameters.AddEnum("type", request.Type);
         parameters.AddEnum("account", request.Account);
         parameters.AddEnum("time_in_force", request.TimeInForce);
         parameters.AddOptional("text", request.ClientOrderId);
-        parameters.AddOptional("price", request.Price?.ToGateString());
+        parameters.AddOptionalString("price", request.Price);
         parameters.AddOptional("iceberg", request.Iceberg);
         parameters.AddOptional("auto_borrow", request.AutoBorrow);
         parameters.AddOptional("auto_repay", request.AutoRepay);

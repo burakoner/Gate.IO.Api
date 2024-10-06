@@ -27,7 +27,7 @@ public class GateFuturesBalanceChange
     /// Changing Type：
     /// </summary>
     [JsonProperty("type")]
-    public GateFuturesBalanceType Type { get; set; }
+    public GateFuturesBalanceChangeType Type { get; set; }
 
     /// <summary>
     /// Comment

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Futures;
 public class FuturesStreamAutoOrder
 {
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("id")]
     public long OrderId { get; set; }

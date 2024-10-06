@@ -24,7 +24,7 @@ public class OptionsStreamUserSettlement
     public string Underlying { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("time")]
     public DateTime Time { get; set; }

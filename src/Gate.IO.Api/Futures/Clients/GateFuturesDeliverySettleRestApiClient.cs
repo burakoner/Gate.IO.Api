@@ -168,7 +168,7 @@ public class GateFuturesDeliverySettleRestApiClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesBalanceType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesBalanceChangeType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
         => MainClient.GetBalanceHistoryAsync(Settlement, type, from, to, limit, ct);
     
     /// <summary>
@@ -181,7 +181,7 @@ public class GateFuturesDeliverySettleRestApiClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesBalanceType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesBalanceChangeType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
         => MainClient.GetBalanceHistoryAsync(Settlement, type, from, to, limit, ct);
     
     /// <summary>

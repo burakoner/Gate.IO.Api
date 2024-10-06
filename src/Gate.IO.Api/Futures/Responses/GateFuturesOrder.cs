@@ -15,7 +15,7 @@ public class GateFuturesOrder
     /// User ID
     /// </summary>
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
     
     /// <summary>
     /// Creation time of order

@@ -12,10 +12,10 @@ public class OptionsStreamBalance
     public string Comment { get; set; }
 
     [JsonProperty("type")]
-    public OptionsAccountBookType Type { get; set; }
+    public GateOptionsBalanceChangeType Type { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("time")]
     public DateTime Time { get; set; }

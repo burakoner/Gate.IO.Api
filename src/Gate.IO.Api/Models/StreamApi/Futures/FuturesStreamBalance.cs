@@ -9,10 +9,10 @@ public class FuturesStreamBalance
     public long TimeInMilliseconds { get; set; }
 
     [JsonProperty("type")]
-    public GateFuturesBalanceType Type { get; set; }
+    public GateFuturesBalanceChangeType Type { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("currency")]
     public string Currency { get; set; }

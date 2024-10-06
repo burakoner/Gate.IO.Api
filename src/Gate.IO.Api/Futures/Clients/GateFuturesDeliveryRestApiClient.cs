@@ -163,11 +163,11 @@ public class GateFuturesDeliveryRestApiClient
     }
 
     // Query account book
-    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceChangeType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
     => GetBalanceHistoryAsync(settle, type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
 
     // Query account book
-    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceChangeType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("from", from);

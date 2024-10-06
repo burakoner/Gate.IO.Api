@@ -9,7 +9,7 @@ public class FuturesStreamReduceRiskLimit
     public long TimeInMilliseconds { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("cancel_orders")]
     public int CancelOrders { get; set; }

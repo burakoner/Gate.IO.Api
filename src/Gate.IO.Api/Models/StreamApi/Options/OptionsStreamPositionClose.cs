@@ -1,3 +1,5 @@
+using Gate.IO.Api.Options;
+
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
 public class OptionsStreamPositionClose
@@ -12,7 +14,7 @@ public class OptionsStreamPositionClose
     public long SettleSize { get; set; }
     
     [JsonProperty("side")]
-    public OptionsSide Side { get; set; }
+    public GateOptionsSide Side { get; set; }
 
     [JsonProperty("text")]
     public string ClientOrderId { get; set; }
@@ -21,7 +23,7 @@ public class OptionsStreamPositionClose
     public string Underlying { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 
     [JsonProperty("time")]
     public DateTime Time { get; set; }

@@ -1,3 +1,5 @@
+using Gate.IO.Api.Options;
+
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
 public class OptionsStreamContract
@@ -63,7 +65,7 @@ public class OptionsStreamContract
     public decimal StrikePrice { get; set; }
 
     [JsonProperty("tag")]
-    public OptionsContractPeriod Period { get; set; }
+    public GateOptionsContractPeriod Period { get; set; }
 
     [JsonProperty("taker_fee_rate")]
     public decimal TakerFeeRate { get; set; }

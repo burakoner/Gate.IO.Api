@@ -24,5 +24,5 @@ public class FuturesUserDeleverage
     public string Contract { get; set; }
 
     [JsonProperty("user")]
-    public int UserId { get; set; }
+    public long UserId { get; set; }
 }
