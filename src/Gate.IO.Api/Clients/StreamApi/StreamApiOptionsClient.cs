@@ -30,12 +30,12 @@ public class StreamApiOptionsClient
     private const string optionsUserPositionsChannel = "options.positions";
 
     // Internal
-    internal GateStreamClient RootClient { get; }
+    internal GateWebSocketClient RootClient { get; }
     internal StreamApiBaseClient BaseClient { get; }
-    internal GateStreamClientOptions ClientOptions { get; }
+    internal GateWebSocketClientOptions ClientOptions { get; }
     private string BaseAddress { get => ClientOptions.StreamOptionsAddress; }
 
-    internal StreamApiOptionsClient(GateStreamClient root)
+    internal StreamApiOptionsClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;

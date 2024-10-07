@@ -1,10 +1,10 @@
 ﻿namespace Gate.IO.Api;
 
-public class GateStreamClient
+public class GateWebSocketClient
 {
     // Options
     internal ILogger Logger { get; }
-    public GateStreamClientOptions ClientOptions { get; }
+    public GateWebSocketClientOptions ClientOptions { get; }
 
     // Master Clients
     internal StreamApiBaseClient Base { get; }
@@ -12,19 +12,19 @@ public class GateStreamClient
     public StreamApiFuturesClient Futures { get; }
     public StreamApiOptionsClient Options { get; }
 
-    public GateStreamClient() : this(null, new GateStreamClientOptions())
+    public GateWebSocketClient() : this(null, new GateWebSocketClientOptions())
     {
     }
 
-    public GateStreamClient(ILogger logger) : this(logger, new GateStreamClientOptions())
+    public GateWebSocketClient(ILogger logger) : this(logger, new GateWebSocketClientOptions())
     {
     }
 
-    public GateStreamClient(GateStreamClientOptions options) : this(null, options)
+    public GateWebSocketClient(GateWebSocketClientOptions options) : this(null, options)
     {
     }
 
-    public GateStreamClient(ILogger logger, GateStreamClientOptions options)
+    public GateWebSocketClient(ILogger logger, GateWebSocketClientOptions options)
     {
         Logger = logger;
         ClientOptions = options;

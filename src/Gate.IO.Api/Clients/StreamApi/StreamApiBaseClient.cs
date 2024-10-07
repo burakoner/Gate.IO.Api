@@ -4,12 +4,12 @@ public class StreamApiBaseClient : WebSocketApiClient
 {
     // Internal
     internal ILogger Log { get => this.RootClient.Logger; }
-    internal GateStreamClient RootClient { get; }
+    internal GateWebSocketClient RootClient { get; }
 
     // Options
-    public new GateStreamClientOptions ClientOptions { get { return (GateStreamClientOptions)base.ClientOptions; } }
+    public new GateWebSocketClientOptions ClientOptions { get { return (GateWebSocketClientOptions)base.ClientOptions; } }
 
-    internal StreamApiBaseClient(GateStreamClient root) : base(root.Logger, root.ClientOptions)
+    internal StreamApiBaseClient(GateWebSocketClient root) : base(root.Logger, root.ClientOptions)
     {
         RootClient = root;
 

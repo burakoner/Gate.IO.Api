@@ -8,9 +8,9 @@ public class StreamApiFuturesDeliveryClient
     public StreamApiFuturesDeliverySettleClient USDT { get; }
 
     // Internal
-    internal GateStreamClient RootClient { get; }
+    internal GateWebSocketClient RootClient { get; }
     internal StreamApiBaseClient BaseClient { get; }
-    internal GateStreamClientOptions ClientOptions { get; }
+    internal GateWebSocketClientOptions ClientOptions { get; }
 
     // Channels
     private const string futuresPingChannel = "futures.ping";
@@ -30,7 +30,7 @@ public class StreamApiFuturesDeliveryClient
     private const string futuresUserPositionsChannel = "futures.positions";
     private const string futuresUserAutoOrdersChannel = "futures.autoorders";
 
-    internal StreamApiFuturesDeliveryClient(GateStreamClient root)
+    internal StreamApiFuturesDeliveryClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;

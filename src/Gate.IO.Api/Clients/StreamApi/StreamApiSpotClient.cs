@@ -23,12 +23,12 @@ public class StreamApiSpotClient
     private const string spotUserCrossMarginLoanChannel = "spot.cross_loan";
 
     // Internal
-    internal GateStreamClient RootClient { get; }
+    internal GateWebSocketClient RootClient { get; }
     internal StreamApiBaseClient BaseClient { get; }
-    internal GateStreamClientOptions ClientOptions { get; }
+    internal GateWebSocketClientOptions ClientOptions { get; }
     private string BaseAddress { get => ClientOptions.StreamSpotAddress; }
 
-    internal StreamApiSpotClient(GateStreamClient root)
+    internal StreamApiSpotClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;

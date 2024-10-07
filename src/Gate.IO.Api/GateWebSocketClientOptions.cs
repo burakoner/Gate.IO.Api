@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api;
 
-public class GateStreamClientOptions : WebSocketApiClientOptions
+public class GateWebSocketClientOptions : WebSocketApiClientOptions
 {
     // Stream-Spot
     public string StreamSpotAddress { get; set; }
@@ -14,7 +14,7 @@ public class GateStreamClientOptions : WebSocketApiClientOptions
     // Stream-Options
     public string StreamOptionsAddress { get; set; }
 
-    public GateStreamClientOptions()
+    public GateWebSocketClientOptions()
     {
         // Base Address
         this.BaseAddress = GateApiAddresses.Default.StreamSpotAddress;

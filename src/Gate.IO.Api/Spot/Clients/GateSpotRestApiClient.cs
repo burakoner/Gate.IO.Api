@@ -477,8 +477,8 @@ public class GateSpotRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotOrder>>> GetOrdersAsync(
-    string symbol,
-    GateSpotOrderQueryStatus status,
+        string symbol,
+        GateSpotOrderQueryStatus status,
         GateSpotAccountType account,
         GateSpotOrderSide side,
         DateTime from,
