@@ -9,11 +9,11 @@ public enum GateSpotOrderSide
     /// Enum Buy for value: buy
     /// </summary>
     [Map("buy")]
-    Buy,
+    Buy = 1,
 
     /// <summary>
     /// Enum Sell for value: sell
     /// </summary>
     [Map("sell")]
-    Sell
+    Sell = 2
 }

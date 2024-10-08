@@ -9,47 +9,47 @@ public enum GateSubAccountApiKeyPermissionSection
     /// Enum Wallet for value: wallet
     /// </summary>
     [Map("wallet")]
-    Wallet,
+    Wallet = 1,
 
     /// <summary>
     /// Enum Spot for value: spot
     /// </summary>
     [Map("spot")]
-    Spot,
+    Spot = 2,
 
     /// <summary>
     /// Enum Futures for value: futures
     /// </summary>
     [Map("futures")]
-    Futures,
+    Futures = 3,
 
     /// <summary>
     /// Enum Delivery for value: delivery
     /// </summary>
     [Map("delivery")]
-    Delivery,
+    Delivery = 4,
 
     /// <summary>
     /// Enum Earn for value: earn
     /// </summary>
     [Map("earn")]
-    Earn,
+    Earn = 5,
 
     /// <summary>
     /// Enum Options for value: options
     /// </summary>
     [Map("options")]
-    Options,
+    Options = 6,
 
     /// <summary>
     /// Enum Unified for value: unified
     /// </summary>
     [Map("unified")]
-    Unified,
+    Unified = 7,
 
     /// <summary>
     /// Enum Loan for value: loan
     /// </summary>
     [Map("loan")]
-    Loan
+    Loan = 8
 }

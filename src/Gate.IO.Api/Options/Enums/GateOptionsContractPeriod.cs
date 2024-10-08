@@ -9,11 +9,11 @@ public enum GateOptionsContractPeriod
     /// One Week
     /// </summary>
     [Map("week", "WEEK")]
-    OneWeek,
+    OneWeek = 7,
 
     /// <summary>
     /// One Month
     /// </summary>
     [Map("month", "MONTH")]
-    OneMonth,
+    OneMonth = 30,
 }

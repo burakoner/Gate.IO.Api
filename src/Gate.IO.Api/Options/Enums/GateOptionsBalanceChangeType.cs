@@ -9,29 +9,29 @@ public enum GateOptionsBalanceChangeType
     /// Deposit & Withdraw
     /// </summary>
     [Map("dnw")]
-    DNW,
+    DNW = 1,
 
     /// <summary>
     /// Trading premium
     /// </summary>
     [Map("prem")]
-    Premium,
+    Premium = 2,
 
     /// <summary>
     /// Trading fee
     /// </summary>
     [Map("fee")]
-    Fee,
+    Fee = 3,
 
     /// <summary>
     /// Referrer rebate
     /// </summary>
     [Map("refr")]
-    Rebate,
+    Rebate = 4,
 
     /// <summary>
     /// POINT Referrer rebate
     /// </summary>
     [Map("set")]
-    SettlementPNL,
+    SettlementPNL = 5,
 }

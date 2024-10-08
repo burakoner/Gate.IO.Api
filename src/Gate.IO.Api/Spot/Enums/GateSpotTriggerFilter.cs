@@ -9,11 +9,11 @@ public enum GateSpotTriggerFilter
     /// Open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Finished
     /// </summary>
     [Map("finished")]
-    Finished,
+    Finished = 2,
 }

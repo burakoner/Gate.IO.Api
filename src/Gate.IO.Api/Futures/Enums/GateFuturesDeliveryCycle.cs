@@ -9,23 +9,23 @@ public enum GateFuturesDeliveryCycle
     /// Weekly
     /// </summary>
     [Map("WEEKLY")]
-    Weekly,
+    Weekly = 1,
 
     /// <summary>
     /// Bi-Weekly
     /// </summary>
     [Map("BI-WEEKLY")]
-    BiWeekly,
+    BiWeekly = 2,
 
     /// <summary>
     /// Quarterly
     /// </summary>
     [Map("QUARTERLY")]
-    Quarterly,
+    Quarterly = 3,
 
     /// <summary>
     /// Bi-Quarterly
     /// </summary>
     [Map("BI-QUARTERLY")]
-    BiQuarterly,
+    BiQuarterly = 4,
 }

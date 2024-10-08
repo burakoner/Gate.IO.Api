@@ -6,56 +6,56 @@
 public enum GateFuturesBalanceChangeType
 {
     /// <summary>
-    /// Deposit & Withdraw
+    /// Deposit &amp; Withdraw
     /// </summary>
     [Map("dnw")]
-    DNW,
+    DNW = 1,
 
     /// <summary>
-    /// Profit & Loss by reducing position
+    /// Profit &amp; Loss by reducing position
     /// </summary>
     [Map("pnl")]
-    PNL,
+    PNL = 2,
 
     /// <summary>
     /// Trading fee
     /// </summary>
     [Map("fee")]
-    Fee,
+    Fee = 3,
 
     /// <summary>
     /// Referrer rebate
     /// </summary>
     [Map("refr")]
-    Rebate,
+    Rebate = 4,
 
     /// <summary>
     /// Funding
     /// </summary>
     [Map("fund")]
-    Funding,
+    Funding = 5,
 
     /// <summary>
     /// POINT Deposit & Withdraw
     /// </summary>
     [Map("point_dnw")]
-    PointDNW,
+    PointDNW = 6,
 
     /// <summary>
     /// POINT Trading fee
     /// </summary>
     [Map("point_fee")]
-    PointFee,
+    PointFee = 7,
 
     /// <summary>
     /// POINT Referrer rebate
     /// </summary>
     [Map("point_refr")]
-    PointRebate,
+    PointRebate = 8,
 
     /// <summary>
     /// bouns deduction
     /// </summary>
     [Map("bonus_offset")]
-    BonusOffset,
+    BonusOffset = 9,
 }

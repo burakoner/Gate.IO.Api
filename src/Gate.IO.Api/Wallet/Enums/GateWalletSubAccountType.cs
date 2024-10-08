@@ -9,17 +9,17 @@ public enum GateWalletSubAccountType
     /// spot account
     /// </summary>
     [Map("spot")]
-    Spot,
+    Spot = 1,
 
     /// <summary>
     /// perpetual contract account
     /// </summary>
     [Map("futures")]
-    Futures,
+    Futures = 2,
 
     /// <summary>
     /// delivery account
     /// </summary>
     [Map("delivery")]
-    Delivery,
+    Delivery = 3,
 }

@@ -9,11 +9,11 @@ public enum GateFuturesContractType
     /// Enum Inverse for value: inverse
     /// </summary>
     [Map("inverse")]
-    Inverse,
+    Inverse = 1,
 
     /// <summary>
     /// Enum Direct for value: direct
     /// </summary>
     [Map("direct")]
-    Direct
+    Direct = 2
 }

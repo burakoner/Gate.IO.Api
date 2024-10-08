@@ -9,11 +9,11 @@ public enum GateMarginAutoRepaymentStatus
     /// Enabled
     /// </summary>
     [Map("on")]
-    Enabled,
+    Enabled = 1,
 
     /// <summary>
     /// Disabled
     /// </summary>
     [Map("off")]
-    Disabled,
+    Disabled = 2,
 }

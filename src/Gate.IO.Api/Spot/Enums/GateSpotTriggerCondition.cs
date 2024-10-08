@@ -9,11 +9,11 @@ public enum GateSpotTriggerCondition
     /// Enum GreaterThanOrEqualTo for value: &gt;=
     /// </summary>
     [Map(">=")]
-    GreaterThanOrEqualTo,
+    GreaterThanOrEqualTo = 1,
 
     /// <summary>
     /// Enum LessThanOrEqualTo for value: &lt;=
     /// </summary>
     [Map("<=")]
-    LessThanOrEqualTo
+    LessThanOrEqualTo = 2
 }

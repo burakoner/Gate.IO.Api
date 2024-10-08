@@ -9,29 +9,29 @@ public enum GateWalletAccountType
     /// Spot
     /// </summary>
     [Map("spot")]
-    Spot,
+    Spot = 1,
 
     /// <summary>
     /// Margin
     /// </summary>
     [Map("margin")]
-    Margin,
+    Margin = 2,
     
     /// <summary>
     /// Futures
     /// </summary>
     [Map("futures")]
-    Futures,
+    Futures = 3,
 
     /// <summary>
     /// Delivery
     /// </summary>
     [Map("delivery")]
-    Delivery,
+    Delivery = 4,
 
     /// <summary>
     /// Options
     /// </summary>
     [Map("options")]
-    Options,
+    Options = 5,
 }

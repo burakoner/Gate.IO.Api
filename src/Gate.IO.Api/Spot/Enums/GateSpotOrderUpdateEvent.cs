@@ -9,17 +9,17 @@ public enum GateSpotOrderUpdateEvent
     /// Put
     /// </summary>
     [Map("put")]
-    Put,
+    Put = 1,
 
     /// <summary>
     /// Update
     /// </summary>
     [Map("update")]
-    Update,
+    Update = 2,
 
     /// <summary>
     /// Finish
     /// </summary>
     [Map("finish")]
-    Finish,
+    Finish = 3,
 }

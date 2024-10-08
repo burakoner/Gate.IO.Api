@@ -9,35 +9,35 @@ public enum GateFuturesTriggerType
     /// order take-profit/stop-loss, close long position
     /// </summary>
     [Map("close-long-order")]
-    CloseLongOrder,
+    CloseLongOrder = 1,
 
     /// <summary>
     /// order take-profit/stop-loss, close short position
     /// </summary>
     [Map("close-short-order")]
-    CloseShortOrder,
+    CloseShortOrder = 2,
 
     /// <summary>
     /// position take-profit/stop-loss, close long position
     /// </summary>
     [Map("close-long-position")]
-    CloseLongPosition,
+    CloseLongPosition = 3,
 
     /// <summary>
     /// position take-profit/stop-loss, close short position
     /// </summary>
     [Map("close-short-position")]
-    CloseShortPosition,
+    CloseShortPosition = 4,
 
     /// <summary>
     /// position planned take-profit/stop-loss, close long position
     /// </summary>
     [Map("plan-close-long-position")]
-    PlanCloseLongPosition,
+    PlanCloseLongPosition = 5,
 
     /// <summary>
     /// position planned take-profit/stop-loss, close short position
     /// </summary>
     [Map("plan-close-short-position")]
-    PlanCloseShortPosition,
+    PlanCloseShortPosition = 6,
 }

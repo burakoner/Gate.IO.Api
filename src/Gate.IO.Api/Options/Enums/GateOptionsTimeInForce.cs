@@ -9,17 +9,17 @@ public enum GateOptionsTimeInForce
     /// GoodTillCancelled
     /// </summary>
     [Map("gtc")]
-    GoodTillCancelled,
+    GoodTillCancelled = 1,
 
     /// <summary>
     /// ImmediateOrCancelled, taker only
     /// </summary>
     [Map("ioc")]
-    ImmediateOrCancel,
+    ImmediateOrCancel = 2,
 
     /// <summary>
     /// PendingOrCancelled, makes a post-only order that always enjoys a maker fee
     /// </summary>
     [Map("poc")]
-    PendingOrCancelled,
+    PendingOrCancelled = 3,
 }

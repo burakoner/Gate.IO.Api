@@ -9,11 +9,11 @@ public enum GateSwapOrderStatus
     /// Success
     /// </summary>
     [Map("1")]
-    Success,
+    Success = 1,
 
     /// <summary>
     /// Failure
     /// </summary>
     [Map("2")]
-    Failure,
+    Failure = 2,
 }

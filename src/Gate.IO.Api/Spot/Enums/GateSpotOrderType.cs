@@ -9,11 +9,11 @@ public enum GateSpotOrderType
     /// Limit Order
     /// </summary>
     [Map("limit")]
-    Limit,
+    Limit = 1,
 
     /// <summary>
     /// Market Order
     /// </summary>
     [Map("market")]
-    Market
+    Market = 2
 }

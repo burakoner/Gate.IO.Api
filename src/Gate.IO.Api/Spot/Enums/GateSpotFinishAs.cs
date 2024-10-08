@@ -6,74 +6,74 @@
 public enum GateSpotFinishAs
 {
     /// <summary>
+    /// Unknown
+    /// </summary>
+    [Map("unknown")]
+    Unknown = 0,
+
+    /// <summary>
     /// Open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Filled
     /// </summary>
     [Map("filled")]
-    Filled,
+    Filled = 2,
 
     /// <summary>
     /// Cancelled
     /// </summary>
     [Map("cancelled")]
-    Cancelled,
-    
+    Cancelled = 3,
+
     /// <summary>
     /// LiquidateCancelled
     /// </summary>
     [Map("liquidate_cancelled")]
-    LiquidateCancelled,
+    LiquidateCancelled = 4,
 
     /// <summary>
     /// Order quantity too small
     /// </summary>
-        [Map("small")]
-    Small,
-        
+    [Map("small")]
+    Small = 5,
+
     /// <summary>
     /// DepthNotEnough
     /// </summary>
     [Map("depth_not_enough")]
-    DepthNotEnough,
+    DepthNotEnough = 6,
 
     /// <summary>
     /// TraderNotEnough
     /// </summary>
     [Map("trader_not_enough")]
-    TraderNotEnough,
+    TraderNotEnough = 7,
 
     /// <summary>
     /// Not immediately filled because tif is set to ioc
     /// </summary>
     [Map("ioc")]
-    IOC,
+    IOC = 8,
 
     /// <summary>
     /// Not met the order strategy because tif is set to poc
     /// </summary>
     [Map("poc")]
-    POC,
+    POC = 9,
 
     /// <summary>
     /// Not fully filled immediately because tif is set to fok
     /// </summary>
     [Map("fok")]
-    FOK,
+    FOK = 10,
 
     /// <summary>
     /// Cancelled due to self-trade prevention
     /// </summary>
     [Map("stp")]
-    SelfTradePrevention,
-
-    /// <summary>
-    /// Unknown
-    /// </summary>
-    [Map("unknown")]
-    Unknown,
+    SelfTradePrevention = 11,
 }

@@ -9,23 +9,23 @@ public enum GateFuturesPriceTriggerStatus
     /// Open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Finished
     /// </summary>
     [Map("finished")]
-    Finished,
+    Finished = 2,
 
     /// <summary>
     /// Inactive
     /// </summary>
     [Map("inactive")]
-    Inactive,
+    Inactive = 3,
 
     /// <summary>
     /// Invalid
     /// </summary>
     [Map("invalid")]
-    Invalid,
+    Invalid = 4,
 }

@@ -9,11 +9,11 @@ public enum GateSpotTriggerTimeInForce
     /// GoodTillCancelled
     /// </summary>
     [Map("gtc")]
-    GoodTillCancelled,
+    GoodTillCancelled = 1,
 
     /// <summary>
     /// ImmediateOrCancelled, taker only
     /// </summary>
     [Map("ioc")]
-    ImmediateOrCancel,
+    ImmediateOrCancel = 2,
 }

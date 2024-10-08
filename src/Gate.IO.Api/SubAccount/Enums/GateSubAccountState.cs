@@ -9,11 +9,11 @@ public enum GateSubAccountState
     /// Normal
     /// </summary>
     [Map("1", "normal")]
-    Normal,
+    Normal = 1,
 
     /// <summary>
     /// Locked
     /// </summary>
     [Map("2", "locked")]
-    Locked,
+    Locked = 2,
 }

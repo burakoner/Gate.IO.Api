@@ -9,11 +9,11 @@ public enum GateFuturesDualModeSide
     /// Dual Long
     /// </summary>
     [Map("dual_long")]
-    DualLong,
+    DualLong = 1,
 
     /// <summary>
     /// Dual Short
     /// </summary>
     [Map("dual_short")]
-    DualShort,
+    DualShort = 2,
 }

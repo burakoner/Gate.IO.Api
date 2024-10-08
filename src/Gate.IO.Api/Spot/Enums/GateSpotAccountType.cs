@@ -9,23 +9,23 @@ public enum GateSpotAccountType
     /// Spot
     /// </summary>
     [Map("spot")]
-    Spot,
+    Spot = 1,
 
     /// <summary>
     /// Margin
     /// </summary>
     [Map("margin")]
-    Margin,
+    Margin = 2,
 
     /// <summary>
     /// Unified
     /// </summary>
     [Map("unified")]
-    Unified,
+    Unified = 3,
 
     /// <summary>
     /// CrossMargin
     /// </summary>
     [Map("cross_margin")]
-    CrossMargin,
+    CrossMargin = 4,
 }

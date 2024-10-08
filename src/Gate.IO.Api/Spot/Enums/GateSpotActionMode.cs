@@ -9,17 +9,17 @@ public enum GateSpotActionMode
     /// Asynchronous mode, only returns key order fields 
     /// </summary>
     [Map("ACK")]
-    Acknowledge,
+    Acknowledge = 1,
 
     /// <summary>
     /// No clearing information 
     /// </summary>
     [Map("RESULT")]
-    Result,
+    Result = 2,
 
     /// <summary>
     /// Full mode (default)
     /// </summary>
     [Map("FULL")]
-    Full,
+    Full = 3,
 }

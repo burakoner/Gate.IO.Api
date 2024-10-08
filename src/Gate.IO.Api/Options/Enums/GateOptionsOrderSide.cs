@@ -9,11 +9,11 @@ public enum GateOptionsOrderSide
     /// Ask
     /// </summary>
     [Map("ask")]
-    Ask,
+    Ask = 1,
 
     /// <summary>
     /// Bid
     /// </summary>
     [Map("bid")]
-    Bid,
+    Bid = 2,
 }

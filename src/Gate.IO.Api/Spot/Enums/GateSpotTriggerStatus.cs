@@ -9,29 +9,29 @@ public enum GateSpotTriggerStatus
     /// Open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Cancelled
     /// </summary>
     [Map("cancelled")]
-    Cancelled,
+    Cancelled = 2,
 
     /// <summary>
     /// Finished
     /// </summary>
     [Map("finish")]
-    Finished,
+    Finished = 3,
 
     /// <summary>
     /// Failed
     /// </summary>
     [Map("failed")]
-    Failed,
+    Failed = 4,
 
     /// <summary>
     /// Expired
     /// </summary>
     [Map("expired")]
-    Expired,
+    Expired = 5,
 }

@@ -9,23 +9,23 @@ public enum GateCrossMarginRepaymentType
     /// no repayment type
     /// </summary>
     [Map("none")]
-    None,
+    None = 0,
     
     /// <summary>
     /// automatic repayment
     /// </summary>
     [Map("auto_repay")]
-    AutoRepayment,
+    AutoRepayment = 1,
 
     /// <summary>
     /// manual repayment
     /// </summary>
     [Map("manual_repay")]
-    ManualRepayment,
+    ManualRepayment = 2,
 
     /// <summary>
     /// automatic repayment after cancellation
     /// </summary>
     [Map("cancel_auto_repay")]
-    AutomaticRepaymentAfterCancellation,
+    AutomaticRepaymentAfterCancellation = 3,
 }

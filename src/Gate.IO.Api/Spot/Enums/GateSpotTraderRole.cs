@@ -9,11 +9,11 @@ public enum GateSpotTraderRole
     /// Enum Taker for value: taker
     /// </summary>
     [Map("taker")]
-    Taker,
+    Taker = 1,
 
     /// <summary>
     /// Enum Maker for value: maker
     /// </summary>
     [Map("maker")]
-    Maker
+    Maker = 2
 }

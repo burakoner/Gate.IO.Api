@@ -9,77 +9,77 @@ public enum GateWalletWithdrawalStatus
     /// Done
     /// </summary>
     [Map("DONE")]
-    Done,
+    Done = 1,
 
     /// <summary>
     /// Cancelled
     /// </summary>
     [Map("CANCEL")]
-    Cancelled,
+    Cancelled = 2,
 
     /// <summary>
     /// Requesting
     /// </summary>
     [Map("REQUEST")]
-    Requesting,
+    Requesting = 3,
 
     /// <summary>
     /// Pending Manual Approval
     /// </summary>
     [Map("MANUAL")]
-    PendingManualApproval,
+    PendingManualApproval = 4,
 
     /// <summary>
     /// Gate Code Operation
     /// </summary>
     [Map("BCODE")]
-    GateCodeOperation,
+    GateCodeOperation = 5,
 
     /// <summary>
     /// Pending Confirm After Sending
     /// </summary>
     [Map("EXTPEND")]
-    PendingConfirmAfterSending,
+    PendingConfirmAfterSending = 6,
 
     /// <summary>
     /// Pending Confirm When Fail
     /// </summary>
     [Map("FAIL")]
-    PendingConfirmWhenFail,
+    PendingConfirmWhenFail = 7,
 
     /// <summary>
     /// Invalid Order
     /// </summary>
     [Map("INVALID")]
-    InvalidOrder,
+    InvalidOrder = 8,
 
     /// <summary>
     /// Verifying
     /// </summary>
     [Map("VERIFY")]
-    Verifying,
+    Verifying = 9,
 
     /// <summary>
     /// Processing
     /// </summary>
     [Map("PROCES")]
-    Processing,
+    Processing = 10,
 
     /// <summary>
     /// Pending
     /// </summary>
     [Map("PEND")]
-    Pending,
+    Pending = 11,
 
     /// <summary>
     /// Pending Confirm
     /// </summary>
     [Map("DMOVE")]
-    RequiredManualApproval,
+    RequiredManualApproval = 12,
 
     /// <summary>
     /// Pending Confirm After Split
     /// </summary>
     [Map("SPLITPEND")]
-    Splitted,
+    Splitted = 13,
 }

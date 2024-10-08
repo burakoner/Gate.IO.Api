@@ -9,17 +9,17 @@ public enum GateSpotOrderStatus
     /// Enum Open for value: open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Enum Closed for value: closed
     /// </summary>
     [Map("closed")]
-    Closed,
+    Closed = 2,
 
     /// <summary>
     /// Enum Cancelled for value: cancelled
     /// </summary>
     [Map("cancelled")]
-    Cancelled
+    Cancelled = 3
 }

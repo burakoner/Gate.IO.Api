@@ -9,11 +9,11 @@ public enum GateWalletTransferDirection
     /// From
     /// </summary>
     [Map("from")]
-    From,
+    From = 1,
 
     /// <summary>
     /// To
     /// </summary>
     [Map("to")]
-    To,
+    To = 2,
 }

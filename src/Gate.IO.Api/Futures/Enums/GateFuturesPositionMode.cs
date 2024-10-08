@@ -9,17 +9,17 @@ public enum GateFuturesPositionMode
     /// Enum Single for value: single
     /// </summary>
     [Map("single")]
-    Single,
+    Single = 1,
 
     /// <summary>
     /// Enum Duallong for value: dual_long
     /// </summary>
     [Map("dual_long")]
-    DualLong,
+    DualLong = 2,
 
     /// <summary>
     /// Enum Dualshort for value: dual_short
     /// </summary>
     [Map("dual_short")]
-    DualShort,
+    DualShort = 3,
 }

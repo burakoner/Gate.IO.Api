@@ -9,7 +9,7 @@ public enum GateFuturesTriggerStrategy
     /// ByPrice
     /// </summary>
     [Map("0")]
-    ByPrice=0,
+    ByPrice = 0,
 
     /// <summary>
     /// ByPriceGap

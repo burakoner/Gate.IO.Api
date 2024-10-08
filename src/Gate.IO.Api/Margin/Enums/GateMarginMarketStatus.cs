@@ -9,11 +9,11 @@ public enum GateMarginMarketStatus
     /// Disabled
     /// </summary>
     [Map("0")]
-    Disabled,
+    Disabled = 0,
 
     /// <summary>
     /// Enabled
     /// </summary>
     [Map("1")]
-    Enabled,
+    Enabled = 1,
 }

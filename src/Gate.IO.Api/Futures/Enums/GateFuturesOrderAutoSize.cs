@@ -9,11 +9,11 @@ public enum GateFuturesOrderAutoSize
     /// Enum Long for value: close_long
     /// </summary>
     [Map("close_long")]
-    CloseLong,
+    CloseLong = 1,
 
     /// <summary>
     /// Enum Short for value: close_short
     /// </summary>
     [Map("close_short")]
-    CloseShort,
+    CloseShort = 2,
 }

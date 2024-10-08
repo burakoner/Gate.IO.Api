@@ -9,11 +9,11 @@ public enum GateOptionsOrderStatus
     /// Enum Open for value: open
     /// </summary>
     [Map("open")]
-    Open,
+    Open = 1,
 
     /// <summary>
     /// Enum Finished for value: finished
     /// </summary>
     [Map("finished")]
-    Finished,
+    Finished = 2,
 }

@@ -9,59 +9,59 @@ public enum GateSpotBalanceChangeType
     /// Deposit
     /// </summary>
     [Map("deposit")]
-    Deposit,
+    Deposit = 1,
 
     /// <summary>
     /// Withdraw
     /// </summary>
     [Map("withdraw")]
-    Withdraw,
+    Withdraw = 2,
 
     /// <summary>
     /// Trade Fee Deduct
     /// </summary>
     [Map("trade-fee-deduct")]
-    TradeFeeDeduct,
+    TradeFeeDeduct = 3,
 
     /// <summary>
     /// Order Create
     /// </summary>
     [Map("order-create")]
-    OrderCreate,
+    OrderCreate = 4,
 
     /// <summary>
     /// Order Match
     /// </summary>
     [Map("order-match")]
-    OrderMatch,
+    OrderMatch = 5,
 
     /// <summary>
     /// Order Update
     /// </summary>
     [Map("order-update")]
-    OrderUpdate,
+    OrderUpdate = 6,
 
     /// <summary>
     /// Margin Transfer
     /// </summary>
     [Map("margin-transfer")]
-    MarginTransfer,
+    MarginTransfer = 7,
 
     /// <summary>
     /// Future Transfer
     /// </summary>
     [Map("future-transfer")]
-    FutureTransfer,
+    FutureTransfer = 8,
 
     /// <summary>
     /// Cross Margin
     /// </summary>
     [Map("cross-margin")]
-    CrossMargin,
+    CrossMargin = 9,
 
     /// <summary>
     /// Other
     /// </summary>
     [Map("other")]
-    Other,
+    Other = 10,
 }

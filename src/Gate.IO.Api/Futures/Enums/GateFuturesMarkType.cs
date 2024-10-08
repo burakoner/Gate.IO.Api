@@ -9,11 +9,11 @@ public enum GateFuturesMarkType
     /// Enum Internal for value: internal
     /// </summary>
     [Map("internal")]
-    Internal,
+    Internal = 1,
 
     /// <summary>
     /// Enum Index for value: index
     /// </summary>
     [Map("index")]
-    Index
+    Index = 2
 }

@@ -9,17 +9,17 @@ public enum GateSpotSelfTradeAction
     /// CancelNewest
     /// </summary>
     [Map("cn")]
-    CancelNewest,
+    CancelNewest = 1,
 
     /// <summary>
     /// CancelOldest
     /// </summary>
     [Map("co")]
-    CancelOldest,
+    CancelOldest = 2,
 
     /// <summary>
     /// CancelBoth
     /// </summary>
     [Map("cb")]
-    CancelBoth,
+    CancelBoth = 3,
 }

@@ -9,11 +9,11 @@ public enum GateFuturesTriggerCondition
     /// Enum GreaterThanOrEqualTo for value: >=
     /// </summary>
     [Map(">=")]
-    GreaterThanOrEqualTo,
+    GreaterThanOrEqualTo = 1,
 
     /// <summary>
     /// Enum LessThanOrEqualTo for value: <=
     /// </summary>
     [Map("<=")]
-    LessThanOrEqualTo
+    LessThanOrEqualTo = 2
 }

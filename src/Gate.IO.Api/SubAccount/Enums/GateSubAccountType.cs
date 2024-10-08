@@ -9,11 +9,11 @@ public enum GateSubAccountType
     /// SubAccount
     /// </summary>
     [Map("1")]
-    SubAccount,
+    SubAccount = 1,
 
     /// <summary>
     /// CrossMarginAccount
     /// </summary>
     [Map("3")]
-    CrossMarginAccount,
+    CrossMarginAccount = 3,
 }

@@ -9,17 +9,17 @@ public enum GateFuturesSettlement
     /// BTC
     /// </summary>
     [Map("btc")]
-    BTC,
+    BTC = 1,
 
     /// <summary>
     /// USD
     /// </summary>
     [Map("usd")]
-    USD,
+    USD = 2,
 
     /// <summary>
     /// USDT
     /// </summary>
     [Map("usdt")]
-    USDT,
+    USDT = 3,
 }
