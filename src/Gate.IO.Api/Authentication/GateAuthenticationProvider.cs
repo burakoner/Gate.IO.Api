@@ -34,16 +34,6 @@ internal class GateAuthenticationProvider : AuthenticationProvider
         headers.Add("X-Gate-Channel-Id", ((GateRestApiClientOptions)apiClient.ClientOptions).BrokerId);
     }
 
-    public override void AuthenticateTcpSocketApi()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override void AuthenticateWebSocketApi()
-    {
-        throw new NotImplementedException();
-    }
-
     public void AuthenticateStreamRequest(GateStreamRequest request)
     {
         var eventName = JsonConvert.SerializeObject(request.Event, new StreamRequestEventConverter(false));
