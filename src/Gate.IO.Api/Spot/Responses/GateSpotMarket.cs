@@ -40,6 +40,18 @@ public class GateSpotMarket
     /// </summary>
     [JsonProperty("min_quote_amount")]
     public decimal? MinQuoteAmount { get; set; }
+    
+    /// <summary>
+    /// Maximum amount of base currency to trade, null means no limit
+    /// </summary>
+    [JsonProperty("max_base_amount")]
+    public decimal? MaxBaseAmount { get; set; }
+
+    /// <summary>
+    /// Maximum amount of quote currency to trade, null means no limit
+    /// </summary>
+    [JsonProperty("max_quote_amount")]
+    public decimal? MaxQuoteAmount { get; set; }
 
     /// <summary>
     /// Amount scale
