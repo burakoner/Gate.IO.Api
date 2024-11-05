@@ -12,7 +12,7 @@ public class GateRestApiClientOptions : RestApiClientOptions
     /// <summary>
     /// Gate.IO API Broker Id
     /// </summary>
-    public string BrokerId { get; }
+    public string BrokerId { get; set; }
 
     public GateRestApiClientOptions() : this(null)
     {
