@@ -15,6 +15,7 @@ public class OptionsStreamUserLiquidation
     public decimal OrderMargin { get; set; }
 
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
     
     [JsonProperty("time_ms")]

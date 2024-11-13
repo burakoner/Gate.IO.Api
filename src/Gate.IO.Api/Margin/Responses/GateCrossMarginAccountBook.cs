@@ -15,6 +15,7 @@ public class GateCrossMarginAccountBook
     /// The timestamp of the change (in milliseconds)
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

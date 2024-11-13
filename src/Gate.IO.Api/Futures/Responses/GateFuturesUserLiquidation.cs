@@ -9,6 +9,7 @@ public class GateFuturesUserLiquidation
     /// Liquidation time
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

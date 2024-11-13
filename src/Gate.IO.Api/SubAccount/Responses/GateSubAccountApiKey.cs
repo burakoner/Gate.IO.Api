@@ -51,18 +51,21 @@ public class GateSubAccountApiKey
     /// Creation time
     /// </summary>
     [JsonProperty("created_at")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreatedAt { get; set; }
 
     /// <summary>
     /// Last update time
     /// </summary>
     [JsonProperty("updated_at")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime UpdatedAt { get; set; }
 
     /// <summary>
     /// Last access time
     /// </summary>
     [JsonProperty("last_access")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? LastAccessAt { get; set; }
 
 }

@@ -15,12 +15,14 @@ public class GateOptionsOrderBook
     /// Response data generation timestamp
     /// </summary>
     [JsonProperty("current")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Current { get; set; }
 
     /// <summary>
     /// Order book changed timestamp
     /// </summary>
     [JsonProperty("update")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Update { get; set; }
 
     /// <summary>

@@ -18,6 +18,7 @@ public class OptionsStreamBalance
     public long UserId { get; set; }
 
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

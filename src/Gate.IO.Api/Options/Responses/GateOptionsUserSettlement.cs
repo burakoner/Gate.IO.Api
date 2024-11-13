@@ -9,6 +9,7 @@ public class GateOptionsUserSettlement
     /// Last changed time of configuration
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

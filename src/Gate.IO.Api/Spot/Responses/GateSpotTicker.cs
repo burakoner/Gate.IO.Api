@@ -87,6 +87,7 @@ public class GateSpotTicker
     /// ETF previous re-balancing time
     /// </summary>
     [JsonProperty("etf_pre_timestamp")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? EtfPreviousTimestamp { get; set; }
 
     /// <summary>

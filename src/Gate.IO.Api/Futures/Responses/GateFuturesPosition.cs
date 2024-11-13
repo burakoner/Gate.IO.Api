@@ -177,12 +177,14 @@ public class GateFuturesPosition
     /// Last update time
     /// </summary>
     [JsonProperty("update_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime UpdateTime { get; set; }
 
     /// <summary>
     /// First Open Time
     /// </summary>
     [JsonProperty("open_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime OpenTime { get; set; }
 }
 

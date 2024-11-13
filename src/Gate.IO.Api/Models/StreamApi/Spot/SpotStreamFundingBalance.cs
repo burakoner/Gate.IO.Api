@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Spot;
 public  class SpotStreamFundingBalance
 {
     [JsonProperty("timestamp")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("timestamp_ms")]

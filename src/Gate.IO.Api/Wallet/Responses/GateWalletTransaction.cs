@@ -27,6 +27,7 @@ public class GateWalletTransaction
     /// Operation time
     /// </summary>
     [JsonProperty("timestamp")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
 
     /// <summary>

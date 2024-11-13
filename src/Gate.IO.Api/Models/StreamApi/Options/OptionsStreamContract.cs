@@ -8,9 +8,11 @@ public class OptionsStreamContract
     public string Contract { get; set; }
 
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     [JsonProperty("expiration_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime ExpirationTime { get; set; }
 
     [JsonProperty("init_margin_high")]
@@ -74,6 +76,7 @@ public class OptionsStreamContract
     public string Underlying { get; set; }
 
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

@@ -18,6 +18,7 @@ public class FuturesStreamAutoOrder
     public string Reason { get; set; }
 
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     [JsonProperty("name")]

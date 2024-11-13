@@ -9,6 +9,7 @@ public class OptionsStreamUnderlyingTrade
     public string Underlying { get; set; }
 
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("create_time_ms")]

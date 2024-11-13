@@ -21,12 +21,14 @@ public class GateSpotPriceTriggeredOrder : GateSpotPriceTriggeredOrderRequest
     /// Creation time
     /// </summary>
     [JsonProperty("ctime")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Finished time
     /// </summary>
     [JsonProperty("ftime")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? FinishTime { get; set; }
 
     /// <summary>

@@ -106,6 +106,7 @@ public class GateFuturesContract
     /// Next funding time
     /// </summary>
     [JsonProperty("funding_next_apply")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime FundingNextApply { get; set; }
     
     /// <summary>
@@ -184,6 +185,7 @@ public class GateFuturesContract
     /// Next funding time
     /// </summary>
     [JsonProperty("config_change_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime ConfigChangeTime { get; set; }
     
     /// <summary>

@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Spot;
 public  class SpotStreamCandlestick
 {
     [JsonProperty("t")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

@@ -15,6 +15,7 @@ public class GateWalletTransferRecord : GateWalletTransfer
     /// Transfer timestamp
     /// </summary>
     [JsonProperty("timest")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
 
     /// <summary>

@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Futures;
 public class FuturesStreamBalance
 {
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("time_ms")]

@@ -21,12 +21,14 @@ public class GateOptionsContract
     /// Creation time
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Expiration time
     /// </summary>
     [JsonProperty("expiration_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? ExpirationTime { get; set; }
 
     /// <summary>

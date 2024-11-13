@@ -5,6 +5,7 @@ namespace Gate.IO.Api.Models.StreamApi.Options;
 public  class OptionsStreamBookSnapshot
 {
     [JsonProperty("t")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("contract")]

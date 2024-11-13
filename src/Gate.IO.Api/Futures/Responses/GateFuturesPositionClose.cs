@@ -9,6 +9,7 @@ public class GateFuturesPositionClose
     /// Position close time
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>
@@ -69,6 +70,7 @@ public class GateFuturesPositionClose
     /// First Open Time
     /// </summary>
     [JsonProperty("first_open_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime FirstOpenTime { get; set; }
 
     /// <summary>

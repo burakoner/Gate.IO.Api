@@ -5,6 +5,7 @@ namespace Gate.IO.Api.Models.StreamApi.Options;
 public class OptionsStreamBookDifference
 {
     [JsonProperty("t")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     //[JsonProperty("e")]

@@ -8,8 +8,17 @@ using Gate.IO.Api.Wallet;
 namespace Gate.IO.Api.Examples;
 
 internal class Program
-{
-    static async Task Main(string[] args)
+{    static async Task Main(string[] args)
+    {
+        var api = new GateRestApiClient(new GateRestApiClientOptions
+        {
+            RawResponse = true,
+        });
+        api.SetApiCredentials("XXXXXXXX-API-KEY-XXXXXXXX", "XXXXXXXX-API-SECRET-XXXXXXXX");
+
+        var spot_08 = await api.Spot.GetCandlesticksAsync("BTC_USDT", GateSpotCandlestickInterval.FourHours);
+    }
+    static async Task Main2(string[] args)
     {
         var api = new GateRestApiClient();
         api.SetApiCredentials("XXXXXXXX-API-KEY-XXXXXXXX", "XXXXXXXX-API-SECRET-XXXXXXXX");

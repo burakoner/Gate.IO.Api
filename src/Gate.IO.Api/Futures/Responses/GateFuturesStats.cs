@@ -9,6 +9,7 @@ public class GateFuturesStats
     /// Stat timestamp
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

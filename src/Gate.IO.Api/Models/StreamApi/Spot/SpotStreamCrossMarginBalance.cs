@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Spot;
 public  class SpotStreamCrossMarginBalance
 {
     [JsonProperty("timestamp")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("timestamp_ms")]

@@ -141,6 +141,7 @@ public class GateDeliveryContract
     /// Contract expiry timestamp
     /// </summary>
     [JsonProperty("expire_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime ExpireTime { get; set; }
 
     /// <summary>
@@ -220,6 +221,7 @@ public class GateDeliveryContract
     /// Last changed time of configuration
     /// </summary>
     [JsonProperty("config_change_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime ConfigChangeTime { get; set; }
 
     /// <summary>

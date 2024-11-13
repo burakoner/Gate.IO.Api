@@ -9,6 +9,7 @@ public class GateFuturesCandlestickPremium
     /// Unix timestamp in seconds
     /// </summary>
     [JsonProperty("t")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

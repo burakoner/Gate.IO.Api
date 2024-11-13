@@ -10,6 +10,7 @@ public class GateSpotCandlestick
     /// Unix timestamp in seconds
     /// </summary>
     [ArrayProperty(0)]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

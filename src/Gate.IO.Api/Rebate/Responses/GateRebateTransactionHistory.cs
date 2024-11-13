@@ -33,6 +33,7 @@ public class GateRebateTransactionHistoryRecord
     /// Transaction Time. (unix timestamp)
     /// </summary>
     [JsonProperty("transaction_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime TransactionTime { get; set; }
 
     /// <summary>

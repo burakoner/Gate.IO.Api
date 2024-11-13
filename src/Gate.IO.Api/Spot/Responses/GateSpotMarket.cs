@@ -75,11 +75,13 @@ public class GateSpotMarket
     /// Sell start unix timestamp in seconds
     /// </summary>
     [JsonProperty("sell_start")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime SellStart { get; set; }
 
     /// <summary>
     /// Buy start unix timestamp in seconds
     /// </summary>
     [JsonProperty("buy_start")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime BuyStart { get; set; }
 }

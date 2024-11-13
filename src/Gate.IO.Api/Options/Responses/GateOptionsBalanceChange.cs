@@ -9,6 +9,7 @@ public class GateOptionsBalanceChange
     /// Change time
     /// </summary>
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     /// <summary>

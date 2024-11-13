@@ -24,12 +24,14 @@ public class GateOptionsOrder
     /// Creation time of order
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Order finished time. Not returned if order is open
     /// </summary>
     [JsonProperty("finish_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? FinishTime { get; set; }
 
     /// <summary>

@@ -1,6 +1,4 @@
 ﻿using Gate.IO.Api.Models.StreamApi.Spot;
-using Gate.IO.Api.Spot;
-using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Clients.StreamApi;
 

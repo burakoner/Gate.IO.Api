@@ -6,6 +6,7 @@ public  class FuturesStreamTrade
     public long Id { get; set; }
 
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     [JsonProperty("create_time_ms")]

@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Models.StreamApi.Options;
 public class OptionsStreamCandlestick
 {
     [JsonProperty("t")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("o")]

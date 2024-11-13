@@ -1,10 +1,9 @@
-using Gate.IO.Api.Spot;
-
 namespace Gate.IO.Api.Models.StreamApi.Spot;
 
 public  class SpotStreamUserBalance
 {
     [JsonProperty("timestamp")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
     [JsonProperty("timestamp_ms")]

@@ -15,6 +15,7 @@ public class GateSwapOrder
     /// Creation time of order (in milliseconds)
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
