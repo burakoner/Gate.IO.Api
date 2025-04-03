@@ -1,52 +1,15 @@
-﻿using ApiSharp.Converters;
-using Gate.IO.Api.Futures;
+﻿using Gate.IO.Api.Futures;
 using Gate.IO.Api.Margin;
 using Gate.IO.Api.Options;
 using Gate.IO.Api.Spot;
 using Gate.IO.Api.Swap;
 using Gate.IO.Api.Wallet;
-using Newtonsoft.Json;
-using System.Globalization;
 
 namespace Gate.IO.Api.Examples;
 
 internal class Program
 {
-    public static JsonSerializerSettings WithConverters => new JsonSerializerSettings
-    {
-        DateTimeZoneHandling = DateTimeZoneHandling.Utc,
-        Culture = CultureInfo.InvariantCulture,
-        Converters =
-        {
-            new MapConverter(),
-            new DateTimeConverter(),
-            new BooleanConverter()
-        },
-    };
-
-
     static async Task Main(string[] args)
-    {
-        var request = new GateFuturesPriceTriggeredOrderRequest
-        {
-            Trigger = new GateFuturesTrigger
-            {
-                StrategyType = GateFuturesTriggerStrategy.ByPrice,
-                PriceType = GateFuturesTriggerPrice.MarkPrice,
-                Rule = GateSpotTriggerCondition.GreaterThanOrEqualTo,
-                Expiration = 900,
-                Price = "100.01",
-            },
-            Order = new GateFuturesInitial
-            {
-            },
-        };
-        var json1 = JsonConvert.SerializeObject(request, Formatting.Indented);
-        var json2 = JsonConvert.SerializeObject(request, Formatting.Indented, WithConverters);
-
-    }
-
-    static async Task Main2(string[] args)
     {
         var api = new GateRestApiClient();
         api.SetApiCredentials("XXXXXXXX-API-KEY-XXXXXXXX", "XXXXXXXX-API-SECRET-XXXXXXXX");
