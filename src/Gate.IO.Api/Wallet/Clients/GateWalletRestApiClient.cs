@@ -160,7 +160,7 @@ public class GateWalletRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateWalletTransaction>>> GetWithdrawalsAsync(string currency = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
+        var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);

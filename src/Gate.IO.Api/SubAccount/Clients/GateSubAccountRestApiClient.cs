@@ -87,7 +87,7 @@ public class GateSubAccountRestApiClient
         IEnumerable<string> ipWhitelist = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
+        var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("mode", mode);
         parameters.AddOptionalParameter("name", name);
         parameters.AddOptionalParameter("perms", permissions);

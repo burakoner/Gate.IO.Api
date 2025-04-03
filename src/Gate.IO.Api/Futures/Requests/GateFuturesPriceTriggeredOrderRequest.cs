@@ -32,7 +32,7 @@ public class GateFuturesTrigger
     /// <summary>
     /// How the order will be triggered
     /// </summary>
-    [JsonProperty("strategy_type")]
+    [JsonProperty("strategy_type"), JsonConverter(typeof(GateMapConverter))]
     public GateFuturesTriggerStrategy StrategyType { get; set; }
     
     /// <summary>
