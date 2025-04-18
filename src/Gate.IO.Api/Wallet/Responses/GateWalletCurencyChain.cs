@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Wallet Currency Chain
 /// </summary>
-public class GateWalletCurencyChain
+public record GateWalletCurencyChain
 {
     /// <summary>
     /// Chain name

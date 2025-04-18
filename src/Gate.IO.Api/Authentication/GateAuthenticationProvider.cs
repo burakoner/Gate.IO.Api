@@ -1,11 +1,7 @@
 ﻿namespace Gate.IO.Api.Authentication;
 
-internal class GateAuthenticationProvider : AuthenticationProvider
+internal class GateAuthenticationProvider(ApiCredentials credentials) : AuthenticationProvider(credentials)
 {
-    public GateAuthenticationProvider(ApiCredentials credentials) : base(credentials)
-    {
-    }
-
     public override void AuthenticateRestApi(RestApiClient apiClient, Uri uri, HttpMethod method, bool signed, ArraySerialization serialization, SortedDictionary<string, object> query, SortedDictionary<string, object> body, string bodyContent, SortedDictionary<string, string> headers)
     {
         if (!signed) return;
@@ -31,7 +27,7 @@ internal class GateAuthenticationProvider : AuthenticationProvider
         headers.Add("SIGN", signature);
 
         // Broker Id
-        headers.Add("X-Gate-Channel-Id", ((GateRestApiClientOptions)apiClient.ClientOptions).BrokerId);
+        headers.Add("X-Gate-Channel-Id", GateConstants.Default.ChannelId);
     }
 
     public void AuthenticateStreamRequest(GateStreamRequest request)

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Sub Account Margin Balance
 /// </summary>
-public class GateWalletSubAccountMarginBalance
+public record GateWalletSubAccountMarginBalance
 {
     /// <summary>
     /// User ID
@@ -21,13 +21,28 @@ public class GateWalletSubAccountMarginBalance
 /// <summary>
 /// Sub Account Margin Balance Available
 /// </summary>
-public class GateWalletSubAccountMarginBalanceAvailable
+public record GateWalletSubAccountMarginBalanceAvailable
 {
     /// <summary>
     /// Currency pair
     /// </summary>
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
+
+    /// <summary>
+    /// Account type, 
+    /// risk - risk rate account, 
+    /// mmr - maintenance margin rate account, 
+    /// inactive - market not activated
+    /// </summary>
+    [JsonProperty("account_type")]
+    public string AccountType { get; set; }
+
+    /// <summary>
+    /// User current market leverage multiple
+    /// </summary>
+    [JsonProperty("leverage")]
+    public decimal Leverage { get; set; }
 
     /// <summary>
     /// Whether account is locked
@@ -39,7 +54,13 @@ public class GateWalletSubAccountMarginBalanceAvailable
     /// Current risk rate of margin account
     /// </summary>
     [JsonProperty("risk")]
-    public decimal Risk { get; set; }
+    public decimal? Risk { get; set; }
+
+    /// <summary>
+    /// Leveraged Account Current Maintenance Margin Rate (returned when the Account is a Maintenance Margin Rate Account)
+    /// </summary>
+    [JsonProperty("mmr")]
+    public decimal? MMR { get; set; }
 
     /// <summary>
     /// Account currency details
@@ -57,7 +78,7 @@ public class GateWalletSubAccountMarginBalanceAvailable
 /// <summary>
 /// Sub Account Margin Balance Available Item
 /// </summary>
-public class GateWalletSubAccountMarginBalanceAvailableItem
+public record GateWalletSubAccountMarginBalanceAvailableItem
 {
     /// <summary>
     /// Currency name

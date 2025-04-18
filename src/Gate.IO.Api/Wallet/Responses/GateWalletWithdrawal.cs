@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Wallet Withdrawal
 /// </summary>
-public class GateWalletWithdrawal
+public record GateWalletWithdrawal
 {
     /// <summary>
     /// Currency
@@ -33,25 +33,19 @@ public class GateWalletWithdrawal
     /// Withdrawal fee rate percentage
     /// </summary>
     [JsonProperty("withdraw_percent")]
-    public decimal WithdrawPercent { get; set; }
+    public decimal WithdrawalPercent { get; set; }
 
     /// <summary>
     /// Fixed withdrawal fee
     /// </summary>
     [JsonProperty("withdraw_fix")]
-    public decimal WithdrawFix { get; set; }
+    public decimal WithdrawalFix { get; set; }
 
     /// <summary>
     /// Daily allowed withdrawal amount
     /// </summary>
     [JsonProperty("withdraw_day_limit")]
-    public decimal WithdrawDayLimit { get; set; }
-
-    /// <summary>
-    /// Daily withdrawal amount left
-    /// </summary>
-    [JsonProperty("withdraw_day_limit_remain")]
-    public decimal WithdrawDayLimitRemain { get; set; }
+    public decimal WithdrawalDayLimit { get; set; }
 
     /// <summary>
     /// Minimum withdrawal amount
@@ -60,10 +54,16 @@ public class GateWalletWithdrawal
     public decimal MinimumWithdrawalAmount { get; set; }
 
     /// <summary>
+    /// Daily withdrawal amount left
+    /// </summary>
+    [JsonProperty("withdraw_day_limit_remain")]
+    public decimal WithdrawalDayLimitRemain { get; set; }
+
+    /// <summary>
     /// Maximum amount for each withdrawal
     /// </summary>
     [JsonProperty("withdraw_eachtime_limit")]
-    public decimal WithdrawEachTimeLimit { get; set; }
+    public decimal WithdrawalEachTimeLimit { get; set; }
 
     /// <summary>
     /// Fixed withdrawal fee on multiple chains

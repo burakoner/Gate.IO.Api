@@ -22,27 +22,27 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     public GateWebSocketClientOptions()
     {
         // Base Address
-        this.BaseAddress = GateApiAddresses.Default.StreamSpotAddress;
+        this.BaseAddress = GateConstants.Default.StreamSpotAddress;
 
         // Stream-Spot
-        this.StreamSpotAddress = GateApiAddresses.Default.StreamSpotAddress;
+        this.StreamSpotAddress = GateConstants.Default.StreamSpotAddress;
 
         // Stream-Perpetual Futures
         this.StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string>
         {
-            { GateFuturesSettlement.BTC, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.BTC] },
-            { GateFuturesSettlement.USD, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USD] },
-            { GateFuturesSettlement.USDT, GateApiAddresses.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USDT] },
+            { GateFuturesSettlement.BTC, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.BTC] },
+            { GateFuturesSettlement.USD, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USD] },
+            { GateFuturesSettlement.USDT, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USDT] },
         };
 
         // Stream-Delivery Futures
         this.StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string>
         {
-            { GateDeliverySettlement.USDT, GateApiAddresses.Default.StreamDeliveryFuturesAddresses[GateDeliverySettlement.USDT] },
+            { GateDeliverySettlement.USDT, GateConstants.Default.StreamDeliveryFuturesAddresses[GateDeliverySettlement.USDT] },
         };
 
         // Stream-Options
-        this.StreamOptionsAddress = GateApiAddresses.Default.StreamOptionsAddress;
+        this.StreamOptionsAddress = GateConstants.Default.StreamOptionsAddress;
 
         // Limits
         // this.MaxConnections = 300;

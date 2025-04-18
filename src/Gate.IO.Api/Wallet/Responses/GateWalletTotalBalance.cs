@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate.IO Wallet Total Balance
 /// </summary>
-public class GateWalletTotalBalance
+public record GateWalletTotalBalance
 {
     /// <summary>
     /// Total balances calculated with specified currency unit
@@ -21,7 +21,7 @@ public class GateWalletTotalBalance
 /// <summary>
 /// Gate.IO Wallet Total Balance Item
 /// </summary>
-public class GateWalletTotalBalanceData
+public record GateWalletTotalBalanceData
 {
     /// <summary>
     /// Account total balance amount
@@ -51,7 +51,7 @@ public class GateWalletTotalBalanceData
 /// <summary>
 /// Gate.IO Wallet Total Balance Details
 /// </summary>
-public class GateWalletTotalBalanceDetails
+public record GateWalletTotalBalanceDetails
 {
     /// <summary>
     /// Cross margin account

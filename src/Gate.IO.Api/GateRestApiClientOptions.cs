@@ -1,30 +1,43 @@
 ﻿namespace Gate.IO.Api;
 
+/// <summary>
+/// Gate.IO API Client Options
+/// </summary>
 public class GateRestApiClientOptions : RestApiClientOptions
 {
-    // Receive Window
+    /// <summary>
+    /// Receive Window
+    /// </summary>
     public TimeSpan ReceiveWindow { get; set; }
 
-    // Auto Timestamp
+    /// <summary>
+    /// Auto Timestamp
+    /// </summary>
     public bool AutoTimestamp { get; set; }
+
+    /// <summary>
+    /// Timestamp Recalculation Interval
+    /// </summary>
     public TimeSpan TimestampRecalculationInterval { get; set; }
 
     /// <summary>
-    /// Gate.IO API Broker Id
+    /// Gate.IO API Client Options
     /// </summary>
-    public string BrokerId { get; set; }
-
     public GateRestApiClientOptions() : this(null)
     {
     }
 
+    /// <summary>
+    /// Gate.IO API Client Options
+    /// </summary>
+    /// <param name="credentials">Credentials</param>
     public GateRestApiClientOptions(ApiCredentials credentials)
     {
         // API Credentials
         ApiCredentials = credentials;
 
         // Api Addresses
-        BaseAddress = GateApiAddresses.Default.RestApiAddress;
+        BaseAddress = GateConstants.Default.RestApiAddress;
 
         // Receive Window
         ReceiveWindow = TimeSpan.FromSeconds(5);
@@ -41,9 +54,6 @@ public class GateRestApiClientOptions : RestApiClientOptions
             RequestTimeout = TimeSpan.FromSeconds(30),
             EncodeQueryString = true,
         };
-
-        // Broker Id
-        BrokerId = "phalchatha";
     }
 
 }

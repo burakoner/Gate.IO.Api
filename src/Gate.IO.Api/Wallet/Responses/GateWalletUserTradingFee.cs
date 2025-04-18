@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Gate.IO Wallet User Trading Fee
 /// </summary>
-public class GateWalletUserTradingFee
+public record GateWalletUserTradingFee
 {
     /// <summary>
     /// User ID

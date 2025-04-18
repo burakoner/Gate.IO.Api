@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Sub Account Futures Balance
 /// </summary>
-public class GateWalletSubAccountFuturesBalance
+public record GateWalletSubAccountFuturesBalance
 {
     /// <summary>
     /// User ID
@@ -15,5 +15,5 @@ public class GateWalletSubAccountFuturesBalance
     /// Futures account balances
     /// </summary>
     [JsonProperty("available")]
-    public Dictionary<string, decimal> Available { get; set; }
+    public Dictionary<string, GateFuturesBalance> Available { get; set; }
 }

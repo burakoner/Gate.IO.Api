@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Sub Account Balance
 /// </summary>
-public class GateWalletSubAccountBalance
+public record GateWalletSubAccountBalance
 {
     /// <summary>
     /// User ID

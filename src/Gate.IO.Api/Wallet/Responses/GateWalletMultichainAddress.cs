@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Gate.IO Wallet Multichain Address
 /// </summary>
-public class GateWalletMultichainAddress
+public record GateWalletMultichainAddress
 {
     /// <summary>
     /// Name of the chain

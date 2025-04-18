@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Wallet Sub Account Cross Margin Balance
 /// </summary>
-public class GateWalletSubAccountCrossMarginBalance
+public record GateWalletSubAccountCrossMarginBalance
 {
     /// <summary>
     /// User ID
@@ -21,7 +21,7 @@ public class GateWalletSubAccountCrossMarginBalance
 /// <summary>
 /// Wallet Sub Account Cross Margin Balance Available
 /// </summary>
-public class GateWalletSubAccountCrossMarginBalanceAvailable
+public record GateWalletSubAccountCrossMarginBalanceAvailable
 {
     /// <summary>
     /// User ID of the cross margin account. 0 means that the subaccount has not yet opened a cross margin account
@@ -123,7 +123,7 @@ public class GateWalletSubAccountCrossMarginBalanceAvailable
 /// <summary>
 /// Wallet Sub Account Cross Margin Balance Available Item
 /// </summary>
-public class GateWalletSubAccountCrossMarginBalanceAvailableItem
+public record GateWalletSubAccountCrossMarginBalanceAvailableItem
 {
     /// <summary>
     /// Available amount

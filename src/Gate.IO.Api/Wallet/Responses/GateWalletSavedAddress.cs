@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Gate.IO Wallet Saved Address
 /// </summary>
-public class GateWalletSavedAddress
+public record GateWalletSavedAddress
 {
     /// <summary>
     /// Currency

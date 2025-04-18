@@ -20,6 +20,7 @@ public class GateWalletRestApiClient
     private const string transfersEndpoint = "transfers";
     private const string subAccountTransfersEndpoint = "sub_account_transfers";
     private const string subAccountToSubAccountEndpoint = "sub_account_to_sub_account";
+    private const string orderStatusEndpoint = "order_status"; // TODO
     private const string withdrawStatusEndpoint = "withdraw_status";
     private const string subAccountBalancesEndpoint = "sub_account_balances";
     private const string subAccountMarginBalancesEndpoint = "sub_account_margin_balances";
@@ -44,7 +45,7 @@ public class GateWalletRestApiClient
     /// <param name="chain">Name of the chain used in withdrawals</param>
     /// <param name="address">Withdrawal address. Required for withdrawals</param>
     /// <param name="memo">Additional remarks with regards to the withdrawal</param>
-    /// <param name="clientOrderId">Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)</param>
+    /// <param name="withdrawalOrderId">Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateWalletTransaction>> WithdrawAsync(
@@ -53,7 +54,7 @@ public class GateWalletRestApiClient
         string chain,
         string address,
         string memo = null,
-        string clientOrderId = null,
+        string withdrawalOrderId = null,
         CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
@@ -64,7 +65,7 @@ public class GateWalletRestApiClient
         };
         parameters.AddString("amount", amount);
         parameters.AddOptionalParameter("memo", memo);
-        parameters.AddOptionalParameter("withdraw_order_id", clientOrderId);
+        parameters.AddOptionalParameter("withdraw_order_id", withdrawalOrderId);
 
         return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, version, withdrawalsSection, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -337,12 +338,14 @@ public class GateWalletRestApiClient
             { "sub_account_from", senderSubAccountId },
             { "sub_account_to", recipientSubAccountId },
         };
-        parameters.AddString("amount", amount);
         parameters.AddEnum("sub_account_from_type", senderSubAccountType);
         parameters.AddEnum("sub_account_to_type", recipientSubAccountType);
+        parameters.AddString("amount", amount);
 
         return _.SendRequestInternal<GateWalletTransactionId>(_.GetUrl(api, version, walletSection, subAccountToSubAccountEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
+
+    // TODO: Transfer status query
 
     /// <summary>
     /// Retrieve withdrawal status
@@ -422,14 +425,16 @@ public class GateWalletRestApiClient
     /// <param name="currency">Currency name</param>
     /// <param name="chain">Chain name</param>
     /// <param name="limit">Maximum number returned, 100 at most</param>
+    /// <param name="page">Page number</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = null, int limit = 100, int page = 1, CancellationToken ct = default)
     {
         var parameters = new Dictionary<string, object>
         {
             { "currency", currency },
             { "limit", limit },
+            { "page", page },
         };
         parameters.AddOptionalParameter("chain", chain);
 

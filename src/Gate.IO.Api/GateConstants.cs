@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate.IO API Addresses
 /// </summary>
-public class GateApiAddresses
+internal class GateConstants
 {
     /// <summary>
     /// Rest Api Address
@@ -31,9 +31,14 @@ public class GateApiAddresses
     public string StreamOptionsAddress { get; set; }
 
     /// <summary>
+    /// Gate.IO API Broker Id
+    /// </summary>
+    public string ChannelId { get; set; }
+
+    /// <summary>
     /// Default Gate.IO API Main Environment
     /// </summary>
-    public static GateApiAddresses Default = new()
+    public static GateConstants Default = new()
     {
         // Rest Api
         RestApiAddress = "https://api.gateio.ws",
@@ -55,12 +60,15 @@ public class GateApiAddresses
 
         // Stream-Options
         StreamOptionsAddress = "wss://op-ws.gateio.live/v4/ws",
+
+        // Broker Id
+        ChannelId = "phalchatha"
     };
 
     /// <summary>
     /// Default Gate.IO API TestNet Environment
     /// </summary>
-    public static GateApiAddresses TestNet = new()
+    public static GateConstants TestNet = new()
     {
         // Rest Api
         RestApiAddress = "https://fx-api-testnet.gateio.ws/api/v4",
