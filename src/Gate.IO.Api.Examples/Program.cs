@@ -169,7 +169,6 @@ internal class Program
 
         // Dictionary Access for Futures (Perpetual & Delivery) Methods
         var sample_11 = await api.Futures[GateFuturesSettlement.BTC].GetContractsAsync();
-        var sample_12 = await api.Futures[GateFuturesSettlement.USD].GetContractsAsync();
         var sample_13 = await api.Futures[GateFuturesSettlement.USDT].GetContractsAsync();
         var sample_14 = await api.Delivery[GateDeliverySettlement.USDT].GetContractsAsync();
 

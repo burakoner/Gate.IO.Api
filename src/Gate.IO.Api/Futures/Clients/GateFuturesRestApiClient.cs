@@ -78,12 +78,10 @@ public class GateFuturesRestApiClient
         _ = root;
 
         BTC = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.BTC);
-        USD = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.USD);
         USDT = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.USDT);
         Clients = new Dictionary<GateFuturesSettlement, GateFuturesRestApiSettleClient>
         {
             { GateFuturesSettlement.BTC, BTC },
-            { GateFuturesSettlement.USD, USD },
             { GateFuturesSettlement.USDT, USDT },
         };
     }

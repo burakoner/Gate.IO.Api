@@ -37,7 +37,6 @@ public class GateFuturesStreamApiClient
         ClientOptions = root.ClientOptions;
 
         BTC = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.BTC);
-        USD = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.USD);
         USDT = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.USDT);
     }
 

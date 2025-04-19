@@ -11,11 +11,8 @@ public enum GateFuturesSettlement : byte
     [Map("btc")]
     BTC = 1,
 
-    /// <summary>
-    /// USD
-    /// </summary>
-    [Map("usd")]
-    USD = 2,
+    // [Map("usd")]
+    // USD = 2,
 
     /// <summary>
     /// USDT

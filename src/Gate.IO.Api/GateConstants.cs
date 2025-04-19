@@ -49,7 +49,6 @@ internal record GateConstants
         // Stream-Perpetual Futures
         StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string> {
             { GateFuturesSettlement.BTC, "wss://fx-ws.gateio.ws/v4/ws/btc" },
-            { GateFuturesSettlement.USD, "wss://fx-ws.gateio.ws/v4/ws/usd" },
             { GateFuturesSettlement.USDT, "wss://fx-ws.gateio.ws/v4/ws/usdt" },
         },
 
@@ -79,7 +78,6 @@ internal record GateConstants
         // Stream-Perpetual Futures
         StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string> {
             { GateFuturesSettlement.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/btc" },
-            { GateFuturesSettlement.USD, "wss://fx-ws-testnet.gateio.ws/v4/ws/usd" },
             { GateFuturesSettlement.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/usdt" },
         },
 

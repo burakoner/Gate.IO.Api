@@ -31,7 +31,6 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
         this.StreamPerpetualFuturesAddresses = new Dictionary<GateFuturesSettlement, string>
         {
             { GateFuturesSettlement.BTC, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.BTC] },
-            { GateFuturesSettlement.USD, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USD] },
             { GateFuturesSettlement.USDT, GateConstants.Default.StreamPerpetualFuturesAddresses[GateFuturesSettlement.USDT] },
         };
 

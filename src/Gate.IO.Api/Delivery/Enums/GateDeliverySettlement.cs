@@ -9,5 +9,5 @@ public enum GateDeliverySettlement : byte
     /// USDT
     /// </summary>
     [Map("usdt")]
-    USDT = 1,
+    USDT = 3,
 }
