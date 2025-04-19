@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Order Type
 /// </summary>
-public enum GateSpotOrderType
+public enum GateSpotOrderType : byte
 {
     /// <summary>
     /// Limit Order

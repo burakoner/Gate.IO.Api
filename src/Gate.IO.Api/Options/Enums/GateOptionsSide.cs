@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsSide
 /// </summary>
-public enum GateOptionsSide
+public enum GateOptionsSide : byte
 {
     /// <summary>
     /// Long

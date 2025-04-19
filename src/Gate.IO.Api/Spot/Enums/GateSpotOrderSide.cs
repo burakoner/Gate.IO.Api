@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Order Side
 /// </summary>
-public enum GateSpotOrderSide
+public enum GateSpotOrderSide : byte
 {
     /// <summary>
     /// Enum Buy for value: buy

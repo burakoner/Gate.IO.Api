@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotOrderUpdateEvent
 /// </summary>
-public enum GateSpotOrderUpdateEvent
+public enum GateSpotOrderUpdateEvent : byte
 {
     /// <summary>
     /// Put

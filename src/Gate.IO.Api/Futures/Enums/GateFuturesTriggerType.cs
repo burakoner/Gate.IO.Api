@@ -3,7 +3,7 @@
 /// <summary>
 /// FuturesTriggerOrderType
 /// </summary>
-public enum GateFuturesTriggerType
+public enum GateFuturesTriggerType : byte
 {
     /// <summary>
     /// order take-profit/stop-loss, close long position

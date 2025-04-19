@@ -3,7 +3,7 @@
 /// <summary>
 /// Ticker timezone
 /// </summary>
-public enum GateSpotTickerTimezone
+public enum GateSpotTickerTimezone : byte
 {
     /// <summary>
     /// UTC0

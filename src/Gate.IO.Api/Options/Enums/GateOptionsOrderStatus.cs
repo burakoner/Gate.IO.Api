@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsOrderStatus
 /// </summary>
-public enum GateOptionsOrderStatus
+public enum GateOptionsOrderStatus : byte
 {
     /// <summary>
     /// Enum Open for value: open

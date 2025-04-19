@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsType
 /// </summary>
-public enum GateOptionsType
+public enum GateOptionsType : byte
 {
     /// <summary>
     /// Call

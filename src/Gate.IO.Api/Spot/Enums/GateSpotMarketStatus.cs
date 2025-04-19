@@ -3,7 +3,7 @@
 /// <summary>
 /// How currency pair can be traded  - untradable: cannot be bought or sold - buyable: can be bought - sellable: can be sold - tradable: can be bought or sold
 /// </summary>
-public enum GateSpotMarketStatus
+public enum GateSpotMarketStatus : byte
 {
     /// <summary>
     /// Enum Untradable for value: untradable

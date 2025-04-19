@@ -3,7 +3,7 @@
 /// <summary>
 /// Wallet Withdrawal Status
 /// </summary>
-public enum GateWalletWithdrawalStatus
+public enum GateWalletWithdrawalStatus : byte
 {
     /// <summary>
     /// Done

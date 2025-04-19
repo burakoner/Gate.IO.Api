@@ -3,7 +3,7 @@
 /// <summary>
 /// Futures contract type
 /// </summary>
-public enum GateFuturesContractType
+public enum GateFuturesContractType : byte
 {
     /// <summary>
     /// Enum Inverse for value: inverse

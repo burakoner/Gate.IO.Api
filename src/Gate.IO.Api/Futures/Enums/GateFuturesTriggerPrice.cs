@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesTriggerPrice
 /// </summary>
-public enum GateFuturesTriggerPrice
+public enum GateFuturesTriggerPrice : byte
 {
     /// <summary>
     /// Latest Deal Price

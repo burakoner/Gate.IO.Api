@@ -3,7 +3,7 @@
 /// <summary>
 /// Sub Account Type
 /// </summary>
-public enum GateWalletSubAccountType
+public enum GateWalletSubAccountType : byte
 {
     /// <summary>
     /// spot account

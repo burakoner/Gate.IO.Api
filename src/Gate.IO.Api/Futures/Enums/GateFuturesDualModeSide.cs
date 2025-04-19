@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesDualModeSide
 /// </summary>
-public enum GateFuturesDualModeSide
+public enum GateFuturesDualModeSide : byte
 {
     /// <summary>
     /// Dual Long

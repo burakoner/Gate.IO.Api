@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesStatsInterval
 /// </summary>
-public enum GateFuturesStatsInterval
+public enum GateFuturesStatsInterval : byte
 {
     /// <summary>
     /// FiveMinutes

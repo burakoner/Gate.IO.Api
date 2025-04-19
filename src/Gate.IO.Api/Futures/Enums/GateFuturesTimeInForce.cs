@@ -3,7 +3,7 @@
 /// <summary>
 /// Futures Order Time-In-Force
 /// </summary>
-public enum GateFuturesTimeInForce
+public enum GateFuturesTimeInForce : byte
 {
     /// <summary>
     /// GoodTillCancelled

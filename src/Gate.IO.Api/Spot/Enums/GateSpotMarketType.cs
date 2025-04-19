@@ -3,7 +3,7 @@
 /// <summary>
 /// Trading pair type, normal: normal, premarket: pre-market
 /// </summary>
-public enum GateSpotMarketType
+public enum GateSpotMarketType : byte
 {
     /// <summary>
     /// Normal

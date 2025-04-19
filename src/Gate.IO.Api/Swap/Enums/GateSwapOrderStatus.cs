@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate Swap Order Status
 /// </summary>
-public enum GateSwapOrderStatus
+public enum GateSwapOrderStatus : byte
 {
     /// <summary>
     /// Success

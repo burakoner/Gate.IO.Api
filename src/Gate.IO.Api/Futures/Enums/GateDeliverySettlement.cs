@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate.IO Futures Delivery Settlement
 /// </summary>
-public enum GateDeliverySettlement
+public enum GateDeliverySettlement : byte
 {
     /// <summary>
     /// USDT

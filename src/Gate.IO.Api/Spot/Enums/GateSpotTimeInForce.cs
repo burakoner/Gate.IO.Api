@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Order Time-In-Force
 /// </summary>
-public enum GateSpotTimeInForce
+public enum GateSpotTimeInForce : byte
 {
     /// <summary>
     /// GoodTillCancelled

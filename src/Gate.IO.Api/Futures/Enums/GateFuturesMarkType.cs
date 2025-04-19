@@ -3,7 +3,7 @@
 /// <summary>
 /// Mark price type, internal - based on internal trading, index - based on external index price
 /// </summary>
-public enum GateFuturesMarkType
+public enum GateFuturesMarkType : byte
 {
     /// <summary>
     /// Enum Internal for value: internal

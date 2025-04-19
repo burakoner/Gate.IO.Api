@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsContractPeriod
 /// </summary>
-public enum GateOptionsContractPeriod
+public enum GateOptionsContractPeriod : byte
 {
     /// <summary>
     /// One Week

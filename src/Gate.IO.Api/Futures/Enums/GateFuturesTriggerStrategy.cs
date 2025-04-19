@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesTriggerStrategy
 /// </summary>
-public enum GateFuturesTriggerStrategy
+public enum GateFuturesTriggerStrategy : byte
 {
     /// <summary>
     /// ByPrice

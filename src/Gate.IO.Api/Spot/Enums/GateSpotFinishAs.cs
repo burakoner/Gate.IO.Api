@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotFiniashAs
 /// </summary>
-public enum GateSpotFinishAs
+public enum GateSpotFinishAs : byte
 {
     /// <summary>
     /// Unknown

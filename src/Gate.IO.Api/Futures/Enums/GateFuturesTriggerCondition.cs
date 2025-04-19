@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesTriggerCondition
 /// </summary>
-public enum GateFuturesTriggerCondition
+public enum GateFuturesTriggerCondition : byte
 {
     /// <summary>
     /// Enum GreaterThanOrEqualTo for value: >=

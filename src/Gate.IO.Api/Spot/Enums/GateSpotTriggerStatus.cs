@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotPriceTriggeredOrderStatus
 /// </summary>
-public enum GateSpotTriggerStatus
+public enum GateSpotTriggerStatus : byte
 {
     /// <summary>
     /// Open

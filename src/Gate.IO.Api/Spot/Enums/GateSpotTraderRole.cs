@@ -3,7 +3,7 @@
 /// <summary>
 /// Trade role. No value in public endpoints
 /// </summary>
-public enum GateSpotTraderRole
+public enum GateSpotTraderRole : byte
 {
     /// <summary>
     /// Enum Taker for value: taker

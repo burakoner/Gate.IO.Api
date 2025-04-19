@@ -3,7 +3,7 @@
 /// <summary>
 /// Transfer Direction
 /// </summary>
-public enum GateWalletTransferDirection
+public enum GateWalletTransferDirection : byte
 {
     /// <summary>
     /// From

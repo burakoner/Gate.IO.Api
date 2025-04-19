@@ -12,6 +12,18 @@ public record GateMarginBalance
     public string Symbol { get; set; }
 
     /// <summary>
+    /// Account type, risk - risk rate account, mmr - maintenance margin rate account, inactive - market not activated
+    /// </summary>
+    [JsonProperty("account_type")]
+    public string AccountType { get; set; }
+
+    /// <summary>
+    /// User current market leverage multiple
+    /// </summary>
+    [JsonProperty("leverage")]
+    public decimal Leverage { get; set; }
+
+    /// <summary>
     /// Whether account is locked
     /// </summary>
     [JsonProperty("locked")]
@@ -22,6 +34,12 @@ public record GateMarginBalance
     /// </summary>
     [JsonProperty("risk")]
     public decimal Risk { get; set; }
+
+    /// <summary>
+    /// Leveraged Account Current Maintenance Margin Rate (returned when the Account is a Maintenance Margin Rate Account)
+    /// </summary>
+    [JsonProperty("mmr")]
+    public decimal MMR { get; set; }
 
     /// <summary>
     /// Account currency details

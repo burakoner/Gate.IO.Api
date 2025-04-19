@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesSelfTradingPreventionAction
 /// </summary>
-public enum GateFuturesSelfTradeAction
+public enum GateFuturesSelfTradeAction : byte
 {
     /// <summary>
     /// CancelNewest

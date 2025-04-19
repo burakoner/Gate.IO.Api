@@ -3,7 +3,7 @@
 /// <summary>
 /// How the order was finished.
 /// </summary>
-public enum GateFuturesOrderFinishAs
+public enum GateFuturesOrderFinishAs : byte
 {
     /// <summary>
     /// Enum Filled for value: filled

@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Order Query Status
 /// </summary>
-public enum GateSpotOrderQueryStatus
+public enum GateSpotOrderQueryStatus : byte
 {
     /// <summary>
     /// Open

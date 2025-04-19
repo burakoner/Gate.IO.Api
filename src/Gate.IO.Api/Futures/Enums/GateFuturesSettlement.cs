@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate.IO Futures Perpetual Settlement
 /// </summary>
-public enum GateFuturesSettlement
+public enum GateFuturesSettlement : byte
 {
     /// <summary>
     /// BTC

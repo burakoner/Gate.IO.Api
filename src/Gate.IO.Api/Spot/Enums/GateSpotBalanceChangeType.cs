@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotBalanceChangeType
 /// </summary>
-public enum GateSpotBalanceChangeType
+public enum GateSpotBalanceChangeType : byte
 {
     /// <summary>
     /// Deposit

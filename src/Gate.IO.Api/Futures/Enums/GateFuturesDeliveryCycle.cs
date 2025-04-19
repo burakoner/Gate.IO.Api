@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesDeliveryCycle
 /// </summary>
-public enum GateFuturesDeliveryCycle
+public enum GateFuturesDeliveryCycle : byte
 {
     /// <summary>
     /// Weekly

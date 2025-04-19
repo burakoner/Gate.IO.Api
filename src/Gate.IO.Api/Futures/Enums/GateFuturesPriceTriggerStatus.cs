@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesPriceTriggerStatus
 /// </summary>
-public enum GateFuturesPriceTriggerStatus
+public enum GateFuturesPriceTriggerStatus : byte
 {
     /// <summary>
     /// Open

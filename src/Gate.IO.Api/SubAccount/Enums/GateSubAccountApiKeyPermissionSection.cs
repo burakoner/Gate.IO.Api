@@ -3,7 +3,7 @@
 /// <summary>
 /// Permission name (all permissions will be removed if no value is passed)  - wallet: wallet - spot: spot/margin - futures: perpetual contract - delivery: delivery - earn: earn - options: options
 /// </summary>
-public enum GateSubAccountApiKeyPermissionSection
+public enum GateSubAccountApiKeyPermissionSection : byte
 {
     /// <summary>
     /// Enum Wallet for value: wallet

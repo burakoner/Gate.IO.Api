@@ -130,26 +130,13 @@ internal class Program
         var spot_28 = await api.Spot.GetPriceTriggeredOrderAsync();
         var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();
 
-        // Cross-Margin Methods
-        var cross_01 = await api.Margin.Cross.GetCurrenciesAsync();
-        var cross_02 = await api.Margin.Cross.GetCurrencyAsync("CURRENCY");
-        var cross_03 = await api.Margin.Cross.GetBalancesAsync();
-        var cross_04 = await api.Margin.Cross.GetBalanceHistoryAsync();
-        var cross_05 = await api.Margin.Cross.LoanAsync("CURRENCY", 100.01m);
-        var cross_06 = await api.Margin.Cross.GetLoansAsync();
-        var cross_07 = await api.Margin.Cross.GetLoanAsync(1_000_000_000);
-        var cross_08 = await api.Margin.Cross.RepayAsync("CURRENCY", 100.01m);
-        var cross_09 = await api.Margin.Cross.GetRepaymentsAsync();
-        var cross_10 = await api.Margin.Cross.GetTransferableAmountAsync("CURRENCY");
-        var cross_11 = await api.Margin.Cross.GetBorrowableAmountAsync("CURRENCY");
-
-        // Isolated-Margin Methods
-        var isolated_01 = await api.Margin.Isolated.GetBalancesAsync();
-        var isolated_02 = await api.Margin.Isolated.GetBalanceHistoryAsync();
-        var isolated_03 = await api.Margin.Isolated.GetFundingBalancesAsync();
-        var isolated_04 = await api.Margin.Isolated.SetAutoRepaymentAsync(GateMarginAutoRepaymentStatus.Enabled);
-        var isolated_05 = await api.Margin.Isolated.GetAutoRepaymentAsync();
-        var isolated_06 = await api.Margin.Isolated.GetTransferableAmountAsync("CURRENCY");
+        // Margin Methods
+        var margin_01 = await api.Margin.GetBalancesAsync();
+        var margin_02 = await api.Margin.GetBalanceHistoryAsync();
+        var margin_03 = await api.Margin.GetFundingBalancesAsync();
+        var margin_04 = await api.Margin.SetAutoRepaymentAsync(GateMarginAutoRepaymentStatus.Enabled);
+        var margin_05 = await api.Margin.GetAutoRepaymentAsync();
+        var margin_06 = await api.Margin.GetTransferableAmountAsync("CURRENCY");
 
         // Flash-Swap Methods
         var swap_02 = await api.Swap.GetMarketsAsync();

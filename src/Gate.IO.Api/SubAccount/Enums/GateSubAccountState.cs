@@ -3,7 +3,7 @@
 /// <summary>
 /// SubAccount State
 /// </summary>
-public enum GateSubAccountState
+public enum GateSubAccountState : byte
 {
     /// <summary>
     /// Normal

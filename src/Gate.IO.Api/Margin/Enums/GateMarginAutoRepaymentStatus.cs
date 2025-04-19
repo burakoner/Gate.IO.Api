@@ -3,17 +3,17 @@
 /// <summary>
 /// GateMarginAutoRepaymentStatus
 /// </summary>
-public enum GateMarginAutoRepaymentStatus
+public enum GateMarginAutoRepaymentStatus : byte
 {
+    /// <summary>
+    /// Disabled
+    /// </summary>
+    [Map("off")]
+    Disabled = 0,
+
     /// <summary>
     /// Enabled
     /// </summary>
     [Map("on")]
     Enabled = 1,
-
-    /// <summary>
-    /// Disabled
-    /// </summary>
-    [Map("off")]
-    Disabled = 2,
 }

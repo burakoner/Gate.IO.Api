@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Account Type
 /// </summary>
-public enum GateSpotAccountType
+public enum GateSpotAccountType : byte
 {
     /// <summary>
     /// Spot

@@ -3,7 +3,7 @@
 /// <summary>
 /// FuturesBalanceType
 /// </summary>
-public enum GateFuturesBalanceChangeType
+public enum GateFuturesBalanceChangeType : byte
 {
     /// <summary>
     /// Deposit &amp; Withdraw

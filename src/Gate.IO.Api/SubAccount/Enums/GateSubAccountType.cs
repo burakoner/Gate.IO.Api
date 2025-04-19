@@ -3,7 +3,7 @@
 /// <summary>
 /// Sub Account Type
 /// </summary>
-public enum GateSubAccountType
+public enum GateSubAccountType : byte
 {
     /// <summary>
     /// SubAccount

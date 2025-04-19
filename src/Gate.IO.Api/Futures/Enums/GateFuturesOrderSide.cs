@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesOrderSide
 /// </summary>
-public enum GateFuturesOrderSide
+public enum GateFuturesOrderSide : byte
 {
     /// <summary>
     /// Ask

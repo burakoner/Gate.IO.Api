@@ -3,7 +3,7 @@
 /// <summary>
 /// Price trigger filter
 /// </summary>
-public enum GateSpotTriggerFilter
+public enum GateSpotTriggerFilter : byte
 {
     /// <summary>
     /// Open

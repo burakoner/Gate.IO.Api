@@ -33,13 +33,13 @@ public record StreamRequestAuth
     public string Signature { get; set; }
 }
 
-public enum StreamRequestEvent
+public enum StreamRequestEvent : byte
 {
     [Map("subscribe")]
-    Subscribe,
+    Subscribe=1,
 
     [Map("unsubscribe")]
-    Unsubscribe
+    Unsubscribe=2
 }
 
 internal class StreamRequestEventConverter : BaseConverter<StreamRequestEvent>

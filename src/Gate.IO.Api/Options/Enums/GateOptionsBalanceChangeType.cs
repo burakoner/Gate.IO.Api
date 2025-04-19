@@ -3,10 +3,10 @@
 /// <summary>
 /// GateOptionsBalanceType
 /// </summary>
-public enum GateOptionsBalanceChangeType
+public enum GateOptionsBalanceChangeType : byte
 {
     /// <summary>
-    /// Deposit & Withdraw
+    /// Deposit &amp; Withdraw
     /// </summary>
     [Map("dnw")]
     DNW = 1,

@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesPositionMode
 /// </summary>
-public enum GateFuturesPositionMode
+public enum GateFuturesPositionMode : byte
 {
     /// <summary>
     /// Enum Single for value: single

@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesPositionSide
 /// </summary>
-public enum GateFuturesPositionSide
+public enum GateFuturesPositionSide : byte
 {
     /// <summary>
     /// Long

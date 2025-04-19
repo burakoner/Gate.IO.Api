@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotTriggerTimeInForce
 /// </summary>
-public enum GateSpotTriggerTimeInForce
+public enum GateSpotTriggerTimeInForce : byte
 {
     /// <summary>
     /// GoodTillCancelled

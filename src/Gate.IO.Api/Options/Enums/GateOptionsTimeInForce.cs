@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsTimeInForce
 /// </summary>
-public enum GateOptionsTimeInForce
+public enum GateOptionsTimeInForce : byte
 {
     /// <summary>
     /// GoodTillCancelled

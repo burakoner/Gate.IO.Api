@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate Margin Market Status
 /// </summary>
-public enum GateMarginMarketStatus
+public enum GateMarginMarketStatus : byte
 {
     /// <summary>
     /// Disabled

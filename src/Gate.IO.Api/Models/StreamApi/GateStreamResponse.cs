@@ -24,16 +24,16 @@ public record GateStreamResponse<T>
     public T Data { get; set; }
 }
 
-public enum StreamResponseEvent
+public enum StreamResponseEvent : byte
 {
     [Map("update")]
-    Update,
+    Update = 0,
 
     [Map("subscribe")]
-    Subscribe,
+    Subscribe = 1,
 
     [Map("unsubscribe")]
-    Unsubscribe
+    Unsubscribe = 2
 }
 
 internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>

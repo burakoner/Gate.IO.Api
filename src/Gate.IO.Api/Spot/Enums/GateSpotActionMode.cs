@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotActionMode
 /// </summary>
-public enum GateSpotActionMode
+public enum GateSpotActionMode : byte
 {
     /// <summary>
     /// Asynchronous mode, only returns key order fields 

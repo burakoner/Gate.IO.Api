@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot Order Status
 /// </summary>
-public enum GateSpotOrderStatus
+public enum GateSpotOrderStatus : byte
 {
     /// <summary>
     /// Enum Open for value: open

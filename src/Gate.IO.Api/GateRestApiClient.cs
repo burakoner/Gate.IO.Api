@@ -19,14 +19,14 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// SubAccount Client
     /// </summary>
-    public GateSubAccountRestApiClient SubAccount { get; } // 418
+    public GateSubAccountRestApiClient SubAccount { get; } // 419
 
     // TODO: Unified
 
     /// <summary>
     /// Spot Client
     /// </summary>
-    public GateSpotRestApiClient Spot { get; }
+    public GateSpotRestApiClient Spot { get; } // 419
 
     /// <summary>
     /// Margin Client
