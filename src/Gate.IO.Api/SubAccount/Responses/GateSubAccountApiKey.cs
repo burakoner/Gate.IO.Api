@@ -3,7 +3,7 @@ namespace Gate.IO.Api.SubAccount;
 /// <summary>
 /// SubAccountKey
 /// </summary>
-public class GateSubAccountApiKey
+public record GateSubAccountApiKey
 {
     /// <summary>
     /// The user id of the sub-account

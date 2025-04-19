@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// SpotCancelOrderRequest
 /// </summary>
-public class GateSpotCancelOrderRequest
+public record GateSpotCancelOrderRequest
 {
     /// <summary>
     /// Order ID

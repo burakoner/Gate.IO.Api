@@ -54,10 +54,11 @@ internal class Program
         var spot_05 = await api.Spot.GetTickersAsync();
         var spot_06 = await api.Spot.GetOrderBookAsync("SYMBOL");
         var spot_07 = await api.Spot.GetTradesAsync("SYMBOL");
-        var spot_08 = await api.Spot.GetCandlesticksAsync("SYMBOL", GateSpotCandlestickInterval.FourHours);
-        var spot_09 = await api.Spot.GetUserFeeRatesAsync();
-        var spot_12 = await api.Spot.GetBalancesAsync();
-        var spot_13 = await api.Spot.PlaceOrdersAsync(new List<GateSpotOrderRequest>
+        var spot_08 = await api.Spot.GetPrivateTradesAsync("SYMBOL"); // Private (Signed)
+        var spot_09 = await api.Spot.GetCandlesticksAsync("SYMBOL", GateSpotCandlestickInterval.FourHours);
+        var spot_10 = await api.Spot.GetUserFeeRatesAsync(["SYMBOL"]);
+        var spot_11 = await api.Spot.GetBalancesAsync();
+        var spot_12 = await api.Spot.PlaceOrdersAsync(new List<GateSpotOrderRequest>
         {
             new GateSpotOrderRequest
             {
@@ -69,15 +70,15 @@ internal class Program
             }
         }
         );
-        var spot_14 = await api.Spot.GetOpenOrdersAsync();
-        var spot_15 = await api.Spot.CloseLiquidatedPositionsAsync(new GateSpotCloseRequest
+        var spot_13 = await api.Spot.GetOpenOrdersAsync();
+        var spot_14 = await api.Spot.CloseLiquidatedPositionsAsync(new GateSpotCloseRequest
         {
             Symbol = "SYMBOL",
             Price = 1001.01m,
             ProcessingMode = GateSpotActionMode.Full,
         });
-        var spot_16 = await api.Spot.PlaceOrderAsync("SYMBOL", GateSpotAccountType.Spot, GateSpotOrderType.Market, GateSpotOrderSide.Buy, GateSpotTimeInForce.GoodTillCancelled, 100.01m);
-        var spot_17 = await api.Spot.PlaceOrderAsync(new GateSpotOrderRequest
+        var spot_15 = await api.Spot.PlaceOrderAsync("SYMBOL", GateSpotAccountType.Spot, GateSpotOrderType.Market, GateSpotOrderSide.Buy, GateSpotTimeInForce.GoodTillCancelled, 100.01m);
+        var spot_16 = await api.Spot.PlaceOrderAsync(new GateSpotOrderRequest
         {
             Symbol = "SYMBOL",
             Account = GateSpotAccountType.Spot,
@@ -86,14 +87,14 @@ internal class Program
             TimeInForce = GateSpotTimeInForce.GoodTillCancelled,
             Amount = 100.01m
         });
-        var spot_18 = await api.Spot.GetOrdersAsync("SYMBOL", GateSpotOrderQueryStatus.Open);
-        var spot_19 = await api.Spot.CancelOrdersAsync("SYMBOL");
-        var spot_20 = await api.Spot.GetOrderAsync("SYMBOL", 1_000_000_000);
-        var spot_21 = await api.Spot.CancelOrderAsync("SYMBOL", 1_000_000_000);
-        var spot_22 = await api.Spot.GetTradeHistoryAsync();
-        var spot_23 = await api.Spot.GetServerTimeAsync();
-        var spot_24 = await api.Spot.CancelAllAsync(30);
-        var spot_25 = await api.Spot.PlacePriceTriggeredOrderAsync(
+        var spot_17 = await api.Spot.GetOrdersAsync("SYMBOL", GateSpotOrderQueryStatus.Open);
+        var spot_18 = await api.Spot.CancelOrdersAsync("SYMBOL");
+        var spot_19 = await api.Spot.GetOrderAsync("SYMBOL", 1_000_000_000);
+        var spot_20 = await api.Spot.CancelOrderAsync("SYMBOL", 1_000_000_000);
+        var spot_21 = await api.Spot.GetTradeHistoryAsync();
+        var spot_22 = await api.Spot.GetServerTimeAsync();
+        var spot_23 = await api.Spot.CancelAllAsync(30);
+        var spot_24 = await api.Spot.PlacePriceTriggeredOrderAsync(
             "SYMBOL",
             100.01m,
             GateSpotTriggerCondition.GreaterThanOrEqualTo,
@@ -104,7 +105,7 @@ internal class Program
             GateSpotTriggerTimeInForce.GoodTillCancelled,
             100.00m, 100.02m, "CLIENT-ORDER-ID"
             );
-        var spot_26 = await api.Spot.PlacePriceTriggeredOrderAsync(new GateSpotPriceTriggeredOrderRequest
+        var spot_25 = await api.Spot.PlacePriceTriggeredOrderAsync(new GateSpotPriceTriggeredOrderRequest
         {
             Symbol = "SYMBOL",
             Trigger = new GateSpotTriggerPrice
@@ -124,10 +125,10 @@ internal class Program
                 ClientOrderId = "CLIENT-ORDER-ID"
             }
         });
-        var spot_27 = await api.Spot.GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
-        var spot_28 = await api.Spot.CancelPriceTriggeredOrdersAsync();
-        var spot_29 = await api.Spot.GetPriceTriggeredOrderAsync();
-        var spot_30 = await api.Spot.CancelPriceTriggeredOrderAsync();
+        var spot_26 = await api.Spot.GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
+        var spot_27 = await api.Spot.CancelPriceTriggeredOrdersAsync();
+        var spot_28 = await api.Spot.GetPriceTriggeredOrderAsync();
+        var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();
 
         // Cross-Margin Methods
         var cross_01 = await api.Margin.Cross.GetCurrenciesAsync();
@@ -151,7 +152,6 @@ internal class Program
         var isolated_06 = await api.Margin.Isolated.GetTransferableAmountAsync("CURRENCY");
 
         // Flash-Swap Methods
-        var swap_01 = await api.Swap.GetCurrenciesAsync();
         var swap_02 = await api.Swap.GetMarketsAsync();
         var swap_03 = await api.Swap.PreviewOrderAsync("SELL-CURRENCY", 100.0M, "BUY-CURRENCY", 1000.0M);
         var swap_04 = await api.Swap.PreviewOrderAsync(new GateSwapOrderRequest

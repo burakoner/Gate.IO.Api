@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Ticker
 /// </summary>
-public class GateSpotTicker
+public record GateSpotTicker
 {
     /// <summary>
     /// Currency pair
@@ -24,10 +24,22 @@ public class GateSpotTicker
     public decimal? LowestAsk { get; set; }
 
     /// <summary>
+    /// The latest seller's lowest price quantity; does not exist for batch query; exists for single query, and is empty if there is no data
+    /// </summary>
+    [JsonProperty("lowest_size")]
+    public decimal? LowestSize { get; set; }
+
+    /// <summary>
     /// Recent highest bid
     /// </summary>
     [JsonProperty("highest_bid")]
     public decimal? HighestBid { get; set; }
+
+    /// <summary>
+    /// The latest buyer's highest price quantity; does not exist for batch query; exists for single query, and is empty if there is no data
+    /// </summary>
+    [JsonProperty("highest_size")]
+    public decimal? HighestSize { get; set; }
 
     /// <summary>
     /// Change percentage in the last 24h

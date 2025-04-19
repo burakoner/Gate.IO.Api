@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Gate.IO Wallet User Trading Fee
 /// </summary>
-public class GateSpotUserTradingFee
+public record GateSpotUserTradingFee
 {
     /// <summary>
     /// User ID
@@ -63,5 +63,5 @@ public class GateSpotUserTradingFee
     /// Deduction types for rates, 1 - GT deduction, 2 - Point card deduction, 3 - VIP rates
     /// </summary>
     [JsonProperty("debit_fee")]
-    public decimal DebitFee { get; set; }
+    public int DebitFee { get; set; }
 }

@@ -8,7 +8,7 @@ public class GateRestApiClientOptions : RestApiClientOptions
     /// <summary>
     /// Receive Window
     /// </summary>
-    public TimeSpan ReceiveWindow { get; set; }
+    public TimeSpan? ReceiveWindow { get; set; }
 
     /// <summary>
     /// Auto Timestamp
@@ -40,7 +40,7 @@ public class GateRestApiClientOptions : RestApiClientOptions
         BaseAddress = GateConstants.Default.RestApiAddress;
 
         // Receive Window
-        ReceiveWindow = TimeSpan.FromSeconds(5);
+        // ReceiveWindow = TimeSpan.FromSeconds(15);
 
         // Auto Timestamp
         AutoTimestamp = true;

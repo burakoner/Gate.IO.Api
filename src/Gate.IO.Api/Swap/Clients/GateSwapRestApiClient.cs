@@ -11,7 +11,6 @@ public class GateSwapRestApiClient
     private const string section = "flash_swap";
 
     // Endpoints
-    private const string currenciesEndpoint = "currencies";
     private const string currencyPairsEndpoint = "currency_pairs";
     private const string ordersEndpoint = "orders";
     private const string ordersPreviewEndpoint = "orders/preview";
@@ -21,17 +20,6 @@ public class GateSwapRestApiClient
 
     // Constructor
     internal GateSwapRestApiClient(GateRestApiClient root) => _ = root;
-
-    /// <summary>
-    /// List all supported currencies in flash swap
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    [Obsolete]
-    public Task<RestCallResult<List<GateSwapCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
-    {
-        return _.SendRequestInternal<List<GateSwapCurrency>>(_.GetUrl(api, version, section, currenciesEndpoint), HttpMethod.Get, ct);
-    }
 
     /// <summary>
     /// List All Supported Currency Pairs In Flash Swap

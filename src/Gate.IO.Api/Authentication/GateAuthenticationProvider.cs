@@ -13,8 +13,16 @@ internal class GateAuthenticationProvider(ApiCredentials credentials) : Authenti
         headers.Add("KEY", Credentials.Key!.GetString());
 
         // Timestamp
-        var timestamp = GetTimestamp(apiClient).ConvertToSeconds().ToString();
+        var time = GetTimestamp(apiClient);
+        var timestamp = time.ConvertToSeconds().ToString();
         headers.Add("Timestamp", timestamp);
+
+        // Receive Window
+        var window = ((GateRestApiClientOptions)apiClient.ClientOptions).ReceiveWindow;
+        if (window != null)
+        {
+            headers.Add("x-gate-exptime", time.Add(window.Value).ConvertToMilliseconds().ToString());
+        }
 
         // Signature
         var signbody = new StringBuilder();

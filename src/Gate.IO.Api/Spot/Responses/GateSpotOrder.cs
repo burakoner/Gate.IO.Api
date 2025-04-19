@@ -3,7 +3,7 @@
 /// <summary>
 /// Spot order details
 /// </summary>
-public class GateSpotOrder
+public record GateSpotOrder
 {
     /// <summary>
     /// Order ID

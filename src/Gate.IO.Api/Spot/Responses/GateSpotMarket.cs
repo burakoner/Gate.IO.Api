@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Spot currency pair
 /// </summary>
-public class GateSpotMarket
+public record GateSpotMarket
 {
     /// <summary>
     /// Currency pair
@@ -18,10 +18,22 @@ public class GateSpotMarket
     public string Base { get; set; }
 
     /// <summary>
+    /// Transaction currency name
+    /// </summary>
+    [JsonProperty("base_name")]
+    public string BaseName { get; set; }
+
+    /// <summary>
     /// Quote currency
     /// </summary>
     [JsonProperty("quote")]
     public string Quote { get; set; }
+
+    /// <summary>
+    /// Name of the denominated currency
+    /// </summary>
+    [JsonProperty("quote_name")]
+    public string QuoteName { get; set; }
 
     /// <summary>
     /// Trading fee
@@ -63,7 +75,7 @@ public class GateSpotMarket
     /// Price scale
     /// </summary>
     [JsonProperty("precision")]
-    public int Precision { get; set; }
+    public int PricePrecision { get; set; }
 
     /// <summary>
     /// Trading Status
@@ -84,4 +96,10 @@ public class GateSpotMarket
     [JsonProperty("buy_start")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime BuyStart { get; set; }
+
+    /// <summary>
+    /// Trading pair type, normal: normal, premarket: pre-market
+    /// </summary>
+    [JsonProperty("type")]
+    public GateSpotMarketType Type { get; set; }
 }

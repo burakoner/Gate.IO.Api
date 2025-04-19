@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Spot order details
 /// </summary>
-public class GateSpotOrderRequest
+public record GateSpotOrderRequest
 {
     /// <summary>
     /// User defined information. If not empty, must follow the rules below:  

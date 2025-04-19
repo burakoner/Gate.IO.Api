@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// SpotCountdown
 /// </summary>
-internal class GateSpotCountdown
+internal record GateSpotCountdown
 {
     /// <summary>
     /// Timestamp of the end of the countdown, in milliseconds

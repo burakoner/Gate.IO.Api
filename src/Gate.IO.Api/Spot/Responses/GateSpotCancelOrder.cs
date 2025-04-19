@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Gate Spot Cancel Order Response
 /// </summary>
-public class GateSpotCancelOrder
+public record GateSpotCancelOrder
 {
     /// <summary>
     /// Order currency pair

@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Spot;
 
-internal class GateSpotPriceTriggeredOrderId
+internal record GateSpotPriceTriggeredOrderId
 {
     [JsonProperty("id")]
     public long OrderId { get; set; }

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// OrderBook
 /// </summary>
-public class GateSpotOrderBook
+public record GateSpotOrderBook
 {
     /// <summary>
     /// Order book ID, which is updated whenever the order book is changed. Valid only when &#x60;with_id&#x60; is set to &#x60;true&#x60;
@@ -42,7 +42,7 @@ public class GateSpotOrderBook
 /// Order book entry
 /// </summary>
 [JsonConverter(typeof(ArrayConverter))]
-public class GateSpotOrderBookEntry
+public record GateSpotOrderBookEntry
 {
     /// <summary>
     /// The price of this order book entry

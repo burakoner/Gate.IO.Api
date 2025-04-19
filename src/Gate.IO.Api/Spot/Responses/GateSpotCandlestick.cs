@@ -4,7 +4,7 @@ namespace Gate.IO.Api.Spot;
 /// Candlestick
 /// </summary>
 [JsonConverter(typeof(ArrayConverter))]
-public class GateSpotCandlestick
+public record GateSpotCandlestick
 {
     /// <summary>
     /// Unix timestamp in seconds

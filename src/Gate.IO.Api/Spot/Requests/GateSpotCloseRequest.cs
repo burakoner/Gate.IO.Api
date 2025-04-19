@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// GateSpotCloseRequest
 /// </summary>
-public class GateSpotCloseRequest
+public record GateSpotCloseRequest
 {
     /// <summary>
     /// User defined information. If not empty, must follow the rules below:  

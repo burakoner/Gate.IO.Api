@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Spot Account
 /// </summary>
-public class GateSpotBalance
+public record GateSpotBalance
 {
     /// <summary>
     /// Currency detail

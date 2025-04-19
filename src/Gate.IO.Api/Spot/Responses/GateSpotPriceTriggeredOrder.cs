@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// GateSpotPriceTriggeredOrder
 /// </summary>
-public class GateSpotPriceTriggeredOrder : GateSpotPriceTriggeredOrderRequest
+public record GateSpotPriceTriggeredOrder : GateSpotPriceTriggeredOrderRequest
 {
     /// <summary>
     /// Auto order ID

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Trade
 /// </summary>
-public class GateSpotTradeHistory
+public record GateSpotTradeHistory
 {
     /// <summary>
     /// Trade ID

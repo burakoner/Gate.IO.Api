@@ -7,8 +7,8 @@ public class GateSpotRestApiClient
 {
     // Api
     private const string api = "api";
-    private const string version = "4";
-    private const string section = "spot";
+    private const string v4 = "4";
+    private const string spot = "spot";
 
     // Endpoints
     private const string timeEndpoint = "time";
@@ -18,7 +18,6 @@ public class GateSpotRestApiClient
     private const string orderbookEndpoint = "order_book";
     private const string tradesEndpoint = "trades";
     private const string candlesticksEndpoint = "candlesticks";
-    private const string feeEndpoint = "fee";
     private const string batchFeeEndpoint = "batch_fee";
     private const string accountsEndpoint = "accounts";
     private const string ordersEndpoint = "orders";
@@ -43,7 +42,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotCurrency>>> GetCurrenciesAsync(CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateSpotCurrency>>(_.GetUrl(api, version, section, currenciesEndpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<List<GateSpotCurrency>>(_.GetUrl(api, v4, spot, currenciesEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -54,7 +53,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSpotCurrency>> GetCurrencyAsync(string currency, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateSpotCurrency>(_.GetUrl(api, version, section, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct);
+        return _.SendRequestInternal<GateSpotCurrency>(_.GetUrl(api, v4, spot, currenciesEndpoint.AppendPath(currency)), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -64,7 +63,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotMarket>>> GetMarketsAsync(CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateSpotMarket>>(_.GetUrl(api, version, section, currencyPairsEndpoint), HttpMethod.Get, ct);
+        return _.SendRequestInternal<List<GateSpotMarket>>(_.GetUrl(api, v4, spot, currencyPairsEndpoint), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -75,7 +74,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSpotMarket>> GetMarketAsync(string symbol, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateSpotMarket>(_.GetUrl(api, version, section, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct);
+        return _.SendRequestInternal<GateSpotMarket>(_.GetUrl(api, v4, spot, currencyPairsEndpoint.AppendPath(symbol)), HttpMethod.Get, ct);
     }
 
     /// <summary>
@@ -91,7 +90,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("timezone", timezone);
 
-        return _.SendRequestInternal<List<GateSpotTicker>>(_.GetUrl(api, version, section, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotTicker>>(_.GetUrl(api, v4, spot, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -113,7 +112,7 @@ public class GateSpotRestApiClient
             { "with_id", withId.ToString().ToLower() },
         };
 
-        return _.SendRequestInternal<GateSpotOrderBook>(_.GetUrl(api, version, section, orderbookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<GateSpotOrderBook>(_.GetUrl(api, v4, spot, orderbookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -161,12 +160,55 @@ public class GateSpotRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        var sign = _.ClientOptions.AuthenticationProvider != null;
-        //var sign = Root.ClientOptions.ApiCredentials != null &&
-        //    Root.ClientOptions.ApiCredentials.Key != null &&
-        //    Root.ClientOptions.ApiCredentials.Secret != null;
+        return _.SendRequestInternal<List<GateSpotTrade>>(_.GetUrl(api, v4, spot, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
+    }
 
-        return _.SendRequestInternal<List<GateSpotTrade>>(_.GetUrl(api, version, section, tradesEndpoint), HttpMethod.Get, ct, sign, queryParameters: parameters);
+    /// <summary>
+    /// Retrieve private trades
+    /// You can use from and to to query by time range, or use last_id by scrolling page. The default behavior is by time range, The query range is the last 30 days.
+    /// Scrolling query using last_id is not recommended any more. If last_id is specified, time range query parameters will be ignored.
+    /// </summary>
+    /// <param name="symbol">Currency pair</param>
+    /// <param name="from">Start timestamp of the query</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list. Default: 100, Minimum: 1, Maximum: 1000</param>
+    /// <param name="lastId">Specify list staring point using the id of last record in previous list-query results</param>
+    /// <param name="reverse">Whether the id of records to be retrieved should be less than the last_id specified. Default to false.</param>
+    /// <param name="page">Page number</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotTrade>>> GetPrivateTradesAsync(string symbol, DateTime from, DateTime to, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
+    => GetPrivateTradesAsync(symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, lastId, reverse, page, ct);
+
+    /// <summary>
+    /// Retrieve private trades
+    /// You can use from and to to query by time range, or use last_id by scrolling page. The default behavior is by time range, The query range is the last 30 days.
+    /// Scrolling query using last_id is not recommended any more. If last_id is specified, time range query parameters will be ignored.
+    /// </summary>
+    /// <param name="symbol">Currency pair</param>
+    /// <param name="from">Start timestamp of the query</param>
+    /// <param name="to">Time range ending, default to current time</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list. Default: 100, Minimum: 1, Maximum: 1000</param>
+    /// <param name="lastId">Specify list staring point using the id of last record in previous list-query results</param>
+    /// <param name="reverse">Whether the id of records to be retrieved should be less than the last_id specified. Default to false.</param>
+    /// <param name="page">Page number</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotTrade>>> GetPrivateTradesAsync(string symbol, long? from = null, long? to = null, int limit = 100, long? lastId = null, bool reverse = false, int page = 1, CancellationToken ct = default)
+    {
+        limit.ValidateIntBetween(nameof(limit), 1, 1000);
+        var parameters = new Dictionary<string, object>
+        {
+            { "currency_pair", symbol },
+            { "reverse", reverse },
+            { "limit", limit },
+            { "page", page },
+        };
+        parameters.AddOptionalParameter("last_id", lastId);
+        parameters.AddOptionalParameter("from", from);
+        parameters.AddOptionalParameter("to", to);
+
+        return _.SendRequestInternal<List<GateSpotTrade>>(_.GetUrl(api, v4, spot, tradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -203,23 +245,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("to", to);
         if (!from.HasValue && !to.HasValue) parameters.AddOptional("limit", limit);
 
-        return _.SendRequestInternal<List<GateSpotCandlestick>>(_.GetUrl(api, version, section, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
-    }
-
-    /// <summary>
-    /// Query user trading fee rates
-    /// This API is deprecated in favour of new fee retrieving API /wallet/fee.
-    /// </summary>
-    /// <param name="symbol">Specify a currency pair to retrieve precise fee rate</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    [Obsolete("This API is deprecated in favour of new fee retrieving API /wallet/fee")]
-    public Task<RestCallResult<GateSpotUserTradingFee>> GetUserFeeRatesAsync(string symbol = null, CancellationToken ct = default)
-    {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("currency_pair", symbol);
-
-        return _.SendRequestInternal<GateSpotUserTradingFee>(_.GetUrl(api, version, section, feeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotCandlestick>>(_.GetUrl(api, v4, spot, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -228,8 +254,6 @@ public class GateSpotRestApiClient
     /// <param name="symbols">A request can only query up to 50 currency pairs</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    /// <exception cref="ArgumentException"></exception>
-    [Obsolete("This API is deprecated in favour of new fee retrieving API /wallet/fee")]
     public Task<RestCallResult<Dictionary<string, GateSpotUserTradingFee>>> GetUserFeeRatesAsync(IEnumerable<string> symbols, CancellationToken ct = default)
     {
         if (symbols.Count() > 50) 
@@ -239,7 +263,7 @@ public class GateSpotRestApiClient
             { "currency_pairs", string.Join(",", symbols) }
         };
 
-        return _.SendRequestInternal<Dictionary<string, GateSpotUserTradingFee>>(_.GetUrl(api, version, section, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<Dictionary<string, GateSpotUserTradingFee>>(_.GetUrl(api, v4, spot, batchFeeEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -253,7 +277,7 @@ public class GateSpotRestApiClient
         var parameters = new Dictionary<string, object>();
         parameters.AddOptionalParameter("currency", currency);
 
-        return _.SendRequestInternal<List<GateSpotBalance>>(_.GetUrl(api, version, section, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotBalance>>(_.GetUrl(api, v4, spot, accountsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     // TODO: Query account book
@@ -294,7 +318,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
 
-        return _.SendRequestInternal<List<GateSpotBatchOrder>>(_.GetUrl(api, version, section, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotBatchOrder>>(_.GetUrl(api, v4, spot, batchOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -318,7 +342,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("account", account);
 
 
-        return _.SendRequestInternal<List<GateSpotOpenOrders>>(_.GetUrl(api, version, section, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotOpenOrders>>(_.GetUrl(api, v4, spot, openOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -342,7 +366,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("text", request.ClientOrderId);
         parameters.AddOptionalEnum("action_mode", request.ProcessingMode);
 
-        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, section, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, v4, spot, crossLiquidateOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -457,7 +481,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("stp_act", request.SelfTradeAction);
         parameters.AddOptionalEnum("action_mode", request.ActionMode);
 
-        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, v4, spot, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -527,7 +551,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("from", from);
         parameters.AddOptional("to", to);
 
-        return _.SendRequestInternal<List<GateSpotOrder>>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotOrder>>(_.GetUrl(api, v4, spot, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -541,8 +565,8 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotOrder>>> CancelOrdersAsync(
         string symbol = null,
-        GateSpotAccountType? account = null,
         GateSpotOrderSide? side = null,
+        GateSpotAccountType? account = null,
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
     {
@@ -550,11 +574,11 @@ public class GateSpotRestApiClient
 
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptionalEnum("account", account);
         parameters.AddOptionalEnum("side", side);
+        parameters.AddOptionalEnum("account", account);
         parameters.AddOptionalEnum("action_mode", actionMode);
 
-        return _.SendRequestInternal<List<GateSpotOrder>>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotOrder>>(_.GetUrl(api, v4, spot, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -572,7 +596,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
 
-        return _.SendRequestInternal<List<GateSpotCancelOrder>>(_.GetUrl(api, version, section, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotCancelOrder>>(_.GetUrl(api, v4, spot, cancelBatchOrdersEndpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -602,7 +626,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("account", account);
 
         var oid = _.CheckOrderId(orderId, clientOrderId);
-        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, section, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, v4, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
 #if NETSTANDARD2_1
@@ -646,7 +670,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("action_mode", actionMode);
 
         var oid = _.CheckOrderId(orderId, clientOrderId);
-        var uri = _.GetUrl(api, version, section, ordersEndpoint.AppendPath(oid));
+        var uri = _.GetUrl(api, v4, spot, ordersEndpoint.AppendPath(oid));
         if (!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
         if (account != null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
 
@@ -682,7 +706,7 @@ public class GateSpotRestApiClient
         parameters.AddOptionalEnum("action_mode", actionMode);
 
         var oid = _.CheckOrderId(orderId, clientOrderId);
-        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, version, section, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, v4, spot, ordersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -754,7 +778,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("from", from);
         parameters.AddOptional("to", to);
 
-        return _.SendRequestInternal<List<GateSpotTradeHistory>>(_.GetUrl(api, version, section, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotTradeHistory>>(_.GetUrl(api, v4, spot, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -764,7 +788,7 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<DateTime>> GetServerTimeAsync(CancellationToken ct = default)
     {
-        var result = await _.SendRequestInternal<GateSpotTime>(_.GetUrl(api, version, section, timeEndpoint), HttpMethod.Get, ct);
+        var result = await _.SendRequestInternal<GateSpotTime>(_.GetUrl(api, v4, spot, timeEndpoint), HttpMethod.Get, ct);
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -787,11 +811,12 @@ public class GateSpotRestApiClient
             { "timeout", timeout },
         };
         parameters.AddOptionalParameter("currency_pair", symbol);
-        var result = await _.SendRequestInternal<GateSpotCountdown>(_.GetUrl(api, version, section, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateSpotCountdown>(_.GetUrl(api, v4, spot, countdownCancelAllEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.Time ?? default);
     }
 
     // TODO: Batch modification of orders
+    // TODO: Query spot insurance fund historical data
 
     /// <summary>
     /// Create a price-triggered order
@@ -856,7 +881,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
 
-        var result = await _.SendRequestInternal<GateSpotPriceTriggeredOrderId>(_.GetUrl(api, version, section, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateSpotPriceTriggeredOrderId>(_.GetUrl(api, v4, spot, priceOrdersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
         return result.As(result.Data?.OrderId ?? default);
     }
 
@@ -885,7 +910,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("limit", limit);
         parameters.AddOptional("offset", offset);
 
-        return _.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(_.GetUrl(api, version, section, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(_.GetUrl(api, v4, spot, priceOrdersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -906,7 +931,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("market", symbol);
         parameters.AddOptionalEnum("account", account);
 
-        return _.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(_.GetUrl(api, version, section, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotPriceTriggeredOrder>>(_.GetUrl(api, v4, spot, priceOrdersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -923,7 +948,7 @@ public class GateSpotRestApiClient
         CancellationToken ct = default)
     {
         var oid = _.CheckOrderId(orderId, clientOrderId);
-        return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, version, section, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, v4, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -940,6 +965,6 @@ public class GateSpotRestApiClient
         CancellationToken ct = default)
     {
         var oid = _.CheckOrderId(orderId, clientOrderId);
-        return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, version, section, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, v4, spot, priceOrdersEndpoint.AppendPath(oid)), HttpMethod.Delete, ct, true);
     }
 }

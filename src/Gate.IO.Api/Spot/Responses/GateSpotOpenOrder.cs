@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// Open orders
 /// </summary>
-public class GateSpotOpenOrders
+public record GateSpotOpenOrders
 {
     /// <summary>
     /// Currency pair

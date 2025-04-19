@@ -3,7 +3,7 @@ namespace Gate.IO.Api.SubAccount;
 /// <summary>
 /// SubAccountKeyPermission
 /// </summary>
-public class GateSubAccountApiKeyPermission
+public record GateSubAccountApiKeyPermission
 {
     /// <summary>
     /// Permission name (all permissions will be removed if no value is passed)

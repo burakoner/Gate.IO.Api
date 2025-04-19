@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Spot;
 /// <summary>
 /// GateSpotTime
 /// </summary>
-internal class GateSpotTime
+internal record GateSpotTime
 {
     /// <summary>
     /// Server current time(ms)

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.SubAccount;
 /// <summary>
 /// SubAccount
 /// </summary>
-public class GateSubAccount
+public record GateSubAccount
 {
     /// <summary>
     /// custom text

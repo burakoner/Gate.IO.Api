@@ -3,7 +3,7 @@
 /// <summary>
 /// GateSpotTriggerOrderRequest
 /// </summary>
-public class GateSpotPriceTriggeredOrderRequest
+public record GateSpotPriceTriggeredOrderRequest
 {
     /// <summary>
     /// Gets or Sets Trigger
@@ -27,7 +27,7 @@ public class GateSpotPriceTriggeredOrderRequest
 /// <summary>
 /// GateSpotTriggerPrice
 /// </summary>
-public class GateSpotTriggerPrice
+public record GateSpotTriggerPrice
 {
     /// <summary>
     /// Trigger price
@@ -51,7 +51,7 @@ public class GateSpotTriggerPrice
 /// <summary>
 /// GateSpotTriggerOrder
 /// </summary>
-public class GateSpotTriggerOrder
+public record GateSpotTriggerOrder
 {
     /// <summary>
     /// Order Type
