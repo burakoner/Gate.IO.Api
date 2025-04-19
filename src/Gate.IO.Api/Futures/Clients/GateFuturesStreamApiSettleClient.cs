@@ -1,13 +1,11 @@
-﻿using Gate.IO.Api.Models.StreamApi.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
-namespace Gate.IO.Api.Clients.StreamApi;
-
-public class StreamApiFuturesPerpetualSettleClient
+public class GateFuturesStreamApiSettleClient
 {
     internal GateFuturesSettlement Settlement { get; }
-    internal StreamApiFuturesPerpetualClient MainClient { get; }
+    internal GateFuturesStreamApiClient MainClient { get; }
 
-    internal StreamApiFuturesPerpetualSettleClient(StreamApiFuturesPerpetualClient main, GateFuturesSettlement settle)
+    internal GateFuturesStreamApiSettleClient(GateFuturesStreamApiClient main, GateFuturesSettlement settle)
     {
         MainClient = main;
         Settlement = settle;
@@ -25,7 +23,7 @@ public class StreamApiFuturesPerpetualSettleClient
     public async Task<CallResult<GateStreamLatency>> PingAsync()
         => await MainClient.PingAsync(this.Settlement).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamPerpetualTicker>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamPerpetualTicker>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToTickersAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
 
     /*
@@ -33,16 +31,16 @@ public class StreamApiFuturesPerpetualSettleClient
         => await MainClient.UnsubscribeFromTickersAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
     */
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTradesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamTrade>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTradesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamTrade>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToTradesAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamBookTicker>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamBookTicker>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToOrderBookTickersAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string contract, int frequency, int level, Action<WebSocketDataEvent<FuturesStreamBookDifference>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string contract, int frequency, int level, Action<WebSocketDataEvent<GateFuturesStreamBookDifference>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToOrderBookDifferencesAsync(this.Settlement, contract, frequency, level, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<FuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToOrderBookSnapshotsAsync(this.Settlement, contract, /*int interval,*/  limit, onMessage, ct).ConfigureAwait(false);
 
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
@@ -66,9 +64,9 @@ public class StreamApiFuturesPerpetualSettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesUserLiquidation>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserLiquidationsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(long userId, Action<WebSocketDataEvent<FuturesUserDeleverage>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(long userId, Action<WebSocketDataEvent<GateFuturesUserDeleverage>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserDeleveragesAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(long userId, string contract, Action<WebSocketDataEvent<FuturesUserDeleverage>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesUserDeleverage>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserDeleveragesAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionClosesAsync(long userId, Action<WebSocketDataEvent<GateFuturesPositionClose>> onMessage, CancellationToken ct = default)
@@ -76,12 +74,12 @@ public class StreamApiFuturesPerpetualSettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionClosesAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesPositionClose>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserPositionClosesAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(long userId, Action<WebSocketDataEvent<FuturesStreamBalance>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(long userId, Action<WebSocketDataEvent<GateFuturesStreamBalance>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserBalancesAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(long userId, Action<WebSocketDataEvent<FuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(long userId, Action<WebSocketDataEvent<GateFuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserReduceRiskLimitsAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(long userId, string contract, Action<WebSocketDataEvent<FuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserReduceRiskLimitsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(long userId, Action<WebSocketDataEvent<GateFuturesPosition>> onMessage, CancellationToken ct = default)
@@ -89,9 +87,9 @@ public class StreamApiFuturesPerpetualSettleClient
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesPosition>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserPositionsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(long userId, Action<WebSocketDataEvent<FuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(long userId, Action<WebSocketDataEvent<GateFuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserAutoOrdersAsync(this.Settlement, userId, onMessage, ct).ConfigureAwait(false);
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(long userId, string contract, Action<WebSocketDataEvent<FuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserAutoOrdersAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
 
 }

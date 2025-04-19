@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Futures;
+namespace Gate.IO.Api.Futures;
 
-public record FuturesStreamPerpetualTicker
+public record GateFuturesStreamPerpetualTicker
 {
     /// <summary>
     /// Futures contract

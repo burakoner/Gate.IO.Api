@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Futures;
+namespace Gate.IO.Api.Futures;
 
-public record FuturesStreamReduceRiskLimit
+public record GateFuturesStreamReduceRiskLimit
 {
     [JsonProperty("time")]
     [JsonConverter(typeof(DateTimeConverter))]

@@ -1,9 +1,9 @@
-﻿namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Delivery;
 
 /// <summary>
 /// Gate.IO Futures Delivery REST API Client
 /// </summary>
-public class GateFuturesDeliveryRestApiClient
+public class GateDeliveryRestApiClient
 {
     // Api
     private const string api = "api";
@@ -40,23 +40,23 @@ public class GateFuturesDeliveryRestApiClient
     /// <summary>
     /// USDT Settled Delivery Futures Client
     /// </summary>
-    public GateFuturesDeliverySettleRestApiClient USDT { get; }
+    public GateDeliveryRestApiSettleClient USDT { get; }
 
     /// <summary>
     /// Get a delivery futures settle client
     /// </summary>
     /// <param name="settle">Delivery Settlement Asset</param>
     /// <returns></returns>
-    public GateFuturesDeliverySettleRestApiClient this[GateDeliverySettlement settle] => Clients[settle];
-    private Dictionary<GateDeliverySettlement, GateFuturesDeliverySettleRestApiClient> Clients { get; }
+    public GateDeliveryRestApiSettleClient this[GateDeliverySettlement settle] => Clients[settle];
+    private Dictionary<GateDeliverySettlement, GateDeliveryRestApiSettleClient> Clients { get; }
 
     // Constructor
-    internal GateFuturesDeliveryRestApiClient(GateRestApiClient root)
+    internal GateDeliveryRestApiClient(GateRestApiClient root)
     {
         _ = root;
 
-        USDT = new GateFuturesDeliverySettleRestApiClient(this, GateDeliverySettlement.USDT);
-        Clients = new Dictionary<GateDeliverySettlement, GateFuturesDeliverySettleRestApiClient>
+        USDT = new GateDeliveryRestApiSettleClient(this, GateDeliverySettlement.USDT);
+        Clients = new Dictionary<GateDeliverySettlement, GateDeliveryRestApiSettleClient>
         {
             { GateDeliverySettlement.USDT, USDT },
         };

@@ -9,7 +9,8 @@ public class GateWebSocketClient
     // Master Clients
     internal StreamApiBaseClient Base { get; }
     public StreamApiSpotClient Spot { get; }
-    public StreamApiFuturesClient Futures { get; }
+    public GateFuturesStreamApiClient Futures { get; }
+    public GateDeliveryStreamApiClient Delivery { get; }
     public StreamApiOptionsClient Options { get; }
 
     public GateWebSocketClient() : this(null, new GateWebSocketClientOptions())
@@ -31,7 +32,8 @@ public class GateWebSocketClient
 
         Base = new StreamApiBaseClient(this);
         Spot = new StreamApiSpotClient(this);
-        Futures = new StreamApiFuturesClient(this);
+        Futures = new GateFuturesStreamApiClient(this);
+        Delivery = new GateDeliveryStreamApiClient(this);
         Options = new StreamApiOptionsClient(this);
     }
 

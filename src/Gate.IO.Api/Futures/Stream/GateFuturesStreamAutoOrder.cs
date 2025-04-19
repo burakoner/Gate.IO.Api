@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Futures;
+namespace Gate.IO.Api.Futures;
 
-public record FuturesStreamAutoOrder
+public record GateFuturesStreamAutoOrder
 {
     [JsonProperty("user")]
     public long UserId { get; set; }
@@ -28,13 +28,13 @@ public record FuturesStreamAutoOrder
     public bool IsStopOrder { get; set; }
     
     [JsonProperty("stop_trigger")]
-    public FuturesStreamAutoOrderStopTrigger StopTrigger { get; set; }
+    public GateFuturesStreamAutoOrderStopTrigger StopTrigger { get; set; }
 
     [JsonProperty("trigger")]
-    public FuturesStreamAutoOrderTrigger Trigger { get; set; }
+    public GateFuturesStreamAutoOrderTrigger Trigger { get; set; }
 
     [JsonProperty("initial")]
-    public FuturesStreamAutoOrderInitial Order { get; set; }
+    public GateFuturesStreamAutoOrderInitial Order { get; set; }
 
     [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
     public GateFuturesTriggerType? Type { get; set; }
@@ -43,7 +43,7 @@ public record FuturesStreamAutoOrder
     public long MeOrderId { get; set; }
 }
 
-public record FuturesStreamAutoOrderStopTrigger
+public record GateFuturesStreamAutoOrderStopTrigger
 {
     [JsonProperty("rule")]
     public GateSpotTriggerCondition? Rule { get; set; }
@@ -55,7 +55,7 @@ public record FuturesStreamAutoOrderStopTrigger
     public decimal? OrderPrice { get; set; }
 }
 
-public record FuturesStreamAutoOrderTrigger
+public record GateFuturesStreamAutoOrderTrigger
 {
     [JsonProperty("strategy_type")]
     public GateFuturesTriggerStrategy StrategyType { get; set; }
@@ -73,7 +73,7 @@ public record FuturesStreamAutoOrderTrigger
     public int Expiration { get; set; }
 }
 
-public record FuturesStreamAutoOrderInitial
+public record GateFuturesStreamAutoOrderInitial
 {
     [JsonProperty("contract")]
     public string Contract { get; set; }

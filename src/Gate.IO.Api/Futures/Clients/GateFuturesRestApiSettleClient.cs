@@ -3,12 +3,12 @@
 /// <summary>
 /// Gate.IO Futures Perpetual Settlement REST API Client
 /// </summary>
-public class GateFuturesPerpetualSettleRestApiClient
+public class GateFuturesRestApiSettleClient
 {
     internal GateFuturesSettlement Settlement { get; }
-    internal GateFuturesPerpetualRestApiClient _ { get; }
+    internal GateFuturesRestApiClient _ { get; }
 
-    internal GateFuturesPerpetualSettleRestApiClient(GateFuturesPerpetualRestApiClient main, GateFuturesSettlement settle)
+    internal GateFuturesRestApiSettleClient(GateFuturesRestApiClient main, GateFuturesSettlement settle)
     {
         _ = main;
         Settlement = settle;

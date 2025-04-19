@@ -1,13 +1,11 @@
-﻿using Gate.IO.Api.Models.StreamApi.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
-namespace Gate.IO.Api.Clients.StreamApi;
-
-public class StreamApiFuturesPerpetualClient
+public class GateFuturesStreamApiClient
 {
     // Public
-    public StreamApiFuturesPerpetualSettleClient BTC { get; }
-    public StreamApiFuturesPerpetualSettleClient USD { get; }
-    public StreamApiFuturesPerpetualSettleClient USDT { get; }
+    public GateFuturesStreamApiSettleClient BTC { get; }
+    public GateFuturesStreamApiSettleClient USD { get; }
+    public GateFuturesStreamApiSettleClient USDT { get; }
 
     // Internal
     internal GateWebSocketClient RootClient { get; }
@@ -32,15 +30,15 @@ public class StreamApiFuturesPerpetualClient
     private const string futuresUserPositionsChannel = "futures.positions";
     private const string futuresUserAutoOrdersChannel = "futures.autoorders";
 
-    internal StreamApiFuturesPerpetualClient(GateWebSocketClient root)
+    internal GateFuturesStreamApiClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;
         ClientOptions = root.ClientOptions;
 
-        BTC = new StreamApiFuturesPerpetualSettleClient(this, GateFuturesSettlement.BTC);
-        USD = new StreamApiFuturesPerpetualSettleClient(this, GateFuturesSettlement.USD);
-        USDT = new StreamApiFuturesPerpetualSettleClient(this, GateFuturesSettlement.USDT);
+        BTC = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.BTC);
+        USD = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.USD);
+        USDT = new GateFuturesStreamApiSettleClient(this, GateFuturesSettlement.USDT);
     }
 
     internal async Task UnsubscribeAsync(int subscriptionId)
@@ -55,9 +53,9 @@ public class StreamApiFuturesPerpetualClient
     internal async Task<CallResult<GateStreamLatency>> PingAsync(GateFuturesSettlement settle)
         => await BaseClient.PingAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresPingChannel).ConfigureAwait(false);
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTickersAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamPerpetualTicker>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTickersAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamPerpetualTicker>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesStreamPerpetualTicker>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesStreamPerpetualTicker>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresTickersChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
@@ -70,20 +68,20 @@ public class StreamApiFuturesPerpetualClient
     }
     */
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTradesAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamTrade>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToTradesAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamTrade>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesStreamTrade>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesStreamTrade>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresTradesChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<FuturesStreamBookTicker>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(GateFuturesSettlement settle, IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamBookTicker>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<FuturesStreamBookTicker>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateFuturesStreamBookTicker>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresBookTickerChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(GateFuturesSettlement settle, string contract, int frequency, int level, Action<WebSocketDataEvent<FuturesStreamBookDifference>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(GateFuturesSettlement settle, string contract, int frequency, int level, Action<WebSocketDataEvent<GateFuturesStreamBookDifference>> onMessage, CancellationToken ct = default)
     {
         level.ValidateIntValues(nameof(level), 5, 10, 20, 50, 100);
         frequency.ValidateIntValues(nameof(frequency), 100, 1000);
@@ -93,11 +91,11 @@ public class StreamApiFuturesPerpetualClient
         payload.Add($"{frequency}ms");
         payload.Add(level.ToString());
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<FuturesStreamBookDifference>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateFuturesStreamBookDifference>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresOrderBookUpdateChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(GateFuturesSettlement settle, string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<FuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(GateFuturesSettlement settle, string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
     {
         limit.ValidateIntValues(nameof(limit), 1, 5, 10, 20, 50, 100);
         // interval.ValidateIntValues(nameof(interval), 100, 1000);
@@ -107,7 +105,7 @@ public class StreamApiFuturesPerpetualClient
         payload.Add(limit.ToString());
         payload.Add($"0");
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<FuturesStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateFuturesStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresOrderBookChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
@@ -161,15 +159,15 @@ public class StreamApiFuturesPerpetualClient
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserLiquidatesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<FuturesUserDeleverage>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<GateFuturesUserDeleverage>> onMessage, CancellationToken ct = default)
         => await SubscribeToUserDeleveragesAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<FuturesUserDeleverage>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserDeleveragesAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<GateFuturesUserDeleverage>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesUserDeleverage>>>>(data => 
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesUserDeleverage>>>>(data => 
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserDeleveragesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
@@ -187,25 +185,25 @@ public class StreamApiFuturesPerpetualClient
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserPositionClosesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<FuturesStreamBalance>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<GateFuturesStreamBalance>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesStreamBalance>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesStreamBalance>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserBalancesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<FuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<GateFuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
     => await SubscribeToUserReduceRiskLimitsAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<FuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserReduceRiskLimitsAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<GateFuturesStreamReduceRiskLimit>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesStreamReduceRiskLimit>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesStreamReduceRiskLimit>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserReduceRiskLimitsChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
@@ -223,15 +221,15 @@ public class StreamApiFuturesPerpetualClient
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserPositionsChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<FuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(GateFuturesSettlement settle, long userId, Action<WebSocketDataEvent<GateFuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
     => await SubscribeToUserAutoOrdersAsync(settle, userId, "!all", onMessage, ct).ConfigureAwait(false);
-    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<FuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserAutoOrdersAsync(GateFuturesSettlement settle, long userId, string contract, Action<WebSocketDataEvent<GateFuturesStreamAutoOrder>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<FuturesStreamAutoOrder>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateFuturesStreamAutoOrder>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamPerpetualFuturesAddresses[settle], futuresUserAutoOrdersChannel, payload, true, handler, ct).ConfigureAwait(false);
     }

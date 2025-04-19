@@ -1,14 +1,14 @@
-﻿namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Delivery;
 
 /// <summary>
 /// Gate.IO Futures Delivery Settlement REST API client
 /// </summary>
-public class GateFuturesDeliverySettleRestApiClient
+public class GateDeliveryRestApiSettleClient
 {
     internal GateDeliverySettlement Settlement { get; }
-    internal GateFuturesDeliveryRestApiClient MainClient { get; }
+    internal GateDeliveryRestApiClient MainClient { get; }
 
-    internal GateFuturesDeliverySettleRestApiClient(GateFuturesDeliveryRestApiClient main, GateDeliverySettlement settle)
+    internal GateDeliveryRestApiSettleClient(GateDeliveryRestApiClient main, GateDeliverySettlement settle)
     {
         MainClient = main;
         Settlement = settle;

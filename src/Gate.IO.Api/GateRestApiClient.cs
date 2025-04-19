@@ -41,9 +41,15 @@ public class GateRestApiClient : RestApiClient
     public GateSwapRestApiClient FlashSwap { get; } // 419
 
     /// <summary>
-    /// Futures Client
+    /// Perpetual Futures Client
     /// </summary>
     public GateFuturesRestApiClient Futures { get; }
+
+    /// <summary>
+    /// Delivery Futures Client
+    /// </summary>
+    public GateDeliveryRestApiClient Delivery { get; }
+
 
     /// <summary>
     /// Options Client
@@ -99,7 +105,8 @@ public class GateRestApiClient : RestApiClient
         SubAccount = new GateSubAccountRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
-        Futures = new GateFuturesRestApiClient(this);
+        Futures = new GateFuturesRestApiClient (this);
+        Delivery = new GateDeliveryRestApiClient(this);
         FlashSwap = new GateSwapRestApiClient(this);
         Options = new GateOptionsRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);

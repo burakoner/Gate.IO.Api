@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+namespace Gate.IO.Api.Delivery;
 
 /// <summary>
 /// Delivery Settlement

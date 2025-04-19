@@ -21,5 +21,5 @@ public enum GateSpotTickerTimezone : byte
     /// All
     /// </summary>
     [Map("all")]
-    All = int.MaxValue
+    All = 255
 }

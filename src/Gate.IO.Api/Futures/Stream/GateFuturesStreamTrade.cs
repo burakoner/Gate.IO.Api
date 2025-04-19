@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Futures;
+namespace Gate.IO.Api.Futures;
 
-public  class FuturesStreamTrade
+public  class GateFuturesStreamTrade
 {
     [JsonProperty("id")]
     public long Id { get; set; }

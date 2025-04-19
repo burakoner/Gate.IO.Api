@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Futures;
+namespace Gate.IO.Api.Futures;
 
-public  class FuturesStreamBookSnapshot
+public  class GateFuturesStreamBookSnapshot
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]
