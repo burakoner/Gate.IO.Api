@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesBalanceChange
 /// </summary>
-public class GateFuturesBalanceChange
+public record GateFuturesBalanceChange
 {
     /// <summary>
     /// Change time

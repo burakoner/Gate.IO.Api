@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Swap;
 /// <summary>
 /// Gate Swap Order
 /// </summary>
-public class GateSwapOrder
+public record GateSwapOrder
 {
     /// <summary>
     /// Flash swap order ID

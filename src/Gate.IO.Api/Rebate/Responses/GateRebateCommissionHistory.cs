@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Rebate;
 /// <summary>
 /// GateRebateCommissionHistory
 /// </summary>
-public class GateRebateCommissionHistory
+public record GateRebateCommissionHistory
 {
     /// <summary>
     /// Currency pair
@@ -27,7 +27,7 @@ public class GateRebateCommissionHistory
 /// <summary>
 /// GateRebateCommissionHistoryRecord
 /// </summary>
-public class GateRebateCommissionHistoryRecord
+public record GateRebateCommissionHistoryRecord
 {
     /// <summary>
     /// Commission Time. (unix timestamp)

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesLiquidation
 /// </summary>
-public class GateFuturesLiquidation
+public record GateFuturesLiquidation
 {
     /// <summary>
     /// Liquidation time

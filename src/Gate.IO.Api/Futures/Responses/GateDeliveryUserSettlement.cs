@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// Delivery Settlement
 /// </summary>
-public class GateDeliveryUserSettlement
+public record GateDeliveryUserSettlement
 {
     /// <summary>
     /// Liquidation time

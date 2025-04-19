@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsUserLiquidation
 /// </summary>
-public class GateOptionsUserLiquidation
+public record GateOptionsUserLiquidation
 {
     /// <summary>
     /// Position close time

@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Futures;
 
-public class FuturesUserDeleverage
+public record FuturesUserDeleverage
 {
     [JsonProperty("entry_price")]
     public decimal EntryPrice { get; set; }

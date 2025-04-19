@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api.Models.StreamApi;
 
-public class GateStreamStatus
+public record GateStreamStatus
 {
     [JsonProperty("status")]
     public string Status { get; set; }

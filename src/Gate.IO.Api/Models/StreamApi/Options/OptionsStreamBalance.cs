@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
-public class OptionsStreamBalance
+public record OptionsStreamBalance
 {
     [JsonProperty("balance")]
     public decimal Balance { get; set; }

@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesOrder
 /// </summary>
-public class GateFuturesOrder
+public record GateFuturesOrder
 {
     /// <summary>
     /// Futures order ID

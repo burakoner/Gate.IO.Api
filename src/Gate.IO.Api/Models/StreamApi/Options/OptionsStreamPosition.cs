@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
-public class OptionsStreamPosition
+public record OptionsStreamPosition
 {
     [JsonProperty("entry_price")]
     public decimal EntryPrice { get; set; }

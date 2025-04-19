@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// Gate Margin Amount
 /// </summary>
-public class GateMarginAmount
+public record GateMarginAmount
 {
     /// <summary>
     /// Currency

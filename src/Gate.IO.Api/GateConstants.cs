@@ -3,7 +3,7 @@
 /// <summary>
 /// Gate.IO API Addresses
 /// </summary>
-internal class GateConstants
+internal record GateConstants
 {
     /// <summary>
     /// Rest Api Address

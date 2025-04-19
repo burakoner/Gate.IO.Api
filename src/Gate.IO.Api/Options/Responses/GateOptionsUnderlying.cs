@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsUnderlying
 /// </summary>
-public class GateOptionsUnderlying
+public record GateOptionsUnderlying
 {
     /// <summary>
     /// Underlying Name

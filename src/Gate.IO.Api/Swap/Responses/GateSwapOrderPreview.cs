@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Swap;
 /// <summary>
 /// GateSwapOrderPreview
 /// </summary>
-public class GateSwapOrderPreview
+public record GateSwapOrderPreview
 {
     /// <summary>
     /// Preview result ID

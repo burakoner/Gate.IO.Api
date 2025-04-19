@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// GateMarginAutoRepayment
 /// </summary>
-public class GateMarginAutoRepayment
+public record GateMarginAutoRepayment
 {
     /// <summary>
     /// Current auto repayment setting

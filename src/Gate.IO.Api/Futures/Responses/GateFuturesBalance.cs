@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// Gate Futures Account
 /// </summary>
-public class GateFuturesBalance
+public record GateFuturesBalance
 {
     /// <summary>
     /// total is the balance after the user&#39;s accumulated deposit, withdraw, profit and loss (including realized profit and loss, fund, fee and referral rebate), excluding unrealized profit and loss.  total &#x3D; SUM(history_dnw, history_pnl, history_fee, history_refr, history_fund)

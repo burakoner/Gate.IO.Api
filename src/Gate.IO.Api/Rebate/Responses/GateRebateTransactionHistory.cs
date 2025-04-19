@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Rebate;
 /// <summary>
 /// GateRebateTransactionHistory
 /// </summary>
-public class GateRebateTransactionHistory
+public record GateRebateTransactionHistory
 {
     /// <summary>
     /// Currency pair
@@ -27,7 +27,7 @@ public class GateRebateTransactionHistory
 /// <summary>
 /// GateRebateTransactionHistoryRecord
 /// </summary>
-public class GateRebateTransactionHistoryRecord
+public record GateRebateTransactionHistoryRecord
 {
     /// <summary>
     /// Transaction Time. (unix timestamp)

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// Gate.IO Margin Balance History
 /// </summary>
-public class GateMarginBalanceHistory
+public record GateMarginBalanceHistory
 {
     /// <summary>
     /// Balance change record ID

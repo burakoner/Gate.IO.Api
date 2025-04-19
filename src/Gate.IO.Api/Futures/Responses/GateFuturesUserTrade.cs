@@ -3,7 +3,7 @@
 /// <summary>
 /// GateFuturesUserTrade
 /// </summary>
-public class GateFuturesUserTrade
+public record GateFuturesUserTrade
 {
     /// <summary>
     /// Trade ID

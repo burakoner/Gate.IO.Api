@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsTrade
 /// </summary>
-public class GateOptionsTrade
+public record GateOptionsTrade
 {
     /// <summary>
     /// Trade ID

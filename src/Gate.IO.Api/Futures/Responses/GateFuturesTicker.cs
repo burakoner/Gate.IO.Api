@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesTicker
 /// </summary>
-public class GateFuturesTicker
+public record GateFuturesTicker
 {
     /// <summary>
     /// Futures contract

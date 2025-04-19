@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
-public class OptionsStreamCandlestick
+public record OptionsStreamCandlestick
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]

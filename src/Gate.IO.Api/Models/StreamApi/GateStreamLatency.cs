@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api.Models.StreamApi;
 
-public class GateStreamLatency
+public record GateStreamLatency
 {
     public DateTime PingTime { get; set; }
     public DateTime PongTime { get; set; }

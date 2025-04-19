@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsUnderlyingTicker
 /// </summary>
-public class GateOptionsUnderlyingTicker
+public record GateOptionsUnderlyingTicker
 {
     /// <summary>
     /// Total put options trades amount in last 24h

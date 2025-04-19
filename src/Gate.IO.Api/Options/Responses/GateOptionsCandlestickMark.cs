@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsCandlestickMark
 /// </summary>
-public class GateOptionsCandlestickMark
+public record GateOptionsCandlestickMark
 {
     /// <summary>
     /// Unix timestamp in seconds

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// FuturesIndexConstituents
 /// </summary>
-public class GateFuturesIndexConstituents
+public record GateFuturesIndexConstituents
 {
     /// <summary>
     /// Index name
@@ -21,7 +21,7 @@ public class GateFuturesIndexConstituents
 /// <summary>
 /// IndexConstituent
 /// </summary>
-public class GateFuturesIndexConstituent
+public record GateFuturesIndexConstituent
 {
     /// <summary>
     /// Exchange

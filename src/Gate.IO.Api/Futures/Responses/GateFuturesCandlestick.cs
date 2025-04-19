@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// Futures Candlestick
 /// </summary>
-public class GateFuturesCandlestick
+public record GateFuturesCandlestick
 {
     /// <summary>
     /// Unix timestamp in seconds

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// GateCrossMarginBalance
 /// </summary>
-public class GateCrossMarginBalances
+public record GateCrossMarginBalances
 {
     /// <summary>
     /// User ID

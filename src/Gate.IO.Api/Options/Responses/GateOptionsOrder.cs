@@ -1,12 +1,9 @@
-﻿using System.Diagnostics.Metrics;
-using System.Security.Cryptography;
-
-namespace Gate.IO.Api.Options;
+﻿namespace Gate.IO.Api.Options;
 
 /// <summary>
 /// GateOptionsOrder
 /// </summary>
-public class GateOptionsOrder
+public record GateOptionsOrder
 {
     /// <summary>
     /// Options order ID

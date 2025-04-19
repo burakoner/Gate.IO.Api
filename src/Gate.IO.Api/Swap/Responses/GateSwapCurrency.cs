@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Swap;
 /// <summary>
 /// Gate Swap Currency
 /// </summary>
-public class GateSwapCurrency
+public record GateSwapCurrency
 {
     /// <summary>
     /// Currency Symbol

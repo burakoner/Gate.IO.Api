@@ -3,7 +3,7 @@
 /// <summary>
 /// GateOptionsBalance
 /// </summary>
-public class GateOptionsBalance
+public record GateOptionsBalance
 {
     /// <summary>
     /// User ID

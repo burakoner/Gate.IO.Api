@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api.Models.StreamApi;
 
-internal class GateStreamRequest
+internal record GateStreamRequest
 {
     [JsonProperty("id", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
     public int Id { get; set; }
@@ -21,7 +21,7 @@ internal class GateStreamRequest
     public StreamRequestAuth Auth { get; set; }
 }
 
-public class StreamRequestAuth
+public record StreamRequestAuth
 {
     [JsonProperty("method")]
     public string Method { get; set; } = "api_key";

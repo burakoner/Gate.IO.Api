@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// Gate Futures Position
 /// </summary>
-public class GateFuturesPosition
+public record GateFuturesPosition
 {
     /// <summary>
     /// User ID
@@ -191,7 +191,7 @@ public class GateFuturesPosition
 /// <summary>
 /// GateFuturesPositionCloseOrder
 /// </summary>
-public class GateFuturesPositionCloseOrder
+public record GateFuturesPositionCloseOrder
 {
     /// <summary>
     /// Close order ID

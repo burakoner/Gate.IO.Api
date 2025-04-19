@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesPriceTriggeredOrderRequest
 /// </summary>
-public class GateFuturesPriceTriggeredOrderRequest
+public record GateFuturesPriceTriggeredOrderRequest
 {
     /// <summary>
     /// Initial Order
@@ -27,7 +27,7 @@ public class GateFuturesPriceTriggeredOrderRequest
 /// <summary>
 /// GateFuturesTrigger
 /// </summary>
-public class GateFuturesTrigger
+public record GateFuturesTrigger
 {
     /// <summary>
     /// How the order will be triggered
@@ -63,7 +63,7 @@ public class GateFuturesTrigger
 /// <summary>
 /// GateFuturesInitial
 /// </summary>
-public class GateFuturesInitial
+public record GateFuturesInitial
 {
     /// <summary>
     /// Futures contract

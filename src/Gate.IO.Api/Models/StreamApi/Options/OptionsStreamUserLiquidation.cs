@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
-public class OptionsStreamUserLiquidation
+public record OptionsStreamUserLiquidation
 {
     [JsonProperty("user")]
     public long UserId { get; set; }

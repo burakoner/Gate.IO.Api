@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsContractTicker
 /// </summary>
-public class GateOptionsContractTicker
+public record GateOptionsContractTicker
 {
     /// <summary>
     /// Options contract name

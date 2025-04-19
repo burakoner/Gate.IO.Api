@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsPosition
 /// </summary>
-public class GateOptionsPosition
+public record GateOptionsPosition
 {
     /// <summary>
     /// User ID

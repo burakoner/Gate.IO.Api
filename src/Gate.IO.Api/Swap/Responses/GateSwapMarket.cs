@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Swap;
 /// <summary>
 /// Gate Swap Market
 /// </summary>
-public class GateSwapMarket
+public record GateSwapMarket
 {
     /// <summary>
     /// The currency pair, BTC_USDT represents selling Bitcoin (BTC) and buying Tether (USDT).

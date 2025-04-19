@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Models.StreamApi.Futures;
 
-public class FuturesStreamAutoOrder
+public record FuturesStreamAutoOrder
 {
     [JsonProperty("user")]
     public long UserId { get; set; }
@@ -43,7 +43,7 @@ public class FuturesStreamAutoOrder
     public long MeOrderId { get; set; }
 }
 
-public class FuturesStreamAutoOrderStopTrigger
+public record FuturesStreamAutoOrderStopTrigger
 {
     [JsonProperty("rule")]
     public GateSpotTriggerCondition? Rule { get; set; }
@@ -55,7 +55,7 @@ public class FuturesStreamAutoOrderStopTrigger
     public decimal? OrderPrice { get; set; }
 }
 
-public class FuturesStreamAutoOrderTrigger
+public record FuturesStreamAutoOrderTrigger
 {
     [JsonProperty("strategy_type")]
     public GateFuturesTriggerStrategy StrategyType { get; set; }
@@ -73,7 +73,7 @@ public class FuturesStreamAutoOrderTrigger
     public int Expiration { get; set; }
 }
 
-public class FuturesStreamAutoOrderInitial
+public record FuturesStreamAutoOrderInitial
 {
     [JsonProperty("contract")]
     public string Contract { get; set; }

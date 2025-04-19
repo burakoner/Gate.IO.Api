@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// GateCrossMarginAccountBook
 /// </summary>
-public class GateCrossMarginAccountBook
+public record GateCrossMarginAccountBook
 {
     /// <summary>
     /// Balance change record ID

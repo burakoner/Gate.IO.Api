@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Futures;
 
-internal class GateFuturesPriceTriggeredOrderId
+internal record GateFuturesPriceTriggeredOrderId
 {
     [JsonProperty("id")]
     public long OrderId { get; set; }

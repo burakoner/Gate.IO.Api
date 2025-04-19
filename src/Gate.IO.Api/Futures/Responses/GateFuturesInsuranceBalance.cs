@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesInsuranceBalance
 /// </summary>
-public class GateFuturesInsuranceBalance
+public record GateFuturesInsuranceBalance
 {
     /// <summary>
     /// Unix timestamp in seconds

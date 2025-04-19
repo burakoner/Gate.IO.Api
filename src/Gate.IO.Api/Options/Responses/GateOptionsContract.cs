@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsContract
 /// </summary>
-public class GateOptionsContract
+public record GateOptionsContract
 {
     /// <summary>
     /// Options contract name

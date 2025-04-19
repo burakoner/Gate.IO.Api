@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// GateCrossMarginLoanRepayment
 /// </summary>
-public class GateCrossMarginRepayment
+public record GateCrossMarginRepayment
 {
     /// <summary>
     /// Loan record ID

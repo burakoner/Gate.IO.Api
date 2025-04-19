@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsBalanceChange
 /// </summary>
-public class GateOptionsBalanceChange
+public record GateOptionsBalanceChange
 {
     /// <summary>
     /// Change time

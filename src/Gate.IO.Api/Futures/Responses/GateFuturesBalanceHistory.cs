@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesBalanceHistory
 /// </summary>
-public class GateFuturesBalanceHistory
+public record GateFuturesBalanceHistory
 {
     /// <summary>
     /// total amount of deposit and withdraw

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesPriceTriggeredOrder
 /// </summary>
-public class GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderRequest
+public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderRequest
 {
     /// <summary>
     /// Auto order ID

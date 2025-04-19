@@ -1,6 +1,6 @@
 ﻿namespace Gate.IO.Api.Models.StreamApi;
 
-public class GateStreamResponse<T>
+public record GateStreamResponse<T>
 {
     [JsonProperty("id")]
     public int Id { get; set; }
@@ -49,7 +49,7 @@ internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>
     };
 }
 
-public class GateStreamError
+public record GateStreamError
 {
     [JsonProperty("code")]
     public int Code { get; set; }

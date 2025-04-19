@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesPositionClose
 /// </summary>
-public class GateFuturesPositionClose
+public record GateFuturesPositionClose
 {
     /// <summary>
     /// Position close time

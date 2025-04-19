@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesStats
 /// </summary>
-public class GateFuturesStats
+public record GateFuturesStats
 {
     /// <summary>
     /// Stat timestamp

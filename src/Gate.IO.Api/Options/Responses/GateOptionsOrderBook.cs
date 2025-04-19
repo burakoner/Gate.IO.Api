@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsOrderBook
 /// </summary>
-public class GateOptionsOrderBook
+public record GateOptionsOrderBook
 {
     /// <summary>
     /// Order Book ID. Increases by 1 on every order book change. Set with_id=true to include this field in response
@@ -41,7 +41,7 @@ public class GateOptionsOrderBook
 /// <summary>
 /// GateOptionsOrderBookEntry
 /// </summary>
-public class GateOptionsOrderBookEntry
+public record GateOptionsOrderBookEntry
 {
     /// <summary>
     /// Price (quote currency)

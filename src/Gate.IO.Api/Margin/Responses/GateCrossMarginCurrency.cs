@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Margin;
 /// <summary>
 /// Gate Cross Margin Currency
 /// </summary>
-public class GateCrossMarginCurrency
+public record GateCrossMarginCurrency
 {
     /// <summary>
     /// Currency name

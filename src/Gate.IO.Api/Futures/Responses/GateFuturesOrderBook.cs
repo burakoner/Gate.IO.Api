@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// OrderBook
 /// </summary>
-public class GateFuturesOrderBook
+public record GateFuturesOrderBook
 {
     /// <summary>
     /// Order book ID, which is updated whenever the order book is changed. Valid only when &#x60;with_id&#x60; is set to &#x60;true&#x60;
@@ -41,7 +41,7 @@ public class GateFuturesOrderBook
 /// <summary>
 /// GateFuturesOrderBookEntry
 /// </summary>
-public class GateFuturesOrderBookEntry
+public record GateFuturesOrderBookEntry
 {
     /// <summary>
     /// Price

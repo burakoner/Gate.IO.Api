@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 /// <summary>
 /// GateFuturesBatchOrder
 /// </summary>
-public class GateFuturesBatchOrder: GateFuturesOrder
+public record GateFuturesBatchOrder : GateFuturesOrder
 {
     /// <summary>
     /// Whether the batch of orders succeeded

@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsPositionCloseOrder
 /// </summary>
-public class GateOptionsPositionCloseOrder
+public record GateOptionsPositionCloseOrder
 {
     /// <summary>
     /// Close order ID

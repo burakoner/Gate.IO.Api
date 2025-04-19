@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Options;
 
-public class OptionsStreamUnderlyingTrade
+public record OptionsStreamUnderlyingTrade
 {
     [JsonProperty("contract")]
     public string Contract { get; set; }

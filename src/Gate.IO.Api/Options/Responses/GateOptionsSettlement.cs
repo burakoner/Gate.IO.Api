@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// GateOptionsSettlement
 /// </summary>
-public class GateOptionsSettlement
+public record GateOptionsSettlement
 {
     /// <summary>
     /// Last changed time of configuration
