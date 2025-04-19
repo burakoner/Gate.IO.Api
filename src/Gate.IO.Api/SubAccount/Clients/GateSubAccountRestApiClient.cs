@@ -51,11 +51,16 @@ public class GateSubAccountRestApiClient
     /// <summary>
     /// List sub-accounts
     /// </summary>
+    /// <param name="listSubAccountsOnly">type: 0 to list all types of sub-accounts (currently supporting cross margin accounts and sub-accounts). 1 to list sub-accounts only. If no parameter is passed, only sub-accounts will be listed by default.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSubAccount>>> GetSubAccountsAsync(CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSubAccount>>> GetSubAccountsAsync(bool listSubAccountsOnly = true, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateSubAccount>>(_.GetUrl(api, version, section, null), HttpMethod.Get, ct, true);
+        var parameters = new Dictionary<string, object>
+        {
+            { "type", listSubAccountsOnly ? "1": "0" },
+        };
+        return _.SendRequestInternal<List<GateSubAccount>>(_.GetUrl(api, version, section, null), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>

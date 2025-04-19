@@ -14,7 +14,7 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Wallet Client
     /// </summary>
-    public GateWalletRestApiClient Wallet { get; }
+    public GateWalletRestApiClient Wallet { get; } // 418
 
     /// <summary>
     /// SubAccount Client

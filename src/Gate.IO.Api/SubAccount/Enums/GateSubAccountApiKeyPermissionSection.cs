@@ -36,20 +36,43 @@ public enum GateSubAccountApiKeyPermissionSection
     Earn = 5,
 
     /// <summary>
+    /// Custody
+    /// </summary>
+    [Map("custody")]
+    Custody = 6,
+
+    /// <summary>
     /// Enum Options for value: options
     /// </summary>
     [Map("options")]
-    Options = 6,
+    Options = 7,
 
     /// <summary>
-    /// Enum Unified for value: unified
+    /// Enum Account for value: account
     /// </summary>
-    [Map("unified")]
-    Unified = 7,
+    [Map("account")]
+    Account = 8,
 
     /// <summary>
     /// Enum Loan for value: loan
     /// </summary>
     [Map("loan")]
-    Loan = 8
+    Loan = 9,
+
+    /// <summary>
+    /// Enum Margin for value: margin
+    /// </summary>
+    [Map("margin")]
+    Margin = 10,
+    /// <summary>
+    /// Enum Unified for value: unified
+    /// </summary>
+    [Map("unified")]
+    Unified = 11,
+
+    /// <summary>
+    /// Enum Copy for value: copy
+    /// </summary>
+    [Map("copy")]
+    Copy = 12,
 }
