@@ -139,17 +139,17 @@ internal class Program
         var margin_06 = await api.Margin.GetTransferableAmountAsync("CURRENCY");
 
         // Flash-Swap Methods
-        var swap_02 = await api.Swap.GetMarketsAsync();
-        var swap_03 = await api.Swap.PreviewOrderAsync("SELL-CURRENCY", 100.0M, "BUY-CURRENCY", 1000.0M);
-        var swap_04 = await api.Swap.PreviewOrderAsync(new GateSwapOrderRequest
+        var swap_02 = await api.FlashSwap.GetMarketsAsync();
+        var swap_03 = await api.FlashSwap.PreviewOrderAsync("SELL-CURRENCY", 100.0M, "BUY-CURRENCY", 1000.0M);
+        var swap_04 = await api.FlashSwap.PreviewOrderAsync(new GateSwapOrderRequest
         {
             SellCurrency = "SELL-CURRENCY",
             SellAmount = 100.0m,
             BuyCurrency = "BUY-CURRENCY",
             BuyAmount = 1000.0m,
         });
-        var swap_05 = await api.Swap.PlaceOrderAsync(swap_04.Data.PreviewId, "SELL-CURRENCY", 100.0m, "BUY-CURRENCY", 1000.0m);
-        var swap_06 = await api.Swap.PlaceOrderAsync(new GateSwapOrderRequest
+        var swap_05 = await api.FlashSwap.PlaceOrderAsync(swap_04.Data.PreviewId, "SELL-CURRENCY", 100.0m, "BUY-CURRENCY", 1000.0m);
+        var swap_06 = await api.FlashSwap.PlaceOrderAsync(new GateSwapOrderRequest
         {
             BuyCurrency = "SELL-CURRENCY",
             BuyAmount = 1000.0m,
@@ -157,8 +157,8 @@ internal class Program
             SellAmount = 100.0m,
             PreviewId = swap_04.Data.PreviewId
         });
-        var swap_07 = await api.Swap.GetOrdersAsync();
-        var swap_08 = await api.Swap.GetOrderAsync(1_000_000_000);
+        var swap_07 = await api.FlashSwap.GetOrdersAsync();
+        var swap_08 = await api.FlashSwap.GetOrderAsync(1_000_000_000);
 
         // Access for Futures (Perpetual & Delivery) Methods
         var sample_01 = await api.Futures.Perpetual.BTC.GetContractsAsync();

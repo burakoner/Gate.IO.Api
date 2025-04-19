@@ -31,12 +31,14 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Margin Client
     /// </summary>
-    public GateMarginRestApiClient Margin { get; }
+    public GateMarginRestApiClient Margin { get; } // 419
+
+    // TODO: MarginUni
 
     /// <summary>
     /// Flash Swap Client
     /// </summary>
-    public GateSwapRestApiClient Swap { get; }
+    public GateSwapRestApiClient FlashSwap { get; } // 419
 
     /// <summary>
     /// Futures Client
@@ -98,7 +100,7 @@ public class GateRestApiClient : RestApiClient
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
         Futures = new GateFuturesRestApiClient(this);
-        Swap = new GateSwapRestApiClient(this);
+        FlashSwap = new GateSwapRestApiClient(this);
         Options = new GateOptionsRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);
     }

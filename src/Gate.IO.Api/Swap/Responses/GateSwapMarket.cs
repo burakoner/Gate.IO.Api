@@ -42,7 +42,7 @@ public record GateSwapMarket
     public decimal BuyMinimumAmount { get; set; }
 
     /// <summary>
-    /// 	The maximum quantity allowed for buying
+    /// The maximum quantity allowed for buying
     /// </summary>
     [JsonProperty("buy_max_amount")]
     public decimal BuyMaximumAmount { get; set; }

@@ -156,4 +156,9 @@ public class GateMarginRestApiClient
     }
 
 
+    // TODO: Check the user's own leverage lending gradient in the current market
+    // TODO: Query the current market leverage lending gradient
+    // TODO: Set the user market leverage multiple
+    // TODO: Query the user's leverage account list
+
 }
