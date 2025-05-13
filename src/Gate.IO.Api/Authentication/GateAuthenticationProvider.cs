@@ -1,10 +1,14 @@
 ﻿namespace Gate.IO.Api.Authentication;
 
-internal class GateAuthenticationProvider(ApiCredentials credentials) : AuthenticationProvider(credentials)
+internal class GateAuthenticationProvider(ApiCredentials credentials) : AuthenticationProvider(credentials ?? new ApiCredentials("", ""))
 {
     public override void AuthenticateRestApi(RestApiClient apiClient, Uri uri, HttpMethod method, bool signed, ArraySerialization serialization, SortedDictionary<string, object> query, SortedDictionary<string, object> body, string bodyContent, SortedDictionary<string, string> headers)
     {
         if (!signed) return;
+
+        // Check Point
+        if (Credentials is null || Credentials.Key is null || Credentials.Secret is null || string.IsNullOrEmpty(Credentials.Key.GetString()))
+            throw new ArgumentException("No valid API credentials provided. Key/Secret/PassPhrase needed.");
 
         // Set Uri Parameters
         uri = uri.SetParameters(query, serialization);

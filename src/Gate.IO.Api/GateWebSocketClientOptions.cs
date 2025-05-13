@@ -14,11 +14,6 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     // Stream-Options
     public string StreamOptionsAddress { get; set; }
     
-    /// <summary>
-    /// Gate.IO API Broker Id
-    /// </summary>
-    public string BrokerId { get; set; }
-
     public GateWebSocketClientOptions()
     {
         // Base Address
@@ -46,8 +41,5 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
         // Limits
         // this.MaxConnections = 300;
         // this.SubscriptionsCombineTarget = 300;
-
-        // Broker Id
-        BrokerId = "phalchatha";
     }
 }

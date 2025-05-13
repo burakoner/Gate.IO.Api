@@ -88,5 +88,8 @@ internal record GateConstants
 
         // Stream-Options
         StreamOptionsAddress = "wss://op-ws-testnet.gateio.live/v4/ws",
+
+        // Broker Id
+        ChannelId = "phalchatha"
     };
 }
