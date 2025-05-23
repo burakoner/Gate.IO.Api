@@ -1,66 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-	  <TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
-	  <LangVersion>latest</LangVersion>
+		<TargetFrameworks>netstandard2.0;netstandard2.1;net6.0;net7.0;net8.0;net9.0</TargetFrameworks>
+		<LangVersion>latest</LangVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
-    <PackageId>Gate.IO.Api</PackageId>
-	<Authors>Burak Öner</Authors>
-	<Version>4.5.521</Version>
-	<FileVersion>4.5.521</FileVersion>
-	<PackageVersion>4.5.521</PackageVersion>
-	<AssemblyVersion>4.5.521</AssemblyVersion>
-	<Description>Gate.IO API v4 Wrapper. Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
-	<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-	<PackageTags>Gate Gate.IO Binance Coinbase Kraken KuCoin Bitstamp Huobi OKX Okex ApiSharp Api Sharp Coin Token BNB BTC ETH Bitcoin Ether Ethereum Rest Web Socket Websocket Stream Webstream Client Wrapper Connector Crypto Currency Cryptocurrency Exchange Trade Trading Spot Margin Futures Derivates Stock Options Swap</PackageTags>
-	<PackageLicenseExpression>MIT</PackageLicenseExpression>
-	<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-	<NeutralLanguage>en</NeutralLanguage>
-	<PackageIcon>Gate.IO.png</PackageIcon>
-	<PackageReleaseNotes>Please refer to changelog at Github https://github.com/burakoner/Gate.IO.Api/blob/master/CHANGELOG.md</PackageReleaseNotes>
-	<PackageProjectUrl>https://github.com/burakoner/Gate.IO.Api</PackageProjectUrl>
-	<RepositoryUrl>https://github.com/burakoner/Gate.IO.Api</RepositoryUrl>
-	<GenerateDocumentationFile>True</GenerateDocumentationFile>
-	<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
-  </PropertyGroup>
+		<PackageId>Gate.IO.Api</PackageId>
+		<Authors>Burak Öner</Authors>
+		<Version>4.5.523</Version>
+		<FileVersion>4.5.523</FileVersion>
+		<PackageVersion>4.5.523</PackageVersion>
+		<AssemblyVersion>4.5.523</AssemblyVersion>
+		<Description>Gate.IO API v4 Wrapper. Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
+		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+		<PackageTags>Gate Gate.IO Binance Coinbase Kraken KuCoin Bitstamp Huobi OKX Okex ApiSharp Api Sharp Coin Token BNB BTC ETH Bitcoin Ether Ethereum Rest Web Socket Websocket Stream Webstream Client Wrapper Connector Crypto Currency Cryptocurrency Exchange Trade Trading Spot Margin Futures Derivates Stock Options Swap</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<PackageIcon>Gate.IO.png</PackageIcon>
+		<PackageReleaseNotes>Please refer to changelog at Github https://github.com/burakoner/Gate.IO.Api/blob/master/CHANGELOG.md</PackageReleaseNotes>
+		<PackageProjectUrl>https://github.com/burakoner/Gate.IO.Api</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/burakoner/Gate.IO.Api</RepositoryUrl>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<DebugType>embedded</DebugType>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.0|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
+	<ItemGroup>
+		<None Include="../../CHANGELOG.md" Pack="true" PackagePath="\" />
+		<None Include="../../README.md" Pack="true" PackagePath="\" />
+		<None Include="Gate.IO.png" Pack="true" PackagePath="" />
+	</ItemGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|netstandard2.1|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.0|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netstandard2.1|AnyCPU'">
-    <DebugType>embedded</DebugType>
-  </PropertyGroup>
-
-  <ItemGroup>
-	<PackageReference Include="ApiSharp" Version="3.7.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-	<None Include="../../CHANGELOG.md" Pack="true" PackagePath="\" />
-	<None Include="../../README.md" Pack="true" PackagePath="\" />
-	<None Include="Gate.IO.png" Pack="true" PackagePath="" />
-  </ItemGroup>
-
-  <PropertyGroup>
-	<PackageReadmeFile>README.md</PackageReadmeFile>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Folder Include="Delivery\Requests\" />
-    <Folder Include="Models\StreamApi\Futures\" />
-    <Folder Include="Rebate\Enums\" />
-    <Folder Include="Rebate\Requests\" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="ApiSharp" Version="3.7.0" />
+	</ItemGroup>
 
 </Project>

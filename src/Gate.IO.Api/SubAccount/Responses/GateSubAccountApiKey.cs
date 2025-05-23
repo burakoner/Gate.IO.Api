@@ -33,7 +33,7 @@ public record GateSubAccountApiKey
     /// ip white list (list will be removed if no value is passed)
     /// </summary>
     [JsonProperty("ip_whitelist")]
-    public List<string> IpWhitelist { get; set; } = new List<string>();
+    public List<string> IpWhitelist { get; set; } = [];
 
     /// <summary>
     /// API Key

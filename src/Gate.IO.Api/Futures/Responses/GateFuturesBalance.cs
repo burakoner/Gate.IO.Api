@@ -144,6 +144,12 @@ public record GateFuturesBalance
     public bool EnableNewDualMode { get; set; }
 
     /// <summary>
+    /// Margin mode, 0-classic margin mode, 1-cross-currency margin mode, 2-combined margin mode
+    /// </summary>
+    [JsonProperty("margin_mode")]
+    public int MarginMode { get; set; }
+
+    /// <summary>
     /// History
     /// </summary>
     [JsonProperty("history")]

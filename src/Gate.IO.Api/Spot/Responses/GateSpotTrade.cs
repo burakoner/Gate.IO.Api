@@ -55,6 +55,12 @@ public record GateSpotTrade
 public record GateSpotPrivateTrade : GateSpotTrade
 {
     /// <summary>
+    /// Trade role. No value in public endpoints
+    /// </summary>
+    [JsonProperty("role")]
+    public GateSpotTraderRole Role { get; set; }
+
+    /// <summary>
     /// Order ID
     /// </summary>
     [JsonProperty("order_id")]

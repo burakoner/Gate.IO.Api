@@ -17,7 +17,7 @@ internal class Program
 
         // Wallet Methods
         var wallet_01 = await api.Wallet.WithdrawAsync("CURRENCY", 1.0m, "CHAIN", "ADDRESS", "MEMO", "CLIENT-ORDER-ID");
-        var wallet_02 = await api.Wallet.PushAsync(1_000_000_000, "CURRENCY", 1.0m);
+        var wallet_02 = await api.Wallet.TransferAsync(1_000_000_000, "CURRENCY", 1.0m);
         var wallet_03 = await api.Wallet.CancelWithdrawalAsync(1_000_000_000);
         var wallet_04 = await api.Wallet.GetCurrencyChainsAsync("CURRENCY");
         var wallet_05 = await api.Wallet.GetDepositAddressAsync("CURRENCY");
@@ -33,7 +33,7 @@ internal class Program
         var wallet_15 = await api.Wallet.GetSubAccountFuturesBalancesAsync();
         var wallet_16 = await api.Wallet.GetSubAccountCrossMarginBalancesAsync();
         var wallet_17 = await api.Wallet.GetSavedAddressesAsync("CURRENCY");
-        var wallet_18 = await api.Wallet.GetTotalBalanceAsync();
+        var wallet_18 = await api.Wallet.GetTotalBalancesAsync();
 
         // SubAccount Methods
         var subaccount_01 = await api.SubAccount.CreateSubAccountAsync("LOGIN-NAME", "PASSWORD", "EMAIL", "REMARKS");

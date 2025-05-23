@@ -38,6 +38,6 @@ public record GateWalletSavedAddress
     /// <summary>
     /// Whether to pass the verification 0-unverified, 1-verified
     /// </summary>
-    [JsonProperty("verified")]
+    [JsonProperty("verified"), JsonConverter(typeof(BooleanConverter))]
     public bool Verified { get; set; }
 }

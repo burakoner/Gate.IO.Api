@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Wallet;
 /// <summary>
 /// Wallet Push
 /// </summary>
-public record GateWalletPush
+public record GateWalletTransferId
 {
     /// <summary>
     /// Id

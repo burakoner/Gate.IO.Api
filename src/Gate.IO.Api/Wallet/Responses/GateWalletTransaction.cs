@@ -1,3 +1,5 @@
+using Newtonsoft.Json.Linq;
+
 namespace Gate.IO.Api.Wallet;
 
 /// <summary>
@@ -53,6 +55,22 @@ public record GateWalletTransaction
     /// </summary>
     [JsonProperty("memo")]
     public string Memo { get; set; }
+
+    /// <summary>
+    /// The withdrawal record id starts with w, such as: w1879219868.
+    /// When withdraw_id is not empty, the value querys this withdrawal record and no longer querys according to time
+    /// </summary>
+    [JsonProperty("withdraw_id")]
+    public string WithdrawalId { get; set; }
+
+    /// <summary>
+    /// The currency type of withdrawal record is empty by default. It supports users to query the withdrawal records in the main and innovation areas on demand.
+    /// Value range: SPOT, PILOT
+    /// SPOT: Main Zone
+    /// PILOT: Innovation Zone
+    /// </summary>
+    [JsonProperty("asset_class")]
+    public GateWalletAssetClass? AssetClass { get; set; }
 
     /// <summary>
     /// Record status.

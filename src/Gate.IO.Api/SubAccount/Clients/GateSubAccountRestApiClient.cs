@@ -8,12 +8,7 @@ public class GateSubAccountRestApiClient
     // Api
     private const string api = "api";
     private const string version = "4";
-    private const string section = "sub_accounts";
-
-    // Endpoints
-    private const string keysEndpoint = "keys";
-    private const string lockEndpoint = "lock";
-    private const string unlockEndpoint = "unlock";
+    private const string sub_accounts = "sub_accounts";
 
     // Root Client
     internal GateRestApiClient _ { get; }
@@ -37,15 +32,15 @@ public class GateSubAccountRestApiClient
         string remark = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>
+        var parameters = new ParameterCollection
         {
             { "login_name", login },
         };
-        parameters.AddOptionalParameter("email", email);
-        parameters.AddOptionalParameter("password", password);
-        parameters.AddOptionalParameter("remark", remark);
+        parameters.AddOptional("email", email);
+        parameters.AddOptional("password", password);
+        parameters.AddOptional("remark", remark);
 
-        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, section, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, sub_accounts, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -60,7 +55,7 @@ public class GateSubAccountRestApiClient
         {
             { "type", listSubAccountsOnly ? "1": "0" },
         };
-        return _.SendRequestInternal<List<GateSubAccount>>(_.GetUrl(api, version, section, null), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSubAccount>>(_.GetUrl(api, version, sub_accounts, null), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -71,7 +66,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSubAccount>> GetSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()), null), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), null), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -93,12 +88,12 @@ public class GateSubAccountRestApiClient
         CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalParameter("mode", mode);
-        parameters.AddOptionalParameter("name", name);
-        parameters.AddOptionalParameter("perms", permissions);
-        parameters.AddOptionalParameter("ip_whitelist", ipWhitelist);
+        parameters.AddOptional("mode", mode);
+        parameters.AddOptional("name", name);
+        parameters.AddOptional("perms", permissions);
+        parameters.AddOptional("ip_whitelist", ipWhitelist);
 
-        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "keys"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -109,7 +104,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSubAccountApiKey>>> GetApiKeysAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateSubAccountApiKey>>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()), keysEndpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateSubAccountApiKey>>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "keys"), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -132,14 +127,14 @@ public class GateSubAccountRestApiClient
         IEnumerable<string> ipWhitelist = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("mode", mode);
-        parameters.AddOptionalParameter("name", name);
-        parameters.AddOptionalParameter("perms", permissions);
-        parameters.AddOptionalParameter("ip_whitelist", ipWhitelist);
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("mode", mode);
+        parameters.AddOptional("name", name);
+        parameters.AddOptional("perms", permissions);
+        parameters.AddOptional("ip_whitelist", ipWhitelist);
 
         return _.SendRequestInternal<GateSubAccountApiKey>(
-            _.GetUrl(api, version, section.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null),
+            _.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()).AppendPath("keys").AppendPath(apikey), null),
             HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
@@ -152,7 +147,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> DeleteApiKeyAsync(long subAccountId, string apikey, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<object>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Delete, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()).AppendPath("keys").AppendPath(apikey), null), HttpMethod.Delete, ct, true);
     }
 
     /// <summary>
@@ -164,7 +159,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSubAccountApiKey>> GetApiKeyAsync(long subAccountId, string apikey, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()).AppendPath(keysEndpoint).AppendPath(apikey), null), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()).AppendPath("keys").AppendPath(apikey), null), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -175,7 +170,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> LockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<object>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()), lockEndpoint), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "lock"), HttpMethod.Put, ct, true);
     }
 
     /// <summary>
@@ -186,8 +181,16 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> UnlockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<object>(_.GetUrl(api, version, section.AppendPath(subAccountId.ToString()), unlockEndpoint), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "unlock"), HttpMethod.Put, ct, true);
     }
 
-    // TODO: Get sub-account mode
+    /// <summary>
+    /// Get sub-account mode
+    /// </summary>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSubAccountMode>>> GetSubAccountsModeAsync(CancellationToken ct = default)
+    {
+        return _.SendRequestInternal<List<GateSubAccountMode>>(_.GetUrl(api, version, sub_accounts, "unified_mode"), HttpMethod.Get, ct, true);
+    }
 }

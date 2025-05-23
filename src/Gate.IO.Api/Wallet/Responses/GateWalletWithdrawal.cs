@@ -69,5 +69,5 @@ public record GateWalletWithdrawal
     /// Fixed withdrawal fee on multiple chains
     /// </summary>
     [JsonProperty("withdraw_fix_on_chains")]
-    public Dictionary<string, decimal> WithdrawFixOnChains { get; set; }
+    public Dictionary<string, string> WithdrawFixOnChains { get; set; }
 }

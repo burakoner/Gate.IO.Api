@@ -81,5 +81,12 @@ public enum GateWalletWithdrawalStatus : byte
     /// Pending Confirm After Split
     /// </summary>
     [Map("SPLITPEND")]
+    [Obsolete]
     Splitted = 13,
+
+    /// <summary>
+    /// Under Review
+    /// </summary>
+    [Map("REVIEW")]
+    UnderReview = 14,
 }
