@@ -1,4 +1,5 @@
-﻿using Gate.IO.Api.Rebate;
+﻿using Gate.IO.Api.Account;
+using Gate.IO.Api.Rebate;
 
 namespace Gate.IO.Api;
 
@@ -31,41 +32,44 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Margin Client
     /// </summary>
-    public GateMarginRestApiClient Margin { get; } // 419
+    public GateMarginRestApiClient Margin { get; } // 523
 
     // TODO: MarginUni
 
     /// <summary>
     /// Flash Swap Client
     /// </summary>
-    public GateSwapRestApiClient FlashSwap { get; } // 419
+    public GateSwapRestApiClient FlashSwap { get; } // 523
 
     /// <summary>
     /// Perpetual Futures Client
     /// </summary>
-    public GateFuturesRestApiClient Futures { get; }
+    public GateFuturesRestApiClient Futures { get; } // 523
 
     /// <summary>
     /// Delivery Futures Client
     /// </summary>
-    public GateDeliveryRestApiClient Delivery { get; }
-
+    public GateDeliveryRestApiClient Delivery { get; } // 523
 
     /// <summary>
     /// Options Client
     /// </summary>
-    public GateOptionsRestApiClient Options { get; }
+    public GateOptionsRestApiClient Options { get; } // 523
 
     // TODO: EarnUni
     // TODO: Collateral-loan
     // TODO: Multi-collateral-loan
     // TODO: Earn
-    // TODO: Account
+
+    /// <summary>
+    /// Account Client
+    /// </summary>
+    public GateAccountRestApiClient Account { get; } // 523
 
     /// <summary>
     /// Rebate Client
     /// </summary>
-    public GateRebateRestApiClient Rebate { get; }
+    public GateRebateRestApiClient Rebate { get; } // 523
 
     /// <summary>
     /// Gate.IO REST API Client Constructor
@@ -109,6 +113,7 @@ public class GateRestApiClient : RestApiClient
         Delivery = new GateDeliveryRestApiClient(this);
         FlashSwap = new GateSwapRestApiClient(this);
         Options = new GateOptionsRestApiClient(this);
+        Account = new GateAccountRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);
     }
 

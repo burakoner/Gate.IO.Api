@@ -163,7 +163,6 @@ internal class Program
 
         // Access for Futures (Perpetual & Delivery) Methods
         var sample_01 = await api.Futures.BTC.GetContractsAsync();
-        var sample_02 = await api.Futures.USD.GetContractsAsync();
         var sample_03 = await api.Futures.USDT.GetContractsAsync();
         var sample_04 = await api.Delivery.USDT.GetContractsAsync();
 
@@ -291,6 +290,17 @@ internal class Program
         var options_22 = await api.Options.GetOrderAsync(1_000_000_001);
         var options_23 = await api.Options.CancelOrderAsync(1_000_000_001);
         var options_24 = await api.Options.GetUserTradesAsync("UNDERLYING");
+
+        // Account Methods
+        var account_01 = await api.Account.GetAccountAsync();
+        var account_02 = await api.Account.GetRateLimitsAsync();
+        var account_03 = await api.Account.CreateStpGroupAsync("STP-NAME");
+        var account_04 = await api.Account.GetStpGroupsAsync("STP-NAME");
+        var account_05 = await api.Account.GetStpGroupUsersAsync(1_000_000_001);
+        var account_06 = await api.Account.AddUserToStpGroupAsync(1_000_000_001, []);
+        var account_07 = await api.Account.RemoveUserToStpGroupAsync(1_000_000_001, 2_000_000_001);
+        var account_08 = await api.Account.SetGtDeductionAsync(true);
+        var account_09 = await api.Account.GetGtDeductionAsync();
 
         // Rebate Methods
         var rebate_01 = await api.Rebate.GetTransactionHistoryAsync();

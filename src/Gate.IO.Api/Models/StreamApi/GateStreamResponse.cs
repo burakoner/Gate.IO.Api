@@ -6,6 +6,7 @@ public record GateStreamResponse<T>
     public int Id { get; set; }
 
     [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
 
     [JsonProperty("time_ms")]

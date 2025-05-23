@@ -216,6 +216,7 @@ public record GateFuturesContract
     /// Created time of the contract
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>

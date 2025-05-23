@@ -141,5 +141,5 @@ public class GateRebateRestApiClient
     // TODO: The broker obtains the user's commission rebate records
     // TODO: The broker obtains the user's trading history
     // TODO: User retrieves rebate information
-
+    // TODO: User-subordinate relationship
 }

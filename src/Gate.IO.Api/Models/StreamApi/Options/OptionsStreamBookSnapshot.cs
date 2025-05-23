@@ -1,5 +1,3 @@
-using Gate.IO.Api.Options;
-
 namespace Gate.IO.Api.Models.StreamApi.Options;
 
 public  class OptionsStreamBookSnapshot
