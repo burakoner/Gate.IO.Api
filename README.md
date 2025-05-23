@@ -77,6 +77,23 @@ var subaccount_08 = await api.SubAccount.GetApiKeyAsync(1_000_000_000, "API-KEY"
 var subaccount_09 = await api.SubAccount.LockSubAccountAsync(1_000_000_000);
 var subaccount_10 = await api.SubAccount.UnlockSubAccountAsync(1_000_000_000);
 
+// Unified Methods
+var unified_01 = await api.Unified.GetAccountInfoAsync();
+var unified_02 = await api.Unified.GetBorrowableAsync("CURRENCY");
+var unified_03 = await api.Unified.GetTransferableAsync("CURRENCY");
+var unified_04 = await api.Unified.BorrowAsync("CURRENCY", 100.0m);
+var unified_05 = await api.Unified.RepayAsync("CURRENCY", 100.0m);
+var unified_06 = await api.Unified.GetLoansAsync();
+var unified_07 = await api.Unified.GetLoanHistoryAsync();
+var unified_08 = await api.Unified.GetInterestHistoryAsync();
+var unified_09 = await api.Unified.GetRiskUnitsAsync();
+var unified_10 = await api.Unified.SetAccountModeAsync(GateUnifiedAccountMode.Portfolio);
+var unified_11 = await api.Unified.GetAccountModeAsync();
+var unified_12 = await api.Unified.GetEstimatedLendingRatesAsync([]);
+var unified_13 = await api.Unified.GetLeverageConfigsAsync("CURRENCY");
+var unified_14 = await api.Unified.GetLeverageSettingsAsync();
+var unified_15 = await api.Unified.SetLeverageSettingsAsync("CURRENCY", 10);
+
 // Spot Methods
 var spot_01 = await api.Spot.GetCurrenciesAsync();
 var spot_02 = await api.Spot.GetCurrencyAsync("CURRENCY");

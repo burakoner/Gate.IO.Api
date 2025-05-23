@@ -1,5 +1,6 @@
 ﻿using Gate.IO.Api.Account;
 using Gate.IO.Api.Rebate;
+using Gate.IO.Api.Unified;
 
 namespace Gate.IO.Api;
 
@@ -22,7 +23,10 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     public GateSubAccountRestApiClient SubAccount { get; } // 523
 
-    // TODO: Unified
+    /// <summary>
+    /// Unified Client
+    /// </summary>
+    public GateUnifiedRestApiClient Unified { get; } // 523
 
     /// <summary>
     /// Spot Client
@@ -107,6 +111,7 @@ public class GateRestApiClient : RestApiClient
 
         Wallet = new GateWalletRestApiClient(this);
         SubAccount = new GateSubAccountRestApiClient(this);
+        Unified = new GateUnifiedRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
         Futures = new GateFuturesRestApiClient (this);
