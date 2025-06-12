@@ -264,6 +264,17 @@ public class GateFuturesRestApiSettleClient
         => _.GetLiquidationsAsync(Settlement, contract, from, to, limit, ct);
 
     /// <summary>
+    /// When the 'contract' parameter is not passed, the default is to query the risk limits for the top 100 markets.'Limit' and 'offset' correspond to pagination queries at the market level, not to the length of the returned array. This only takes effect when the 'contract' parameter is empty.
+    /// </summary>
+    /// <param name="contract">Futures contract</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesRiskLimitTier>>> GetRiskLimitTiersAsync(string contract = null, int limit = 100, long? offset = null, CancellationToken ct = default)
+        => _.GetRiskLimitTiersAsync(Settlement, contract, limit, offset, ct);
+
+    /// <summary>
     /// Query futures account
     /// </summary>
     /// <param name="ct">Cancellation Token</param>

@@ -379,7 +379,18 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateDeliveryUserSettlement>>> GetUserSettlementsAsync(string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
         => MainClient.GetUserSettlementsAsync(Settlement, contract, limit, at, ct);
-    
+
+    /// <summary>
+    /// When the 'contract' parameter is not passed, the default is to query the risk limits for the top 100 markets.'Limit' and 'offset' correspond to pagination queries at the market level, not to the length of the returned array. This only takes effect when the 'contract' parameter is empty.
+    /// </summary>
+    /// <param name="contract">Futures contract</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateDeliveryRiskLimitTier>>> GetRiskLimitTiersAsync(string contract = null, int limit = 100, long? offset = null, CancellationToken ct = default)
+        => MainClient.GetRiskLimitTiersAsync(Settlement, contract, limit, offset, ct);
+
     /// <summary>
     /// Create a price-triggered order
     /// </summary>

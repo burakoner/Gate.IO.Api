@@ -1,8 +1,4 @@
-﻿using Gate.IO.Api.Account;
-using Gate.IO.Api.Rebate;
-using Gate.IO.Api.Unified;
-
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 /// <summary>
 /// Gate.IO REST API Client
@@ -38,7 +34,10 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     public GateMarginRestApiClient Margin { get; } // 523
 
-    // TODO: MarginUni
+    /// <summary>
+    /// Margin Uni Client
+    /// </summary>
+    public GateMarginUniRestApiClient MarginUni { get; } // 612
 
     /// <summary>
     /// Flash Swap Client
@@ -114,6 +113,7 @@ public class GateRestApiClient : RestApiClient
         Unified = new GateUnifiedRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
         Margin = new GateMarginRestApiClient(this);
+        MarginUni = new GateMarginUniRestApiClient(this);
         Futures = new GateFuturesRestApiClient (this);
         Delivery = new GateDeliveryRestApiClient(this);
         FlashSwap = new GateSwapRestApiClient(this);

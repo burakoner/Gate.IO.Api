@@ -9,12 +9,8 @@ public class GateRebateRestApiClient
 {
     // Api
     private const string api = "api";
-    private const string version = "4";
-    private const string section = "rebate";
-
-    // Endpoints
-    private const string transactionHistoryEndpoint = "agency/transaction_history";
-    private const string commissionHistoryEndpoint = "agency/commission_history";
+    private const string v4 = "4";
+    private const string rebate = "rebate";
 
     // Root Client
     internal GateRestApiClient _ { get; }
@@ -76,7 +72,7 @@ public class GateRebateRestApiClient
         parameters.AddOptionalParameter("currency_pair", symbol);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await _.SendRequestInternal<List<GateRebateTransactionHistory>>(_.GetUrl(api, version, section, transactionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateRebateTransactionHistory>>(_.GetUrl(api, v4, rebate, "agency/transaction_history"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -132,7 +128,7 @@ public class GateRebateRestApiClient
         parameters.AddOptionalParameter("currency", currency);
         parameters.AddOptionalParameter("user_id", userId);
 
-        return await _.SendRequestInternal<List<GateRebateCommissionHistory>>(_.GetUrl(api, version, section, commissionHistoryEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateRebateCommissionHistory>>(_.GetUrl(api, v4, rebate, "agency/commission_history"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     // TODO: Partner obtains transaction records of recommended users

@@ -7,27 +7,8 @@ public class GateOptionsRestApiClient
 {
     // Api
     private const string api = "api";
-    private const string version = "4";
-    private const string section = "options";
-
-    // Endpoints
-    private const string underlyingsEndpoint = "underlyings";
-    private const string expirationsEndpoint = "expirations";
-    private const string contractsEndpoint = "contracts";
-    private const string settlementsEndpoint = "settlements";
-    private const string mySettlementsEndpoint = "my_settlements";
-    private const string orderBookEndpoint = "order_book";
-    private const string tickersEndpoint = "tickers";
-    private const string underlyingTickersUnderlyingEndpoint = "underlying/tickers/{underlying}";
-    private const string candlesticksEndpoint = "candlesticks";
-    private const string underlyingCandlesticksEndpoint = "underlying/candlesticks";
-    private const string tradesEndpoint = "trades";
-    private const string accountBookEndpoint = "account_book";
-    private const string positionsEndpoint = "positions";
-    private const string positionsContractEndpoint = "positions/{contract}";
-    private const string positionCloseEndpoint = "position_close";
-    private const string ordersEndpoint = "orders";
-    private const string myTradesEndpoint = "my_trades";
+    private const string v4 = "4";
+    private const string options = "options";
 
     // Root Client
     internal GateRestApiClient _ { get; }
@@ -42,7 +23,7 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<List<GateOptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<List<GateOptionsUnderlying>>(_.GetUrl(api, version, section, underlyingsEndpoint), HttpMethod.Get, ct).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsUnderlying>>(_.GetUrl(api, v4, options, "underlyings"), HttpMethod.Get, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -58,7 +39,7 @@ public class GateOptionsRestApiClient
             { "underlying", underlying }
         };
 
-        return await _.SendRequestInternal<List<long>>(_.GetUrl(api, version, section, expirationsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<long>>(_.GetUrl(api, v4, options, "expirations"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -76,7 +57,7 @@ public class GateOptionsRestApiClient
         };
         parameters.AddOptionalParameter("expiration", expiration);
 
-        return await _.SendRequestInternal<List<GateOptionsContract>>(_.GetUrl(api, version, section, contractsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsContract>>(_.GetUrl(api, v4, options, "contracts"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -87,7 +68,7 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsContract>> GetContractAsync(string contract, CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsContract>(_.GetUrl(api, version, section, contractsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsContract>(_.GetUrl(api, v4, options, "contracts".AppendPath(contract)), HttpMethod.Get, ct, false).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -136,7 +117,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsSettlement>>(_.GetUrl(api, version, section, settlementsEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsSettlement>>(_.GetUrl(api, v4, options, "settlements"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -155,7 +136,7 @@ public class GateOptionsRestApiClient
             { "at", at },
         };
 
-        return await _.SendRequestInternal<GateOptionsSettlement>(_.GetUrl(api, version, section, settlementsEndpoint.AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsSettlement>(_.GetUrl(api, v4, options, "settlements".AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -195,7 +176,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsUserSettlement>>(_.GetUrl(api, version, section, mySettlementsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsUserSettlement>>(_.GetUrl(api, v4, options, "my_settlements"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -217,7 +198,7 @@ public class GateOptionsRestApiClient
             { "with_id", withId.ToString().ToLower() },
         };
 
-        return await _.SendRequestInternal<GateOptionsOrderBook>(_.GetUrl(api, version, section, orderBookEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsOrderBook>(_.GetUrl(api, v4, options, "order_book"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -233,7 +214,7 @@ public class GateOptionsRestApiClient
             { "underlying", underlying },
         };
 
-        return await _.SendRequestInternal<List<GateOptionsContractTicker>>(_.GetUrl(api, version, section, tickersEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsContractTicker>>(_.GetUrl(api, v4, options, "tickers"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -244,8 +225,8 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsUnderlyingTicker>> GetUnderlyingTickersAsync(string underlying, CancellationToken ct = default)
     {
-        var endpoint = underlyingTickersUnderlyingEndpoint.Replace("{underlying}", underlying);
-        return await _.SendRequestInternal<GateOptionsUnderlyingTicker>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        var endpoint = "underlying/tickers/{underlying}".Replace("{underlying}", underlying);
+        return await _.SendRequestInternal<GateOptionsUnderlyingTicker>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, false).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -282,7 +263,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsCandlestick>>(_.GetUrl(api, version, section, candlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsCandlestick>>(_.GetUrl(api, v4, options, "candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -319,7 +300,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsCandlestickMark>>(_.GetUrl(api, version, section, underlyingCandlesticksEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsCandlestickMark>>(_.GetUrl(api, v4, options, "underlying/candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -357,7 +338,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsTrade>>(_.GetUrl(api, version, section, tradesEndpoint), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsTrade>>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -367,7 +348,7 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsBalance>> GetBalanceAsync(CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, version, section, tradesEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -402,7 +383,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsBalanceChange>>(_.GetUrl(api, version, section, accountBookEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsBalanceChange>>(_.GetUrl(api, v4, options, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -416,7 +397,7 @@ public class GateOptionsRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("underlying", underlying);
 
-        return await _.SendRequestInternal<List<GateOptionsPosition>>(_.GetUrl(api, version, section, positionsEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsPosition>>(_.GetUrl(api, v4, options, "positions"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -427,8 +408,8 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsPosition>> GetContractPositionAsync(string contract, CancellationToken ct = default)
     {
-        var endpoint = positionsContractEndpoint.Replace("{contract}", contract);
-        return await _.SendRequestInternal<GateOptionsPosition>(_.GetUrl(api, version, section, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        var endpoint = "positions/{contract}".Replace("{contract}", contract);
+        return await _.SendRequestInternal<GateOptionsPosition>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -444,7 +425,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await _.SendRequestInternal<List<GateOptionsUserLiquidation>>(_.GetUrl(api, version, section, positionCloseEndpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsUserLiquidation>>(_.GetUrl(api, v4, options, "position_close"), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -489,7 +470,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalEnum("tif", timeInForce);
         parameters.AddOptional("text", clientOrderId);
 
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -548,7 +529,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -570,7 +551,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
 
-        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, version, section, ordersEndpoint), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -581,7 +562,7 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, version, section, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -592,7 +573,7 @@ public class GateOptionsRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsOrder>> CancelOrderAsync(long orderId, CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, version, section, ordersEndpoint.AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
 
     // TODO: Countdown cancel orders
@@ -648,7 +629,7 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, version, section, myTradesEndpoint), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return await _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
     }
 
     // TODO: MMP Settings

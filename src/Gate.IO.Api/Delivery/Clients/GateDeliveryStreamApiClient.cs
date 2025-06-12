@@ -1,8 +1,13 @@
 ﻿namespace Gate.IO.Api.Delivery;
 
+/// <summary>
+/// Gate.IO Delivery Futures WebSocket API Client
+/// </summary>
 public class GateDeliveryStreamApiClient
 {
-    // Public
+    /// <summary>
+    /// USDT Delivery Futures API Client
+    /// </summary>
     public GateDeliveryStreamApiSettleClient USDT { get; }
 
     // Internal

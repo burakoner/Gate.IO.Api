@@ -186,6 +186,17 @@ var margin_04 = await api.Margin.SetAutoRepaymentAsync(GateMarginAutoRepaymentSt
 var margin_05 = await api.Margin.GetAutoRepaymentAsync();
 var margin_06 = await api.Margin.GetTransferableAmountAsync("CURRENCY");
 
+// Margin Uni Methods
+var marginuni_01 = await api.MarginUni.GetMarketsAsync();
+var marginuni_02 = await api.MarginUni.GetMarketsAsync("SYMBOL");
+var marginuni_03 = await api.MarginUni.GetEstimatedInterestRateAsync(["BTC", "ETH"]);
+var marginuni_04 = await api.MarginUni.BorrowAsync("SYMBOL", "CURRENCY", 100.0m);
+var marginuni_05 = await api.MarginUni.RepayAsync("SYMBOL", "CURRENCY", 100.0m);
+var marginuni_06 = await api.MarginUni.GetLoansAsync("SYMBOL", "CURRENCY");
+var marginuni_07 = await api.MarginUni.GetLoanHistoryAsync();
+var marginuni_08 = await api.MarginUni.GetInterestHistoryAsync();
+var marginuni_09 = await api.MarginUni.GetMaximumBorrowableAsync("SYMBOL", "CURRENCY");
+
 // Flash-Swap Methods
 var swap_02 = await api.FlashSwap.GetMarketsAsync();
 var swap_03 = await api.FlashSwap.PreviewOrderAsync("SELL-CURRENCY", 100.0M, "BUY-CURRENCY", 1000.0M);
