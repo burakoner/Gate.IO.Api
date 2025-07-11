@@ -231,7 +231,6 @@ public class GateSpotRestApiClient
     {
         foreach (var request in requests)
         {
-            SpotHelpers.ValidateMarketSymbol(request.Symbol);
             ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, false);
 
             if (request.Type == GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.GoodTillCancelled)
@@ -287,7 +286,6 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSpotOrder>> CloseLiquidatedPositionsAsync(GateSpotCloseRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(request.Symbol);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         var parameters = new ParameterCollection()
@@ -381,7 +379,6 @@ public class GateSpotRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(GateSpotOrderRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(request.Symbol);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         if (request.Type == GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.GoodTillCancelled)
@@ -503,8 +500,6 @@ public class GateSpotRestApiClient
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("side", side);
@@ -523,9 +518,6 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelOrderRequest> requests, CancellationToken ct = default)
     {
-        foreach (var request in requests)
-            SpotHelpers.ValidateMarketSymbol(request.Symbol);
-
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
 
@@ -550,8 +542,6 @@ public class GateSpotRestApiClient
         GateSpotAccountType? account = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new ParameterCollection()
         {
             { "currency_pair", symbol },
@@ -592,8 +582,6 @@ public class GateSpotRestApiClient
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("account", account);
@@ -631,8 +619,6 @@ public class GateSpotRestApiClient
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
         parameters.AddOptionalEnum("account", account);
@@ -697,8 +683,6 @@ public class GateSpotRestApiClient
         string clientOrderId = null,
         CancellationToken ct = default)
     {
-        if (!string.IsNullOrEmpty(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
-
         var oid = _.CheckOrderId(orderId, clientOrderId);
         var parameters = new ParameterCollection
         {
@@ -738,8 +722,6 @@ public class GateSpotRestApiClient
         string symbol = null,
         CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new Dictionary<string, object> {
             { "timeout", timeout },
         };
@@ -809,8 +791,6 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(GateSpotPriceTriggeredOrderRequest request, CancellationToken ct = default)
     {
-        SpotHelpers.ValidateMarketSymbol(request.Symbol);
-
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
 
@@ -858,8 +838,6 @@ public class GateSpotRestApiClient
         string symbol = null,
         CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(symbol)) SpotHelpers.ValidateMarketSymbol(symbol);
-
         var parameters = new ParameterCollection();
         parameters.AddOptional("market", symbol);
         parameters.AddOptionalEnum("account", account);
