@@ -8,10 +8,10 @@
 	<PropertyGroup>
 		<PackageId>Gate.IO.Api</PackageId>
 		<Authors>Burak Öner</Authors>
-		<Version>4.5.711</Version>
-		<FileVersion>4.5.711</FileVersion>
-		<PackageVersion>4.5.711</PackageVersion>
-		<AssemblyVersion>4.5.711</AssemblyVersion>
+		<Version>4.5.721</Version>
+		<FileVersion>4.5.721</FileVersion>
+		<PackageVersion>4.5.721</PackageVersion>
+		<AssemblyVersion>4.5.721</AssemblyVersion>
 		<Description>Gate.IO API v4 Wrapper. Up-to-date, most-complete, well-organized, well-documented, easy-to-use, multi-task and multi-thread compatible Gate.IO Cryptocurrency Exchange Rest and Websocket Api Wrapper</Description>
 		<PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
 		<PackageTags>Gate Gate.IO Binance Coinbase Kraken KuCoin Bitstamp Huobi OKX Okex ApiSharp Api Sharp Coin Token BNB BTC ETH Bitcoin Ether Ethereum Rest Web Socket Websocket Stream Webstream Client Wrapper Connector Crypto Currency Cryptocurrency Exchange Trade Trading Spot Margin Futures Derivates Stock Options Swap</PackageTags>
