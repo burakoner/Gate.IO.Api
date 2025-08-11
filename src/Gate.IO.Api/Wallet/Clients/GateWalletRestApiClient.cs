@@ -44,13 +44,13 @@ public class GateWalletRestApiClient
     {
         var parameters = new ParameterCollection
         {
-            { "chain", chain },
-            { "address", address },
             { "currency", currency },
+            { "address", address },
+            { "chain", chain },
         };
+        parameters.AddOptional("withdraw_order_id", withdrawalOrderId);
         parameters.AddString("amount", amount);
         parameters.AddOptional("memo", memo);
-        parameters.AddOptional("withdraw_order_id", withdrawalOrderId);
         parameters.AddOptional("withdraw_id", withdrawalId);
         parameters.AddOptionalEnum("asset_class", assetClass);
 

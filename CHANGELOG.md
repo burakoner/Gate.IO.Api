@@ -1,5 +1,8 @@
 ## Change Log & Release Notes
 
+* Version 4.5.811 - 11 Aug 2025
+  * ApiSharp updated to version 4.0.1.
+
 * Version 4.5.711 - 11 Jul 2025
   * Fixed [Issue 8](https://github.com/burakoner/Gate.IO.Api/issues/8)
 
