@@ -83,4 +83,10 @@ public record GateFuturesStats
     /// </summary>
     [JsonProperty("top_lsr_size")]
     public decimal TopTraderLongShortPositionRatio { get; set; }
+
+    /// <summary>
+    /// Mark Price
+    /// </summary>
+    [JsonProperty("mark_price")]
+    public decimal MarkPrice { get; set; }
 }

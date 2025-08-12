@@ -26,18 +26,21 @@ public record GateSpotCurrency
     /// <summary>
     /// Whether currency&#39;s withdrawal is disabled
     /// </summary>
+    [Obsolete]
     [JsonProperty("withdraw_disabled")]
     public bool WithdrawDisabled { get; set; }
 
     /// <summary>
     /// Whether currency&#39;s withdrawal is delayed
     /// </summary>
+    [Obsolete]
     [JsonProperty("withdraw_delayed")]
     public bool WithdrawDelayed { get; set; }
 
     /// <summary>
     /// Whether currency&#39;s deposit is disabled
     /// </summary>
+    [Obsolete]
     [JsonProperty("deposit_disabled")]
     public bool DepositDisabled { get; set; }
 
@@ -58,6 +61,12 @@ public record GateSpotCurrency
     /// </summary>
     [JsonProperty("chain")]
     public string Chain { get; set; }
+
+    /// <summary>
+    /// Is it a privacy currency?
+    /// </summary>
+    [JsonProperty("is_private")]
+    public bool? IsPrivacyCurrency { get; set; }
 
     /// <summary>
     /// All links corresponding to coins

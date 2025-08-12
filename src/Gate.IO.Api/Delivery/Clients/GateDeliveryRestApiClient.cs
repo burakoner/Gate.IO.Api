@@ -172,7 +172,7 @@ public class GateDeliveryRestApiClient
     }
 
     // Update position margin
-    internal Task<RestCallResult<GateFuturesPosition>> SetPositionMarginAsync(GateDeliverySettlement settle, string contract, decimal change, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> SetMarginAsync(GateDeliverySettlement settle, string contract, decimal change, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddString("change", change);

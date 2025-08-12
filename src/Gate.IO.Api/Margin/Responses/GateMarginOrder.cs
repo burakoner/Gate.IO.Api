@@ -1,9 +1,9 @@
-namespace Gate.IO.Api.MarginUni;
+namespace Gate.IO.Api.Margin;
 
 /// <summary>
 /// Gate Margin Uni Order
 /// </summary>
-public record GateMarginUniOrder
+public record GateMarginOrder
 {
     /// <summary>
     /// Currency

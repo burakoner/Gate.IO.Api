@@ -165,10 +165,10 @@ public class GateUnifiedRestApiClient
         CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
+        parameters.AddOptionalEnum("type", direction);
         parameters.AddOptional("currency", currency);
         parameters.AddOptional("page", page);
         parameters.AddOptional("limit", limit);
-        parameters.AddOptionalEnum("type", direction);
 
         return _.SendRequestInternal<List<GateUnifiedLoanRecord>>(_.GetUrl(api, v4, unified, "loan_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -328,4 +328,5 @@ public class GateUnifiedRestApiClient
 
     // TODO: currencies
     // TODO: history_loan_rate
+    // TODO: collateral_currencies
 }

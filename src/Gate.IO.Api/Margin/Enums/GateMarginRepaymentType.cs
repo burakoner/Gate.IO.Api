@@ -3,7 +3,7 @@
 /// <summary>
 /// GateCrossMarginLoanRepaymentType
 /// </summary>
-public enum GateCrossMarginRepaymentType:byte
+public enum GateMarginRepaymentType:byte
 {
     /// <summary>
     /// no repayment type

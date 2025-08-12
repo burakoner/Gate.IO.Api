@@ -292,7 +292,7 @@ public class GateFuturesRestApiClient
     }
 
     // Update position margin
-    internal Task<RestCallResult<GateFuturesPosition>> SetPositionMarginAsync(GateFuturesSettlement settle, string contract, decimal change, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPosition>> SetMarginAsync(GateFuturesSettlement settle, string contract, decimal change, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddString("change", change);
@@ -316,7 +316,8 @@ public class GateFuturesRestApiClient
         return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
-    // TODO: Switch to the full position-by-store mode
+    // TODO: Switch Position Margin Mode
+    // TODO: Switch Between Cross and Isolated Margin Modes Under Hedge Mode
 
     // Update position risk limit
     internal Task<RestCallResult<GateFuturesPosition>> SetRiskLimitAsync(GateFuturesSettlement settle, string contract, decimal riskLimit, CancellationToken ct = default)
@@ -619,9 +620,10 @@ public class GateFuturesRestApiClient
         return result.As(result.Data?.Time ?? default);
     }
 
-    // TODO: Query user trading fee rates
-    // TODO: Cancel a batch of orders with an ID list
-    // TODO: Batch modify orders with specified IDs
+    // TODO: Query futures market trading fee rates
+    // TODO: Cancel batch orders by specified ID list
+    // TODO: Batch modify orders by specified IDs
+    // TODO: Query risk limit table by table_id
 
     // Create a price-triggered order
     internal Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(

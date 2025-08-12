@@ -30,14 +30,14 @@ public record GateUnifiedLoan
     public GateUnifiedLoanType Type { get; set; }
 
     /// <summary>
-    /// Last update time
-    /// </summary>
-    [JsonProperty("change_time")]
-    public DateTime? UpdateTime { get; set; }
-
-    /// <summary>
     /// Create time
     /// </summary>
     [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
+
+    /// <summary>
+    /// Last update time
+    /// </summary>
+    [JsonProperty("update_time")]
+    public DateTime? UpdateTime { get; set; }
 }

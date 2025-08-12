@@ -12,10 +12,23 @@ public record GateUnifiedAccountInfo
     public long UserId { get; set; }
 
     /// <summary>
+    /// Last refresh time
+    /// </summary>
+    [JsonProperty("refresh_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime RefreshTime { get; set; }
+
+    /// <summary>
     /// Locked
     /// </summary>
     [JsonProperty("locked")]
     public bool Locked { get; set; }
+
+    /// <summary>
+    /// Balances
+    /// </summary>
+    [JsonProperty("balances")]
+    public Dictionary<string, GateIoUnifiedAccountBalance> Balances { get; set; } = [];
 
     /// <summary>
     /// Total value in USD
@@ -108,10 +121,10 @@ public record GateUnifiedAccountInfo
     public bool? UseFunding { get; set; }
 
     /// <summary>
-    /// Balances
+    /// Whether all currencies are used as margin: true - all currencies as margin, false - no
     /// </summary>
-    [JsonProperty("balances")]
-    public Dictionary<string, GateIoUnifiedAccountBalance> Balances { get; set; } = [];
+    [JsonProperty("is_all_collateral")]
+    public bool? IsAllCollateral { get; set; }
 }
 
 /// <summary>
@@ -174,6 +187,18 @@ public record GateIoUnifiedAccountBalance
     public decimal SpotInUse { get; set; }
 
     /// <summary>
+    /// Uniloan financial management amount, effective when turned on as a unified account margin switch
+    /// </summary>
+    [JsonProperty("funding")]
+    public string Funding { get; set; }
+
+    /// <summary>
+    /// Funding version
+    /// </summary>
+    [JsonProperty("funding_version")]
+    public string FundingVersion { get; set; }
+
+    /// <summary>
     /// Cross margin balance
     /// </summary>
     [JsonProperty("cross_balance")]
@@ -220,4 +245,10 @@ public record GateIoUnifiedAccountBalance
     /// </summary>
     [JsonProperty("available_margin")]
     public decimal? AvailableMargin { get; set; }
+
+    /// <summary>
+    /// Currency enabled as margin: true - Enabled, false - Disabled
+    /// </summary>
+    [JsonProperty("enabled_collateral")]
+    public bool? IsCollateralEnabled { get; set; }
 }

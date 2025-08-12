@@ -209,7 +209,7 @@ public class GateDeliveryRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateFuturesPosition>> SetPositionMarginAsync(string contract, decimal change, CancellationToken ct = default)
-        => MainClient.SetPositionMarginAsync(Settlement, contract, change, ct);
+        => MainClient.SetMarginAsync(Settlement, contract, change, ct);
     
     /// <summary>
     /// Update position leverage

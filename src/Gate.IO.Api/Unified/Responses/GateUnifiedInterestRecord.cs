@@ -6,22 +6,16 @@ namespace Gate.IO.Api.Unified;
 public record GateUnifiedInterestRecord
 {
     /// <summary>
-    /// Status
+    /// Asset
     /// </summary>
-    [JsonProperty("status")]
-    public bool Success { get; set; }
+    [JsonProperty("currency")]
+    public string Asset { get; set; } = string.Empty;
 
     /// <summary>
     /// Symbol
     /// </summary>
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Asset
-    /// </summary>
-    [JsonProperty("currency")]
-    public string Asset { get; set; } = string.Empty;
 
     /// <summary>
     /// Actual interest rate
@@ -34,6 +28,12 @@ public record GateUnifiedInterestRecord
     /// </summary>
     [JsonProperty("interest")]
     public decimal Interest { get; set; }
+
+    /// <summary>
+    /// Status
+    /// </summary>
+    [JsonProperty("status")]
+    public bool Success { get; set; }
 
     /// <summary>
     /// Loan type

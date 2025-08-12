@@ -1,5 +1,3 @@
-using Newtonsoft.Json.Linq;
-
 namespace Gate.IO.Api.Wallet;
 
 /// <summary>
@@ -18,6 +16,12 @@ public record GateWalletTransaction
     /// </summary>
     [JsonProperty("txid")]
     public string TransactionId { get; set; }
+
+    /// <summary>
+    /// Block Number
+    /// </summary>
+    [JsonProperty("block_number")]
+    public int? BlockNumber { get; set; }
 
     /// <summary>
     /// Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)
@@ -39,6 +43,12 @@ public record GateWalletTransaction
     public decimal Amount { get; set; }
 
     /// <summary>
+    /// Fee
+    /// </summary>
+    [JsonProperty("fee")]
+    public decimal Fee { get; set; }
+
+    /// <summary>
     /// Currency name
     /// </summary>
     [JsonProperty("currency")]
@@ -49,6 +59,20 @@ public record GateWalletTransaction
     /// </summary>
     [JsonProperty("address")]
     public string Address { get; set; }
+
+    /// <summary>
+    /// Reason for withdrawal failure. Has a value when status = CANCEL, empty for all other statuses
+    /// </summary>
+    [JsonProperty("fail_reason")]
+    public string FailReason { get; set; }
+
+    /// <summary>
+    /// Withdrawal final time, i.e.: withdrawal cancellation time or withdrawal success time
+    /// When status = CANCEL, corresponds to cancellation time
+    /// When status = DONE and block_number > 0, it is the withdrawal success time
+    /// </summary>
+    [JsonProperty("timestamp2")]
+    public long Timestamp2 { get; set; }
 
     /// <summary>
     /// Additional remarks with regards to the withdrawal

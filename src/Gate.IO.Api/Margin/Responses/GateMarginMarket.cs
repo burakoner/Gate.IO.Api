@@ -1,55 +1,31 @@
 namespace Gate.IO.Api.Margin;
 
 /// <summary>
-/// Gate Margin Market
+/// Gate Margin Uni Market
 /// </summary>
-public  class GateMarginMarket
+public record GateMarginMarket
 {
     /// <summary>
-    /// Currency pair
+    /// Symbol
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Base currency
+    /// Minimum Base Borrow Quantity
     /// </summary>
-    [JsonProperty("base")]
-    public string Base { get; set; }
+    [JsonProperty("base_min_borrow_amount")]
+    public decimal MinimumBaseBorrowQuantity { get; set; }
 
     /// <summary>
-    /// Quote currency
+    /// Minimum Quote Borrow Quantity
     /// </summary>
-    [JsonProperty("quote")]
-    public string Quote { get; set; }
+    [JsonProperty("quote_min_borrow_amount")]
+    public decimal MinimumQuoteBorrowQuantity { get; set; }
 
     /// <summary>
     /// Leverage
     /// </summary>
     [JsonProperty("leverage")]
     public decimal Leverage { get; set; }
-
-    /// <summary>
-    /// Minimum amount of base currency to trade, &#x60;null&#x60; means no limit
-    /// </summary>
-    [JsonProperty("min_base_amount")]
-    public decimal? MinimumBaseAmount { get; set; }
-
-    /// <summary>
-    /// Minimum amount of quote currency to trade, &#x60;null&#x60; means no limit
-    /// </summary>
-    [JsonProperty("min_quote_amount")]
-    public decimal? MinimumQuoteAmount { get; set; }
-
-    /// <summary>
-    /// Maximum amount of quote currency to trade, &#x60;null&#x60; means no limit
-    /// </summary>
-    [JsonProperty("max_quote_amount")]
-    public decimal? MaximumQuoteAmount { get; set; }
-
-    /// <summary>
-    /// Trading Status
-    /// </summary>
-    [JsonProperty("status")]
-    public GateMarginMarketStatus Status { get; set; }
 }

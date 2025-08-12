@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Gate.IO Futures Contract
@@ -224,4 +224,31 @@ public record GateFuturesContract
     /// </summary>
     [JsonProperty("funding_cap_ratio")]
     public decimal FundingCapRatio { get; set; }
+
+    /// <summary>
+    /// FuturesStatus Type包含：prelaunch(预上线), trading(Trade中),delisting(下架中), delisted(已下架), circuit_breaker（熔断)
+    /// </summary>
+    [JsonProperty("status")]
+    public GateFuturesContractStatus Status { get; set; }
+
+    /// <summary>
+    /// Contract expiry timestamp
+    /// </summary>
+    [JsonProperty("launch_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? LaunchTime { get; set; }
+
+    /// <summary>
+    /// Futures进入只减仓StatusTime
+    /// </summary>
+    [JsonProperty("delisting_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? DelistingTime { get; set; }
+
+    /// <summary>
+    /// Futures下架Time
+    /// </summary>
+    [JsonProperty("delisted_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? DelistedTime { get; set; }
 }

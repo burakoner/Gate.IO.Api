@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Gate Futures Position
@@ -181,11 +181,83 @@ public record GateFuturesPosition
     public DateTime UpdateTime { get; set; }
 
     /// <summary>
+    /// Update ID. The value increments by 1 each time the position is updated
+    /// </summary>
+    [JsonProperty("update_id")]
+    public long UpdateId { get; set; }
+
+    /// <summary>
+    /// Cumulative long size
+    /// </summary>
+    [JsonProperty("trade_long_size")]
+    public long TradeLongSize { get; set; }
+
+    /// <summary>
+    /// Cumulative long size*price
+    /// </summary>
+    [JsonProperty("trade_long_xprice")]
+    public decimal TradeLongXPrice { get; set; }
+
+    /// <summary>
+    /// Cumulative short size
+    /// </summary>
+    [JsonProperty("trade_short_size")]
+    public long TradeShortSize { get; set; }
+
+    /// <summary>
+    /// Cumulative short size*price
+    /// </summary>
+    [JsonProperty("trade_short_xprice")]
+    public decimal TradeShortXPrice { get; set; }
+
+    /// <summary>
+    /// Maximum position
+    /// </summary>
+    [JsonProperty("trade_max_size")]
+    public decimal TradeMaxSize { get; set; }
+
+    /// <summary>
     /// First Open Time
     /// </summary>
     [JsonProperty("open_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime OpenTime { get; set; }
+
+    /// <summary>
+    /// Risk limit table ID
+    /// </summary>
+    [JsonProperty("risk_limit_table")]
+    public string RiskLimitTable { get; set; }
+
+    /// <summary>
+    /// Average maintenance margin rate
+    /// </summary>
+    [JsonProperty("average_maintenance_rate")]
+    public decimal? AverageMaintenanceRate { get; set; }
+
+    /// <summary>
+    /// Experience Coupon Position Size
+    /// </summary>
+    [JsonProperty("voucher_size")]
+    public decimal? VoucherSize { get; set; }
+
+    /// <summary>
+    /// Experience Coupon Position Margin
+    /// </summary>
+    [JsonProperty("voucher_margin")]
+    public decimal? VoucherMargin { get; set; }
+
+    /// <summary>
+    /// Experience Coupon ID
+    /// </summary>
+    [JsonProperty("voucher_id")]
+    public long? VoucherId { get; set; }
+
+    /// <summary>
+    /// 分仓仓位id
+    /// </summary>
+    [JsonProperty("pid")]
+    public long? PID { get; set; }
 }
 
 /// <summary>

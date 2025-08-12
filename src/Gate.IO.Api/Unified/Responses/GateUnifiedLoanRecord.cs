@@ -18,10 +18,16 @@ public record GateUnifiedLoanRecord
     public GateUnifiedLoanDirection Type { get; set; }
 
     /// <summary>
-    /// Margin mode
+    /// Repay type
     /// </summary>
-    [JsonProperty("margin_mode")]
-    public string Mode { get; set; }
+    [JsonProperty("repayment_type")]
+    public GateUnifiedRepayType? RepaymentType { get; set; }
+
+    /// <summary>
+    /// Repay type
+    /// </summary>
+    [JsonProperty("borrow_type")]
+    public GateUnifiedBorrowType? BorrowType { get; set; }
 
     /// <summary>
     /// Symbol
@@ -46,16 +52,4 @@ public record GateUnifiedLoanRecord
     /// </summary>
     [JsonProperty("create_time")]
     public DateTime CreateTime { get; set; }
-
-    /// <summary>
-    /// Repay type
-    /// </summary>
-    [JsonProperty("repayment_type")]
-    public GateUnifiedRepayType? RepaymentType { get; set; }
-
-    /// <summary>
-    /// Repay type
-    /// </summary>
-    [JsonProperty("borrow_type")]
-    public GateUnifiedBorrowType? BorrowType { get; set; }
 }

@@ -213,7 +213,7 @@ public class GateSpotRestApiClient
         return _.SendRequestInternal<List<GateSpotBalance>>(_.GetUrl(api, v4, spot, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
-    // TODO: Query account book
+    // TODO: GET /spot/account_book
 
     /// <summary>
     /// Create a batch of orders
@@ -398,13 +398,13 @@ public class GateSpotRestApiClient
         {
             { "currency_pair", request.Symbol },
         };
-        parameters.AddString("amount", request.Amount);
-        parameters.AddEnum("side", request.Side);
+        parameters.AddOptional("text", request.ClientOrderId);
         parameters.AddEnum("type", request.Type);
         parameters.AddEnum("account", request.Account);
-        parameters.AddEnum("time_in_force", request.TimeInForce);
-        parameters.AddOptional("text", request.ClientOrderId);
+        parameters.AddEnum("side", request.Side);
+        parameters.AddString("amount", request.Amount);
         parameters.AddOptionalString("price", request.Price);
+        parameters.AddEnum("time_in_force", request.TimeInForce);
         parameters.AddOptional("iceberg", request.Iceberg);
         parameters.AddOptional("auto_borrow", request.AutoBorrow);
         parameters.AddOptional("auto_repay", request.AutoRepay);
@@ -645,15 +645,15 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(
-    GateSpotAccountType account,
-    string symbol,
-    DateTime from,
-    DateTime to,
-    int page = 1,
-    int limit = 100,
-    long? orderId = null,
-    string clientOrderId = null,
-    CancellationToken ct = default)
+        GateSpotAccountType account,
+        string symbol,
+        DateTime from,
+        DateTime to,
+        int page = 1,
+        int limit = 100,
+        long? orderId = null,
+        string clientOrderId = null,
+        CancellationToken ct = default)
         => GetTradeHistoryAsync(account, symbol, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), page, limit, orderId, clientOrderId, ct);
 
     /// <summary>
@@ -730,8 +730,8 @@ public class GateSpotRestApiClient
         return result.As(result.Data?.Time ?? default);
     }
 
-    // TODO: Batch modification of orders
-    // TODO: Query spot insurance fund historical data
+    // TODO: Batch modification of orders               POST /spot/amend_batch_orders
+    // TODO: Query spot insurance fund historical data  GET  /spot/insurance_history
 
     /// <summary>
     /// Create a price-triggered order

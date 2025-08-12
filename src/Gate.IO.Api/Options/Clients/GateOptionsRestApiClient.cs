@@ -351,6 +351,8 @@ public class GateOptionsRestApiClient
         return await _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
+    // TODO: Query account information  GET /options/accounts
+
     /// <summary>
     /// List account changing history
     /// </summary>

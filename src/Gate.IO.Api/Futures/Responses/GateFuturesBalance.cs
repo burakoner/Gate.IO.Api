@@ -150,6 +150,18 @@ public record GateFuturesBalance
     public int MarginMode { get; set; }
 
     /// <summary>
+    /// Whether to enable tiered maintenance margin calculation
+    /// </summary>
+    [JsonProperty("enable_tiered_mm")]
+    public bool IsEnabledTiredMM { get; set; }
+
+    /// <summary>
+    /// Total Position Experience Coupon Amount in Account
+    /// </summary>
+    [JsonProperty("position_voucher_total")]
+    public decimal? PositionVoucherTotal { get; set; }
+
+    /// <summary>
     /// History
     /// </summary>
     [JsonProperty("history")]

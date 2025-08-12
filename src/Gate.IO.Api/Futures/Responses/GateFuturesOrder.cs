@@ -25,6 +25,13 @@ public record GateFuturesOrder
     public DateTime CreateTime { get; set; }
 
     /// <summary>
+    /// Order更新Time
+    /// </summary>
+    [JsonProperty("update_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? UpdateTime { get; set; }
+
+    /// <summary>
     /// Order finished time. Not returned if order is open
     /// </summary>
     [JsonProperty("finish_time")]
@@ -38,7 +45,7 @@ public record GateFuturesOrder
     public GateFuturesOrderFinishAs? FinishAs { get; set; }
     
     /// <summary>
-    /// Order status  - &#x60;open&#x60;: waiting to be traded - &#x60;finished&#x60;: finished
+    /// Order status - &#x60;open&#x60;: waiting to be traded - &#x60;finished&#x60;: finished
     /// </summary>
     [JsonProperty("status")]
     public GateFuturesOrderStatus Status { get; set; }
@@ -92,7 +99,7 @@ public record GateFuturesOrder
     public bool IsLiquidation { get; set; }
     
     /// <summary>
-    /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
+    /// Time in force - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
     [JsonProperty("tif")]
     public GateFuturesTimeInForce TimeInForce { get; set; }

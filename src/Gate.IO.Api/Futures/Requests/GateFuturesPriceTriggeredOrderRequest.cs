@@ -25,42 +25,6 @@ public record GateFuturesPriceTriggeredOrderRequest
 }
 
 /// <summary>
-/// GateFuturesTrigger
-/// </summary>
-public record GateFuturesTrigger
-{
-    /// <summary>
-    /// How the order will be triggered
-    /// </summary>
-    [JsonProperty("strategy_type"), JsonConverter(typeof(GateMapConverter))]
-    public GateFuturesTriggerStrategy StrategyType { get; set; }
-    
-    /// <summary>
-    /// Price Type
-    /// </summary>
-    [JsonProperty("price_type")]
-    public GateFuturesTriggerPrice PriceType { get; set; }
-
-    /// <summary>
-    /// Trigger price
-    /// </summary>
-    [JsonProperty("price")]
-    public string Price { get; set; }
-
-    /// <summary>
-    /// Price trigger condition
-    /// </summary>
-    [JsonProperty("rule")]
-    public GateSpotTriggerCondition Rule { get; set; }
-
-    /// <summary>
-    /// How long (in seconds) to wait for the condition to be triggered before cancelling the order.
-    /// </summary>
-    [JsonProperty("expiration")]
-    public int Expiration { get; set; }
-}
-
-/// <summary>
 /// GateFuturesInitial
 /// </summary>
 public record GateFuturesInitial
@@ -112,4 +76,40 @@ public record GateFuturesInitial
     /// </summary>
     [JsonProperty("auto_size")]
     public GateFuturesOrderAutoSize AutoSize { get; set; }
+}
+
+/// <summary>
+/// GateFuturesTrigger
+/// </summary>
+public record GateFuturesTrigger
+{
+    /// <summary>
+    /// How the order will be triggered
+    /// </summary>
+    [JsonProperty("strategy_type"), JsonConverter(typeof(GateMapConverter))]
+    public GateFuturesTriggerStrategy StrategyType { get; set; }
+    
+    /// <summary>
+    /// Price Type
+    /// </summary>
+    [JsonProperty("price_type")]
+    public GateFuturesTriggerPrice PriceType { get; set; }
+
+    /// <summary>
+    /// Trigger price
+    /// </summary>
+    [JsonProperty("price")]
+    public string Price { get; set; }
+
+    /// <summary>
+    /// Price trigger condition
+    /// </summary>
+    [JsonProperty("rule")]
+    public GateSpotTriggerCondition Rule { get; set; }
+
+    /// <summary>
+    /// How long (in seconds) to wait for the condition to be triggered before cancelling the order.
+    /// </summary>
+    [JsonProperty("expiration")]
+    public int Expiration { get; set; }
 }

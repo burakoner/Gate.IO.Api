@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// GateFuturesTicker
@@ -78,12 +78,6 @@ public record GateFuturesTicker
     public decimal FundingRate { get; set; }
 
     /// <summary>
-    /// Indicative Funding rate in next period
-    /// </summary>
-    [JsonProperty("funding_rate_indicative")]
-    public decimal FundingRateIndicative { get; set; }
-
-    /// <summary>
     /// Index price
     /// </summary>
     [JsonProperty("index_price")]
@@ -96,38 +90,56 @@ public record GateFuturesTicker
     public decimal QuantoBaseRate { get; set; }
     
     /// <summary>
-    /// Basis rate
-    /// </summary>
-    [JsonProperty("basis_rate")]
-    public decimal BasisRate { get; set; }
-    
-    /// <summary>
-    /// Basis value
-    /// </summary>
-    [JsonProperty("basis_value")]
-    public decimal BasisValue { get; set; }
-    
-    /// <summary>
     /// Recent lowest ask
     /// </summary>
     [JsonProperty("lowest_ask")]
-    public decimal? LowestPrice { get; set; }
+    public decimal? BestAskPrice { get; set; }
     
     /// <summary>
     /// The latest seller's lowest price order quantity
     /// </summary>
     [JsonProperty("lowest_size")]
-    public decimal? LowestSize { get; set; }
+    public decimal? BestAskSize { get; set; }
     
     /// <summary>
     /// Recent highest bid
     /// </summary>
     [JsonProperty("highest_bid")]
-    public decimal? HighestPrice { get; set; }
+    public decimal? BestBidPrice { get; set; }
     
     /// <summary>
     /// The latest buyer's highest price order volume
     /// </summary>
     [JsonProperty("highest_size")]
-    public decimal? HighestSize { get; set; }
+    public decimal? BestBidSize { get; set; }
+
+    /// <summary>
+    /// utc0 涨跌百分比，跌用负数标识，如 -7.45
+    /// </summary>
+    [JsonProperty("change_utc0")]
+    public decimal ChangeUtc0 { get; set; }
+
+    /// <summary>
+    /// utc8 涨跌百分比，跌用负数标识，如 -7.45
+    /// </summary>
+    [JsonProperty("change_utc8")]
+    public decimal ChangeUtc8 { get; set; }
+
+    /// <summary>
+    /// 24h 涨跌额，跌用负数标识，如 -7.45
+    /// </summary>
+    [JsonProperty("change_price")]
+    public decimal ChangePrice { get; set; }
+
+    /// <summary>
+    /// utc0 涨跌额，跌用负数标识，如 -7.45
+    /// </summary>
+    [JsonProperty("change_utc0_price")]
+    public decimal ChangeUtc0Price { get; set; }
+
+    /// <summary>
+    /// utc8 涨跌额，跌用负数标识，如 -7.45
+    /// </summary>
+    [JsonProperty("change_utc8_price")]
+    public decimal ChangeUtc8Price { get; set; }
 }

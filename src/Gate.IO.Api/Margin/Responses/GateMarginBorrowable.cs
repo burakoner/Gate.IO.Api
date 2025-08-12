@@ -1,9 +1,9 @@
-namespace Gate.IO.Api.MarginUni;
+namespace Gate.IO.Api.Margin;
 
 /// <summary>
 /// Gate Margin Uni Borrowable
 /// </summary>
-public record GateMarginUniBorrowable
+public record GateMarginBorrowable
 {
     /// <summary>
     /// Currency

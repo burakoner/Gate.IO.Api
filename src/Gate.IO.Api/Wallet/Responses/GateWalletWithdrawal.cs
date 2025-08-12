@@ -70,4 +70,10 @@ public record GateWalletWithdrawal
     /// </summary>
     [JsonProperty("withdraw_fix_on_chains")]
     public Dictionary<string, string> WithdrawFixOnChains { get; set; }
+
+    /// <summary>
+    /// Percentage withdrawal fee on multiple chains
+    /// </summary>
+    [JsonProperty("withdraw_percent_on_chains")]
+    public Dictionary<string, string> WithdrawPercentOnChains { get; set; }
 }

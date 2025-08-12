@@ -43,8 +43,8 @@ public record GateFuturesBalanceChange
     public string Contract { get; set; }
 
     /// <summary>
-    /// trade id
+    /// Trade id
     /// </summary>
-    [JsonProperty("text")]
+    [JsonProperty("trade_id")]
     public long TradeId { get; set; }
 }

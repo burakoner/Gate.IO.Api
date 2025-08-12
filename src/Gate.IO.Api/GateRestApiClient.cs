@@ -12,52 +12,47 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Wallet Client
     /// </summary>
-    public GateWalletRestApiClient Wallet { get; } // 523
+    public GateWalletRestApiClient Wallet { get; } // 4.105.4
 
     /// <summary>
     /// SubAccount Client
     /// </summary>
-    public GateSubAccountRestApiClient SubAccount { get; } // 523
+    public GateSubAccountRestApiClient SubAccount { get; } // 4.105.4
 
     /// <summary>
     /// Unified Client
     /// </summary>
-    public GateUnifiedRestApiClient Unified { get; } // 523
-
-    /// <summary>
-    /// Spot Client
-    /// </summary>
-    public GateSpotRestApiClient Spot { get; } // 523
+    public GateUnifiedRestApiClient Unified { get; } // 4.105.4
 
     /// <summary>
     /// Margin Client
     /// </summary>
-    public GateMarginRestApiClient Margin { get; } // 523
+    public GateMarginRestApiClient IsolatedMargin { get; } // 4.105.4
 
     /// <summary>
-    /// Margin Uni Client
+    /// Spot Client
     /// </summary>
-    public GateMarginUniRestApiClient MarginUni { get; } // 612
+    public GateSpotRestApiClient Spot { get; } // 4.105.4
 
     /// <summary>
     /// Flash Swap Client
     /// </summary>
-    public GateSwapRestApiClient FlashSwap { get; } // 523
+    public GateSwapRestApiClient FlashSwap { get; } // 4.105.4
 
     /// <summary>
     /// Perpetual Futures Client
     /// </summary>
-    public GateFuturesRestApiClient Futures { get; } // 523
+    public GateFuturesRestApiClient Futures { get; } // 4.105.4
 
     /// <summary>
     /// Delivery Futures Client
     /// </summary>
-    public GateDeliveryRestApiClient Delivery { get; } // 523
+    public GateDeliveryRestApiClient Delivery { get; } // 4.105.4
 
     /// <summary>
     /// Options Client
     /// </summary>
-    public GateOptionsRestApiClient Options { get; } // 523
+    public GateOptionsRestApiClient Options { get; } // 4.105.4
 
     // TODO: EarnUni
     // TODO: Collateral-loan
@@ -67,12 +62,12 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Account Client
     /// </summary>
-    public GateAccountRestApiClient Account { get; } // 523
+    public GateAccountRestApiClient Account { get; } // 4.105.4
 
     /// <summary>
     /// Rebate Client
     /// </summary>
-    public GateRebateRestApiClient Rebate { get; } // 523
+    public GateRebateRestApiClient Rebate { get; } // 4.105.4
 
     /// <summary>
     /// Gate.IO REST API Client Constructor
@@ -111,12 +106,13 @@ public class GateRestApiClient : RestApiClient
         Wallet = new GateWalletRestApiClient(this);
         SubAccount = new GateSubAccountRestApiClient(this);
         Unified = new GateUnifiedRestApiClient(this);
+        IsolatedMargin = new GateMarginRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
-        Margin = new GateMarginRestApiClient(this);
-        MarginUni = new GateMarginUniRestApiClient(this);
+        FlashSwap = new GateSwapRestApiClient(this);
         Futures = new GateFuturesRestApiClient (this);
         Delivery = new GateDeliveryRestApiClient(this);
-        FlashSwap = new GateSwapRestApiClient(this);
+
+
         Options = new GateOptionsRestApiClient(this);
         Account = new GateAccountRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);

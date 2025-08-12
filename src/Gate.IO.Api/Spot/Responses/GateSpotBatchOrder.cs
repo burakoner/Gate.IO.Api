@@ -117,6 +117,7 @@ public record GateSpotBatchOrder
     /// </summary>
     [JsonProperty("price")]
     public decimal? Price { get; set; }
+
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none Only &#x60;ioc&#x60; and &#x60;fok&#x60; are supported when &#x60;type&#x60;&#x3D;&#x60;market&#x60;
     /// </summary>

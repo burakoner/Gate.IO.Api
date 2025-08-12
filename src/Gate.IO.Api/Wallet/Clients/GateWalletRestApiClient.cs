@@ -145,8 +145,8 @@ public class GateWalletRestApiClient
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency", currency);
-        parameters.AddOptionalEnum("asset_class", assetClass);
         parameters.AddOptional("withdraw_id", withdrawalId);
+        parameters.AddOptionalEnum("asset_class", assetClass);
         parameters.AddOptional("withdraw_order_id", withdrawalOrderId);
         parameters.AddOptionalMilliseconds("from", from);
         parameters.AddOptionalMilliseconds("to", to);

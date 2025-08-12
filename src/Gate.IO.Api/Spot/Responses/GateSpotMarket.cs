@@ -98,8 +98,27 @@ public record GateSpotMarket
     public DateTime BuyStart { get; set; }
 
     /// <summary>
+    /// Expected time to remove the shelves, Unix timestamp in seconds
+    /// </summary>
+    [JsonProperty("delisting_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? DelistingTime { get; set; }
+
+    /// <summary>
     /// Trading pair type, normal: normal, premarket: pre-market
     /// </summary>
     [JsonProperty("type")]
     public GateSpotMarketType Type { get; set; }
+
+    /// <summary>
+    /// Transaction link
+    /// </summary>
+    [JsonProperty("trade_url")]
+    public string TradeUrl { get; set; }
+
+    /// <summary>
+    /// Whether the trading pair is in ST risk assessment, false - No, true - Yes
+    /// </summary>
+    [JsonProperty("st_tag")]
+    public bool? StTag { get; set; }
 }

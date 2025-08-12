@@ -1,4 +1,4 @@
-﻿namespace Gate.IO.Api.MarginUni;
+﻿namespace Gate.IO.Api.Margin;
 
 /// <summary>
 /// Margin Uni Interest Status

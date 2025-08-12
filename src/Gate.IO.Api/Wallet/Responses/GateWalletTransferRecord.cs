@@ -6,28 +6,11 @@ namespace Gate.IO.Api.Wallet;
 public record GateWalletTransferRecord
 {
     /// <summary>
-    /// Transfer currency name
+    /// Transfer timestamp
     /// </summary>
-    [JsonProperty("currency")]
-    public string Currency { get; set; }
-
-    /// <summary>
-    /// Sub account user ID
-    /// </summary>
-    [JsonProperty("sub_account")]
-    public long SubAccountId { get; set; }
-
-    /// <summary>
-    /// Transfer direction. to - transfer into sub account; from - transfer out from sub account
-    /// </summary>
-    [JsonProperty("direction")]
-    public GateWalletTransferDirection Direction { get; set; }
-
-    /// <summary>
-    /// Transfer amount
-    /// </summary>
-    [JsonProperty("amount")]
-    public decimal Amount { get; set; }
+    [JsonProperty("timest")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime Timestamp { get; set; }
 
     /// <summary>
     /// Main account user ID
@@ -36,17 +19,34 @@ public record GateWalletTransferRecord
     public long UserId { get; set; }
 
     /// <summary>
-    /// The custom ID provided by the customer serves as a safeguard against duplicate transfers. It can be a combination of letters (case-sensitive), numbers, hyphens '-', and underscores '_', with a length ranging from 1 to 64 characters.
+    /// Sub account user ID
     /// </summary>
-    [JsonProperty("client_order_id")]
-    public string ClientOrderId { get; set; }
+    [JsonProperty("sub_account")]
+    public long SubAccountId { get; set; }
 
     /// <summary>
-    /// Transfer timestamp
+    /// Target sub user's account
     /// </summary>
-    [JsonProperty("timest")]
-    [JsonConverter(typeof(DateTimeConverter))]
-    public DateTime Timestamp { get; set; }
+    [JsonProperty("sub_account_type")]
+    public GateWalletSubAccountType SubAccountType { get; set; }
+
+    /// <summary>
+    /// Transfer currency name
+    /// </summary>
+    [JsonProperty("currency")]
+    public string Currency { get; set; }
+
+    /// <summary>
+    /// Transfer amount
+    /// </summary>
+    [JsonProperty("amount")]
+    public decimal Amount { get; set; }
+
+    /// <summary>
+    /// Transfer direction. to - transfer into sub account; from - transfer out from sub account
+    /// </summary>
+    [JsonProperty("direction")]
+    public GateWalletTransferDirection Direction { get; set; }
 
     /// <summary>
     /// Where the operation is initiated from
@@ -55,8 +55,14 @@ public record GateWalletTransferRecord
     public string Source { get; set; }
 
     /// <summary>
-    /// Target sub user's account
+    /// The custom ID provided by the customer serves as a safeguard against duplicate transfers. It can be a combination of letters (case-sensitive), numbers, hyphens '-', and underscores '_', with a length ranging from 1 to 64 characters.
     /// </summary>
-    [JsonProperty("sub_account_type")]
-    public GateWalletSubAccountType SubAccountType { get; set; }
+    [JsonProperty("client_order_id")]
+    public string ClientOrderId { get; set; }
+
+    /// <summary>
+    /// Sub-account transfer record status, currently only 'success'
+    /// </summary>
+    [JsonProperty("status")]
+    public string Status { get; set; }
 }
