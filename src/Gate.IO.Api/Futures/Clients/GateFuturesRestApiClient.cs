@@ -1,4 +1,6 @@
-﻿namespace Gate.IO.Api.Futures;
+﻿using ApiSharp.Rest;
+
+namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Gate.IO Futures Perpetual REST API Client
@@ -316,8 +318,27 @@ public class GateFuturesRestApiClient
         return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
-    // TODO: Switch Position Margin Mode
-    // TODO: Switch Between Cross and Isolated Margin Modes Under Hedge Mode
+    internal Task<RestCallResult<GateFuturesPosition>> SetMarginModeAsync(GateFuturesSettlement settle, string contract, GateFuturesMarginMode mode, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddParameter("contract", contract);
+        parameters.AddEnum("mode", mode);
+
+        var endpoint = "{settle}/positions/cross_mode"
+            .Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+    }
+
+    internal Task<RestCallResult<GateFuturesPosition>> SwithMarginModeUnderHedgeAsync(GateFuturesSettlement settle, string contract, GateFuturesMarginMode mode, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddParameter("contract", contract);
+        parameters.AddEnum("mode", mode);
+
+        var endpoint = "{settle}/dual_comp/positions/cross_mode"
+            .Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<GateFuturesPosition>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, queryParameters: parameters);
+    }
 
     // Update position risk limit
     internal Task<RestCallResult<GateFuturesPosition>> SetRiskLimitAsync(GateFuturesSettlement settle, string contract, decimal riskLimit, CancellationToken ct = default)
@@ -393,17 +414,17 @@ public class GateFuturesRestApiClient
 
     // Create a futures order
     internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(
-        GateFuturesSettlement settle, 
-        string contract, 
-        long size, 
-        long? iceberg = null, 
-        decimal? price = null, 
-        bool? close = null, 
-        bool? reduceOnly = null, 
-        string clientOrderId = null, 
-        GateFuturesTimeInForce? timeInForce = null, 
-        GateFuturesOrderAutoSize? autoSize = null, 
-        GateFuturesSelfTradeAction? selfTradeAction = null, 
+        GateFuturesSettlement settle,
+        string contract,
+        long size,
+        long? iceberg = null,
+        decimal? price = null,
+        bool? close = null,
+        bool? reduceOnly = null,
+        string clientOrderId = null,
+        GateFuturesTimeInForce? timeInForce = null,
+        GateFuturesOrderAutoSize? autoSize = null,
+        GateFuturesSelfTradeAction? selfTradeAction = null,
         CancellationToken ct = default)
         => PlaceOrderAsync(settle, new GateFuturesOrderRequest
         {
@@ -470,7 +491,23 @@ public class GateFuturesRestApiClient
         return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
-    // TODO: List Futures Orders By Time Range
+    // List Futures Orders By Time Range
+    internal Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(GateFuturesSettlement settle, string contract = null, DateTime? from = null, DateTime? to = null, int? limit = null, int? offset = null, CancellationToken ct = default)
+        => GetOrdersAsync(settle, contract, from?.ConvertToMilliseconds(), to?.ConvertToMilliseconds(), limit, offset, ct);
+
+    // List Futures Orders By Time Range
+    internal Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, int? limit = null, int? offset = null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("contract", contract);
+        parameters.AddOptional("from", from);
+        parameters.AddOptional("to", to);
+        parameters.AddOptional("limit", limit);
+        parameters.AddOptional("offset", offset);
+
+        var endpoint = "{settle}/orders_timerange".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<List<GateFuturesOrder>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 
     // Create a batch of futures orders
     internal Task<RestCallResult<List<GateFuturesBatchOrder>>> PlaceOrdersAsync(GateFuturesSettlement settle, IEnumerable<GateFuturesOrderRequest> requests, CancellationToken ct = default)
@@ -547,7 +584,7 @@ public class GateFuturesRestApiClient
     }
 
     // List personal trading history by time range
-    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract, DateTime? from, DateTime? to, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => GetUserTradesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), role, limit, offset, ct);
 
     // List personal trading history by time range
@@ -603,7 +640,24 @@ public class GateFuturesRestApiClient
         return _.SendRequestInternal<List<GateFuturesUserLiquidation>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
-    // TODO: List Auto-Deleveraging History
+    // List Auto-Deleveraging History
+    internal Task<RestCallResult<List<GateFuturesAdlRecord>>> GetAdlHistoryAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, DateTime? at = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => GetAdlHistoryAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), at?.ConvertToMilliseconds(), limit, offset, ct);
+
+    // List Auto-Deleveraging History
+    internal Task<RestCallResult<List<GateFuturesAdlRecord>>> GetAdlHistoryAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, long? at = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("contract", contract);
+        parameters.AddOptional("from", from);
+        parameters.AddOptional("to", to);
+        parameters.AddOptional("at", at);
+        parameters.AddOptional("limit", limit);
+        parameters.AddOptional("offset", offset);
+
+        var endpoint = "{settle}/auto_deleverages".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<List<GateFuturesAdlRecord>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 
     // Countdown cancel orders
     internal async Task<RestCallResult<DateTime>> CancelAllAsync(GateFuturesSettlement settle, int timeout, string contract = null, CancellationToken ct = default)
@@ -620,10 +674,45 @@ public class GateFuturesRestApiClient
         return result.As(result.Data?.Time ?? default);
     }
 
-    // TODO: Query futures market trading fee rates
-    // TODO: Cancel batch orders by specified ID list
-    // TODO: Batch modify orders by specified IDs
-    // TODO: Query risk limit table by table_id
+
+    internal Task<RestCallResult<Dictionary<string, GateFuturesFee>>> GetTradingFeesAsync(GateFuturesSettlement settle, string contract = null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("contract", contract);
+
+        var endpoint = "{settle}/fee".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<Dictionary<string, GateFuturesFee>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    // Cancel batch orders by specified ID list
+    internal Task<RestCallResult<List<GateFuturesOrderCancel>>> CancelOrdersAsync(GateFuturesSettlement settle, IEnumerable<long> orderIds, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.SetBody(orderIds.Select(x=>x.ToString()).ToList());
+
+        var endpoint = "{settle}/batch_cancel_orders".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<List<GateFuturesOrderCancel>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Delete, ct, true, bodyParameters: parameters);
+    }
+
+    // Batch modify orders by specified IDs
+    internal Task<RestCallResult<List<GateFuturesOrderAmend>>> AmendOrdersAsync(GateFuturesSettlement settle, IEnumerable<GateFuturesOrderAmendRequest> requests, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.SetBody(requests);
+
+        var endpoint = "{settle}/batch_amend_orders".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<List<GateFuturesOrderAmend>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    // Query risk limit table by table_id
+    internal Task<RestCallResult<List<GateFuturesRiskLimitTable>>> GetRiskLimitTableAsync(GateFuturesSettlement settle, string tableId, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.Add("table_id", tableId);
+
+        var endpoint = "{settle}/risk_limit_table".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<List<GateFuturesRiskLimitTable>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 
     // Create a price-triggered order
     internal Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(

@@ -244,30 +244,40 @@ var perpetual_10 = await api.Futures[settle].GetInsuranceHistoryAsync();
 var perpetual_11 = await api.Futures[settle].GetStatsAsync("CONTRACT");
 var perpetual_12 = await api.Futures[settle].GetIndexConstituentsAsync("INDEX");
 var perpetual_13 = await api.Futures[settle].GetLiquidationsAsync("CONTRACT");
-var perpetual_14 = await api.Futures[settle].GetBalancesAsync();
-var perpetual_15 = await api.Futures[settle].GetBalanceHistoryAsync();
-var perpetual_16 = await api.Futures[settle].GetPositionsAsync();
-var perpetual_17 = await api.Futures[settle].GetPositionAsync("CONTRACT");
-var perpetual_18 = await api.Futures[settle].SetPositionMarginAsync("CONTRACT", 100.0M);
-var perpetual_19 = await api.Futures[settle].SetLeverageAsync("CONTRACT", 10);
-var perpetual_20 = await api.Futures[settle].SetRiskLimitAsync("CONTRACT", 25);
-var perpetual_21 = await api.Futures[settle].SetDualModeAsync(true);
-var perpetual_22 = await api.Futures[settle].GetDualModePositionsAsync("CONTRACT");
-var perpetual_23 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
-var perpetual_24 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
-var perpetual_25 = await api.Futures[settle].SetDualModeRiskLimitAsync("CONTRACT", 25);
-var perpetual_26 = await api.Futures[settle].PlaceOrderAsync("CONTRACT", 25);
-var perpetual_27 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { });
-var perpetual_28 = await api.Futures[settle].GetOrderAsync();
-var perpetual_29 = await api.Futures[settle].CancelOrderAsync();
-var perpetual_30 = await api.Futures[settle].AmendOrderAsync();
-var perpetual_31 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", orderId: 1_000_000_001);
-var perpetual_32 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", role: GateFuturesTradeRole.Maker);
-var perpetual_33 = await api.Futures[settle].GetPositionClosesAsync();
-var perpetual_34 = await api.Futures[settle].GetPositionClosesAsync();
-var perpetual_35 = await api.Futures[settle].GetUserLiquidationsAsync();
-var perpetual_36 = await api.Futures[settle].CancelAllAsync(30);
-var perpetual_37 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
+var perpetual_14 = await api.Futures[settle].GetRiskLimitTiersAsync("CONTRACT");
+var perpetual_15 = await api.Futures[settle].GetBalancesAsync();
+var perpetual_16 = await api.Futures[settle].GetBalanceHistoryAsync();
+var perpetual_17 = await api.Futures[settle].GetPositionsAsync();
+var perpetual_18 = await api.Futures[settle].GetPositionAsync("CONTRACT");
+var perpetual_19 = await api.Futures[settle].SetPositionMarginAsync("CONTRACT", 100.0M);
+var perpetual_20 = await api.Futures[settle].SetLeverageAsync("CONTRACT", 10);
+var perpetual_21 = await api.Futures[settle].SetMarginModeAsync("CONTRACT", GateFuturesMarginMode.Cross);
+var perpetual_22 = await api.Futures[settle].SwithMarginModeUnderHedgeAsync("CONTRACT", GateFuturesMarginMode.Isolated);
+var perpetual_23 = await api.Futures[settle].SetRiskLimitAsync("CONTRACT", 25);
+var perpetual_24 = await api.Futures[settle].SetDualModeAsync(true);
+var perpetual_25 = await api.Futures[settle].GetDualModePositionsAsync("CONTRACT");
+var perpetual_26 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
+var perpetual_27 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
+var perpetual_28 = await api.Futures[settle].SetDualModeRiskLimitAsync("CONTRACT", 25);
+var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("CONTRACT", 25);
+var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { });
+var perpetual_31 = await api.Futures[settle].GetOrderAsync();
+var perpetual_32 = await api.Futures[settle].CancelOrderAsync();
+var perpetual_33 = await api.Futures[settle].AmendOrderAsync();
+var perpetual_34 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", orderId: 1_000_000_001);
+var perpetual_35 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", role: GateFuturesTradeRole.Maker);
+var perpetual_36 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", from: DateTime.UtcNow.AddDays(-7), to: DateTime.UtcNow);
+var perpetual_37 = await api.Futures[settle].GetPositionClosesAsync();
+var perpetual_38 = await api.Futures[settle].GetPositionClosesAsync("CONTRACT", from: DateTime.UtcNow.AddDays(-7), to: DateTime.UtcNow);
+var perpetual_39 = await api.Futures[settle].GetUserLiquidationsAsync();
+var perpetual_40 = await api.Futures[settle].GetAdlHistoryAsync("CONTRACT");
+var perpetual_41 = await api.Futures[settle].GetAdlHistoryAsync("CONTRACT", from: DateTime.UtcNow.AddDays(-7), to: DateTime.UtcNow);
+var perpetual_42 = await api.Futures[settle].CancelAllAsync(30);
+var perpetual_43 = await api.Futures[settle].GetTradingFeesAsync();
+var perpetual_44 = await api.Futures[settle].CancelOrdersAsync([]);
+var perpetual_45 = await api.Futures[settle].AmendOrdersAsync([]);
+var perpetual_46 = await api.Futures[settle].GetRiskLimitTableAsync("TABLE-ID");
+var perpetual_47 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
     GateFuturesTriggerType.CloseShortPosition,
     GateFuturesTriggerPrice.MarkPrice,
     GateFuturesTriggerStrategy.ByPrice,
@@ -276,11 +286,11 @@ var perpetual_37 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
     GateFuturesTimeInForce.GoodTillCancelled,
     "CLIENT-ORDER-ID", false, GateFuturesOrderAutoSize.CloseLong
 );
-var perpetual_38 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest { });
-var perpetual_39 = await api.Futures[settle].GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
-var perpetual_40 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync();
-var perpetual_41 = await api.Futures[settle].GetPriceTriggeredOrderAsync(1_000_000_001);
-var perpetual_42 = await api.Futures[settle].CancelPriceTriggeredOrderAsync(1_000_000_001);
+var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest { });
+var perpetual_49 = await api.Futures[settle].GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
+var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync();
+var perpetual_51 = await api.Futures[settle].GetPriceTriggeredOrderAsync(1_000_000_001);
+var perpetual_52 = await api.Futures[settle].CancelPriceTriggeredOrderAsync(1_000_000_001);
 
 // Delivery Futures Methods
 var delivery_01 = await api.Delivery.USDT.GetContractsAsync();
