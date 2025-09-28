@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Spot;
 
 /// <summary>
-/// Spot order details
+/// Spot Order Request
 /// </summary>
 public record GateSpotOrderRequest
 {

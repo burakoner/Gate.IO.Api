@@ -1,4 +1,7 @@
-﻿namespace Gate.IO.Api.Options;
+﻿using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+
+namespace Gate.IO.Api.Options;
 
 /// <summary>
 /// Gate.IO Options REST API Client
@@ -351,7 +354,15 @@ public class GateOptionsRestApiClient
         return await _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, true).ConfigureAwait(false);
     }
 
-    // TODO: Query account information  GET /options/accounts
+    /// <summary>
+    /// Query account information
+    /// </summary>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public async Task<RestCallResult<GateOptionsAccount>> GetAccountAsync(CancellationToken ct = default)
+    {
+        return await _.SendRequestInternal<GateOptionsAccount>(_.GetUrl(api, v4, options, "accounts"), HttpMethod.Get, ct, true).ConfigureAwait(false);
+    }
 
     /// <summary>
     /// List account changing history
@@ -497,7 +508,7 @@ public class GateOptionsRestApiClient
     int offset = 0,
     CancellationToken ct = default)
         => await GetOrdersAsync(status, underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
-    
+
     /// <summary>
     /// List options orders
     /// </summary>
@@ -559,8 +570,8 @@ public class GateOptionsRestApiClient
     /// <summary>
     /// Get a single order
     /// </summary>
-    /// <param name="orderId"></param>
-    /// <param name="ct"></param>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
     {
@@ -570,15 +581,33 @@ public class GateOptionsRestApiClient
     /// <summary>
     /// Cancel a single order
     /// </summary>
-    /// <param name="orderId"></param>
-    /// <param name="ct"></param>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public async Task<RestCallResult<GateOptionsOrder>> CancelOrderAsync(long orderId, CancellationToken ct = default)
     {
         return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
     }
 
-    // TODO: Countdown cancel orders
+    /// <summary>
+    /// Countdown cancel orders
+    /// Option order heartbeat detection, when the timeout time set by the user is reached, if the existing countdown is not canceled or a new countdown is set, the related option pending order will be automatically canceled.This interface can be called repeatedly to set a new countdown or cancel the countdown.Usage example: Repeat this interface at intervals of 30 seconds, with each countdown timeout set to 30 (seconds). If this interface is not called again within 30 seconds, all pending orders on the underlying contract you specified will be automatically cancelled.If underlying contract is not specified, user will be automatically cancelled If timeout is set to 0 within 30 seconds, the countdown timer will expire and the automatic order cancellation function will be cancelled.
+    /// </summary>
+    /// <param name="timeout">Countdown time in seconds</param>
+    /// <param name="contract">Options contract name</param>
+    /// <param name="underlying">Underlying</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public async Task<RestCallResult<DateTime>> CancelAllAsync(int timeout, string contract = null, string underlying = null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection {
+            { "timeout", timeout },
+        };
+        parameters.AddOptionalParameter("contract", contract);
+        parameters.AddOptionalParameter("underlying", underlying);
+        var result = await _.SendRequestInternal<GateOptionsCountdown>(_.GetUrl(api, v4, options, "countdown_cancel_all"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return result.As(result.Data?.Time ?? default);
+    }
 
     /// <summary>
     /// List personal trading history
@@ -600,7 +629,7 @@ public class GateOptionsRestApiClient
         int offset = 0,
         CancellationToken ct = default)
         => await GetUserTradesAsync(underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
-    
+
     /// <summary>
     /// List personal trading history
     /// </summary>
@@ -612,7 +641,7 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
+    public  Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
         string underlying,
         string contract = null,
         long? from = null,
@@ -631,10 +660,58 @@ public class GateOptionsRestApiClient
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);
 
-        return await _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return  _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
-    // TODO: MMP Settings
-    // TODO: MMP Query
-    // TODO: MMP Reset
+    /// <summary>
+    /// MMP Settings
+    /// </summary>
+    /// <param name="underlying">Underlying</param>
+    /// <param name="window">Time window (milliseconds), between 1-5000, 0 means disable MMP</param>
+    /// <param name="frozenPeriod">Freeze duration (milliseconds), 0 means always frozen, need to call reset API to unfreeze</param>
+    /// <param name="quantityLimit">Trading volume upper limit (positive number, up to 2 decimal places)</param>
+    /// <param name="deltaLimit">Upper limit of net delta value (positive number, up to 2 decimal places)</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsMMP>> SetMMPAsync(string underlying, int window, int frozenPeriod, decimal quantityLimit, decimal deltaLimit, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection {
+            { "underlying", underlying },
+            { "window", window },
+            { "frozen_period", frozenPeriod },
+        };
+        parameters.AddString("qty_limit", quantityLimit);
+        parameters.AddString("delta_limit", deltaLimit);
+
+        return _.SendRequestInternal<GateOptionsMMP>(_.GetUrl(api, v4, options, "mmp"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// MMP Query.
+    /// </summary>
+    /// <param name="underlying">Underlying</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsMMP>>> GetMMPAsync(string underlying=null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("underlying", underlying);
+
+        return _.SendRequestInternal<List<GateOptionsMMP>>(_.GetUrl(api, v4, options, "mmp"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// MMP Reset
+    /// </summary>
+    /// <param name="underlying">Underlying</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsMMP>> ResetMMPAsync(string underlying, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection {
+            { "underlying", underlying },
+        };
+
+        return _.SendRequestInternal<GateOptionsMMP>(_.GetUrl(api, v4, options, "mmp/reset"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
 }

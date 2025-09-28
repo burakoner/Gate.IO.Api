@@ -66,29 +66,29 @@ public class StreamApiOptionsClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUnderlyingTickersChannel, underlyings, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractTradesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<OptionsStreamContractTrade>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractTradesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateOptionsStreamContractTrade>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamContractTrade>>>>(data => 
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamContractTrade>>>>(data => 
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsContractTradesChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingTradesAsync(IEnumerable<string> underlyings, Action<WebSocketDataEvent<OptionsStreamUnderlyingTrade>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingTradesAsync(IEnumerable<string> underlyings, Action<WebSocketDataEvent<GateOptionsStreamUnderlyingTrade>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamUnderlyingTrade>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamUnderlyingTrade>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUnderlyingTradesChannel, underlyings, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingPricesAsync(IEnumerable<string> underlyings, Action<WebSocketDataEvent<OptionsStreamUnderlyingPrice>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingPricesAsync(IEnumerable<string> underlyings, Action<WebSocketDataEvent<GateOptionsStreamUnderlyingPrice>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamUnderlyingPrice>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamUnderlyingPrice>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUnderlyingPriceChannel, underlyings, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPricesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<OptionsStreamContractPrice>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPricesAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateOptionsStreamContractPrice>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamContractPrice>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamContractPrice>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsMarkPriceChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 

@@ -10,6 +10,8 @@ public class GateMarginRestApiClient
     private const string v4 = "4";
     private const string margin = "margin";
     private const string marginuni = "margin/uni";
+    private const string marginuser = "margin/user";
+    private const string marginleverage = "margin/leverage";
 
     // Root Client
     internal GateRestApiClient _ { get; }
@@ -316,8 +318,62 @@ public class GateMarginRestApiClient
         return _.SendRequestInternal<GateMarginBorrowable>(_.GetUrl(api, v4, marginuni, "borrowable"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
-    // TODO: GET /margin/user/loan_margin_tiers
-    // TODO: GET /margin/loan_margin_tiers
-    // TODO: POST /margin/leverage/user_market_setting
-    // TODO: GET /margin/user/account
+    /// <summary>
+    /// Query user's own leverage lending tiers in current market
+    /// </summary>
+    /// <param name="symbol">Trading pair</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginTier>>> GetUserLendingTiersAsync(string symbol, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.Add("currency_pair", symbol);
+
+        return _.SendRequestInternal<List<GateMarginTier>>(_.GetUrl(api, v4, marginuser, "loan_margin_tiers"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Query current market leverage lending tiers
+    /// </summary>
+    /// <param name="symbol">Trading pair</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginTier>>> GetCurrentLendingTiersAsync(string symbol, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.Add("currency_pair", symbol);
+
+        return _.SendRequestInternal<List<GateMarginTier>>(_.GetUrl(api, v4, margin, "loan_margin_tiers"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Set user market leverage multiplier
+    /// </summary>
+    /// <param name="leverage">Position leverage</param>
+    /// <param name="symbol">Market</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateMarginLeverage>> SetLeverageAsync(int leverage, string symbol=null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddString("leverage", leverage);
+        parameters.AddOptional("currency_pair", symbol);
+
+        return _.SendRequestInternal<GateMarginLeverage>(_.GetUrl(api, v4, marginleverage, "user_market_setting"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Query user's isolated margin account list
+    /// Supports querying risk ratio isolated accounts and margin ratio isolated accounts
+    /// </summary>
+    /// <param name="symbol">Market</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginBalance>>> GetIsolatedBalancesAsync(string symbol=null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency_pair", symbol);
+
+        return _.SendRequestInternal<List<GateMarginBalance>>(_.GetUrl(api, v4, marginuser, "account"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 }

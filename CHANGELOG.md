@@ -1,5 +1,34 @@
 ## Change Log & Release Notes
 
+* Version 4.105.9 - 28 Sep 2025
+  * Added missing endpoints as below
+    * GateSpotRestApiClient
+      - GetTransactionHistoryAsync
+      - AmendOrdersAsync
+      - GetInsuranceHistoryAsync
+
+    * GateMarginRestApiClient
+      - GetUserLendingTiersAsync
+      - GetCurrentLendingTiersAsync
+      - SetLeverageAsync
+      - GetIsolatedBalancesAsync
+
+    * GateOptionsRestApiClient
+      - GetAccountAsync
+      - CancelAllAsync
+      - SetMMPAsync
+      - GetMMPAsync
+      - ResetMMPAsync
+
+    * GateUnifiedRestApiClient
+      - GetTransferablesAsync
+      - GetCurrencyDiscountTiersAsync
+      - GetLoanMarginTiersAsync
+      - CalculatePortfolioAsync
+      - GetCurrenciesAsync
+      - GetHistoricalLendingRatesAsync
+      - SetCollateralCurenciesAsync
+
 * Version 4.105.5 - 13 Aug 2025
   * Update API to version 4.105.4 and refactor margin methods
   * Refactored margin methods to use isolated margin.

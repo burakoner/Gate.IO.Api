@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Options;
 /// <summary>
 /// OptionsStreamUnderlyingTrade
 /// </summary>
-public record OptionsStreamUnderlyingTrade
+public record GateOptionsStreamUnderlyingTrade
 {
     /// <summary>
     /// Contract

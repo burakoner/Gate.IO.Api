@@ -1,9 +1,9 @@
 namespace Gate.IO.Api.Unified;
 
 /// <summary>
-/// Max borrowable info
+/// Gate Unified Currency &amp; Amount Pair
 /// </summary>
-public record GateUnifiedAccountMax
+public record GateUnifiedCurrencyAmount
 {
     /// <summary>
     /// Asset
@@ -15,5 +15,5 @@ public record GateUnifiedAccountMax
     /// Max borrowable
     /// </summary>
     [JsonProperty("amount")]
-    public decimal MaxBorrowable { get; set; }
+    public decimal Amount { get; set; }
 }

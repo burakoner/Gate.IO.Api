@@ -1,4 +1,11 @@
-﻿namespace Gate.IO.Api.Spot;
+﻿using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Net.NetworkInformation;
+using System.Runtime.ConstrainedExecution;
+using static System.Net.Mime.MediaTypeNames;
+
+namespace Gate.IO.Api.Spot;
 
 /// <summary>
 /// Gate.IO Spot REST API Client
@@ -213,7 +220,43 @@ public class GateSpotRestApiClient
         return _.SendRequestInternal<List<GateSpotBalance>>(_.GetUrl(api, v4, spot, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
-    // TODO: GET /spot/account_book
+    /// <summary>
+    /// Query spot account transaction history
+    /// Record query time range cannot exceed 30 days.
+    /// When using limit&amp;page pagination to retrieve data, the maximum number of pages is 100,000, that is, limit* (page - 1) &lt;= 100,000.
+    /// </summary>
+    /// <param name="currency">Query by specified currency name</param>
+    /// <param name="type">Query by specified account change type. If not specified, all change types will be included.</param>
+    /// <param name="code">Specify account change code for query. If not specified, all change types are included. This parameter has higher priority than type</param>
+    /// <param name="from">Start timestamp for the query</param>
+    /// <param name="to">End timestamp for the query, defaults to current time if not specified</param>
+    /// <param name="page">Page number</param>
+    /// <param name="limit">Maximum number of records returned in a single list</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotTransaction>>> GetTransactionHistoryAsync(
+        string currency = null,
+        string type = null,
+        string code = null,
+        long? from = null,
+        long? to = null,
+        int page = 1,
+        int limit = 100,
+        CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection()
+        {
+            { "page", page },
+            { "limit", limit },
+        };
+        parameters.AddOptional("currency", currency);
+        parameters.AddOptional("type", type);
+        parameters.AddOptional("code", code);
+        parameters.AddOptional("from", from);
+        parameters.AddOptional("to", to);
+
+        return _.SendRequestInternal<List<GateSpotTransaction>>(_.GetUrl(api, v4, spot, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 
     /// <summary>
     /// Create a batch of orders
@@ -516,7 +559,7 @@ public class GateSpotRestApiClient
     /// <param name="requests">Request List</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelOrderRequest> requests, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateSpotCancelOrder>>> CancelOrdersAsync(IEnumerable<GateSpotCancelRequest> requests, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.SetBody(requests);
@@ -730,8 +773,51 @@ public class GateSpotRestApiClient
         return result.As(result.Data?.Time ?? default);
     }
 
-    // TODO: Batch modification of orders               POST /spot/amend_batch_orders
-    // TODO: Query spot insurance fund historical data  GET  /spot/insurance_history
+    /// <summary>
+    /// Batch modification of orders
+    /// Modify orders in spot, unified account and isolated margin account by default. Modify uncompleted orders, up to 5 orders can be modified at a time.Request parameters should be passed in array format.If there are order modification failures during the batch modification process, the modification of the next order will continue to be executed, and the execution will return with the corresponding order failure information. The call order of batch modification orders is consistent with the order list order. The return content order of batch modification orders is consistent with the order list order.
+    /// </summary>
+    /// <param name="requests">Amend Order Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotBatchOrder>>> AmendOrdersAsync(IEnumerable<GateSpotAmendRequest> requests, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.SetBody(requests);
+
+        return _.SendRequestInternal<List<GateSpotBatchOrder>>(_.GetUrl(api, v4, spot, "amend_batch_orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Query spot insurance fund historical data
+    /// </summary>
+    /// <param name="business">Leverage business, margin - position by position; unified - unified account</param>
+    /// <param name="currency">Currency</param>
+    /// <param name="from">Start timestamp in seconds</param>
+    /// <param name="to">End timestamp in seconds</param>
+    /// <param name="page">Page number</param>
+    /// <param name="limit">The maximum number of items returned in the list, the default value is 30</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotInsurance>>> GetInsuranceHistoryAsync(
+        string business,
+        string currency,
+        long? from = null,
+        long? to = null,
+        int page = 1,
+        int limit = 100,
+        CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddParameter("business", business);
+        parameters.AddParameter("currency", currency);
+        parameters.AddOptional("from", from);
+        parameters.AddOptional("to", to);
+        parameters.AddOptional("page", page);
+        parameters.AddOptional("limit", limit);
+
+        return _.SendRequestInternal<List<GateSpotInsurance>>(_.GetUrl(api, v4, spot, "insurance_history"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
 
     /// <summary>
     /// Create a price-triggered order
