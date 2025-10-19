@@ -1,5 +1,8 @@
 ## Change Log & Release Notes
 
+* Version 4.105.10 - 19 Oct 2025
+  * ApiSharp updated to version 4.1.0
+
 * Version 4.105.9 - 28 Sep 2025
   * Added missing endpoints as below
     * GateSpotRestApiClient
