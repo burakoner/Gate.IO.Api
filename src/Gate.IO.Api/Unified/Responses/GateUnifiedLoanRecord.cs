@@ -14,19 +14,19 @@ public record GateUnifiedLoanRecord
     /// <summary>
     /// Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedLoanDirection Type { get; set; }
 
     /// <summary>
     /// Repay type
     /// </summary>
-    [JsonProperty("repayment_type")]
+    [JsonProperty("repayment_type"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedRepayType? RepaymentType { get; set; }
 
     /// <summary>
     /// Repay type
     /// </summary>
-    [JsonProperty("borrow_type")]
+    [JsonProperty("borrow_type"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedBorrowType? BorrowType { get; set; }
 
     /// <summary>

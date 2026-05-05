@@ -8,7 +8,7 @@ public record GateUnifiedAccountModeInfo
     /// <summary>
     /// Account mode
     /// </summary>
-    [JsonProperty("mode")]
+    [JsonProperty("mode"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedAccountMode Mode { get; set; }
 
     /// <summary>

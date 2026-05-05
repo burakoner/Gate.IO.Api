@@ -1,0 +1,9 @@
+{
+  "mode": "portfolio",
+  "settings": {
+    "spot_hedge": true,
+    "usdt_futures": true,
+    "use_funding": false,
+    "options": true
+  }
+}

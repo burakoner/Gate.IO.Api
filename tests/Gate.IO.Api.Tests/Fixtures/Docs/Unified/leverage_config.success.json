@@ -1,0 +1,9 @@
+{
+  "current_leverage": "2",
+  "min_leverage": "1",
+  "max_leverage": "10",
+  "debit": "0",
+  "available_margin": "100",
+  "borrowable": "50",
+  "except_leverage_borrowable": "30"
+}

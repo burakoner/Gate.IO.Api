@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Unified REST contract tests.
+    * Added documented Unified fixtures for account info, borrowable/transferable amounts, loans, loan records, interest records, risk units, account mode, leverage, currencies, historical rates, portfolio calculation, collateral settings, and public tier data.
+    * Added live public Unified captures for currencies, historical lending rates, currency discount tiers, and loan margin tiers.
+    * Added request construction tests for signed Unified account, loan, account-mode, and collateral requests plus unsigned public currency requests.
+    * Updated Unified parsing for documented mapped enum strings and loan response aliases such as `currency_pari` and `change_time`.
   * Added SubAccount REST contract tests.
     * Added documented SubAccount response fixtures for sub-account listing/creation, API key listing/creation/retrieval, and unified-mode lookup.
     * Added request construction tests for signed sub-account creation/listing, API key permission/IP whitelist serialization, and unified-mode path handling.

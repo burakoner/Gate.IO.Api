@@ -17,6 +17,9 @@ public record GateUnifiedLoan
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; } = string.Empty;
 
+    [JsonProperty("currency_pari")]
+    internal string SymbolAlias { set => Symbol = value; }
+
     /// <summary>
     /// Quantity
     /// </summary>
@@ -26,7 +29,7 @@ public record GateUnifiedLoan
     /// <summary>
     /// Loan type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedLoanType Type { get; set; }
 
     /// <summary>
@@ -42,4 +45,8 @@ public record GateUnifiedLoan
     [JsonProperty("update_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? UpdateTime { get; set; }
+
+    [JsonProperty("change_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    internal DateTime? ChangeTime { set => UpdateTime = value; }
 }

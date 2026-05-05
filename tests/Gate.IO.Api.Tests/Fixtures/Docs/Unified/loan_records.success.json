@@ -1,0 +1,12 @@
+[
+  {
+    "id": 100001,
+    "type": "borrow",
+    "repayment_type": "manual_repay",
+    "borrow_type": "manual_borrow",
+    "currency_pair": "GT_USDT",
+    "currency": "USDT",
+    "amount": "1",
+    "create_time": 1673247054000
+  }
+]

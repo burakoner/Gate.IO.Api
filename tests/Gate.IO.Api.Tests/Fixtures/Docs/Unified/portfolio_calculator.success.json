@@ -1,0 +1,34 @@
+{
+  "maintain_margin_total": "0.000000000000",
+  "initial_margin_total": "0.000000000000",
+  "calculate_time": 1709203316123,
+  "risk_unit": [
+    {
+      "symbol": "BTC",
+      "spot_in_use": "0",
+      "margin_result": [
+        {
+          "type": "original_position",
+          "profit_loss_ranges": [
+            {
+              "price_percentage": "-0.200000000000",
+              "implied_volatility_percentage": "-0.300000000000",
+              "profit_loss": "0.000000000000"
+            }
+          ],
+          "max_loss": {
+            "price_percentage": "-0.200000000000",
+            "implied_volatility_percentage": "-0.300000000000",
+            "profit_loss": "0.000000000000"
+          },
+          "mr1": "0.000000000000",
+          "mr2": "0.000000000000",
+          "mr3": "0.000000000000",
+          "mr4": "0.000000000000"
+        }
+      ],
+      "maintain_margin": "0.000000000000",
+      "initial_margin": "0.000000000000"
+    }
+  ]
+}

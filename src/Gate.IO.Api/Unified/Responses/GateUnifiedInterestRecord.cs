@@ -44,7 +44,7 @@ public record GateUnifiedInterestRecord
     /// <summary>
     /// Loan type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedLoanType Type { get; set; }
 
     /// <summary>

@@ -1,0 +1,23 @@
+[
+  [
+    {
+      "currency": "BTC",
+      "discount_tiers": [
+        {
+          "tier": "1",
+          "discount": "0.98",
+          "lower_limit": "0",
+          "leverage": "10",
+          "upper_limit": "1000"
+        },
+        {
+          "tier": "2",
+          "discount": "0.95",
+          "lower_limit": "1000",
+          "leverage": "10",
+          "upper_limit": "+"
+        }
+      ]
+    }
+  ]
+]
