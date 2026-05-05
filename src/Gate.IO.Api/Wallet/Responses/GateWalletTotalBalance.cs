@@ -106,4 +106,22 @@ public record GateWalletTotalBalanceDetails
     /// </summary>
     [JsonProperty("cbbc")]
     public GateWalletTotalBalanceData CBBC { get; set; }
+
+    /// <summary>
+    /// Alpha account
+    /// </summary>
+    [JsonProperty("meme_box")]
+    public GateWalletTotalBalanceData MemeBox { get; set; }
+
+    /// <summary>
+    /// Options account
+    /// </summary>
+    [JsonProperty("options")]
+    public GateWalletTotalBalanceData Options { get; set; }
+
+    /// <summary>
+    /// Payment account
+    /// </summary>
+    [JsonProperty("payment")]
+    public GateWalletTotalBalanceData Payment { get; set; }
 }

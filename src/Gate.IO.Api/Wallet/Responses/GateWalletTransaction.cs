@@ -61,6 +61,12 @@ public record GateWalletTransaction
     public string Address { get; set; }
 
     /// <summary>
+    /// Business type
+    /// </summary>
+    [JsonProperty("type")]
+    public string Type { get; set; }
+
+    /// <summary>
     /// Reason for withdrawal failure. Has a value when status = CANCEL, empty for all other statuses
     /// </summary>
     [JsonProperty("fail_reason")]

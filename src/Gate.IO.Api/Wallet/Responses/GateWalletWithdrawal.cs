@@ -33,7 +33,7 @@ public record GateWalletWithdrawal
     /// Withdrawal fee rate percentage
     /// </summary>
     [JsonProperty("withdraw_percent")]
-    public decimal WithdrawalPercent { get; set; }
+    public string WithdrawalPercent { get; set; }
 
     /// <summary>
     /// Fixed withdrawal fee

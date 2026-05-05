@@ -9,7 +9,7 @@ public record GateWalletSmallBalanceHistory
     /// Order ID
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Currency
@@ -21,7 +21,8 @@ public record GateWalletSmallBalanceHistory
     /// Exchange time (in seconds)
     /// </summary>
     [JsonProperty("create_time")]
-    public string CreateTime { get; set; }
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Amount

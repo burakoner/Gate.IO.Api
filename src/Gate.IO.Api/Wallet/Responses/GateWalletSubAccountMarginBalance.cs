@@ -96,7 +96,7 @@ public record GateWalletSubAccountMarginBalanceAvailableItem
     /// Locked amount, used in margin trading
     /// </summary>
     [JsonProperty("locked")]
-    public bool Locked { get; set; }
+    public decimal Locked { get; set; }
 
     /// <summary>
     /// Borrowed amount

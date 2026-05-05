@@ -24,6 +24,12 @@ public record GateWalletUserTradingFee
     public decimal MakerFee { get; set; }
 
     /// <summary>
+    /// Spot RPI market maker fee rate
+    /// </summary>
+    [JsonProperty("rpi_maker_fee")]
+    public decimal RpiMakerFee { get; set; }
+
+    /// <summary>
     /// If GT deduction is enabled
     /// </summary>
     [JsonProperty("gt_discount")]
@@ -66,6 +72,12 @@ public record GateWalletUserTradingFee
     public decimal FuturesMakerFee { get; set; }
 
     /// <summary>
+    /// Perpetual contract RPI market maker fee rate
+    /// </summary>
+    [JsonProperty("futures_rpi_maker_fee")]
+    public decimal FuturesRpiMakerFee { get; set; }
+
+    /// <summary>
     /// Delivery trading taker fee
     /// </summary>
     [JsonProperty("delivery_taker_fee")]
@@ -82,4 +94,10 @@ public record GateWalletUserTradingFee
     /// </summary>
     [JsonProperty("debit_fee")]
     public decimal DebitFee { get; set; }
+
+    /// <summary>
+    /// RPI MM level
+    /// </summary>
+    [JsonProperty("rpi_mm")]
+    public int RpiMM { get; set; }
 }

@@ -22,4 +22,10 @@ public enum GateWalletSubAccountType : byte
     /// </summary>
     [Map("delivery")]
     Delivery = 3,
+
+    /// <summary>
+    /// options account
+    /// </summary>
+    [Map("options")]
+    Options = 4,
 }

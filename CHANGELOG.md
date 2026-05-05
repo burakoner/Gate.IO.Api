@@ -1,6 +1,16 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated wallet endpoints against the current Gate API v4 Wallet documentation.
+    * Added request-object overloads for high-parameter Wallet methods: withdrawal/deposit record queries, trading-account transfers, main-sub transfers, main-sub transfer history, sub-account to sub-account transfers, sub-account balance queries, and UID transfer history.
+    * Added `GetLowCapExchangeListAsync` for `GET /wallet/getLowCapExchangeList`.
+    * Fixed UID transfer history to call `GET /wallet/push` instead of the withdrawal push endpoint.
+    * Switched Wallet time query parameters to Unix seconds.
+    * Flattened nested-list Wallet responses for withdrawal records, sub-account futures balances, small balances, and small balance history.
+    * Updated Wallet response models with missing fields for currency chains, deposit addresses, withdrawal records, sub-account balances, trading fees, total balances, small balance history, and UID transfer history.
+    * Fixed Wallet response field types for transfer status IDs, withdrawal fee percentages, sub-account margin locked amounts, and small balance history IDs.
+    * Added `GateWalletSubAccountType.Options`.
+    * Updated examples and README with Wallet request-object overload usage and the low-cap token endpoint.
   * Updated wallet withdrawal endpoints against the current Gate API v4 Withdrawal documentation.
     * Fixed `GateWalletRestApiClient.WithdrawAsync` parameter ordering so the sixth argument maps to `withdraw_order_id`.
     * Added `GateWalletWithdrawalRequest` and `WithdrawAsync(GateWalletWithdrawalRequest request, CancellationToken ct = default)`.

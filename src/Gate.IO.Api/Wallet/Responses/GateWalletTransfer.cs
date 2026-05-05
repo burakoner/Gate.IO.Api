@@ -39,6 +39,7 @@ public record GateWalletTransfer
     /// Creation time
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>

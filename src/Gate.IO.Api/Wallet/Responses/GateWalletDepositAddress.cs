@@ -18,6 +18,12 @@ public record GateWalletDepositAddress
     public string Address { get; set; }
 
     /// <summary>
+    /// Minimum deposit amount
+    /// </summary>
+    [JsonProperty("min_deposit_amount")]
+    public decimal MinDepositAmount { get; set; }
+
+    /// <summary>
     /// Gets or Sets MultichainAddresses
     /// </summary>
     [JsonProperty("multichain_addresses")]
@@ -58,4 +64,10 @@ public record GateWalletMultichainAddress
     /// </summary>
     [JsonProperty("obtain_failed"), JsonConverter(typeof(BooleanConverter))]
     public bool ObtainFailed { get; set; }
+
+    /// <summary>
+    /// Minimum confirmation count
+    /// </summary>
+    [JsonProperty("min_confirms")]
+    public int MinConfirms { get; set; }
 }

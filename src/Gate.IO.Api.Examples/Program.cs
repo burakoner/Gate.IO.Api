@@ -18,13 +18,36 @@ internal class Program
 
         // Wallet Methods
         var wallet_01 = await api.Wallet.WithdrawAsync("CURRENCY", 1.0m, "CHAIN", "ADDRESS", "MEMO", "CLIENT-ORDER-ID");
+        var wallet_01b = await api.Wallet.WithdrawAsync(new GateWalletWithdrawalRequest
+        {
+            Currency = "CURRENCY",
+            Amount = 1.0m,
+            Chain = "CHAIN",
+            Address = "ADDRESS",
+            Memo = "MEMO",
+            WithdrawalOrderId = "CLIENT-ORDER-ID",
+        });
         var wallet_02 = await api.Wallet.TransferAsync(1_000_000_000, "CURRENCY", 1.0m);
         var wallet_03 = await api.Wallet.CancelWithdrawalAsync(1_000_000_000);
         var wallet_04 = await api.Wallet.GetCurrencyChainsAsync("CURRENCY");
         var wallet_05 = await api.Wallet.GetDepositAddressAsync("CURRENCY");
         var wallet_06 = await api.Wallet.GetWithdrawalsAsync();
+        var wallet_06b = await api.Wallet.GetWithdrawalsAsync(new GateWalletWithdrawalQueryRequest
+        {
+            Currency = "CURRENCY",
+            From = DateTime.UtcNow.AddDays(-7),
+            To = DateTime.UtcNow,
+        });
         var wallet_07 = await api.Wallet.GetDepositsAsync();
         var wallet_08 = await api.Wallet.TransfersBetweenTradingAccountsAsync("CURRENCY", GateWalletAccountType.Spot, GateWalletAccountType.Futures, 100.0m);
+        var wallet_08b = await api.Wallet.TransfersBetweenTradingAccountsAsync(new GateWalletTransferRequest
+        {
+            Currency = "CURRENCY",
+            From = GateWalletAccountType.Spot,
+            To = GateWalletAccountType.Futures,
+            Amount = 100.0m,
+            Settle = "USDT",
+        });
         var wallet_09 = await api.Wallet.TransferBetweenMainAndSubAccountsAsync("CURRENCY", 1_000_000_000, GateWalletTransferDirection.From, 100.0m);
         var wallet_10 = await api.Wallet.GetTransfersBetweenMainAndSubAccountsAsync();
         var wallet_11 = await api.Wallet.TransferBetweenSubAccountsAsync("CURRENCY", 1_000_000_000, GateWalletSubAccountType.Spot, 2_000_000_000, GateWalletSubAccountType.Futures, 100.0m);
@@ -35,6 +58,7 @@ internal class Program
         var wallet_16 = await api.Wallet.GetSubAccountCrossMarginBalancesAsync();
         var wallet_17 = await api.Wallet.GetSavedAddressesAsync("CURRENCY");
         var wallet_18 = await api.Wallet.GetTotalBalancesAsync();
+        var wallet_19 = await api.Wallet.GetLowCapExchangeListAsync();
 
         // SubAccount Methods
         var subaccount_01 = await api.SubAccount.CreateSubAccountAsync("LOGIN-NAME", "PASSWORD", "EMAIL", "REMARKS");

@@ -52,4 +52,10 @@ public record GateWalletCurencyChain
     /// </summary>
     [JsonProperty("decimal")]
     public int Decimal { get; set; }
+
+    /// <summary>
+    /// Whether to include tag
+    /// </summary>
+    [JsonProperty("is_tag")]
+    public bool IsTag { get; set; }
 }
