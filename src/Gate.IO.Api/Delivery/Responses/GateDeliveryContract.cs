@@ -126,6 +126,12 @@ public record GateDeliveryContract
     public decimal SettlePrice { get; set; }
 
     /// <summary>
+    /// Settle fee rate
+    /// </summary>
+    [JsonProperty("settle_fee_rate")]
+    public decimal SettleFeeRate { get; set; }
+
+    /// <summary>
     /// Settle price update interval
     /// </summary>
     [JsonProperty("settle_price_interval")]

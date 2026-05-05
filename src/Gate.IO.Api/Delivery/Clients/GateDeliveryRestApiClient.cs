@@ -71,7 +71,7 @@ public class GateDeliveryRestApiClient
 
     // Futures trading history
     internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateDeliverySettlement settle, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
-    => GetTradesAsync(settle, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset,lastId, ct);
+    => GetTradesAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, offset,lastId, ct);
 
     // Futures trading history
     internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateDeliverySettlement settle, string contract, long? from = null, long? to = null, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
@@ -92,7 +92,7 @@ public class GateDeliveryRestApiClient
 
     // Get futures candlesticks
     internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateDeliverySettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => GetCandlesticksAsync(settle, prefix, contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
+    => GetCandlesticksAsync(settle, prefix, contract, interval, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
 
     internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateDeliverySettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
@@ -132,15 +132,15 @@ public class GateDeliveryRestApiClient
     }
 
     // Query futures account
-    internal Task<RestCallResult<List<GateFuturesBalance>>> GetBalancesAsync(GateDeliverySettlement settle, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesBalance>> GetBalancesAsync(GateDeliverySettlement settle, CancellationToken ct = default)
     {
         var endpoint = "{settle}/accounts".Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesBalance>>(_.GetUrl(api, v4, delivery, endpoint), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<GateFuturesBalance>(_.GetUrl(api, v4, delivery, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Query account book
     internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceChangeType type, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => GetBalanceHistoryAsync(settle, type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct);
+    => GetBalanceHistoryAsync(settle, type, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
 
     // Query account book
     internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliverySettlement settle, GateFuturesBalanceChangeType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
@@ -238,7 +238,7 @@ public class GateDeliveryRestApiClient
     // Create a futures order
     internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateDeliverySettlement settle, GateFuturesOrderRequest request, CancellationToken ct = default)
     {
-        PerpetualHelpers.ValidateContractSymbol(request.Contract);
+        DeliveryHelpers.ValidateContractSymbol(request.Contract);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         var parameters = new ParameterCollection();

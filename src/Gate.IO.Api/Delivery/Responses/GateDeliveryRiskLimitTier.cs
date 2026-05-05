@@ -40,4 +40,10 @@ public record GateDeliveryRiskLimitTier
     /// </summary>
     [JsonProperty("contract")]
     public string Contract { get; set; }
+
+    /// <summary>
+    /// Maintenance margin quick calculation deduction amount
+    /// </summary>
+    [JsonProperty("deduction")]
+    public decimal Deduction { get; set; }
 }

@@ -71,6 +71,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(string contract, long? from = null, long? to = null, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
         => MainClient.GetTradesAsync(Settlement, contract, from, to, limit, offset, lastId, ct);
+
+    /// <summary>
+    /// Futures trading history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateDeliveryTradeQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetTradesAsync(Settlement, request.Contract, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, request.Offset ?? 0, request.LastId, ct);
     
     /// <summary>
     /// Get futures candlesticks
@@ -101,6 +110,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesCandlestick>>> GetMarkPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
         => MainClient.GetCandlesticksAsync(Settlement, "mark_", contract, interval, from, to, limit, ct);
+
+    /// <summary>
+    /// Get futures mark price candlesticks
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesCandlestick>>> GetMarkPriceCandlesticksAsync(GateDeliveryCandlestickQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetCandlesticksAsync(Settlement, "mark_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
     
     /// <summary>
     /// Get futures candlesticks
@@ -131,6 +149,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesCandlestick>>> GetIndexPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
         => MainClient.GetCandlesticksAsync(Settlement, "index_", contract, interval, from, to, limit, ct);
+
+    /// <summary>
+    /// Get futures index price candlesticks
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesCandlestick>>> GetIndexPriceCandlesticksAsync(GateDeliveryCandlestickQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetCandlesticksAsync(Settlement, "index_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
     
     /// <summary>
     /// List futures tickers
@@ -155,7 +182,7 @@ public class GateDeliveryRestApiSettleClient
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesBalance>>> GetBalancesAsync(CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesBalance>> GetBalancesAsync(CancellationToken ct = default)
         => MainClient.GetBalancesAsync(Settlement, ct);
     
     /// <summary>
@@ -183,6 +210,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesBalanceChangeType? type, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
         => MainClient.GetBalanceHistoryAsync(Settlement, type, from, to, limit, ct);
+
+    /// <summary>
+    /// Query account book
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateDeliveryBalanceHistoryQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetBalanceHistoryAsync(Settlement, request.Type, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
     
     /// <summary>
     /// List all positions of a user
@@ -298,6 +334,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(string contract, GateFuturesOrderStatus status, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
         => MainClient.GetOrdersAsync(Settlement, contract, status, limit, offset, lastId, countTotal, ct);
+
+    /// <summary>
+    /// List futures orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(GateDeliveryOrderQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetOrdersAsync(Settlement, request.Contract, request.Status, request.Limit ?? 100, request.Offset ?? 0, request.LastId, request.CountTotal ?? false, ct);
     
     /// <summary>
     /// Cancel all open orders matched
@@ -309,6 +354,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesOrder>>> CancelOrdersAsync(string contract, GateFuturesOrderSide side, CancellationToken ct = default)
         => MainClient.CancelOrdersAsync(Settlement, contract, side, ct);
+
+    /// <summary>
+    /// Cancel all open orders matched
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesOrder>>> CancelOrdersAsync(GateDeliveryCancelOrdersRequest request, CancellationToken ct = default)
+        => MainClient.CancelOrdersAsync(Settlement, request.Contract, request.Side, ct);
     
     /// <summary>
     /// Get a single order
@@ -347,6 +401,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(string contract = null, long? orderId = null, int limit = 100, int offset = 0, long? lastId = null, bool countTotal = false, CancellationToken ct = default)
         => MainClient.GetUserTradesAsync(Settlement, contract, orderId, limit, offset, lastId, countTotal, ct);
+
+    /// <summary>
+    /// List personal trading history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateDeliveryUserTradeQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetUserTradesAsync(Settlement, request.Contract, request.OrderId, request.Limit ?? 100, request.Offset ?? 0, request.LastId, request.CountTotal ?? false, ct);
     
     /// <summary>
     /// List position close history
@@ -357,6 +420,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(string contract = null, int limit = 100, CancellationToken ct = default)
         => MainClient.GetPositionClosesAsync(Settlement, contract, limit, ct);
+
+    /// <summary>
+    /// List position close history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateDeliveryPositionCloseQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetPositionClosesAsync(Settlement, request.Contract, request.Limit ?? 100, ct);
     
     /// <summary>
     /// List liquidation history
@@ -370,6 +442,15 @@ public class GateDeliveryRestApiSettleClient
         => MainClient.GetUserLiquidationsAsync(Settlement, contract, limit, at, ct);
 
     /// <summary>
+    /// List liquidation history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(GateDeliveryLiquidationQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetUserLiquidationsAsync(Settlement, request.Contract, request.Limit ?? 100, request.At?.ConvertToSeconds(), ct);
+
+    /// <summary>
     /// List settlement history
     /// </summary>
     /// <param name="contract">Futures contract</param>
@@ -381,6 +462,15 @@ public class GateDeliveryRestApiSettleClient
         => MainClient.GetUserSettlementsAsync(Settlement, contract, limit, at, ct);
 
     /// <summary>
+    /// List settlement history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateDeliveryUserSettlement>>> GetUserSettlementsAsync(GateDeliverySettlementQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetUserSettlementsAsync(Settlement, request.Contract, request.Limit ?? 100, request.At?.ConvertToSeconds(), ct);
+
+    /// <summary>
     /// When the 'contract' parameter is not passed, the default is to query the risk limits for the top 100 markets.'Limit' and 'offset' correspond to pagination queries at the market level, not to the length of the returned array. This only takes effect when the 'contract' parameter is empty.
     /// </summary>
     /// <param name="contract">Futures contract</param>
@@ -390,6 +480,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateDeliveryRiskLimitTier>>> GetRiskLimitTiersAsync(string contract = null, int limit = 100, long? offset = null, CancellationToken ct = default)
         => MainClient.GetRiskLimitTiersAsync(Settlement, contract, limit, offset, ct);
+
+    /// <summary>
+    /// Query risk limit tiers
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateDeliveryRiskLimitTier>>> GetRiskLimitTiersAsync(GateDeliveryRiskLimitTierQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetRiskLimitTiersAsync(Settlement, request.Contract, request.Limit ?? 100, request.Offset, ct);
 
     /// <summary>
     /// Create a price-triggered order
@@ -457,6 +556,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter status, string contract = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => MainClient.GetPriceTriggeredOrdersAsync(Settlement, status, contract, limit, offset, ct);
+
+    /// <summary>
+    /// List all auto orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(GateDeliveryPriceTriggeredOrderQueryRequest request, CancellationToken ct = default)
+        => MainClient.GetPriceTriggeredOrdersAsync(Settlement, request.Status, request.Contract, request.Limit ?? 100, request.Offset ?? 0, ct);
     
     /// <summary>
     /// Cancel all open orders
@@ -466,6 +574,15 @@ public class GateDeliveryRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(string contract, CancellationToken ct = default)
         => MainClient.CancelPriceTriggeredOrdersAsync(Settlement, contract, ct);
+
+    /// <summary>
+    /// Cancel all open auto orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(GateDeliveryPriceTriggeredOrderCancelRequest request, CancellationToken ct = default)
+        => MainClient.CancelPriceTriggeredOrdersAsync(Settlement, request.Contract, ct);
     
     /// <summary>
     /// Get a price-triggered order

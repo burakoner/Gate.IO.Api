@@ -1,6 +1,16 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated delivery endpoints against the current Gate API v4 Delivery documentation.
+    * Added request-object overloads for delivery trades, candlesticks, balance history, orders, order cancellation, user trades, position close history, liquidations, settlements, risk-limit tiers, and price-triggered order queries/cancellation.
+    * Added `Delivery/Requests` query and cancellation models for the new Delivery client overloads.
+    * Switched Delivery `DateTime` query filters for trades, candlesticks, and account-book history to Unix seconds.
+    * Fixed Delivery account queries to deserialize the documented single account object instead of a list.
+    * Updated Delivery contract and risk-limit tier models with `settle_fee_rate` and `deduction`.
+    * Added shared futures response fields used by Delivery for account user IDs, account-book IDs, price-triggered order string IDs, and decimal trigger-order amounts.
+    * Relaxed Delivery contract validation to accept both documented contract formats (`BASE_QUOTE` and `BASE_QUOTE_YYYYMMDD`).
+    * Added `GateFuturesSelfTradeAction.None` for the `"-"` value returned by Delivery order responses.
+    * Updated examples and README with Delivery request-object overload usage.
   * Updated futures endpoints against the current Gate API v4 Futures documentation.
     * Added request-object overloads for futures trades, candlesticks, funding rates, stats, liquidations, balance history, positions, orders, user trades, position close history, ADL history, countdown cancel-all, and price-triggered order queries.
     * Added batch funding-rate history, historical position time-range, and futures trail-order endpoints.

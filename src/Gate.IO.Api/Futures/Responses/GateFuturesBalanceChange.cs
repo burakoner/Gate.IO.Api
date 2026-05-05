@@ -6,6 +6,12 @@
 public record GateFuturesBalanceChange
 {
     /// <summary>
+    /// Account change record ID
+    /// </summary>
+    [JsonProperty("id")]
+    public long? Id { get; set; }
+
+    /// <summary>
     /// Change time
     /// </summary>
     [JsonProperty("time")]

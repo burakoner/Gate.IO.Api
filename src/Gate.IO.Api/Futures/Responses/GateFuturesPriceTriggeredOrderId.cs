@@ -4,4 +4,7 @@ internal record GateFuturesPriceTriggeredOrderId
 {
     [JsonProperty("id")]
     public long OrderId { get; set; }
+
+    [JsonProperty("id_string")]
+    public string OrderIdString { get; set; }
 }

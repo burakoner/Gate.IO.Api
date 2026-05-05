@@ -12,6 +12,12 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     public long OrderId { get; set; }
 
     /// <summary>
+    /// String form of the auto order ID
+    /// </summary>
+    [JsonProperty("id_string")]
+    public string OrderIdString { get; set; }
+
+    /// <summary>
     /// User ID
     /// </summary>
     [JsonProperty("user")]

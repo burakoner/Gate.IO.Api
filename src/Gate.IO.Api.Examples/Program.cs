@@ -320,13 +320,13 @@ internal class Program
         var delivery_01 = await api.Delivery.USDT.GetContractsAsync();
         var delivery_02 = await api.Delivery.USDT.GetContractAsync("CONTRACT");
         var delivery_03 = await api.Delivery.USDT.GetOrderBookAsync("CONTRACT");
-        var delivery_04 = await api.Delivery.USDT.GetTradesAsync("CONTRACT");
-        var delivery_05 = await api.Delivery.USDT.GetMarkPriceCandlesticksAsync("CONTRACT", GateFuturesCandlestickInterval.OneDay);
-        var delivery_06 = await api.Delivery.USDT.GetIndexPriceCandlesticksAsync("CONTRACT", GateFuturesCandlestickInterval.OneDay);
+        var delivery_04 = await api.Delivery.USDT.GetTradesAsync(new GateDeliveryTradeQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
+        var delivery_05 = await api.Delivery.USDT.GetMarkPriceCandlesticksAsync(new GateDeliveryCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
+        var delivery_06 = await api.Delivery.USDT.GetIndexPriceCandlesticksAsync(new GateDeliveryCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
         var delivery_07 = await api.Delivery.USDT.GetTickersAsync();
         var delivery_08 = await api.Delivery.USDT.GetInsuranceHistoryAsync();
         var delivery_09 = await api.Delivery.USDT.GetBalancesAsync();
-        var delivery_10 = await api.Delivery.USDT.GetBalanceHistoryAsync(GateFuturesBalanceChangeType.Funding);
+        var delivery_10 = await api.Delivery.USDT.GetBalanceHistoryAsync(new GateDeliveryBalanceHistoryQueryRequest { Type = GateFuturesBalanceChangeType.Funding, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
         var delivery_11 = await api.Delivery.USDT.GetPositionsAsync();
         var delivery_12 = await api.Delivery.USDT.GetPositionAsync("CONTRACT");
         var delivery_13 = await api.Delivery.USDT.SetPositionMarginAsync("CONTRACT", 100.0m);
@@ -334,14 +334,14 @@ internal class Program
         var delivery_15 = await api.Delivery.USDT.SetRiskLimitAsync("CONTRACT", 25);
         var delivery_16 = await api.Delivery.USDT.PlaceOrderAsync("CONTRACT", 25);
         var delivery_17 = await api.Delivery.USDT.PlaceOrderAsync(new GateFuturesOrderRequest { });
-        var delivery_18 = await api.Delivery.USDT.GetOrdersAsync("CONTRACT", GateFuturesOrderStatus.Open);
-        var delivery_19 = await api.Delivery.USDT.CancelOrdersAsync("CONTRACT", GateFuturesOrderSide.Bid);
+        var delivery_18 = await api.Delivery.USDT.GetOrdersAsync(new GateDeliveryOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
+        var delivery_19 = await api.Delivery.USDT.CancelOrdersAsync(new GateDeliveryCancelOrdersRequest { Contract = "CONTRACT", Side = GateFuturesOrderSide.Bid });
         var delivery_20 = await api.Delivery.USDT.GetOrderAsync();
         var delivery_21 = await api.Delivery.USDT.CancelOrderAsync();
-        var delivery_22 = await api.Delivery.USDT.GetUserTradesAsync();
-        var delivery_23 = await api.Delivery.USDT.GetPositionClosesAsync();
-        var delivery_24 = await api.Delivery.USDT.GetUserLiquidationsAsync();
-        var delivery_25 = await api.Delivery.USDT.GetUserSettlementsAsync();
+        var delivery_22 = await api.Delivery.USDT.GetUserTradesAsync(new GateDeliveryUserTradeQueryRequest { Contract = "CONTRACT", Limit = 100 });
+        var delivery_23 = await api.Delivery.USDT.GetPositionClosesAsync(new GateDeliveryPositionCloseQueryRequest { Contract = "CONTRACT", Limit = 100 });
+        var delivery_24 = await api.Delivery.USDT.GetUserLiquidationsAsync(new GateDeliveryLiquidationQueryRequest { Contract = "CONTRACT", At = DateTime.UtcNow });
+        var delivery_25 = await api.Delivery.USDT.GetUserSettlementsAsync(new GateDeliverySettlementQueryRequest { Contract = "CONTRACT", At = DateTime.UtcNow });
         var delivery_26 = await api.Delivery.USDT.GetRiskLimitTiersAsync();
         var delivery_27 = await api.Delivery.USDT.PlacePriceTriggeredOrderAsync(
             GateFuturesTriggerType.CloseShortPosition,
@@ -353,8 +353,8 @@ internal class Program
             "CLIENT-ORDER-ID", false, GateFuturesOrderAutoSize.CloseLong
         );
         var delivery_28 = await api.Delivery.USDT.PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest { });
-        var delivery_29 = await api.Delivery.USDT.GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
-        var delivery_30 = await api.Delivery.USDT.CancelPriceTriggeredOrdersAsync("CONTRACT");
+        var delivery_29 = await api.Delivery.USDT.GetPriceTriggeredOrdersAsync(new GateDeliveryPriceTriggeredOrderQueryRequest { Status = GateSpotTriggerFilter.Open, Contract = "CONTRACT", Limit = 100 });
+        var delivery_30 = await api.Delivery.USDT.CancelPriceTriggeredOrdersAsync(new GateDeliveryPriceTriggeredOrderCancelRequest { Contract = "CONTRACT" });
         var delivery_31 = await api.Delivery.USDT.GetPriceTriggeredOrderAsync(1_000_000_001);
         var delivery_32 = await api.Delivery.USDT.CancelPriceTriggeredOrderAsync(1_000_000_001);
 

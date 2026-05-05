@@ -42,6 +42,12 @@ public record GateFuturesInitial
     public long Size { get; set; }
 
     /// <summary>
+    /// Order amount. Used for decimal contract size when supported.
+    /// </summary>
+    [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
+    public decimal? Amount { get; set; }
+
+    /// <summary>
     /// Order price. Set to 0 to use market price
     /// </summary>
     [JsonProperty("price")]
@@ -70,6 +76,18 @@ public record GateFuturesInitial
     /// </summary>
     [JsonProperty("reduce_only")]
     public bool ReduceOnly { get; set; }
+
+    /// <summary>
+    /// Is the order reduce-only
+    /// </summary>
+    [JsonProperty("is_reduce_only", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? IsReduceOnly { get; set; }
+
+    /// <summary>
+    /// Is the order to close position
+    /// </summary>
+    [JsonProperty("is_close", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? IsClose { get; set; }
     
     /// <summary>
     /// Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0
