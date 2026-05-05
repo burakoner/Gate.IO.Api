@@ -6,6 +6,12 @@
 public enum GateOptionsContractPeriod : byte
 {
     /// <summary>
+    /// One Day
+    /// </summary>
+    [Map("day", "DAY")]
+    OneDay = 1,
+
+    /// <summary>
     /// One Week
     /// </summary>
     [Map("week", "WEEK")]

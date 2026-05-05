@@ -53,5 +53,5 @@ public record GateOptionsOrderBookEntry
     /// Size
     /// </summary>
     [JsonProperty("s")]
-    public decimal Size { get; set; }
+    public long Size { get; set; }
 }

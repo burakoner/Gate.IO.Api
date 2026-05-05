@@ -14,7 +14,7 @@ public record GateOptionsContract
     /// <summary>
     /// tag
     /// </summary>
-    [JsonProperty("tag")]
+    [JsonProperty("tag"), JsonConverter(typeof(MapConverter))]
     public GateOptionsContractPeriod Period { get; set; }
 
     /// <summary>
@@ -36,6 +36,12 @@ public record GateOptionsContract
     /// </summary>
     [JsonProperty("is_call")]
     public bool IsCall { get; set; }
+
+    /// <summary>
+    /// Strike price
+    /// </summary>
+    [JsonProperty("strike_price")]
+    public decimal StrikePrice { get; set; }
 
     /// <summary>
     /// Multiplier used in converting from invoicing to settlement currency
@@ -65,7 +71,7 @@ public record GateOptionsContract
     /// Current mark price (quote currency)
     /// </summary>
     [JsonProperty("mark_price")]
-    public DeserializeError MarkPrice { get; set; }
+    public decimal MarkPrice { get; set; }
 
     /// <summary>
     /// Current index price (quote currency)
@@ -84,6 +90,12 @@ public record GateOptionsContract
     /// </summary>
     [JsonProperty("taker_fee_rate")]
     public decimal TakerFeeRate { get; set; }
+
+    /// <summary>
+    /// Price limit fee rate
+    /// </summary>
+    [JsonProperty("price_limit_fee_rate")]
+    public decimal PriceLimitFeeRate { get; set; }
 
     /// <summary>
     /// Minimum order price increment

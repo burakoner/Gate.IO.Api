@@ -34,13 +34,13 @@ public record GateOptionsOrder
     /// <summary>
     /// How the order was finished.
     /// </summary>
-    [JsonProperty("finish_as")]
+    [JsonProperty("finish_as"), JsonConverter(typeof(MapConverter))]
     public GateOptionsOrderFinishAs? FinishAs { get; set; }
 
     /// <summary>
     /// Order status
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateOptionsOrderStatus Status { get; set; }
     
     /// <summary>
@@ -98,7 +98,7 @@ public record GateOptionsOrder
     /// - ioc: ImmediateOrCancelled, taker only
     /// - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee
     /// </summary>
-    [JsonProperty("tif")]
+    [JsonProperty("tif"), JsonConverter(typeof(MapConverter))]
     public GateOptionsTimeInForce TimeInForce { get; set; }
 
     /// <summary>

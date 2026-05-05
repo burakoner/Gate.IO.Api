@@ -52,7 +52,7 @@ public record GateOptionsBalance
     /// - 0：经典现货保证金模式 - 1：跨币种保证金模式 - 2：组合保证金模式
     /// </summary>
     [JsonProperty("margin_mode")]
-    public int MarginMode { get; set; }
+    public GateOptionsMarginMode MarginMode { get; set; }
     
     /// <summary>
     /// Unrealized PNL

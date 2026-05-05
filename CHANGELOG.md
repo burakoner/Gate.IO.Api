@@ -1,6 +1,16 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated options endpoints against the current Gate API v4 Options documentation.
+    * Added request-object overloads for options contract, settlement, user settlement, order book, candlestick, trade, account-book, position, liquidation, order, cancel-order, countdown cancel-all, user trade, and MMP settings calls.
+    * Added `Options/Requests` request models for the new Options client overloads.
+    * Added `AmendOrderAsync` and `UpdateOrderAsync` for `PUT /options/orders/{order_id}`.
+    * Fixed Options `DateTime` query filters to send Unix seconds instead of milliseconds.
+    * Fixed `GetBalanceAsync` to call `GET /options/accounts` instead of the public trades endpoint.
+    * Fixed options liquidation history queries to send the documented `underlying` and `contract` query parameters.
+    * Added missing options enum values for one-day contracts, single-currency/portfolio margin modes, and point account-book change types.
+    * Updated Options response models with missing contract strike/price-limit fields, position Greeks, typed enum converters, and numeric order book/user-trade IDs and sizes.
+    * Updated examples and README with Options request-object overload usage.
   * Added TradFi REST API support against the current Gate API v4 TradFi documentation.
     * Added `api.TradFi` and a new `TradFi` module with client, enum, request, and response models.
     * Covered MT5 account, symbol categories, symbols, symbol details, klines, tickers, user creation, account assets, transactions, orders, order history, positions, and position history endpoints.

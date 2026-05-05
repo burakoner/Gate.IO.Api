@@ -50,7 +50,7 @@ public record GateOptionsAccount
     /// <summary>
     /// Margin Mode
     /// </summary>
-    [JsonProperty("margin_mode"), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("margin_mode")]
     public GateOptionsMarginMode MarginMode { get; set; }
 
     /// <summary>

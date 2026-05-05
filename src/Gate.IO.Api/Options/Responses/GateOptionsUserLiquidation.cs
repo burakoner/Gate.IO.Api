@@ -21,7 +21,7 @@ public record GateOptionsUserLiquidation
     /// <summary>
     /// Position side, long or short
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateOptionsSide Side { get; set; }
 
     /// <summary>

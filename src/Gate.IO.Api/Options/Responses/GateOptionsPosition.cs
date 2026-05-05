@@ -76,4 +76,28 @@ public record GateOptionsPosition
     /// </summary>
     [JsonProperty("close_order")]
     public GateOptionsPositionCloseOrder CloseOrder { get; set; }
+
+    /// <summary>
+    /// Delta
+    /// </summary>
+    [JsonProperty("delta")]
+    public decimal Delta { get; set; }
+
+    /// <summary>
+    /// Gamma
+    /// </summary>
+    [JsonProperty("gamma")]
+    public decimal Gamma { get; set; }
+
+    /// <summary>
+    /// Vega
+    /// </summary>
+    [JsonProperty("vega")]
+    public decimal Vega { get; set; }
+
+    /// <summary>
+    /// Theta
+    /// </summary>
+    [JsonProperty("theta")]
+    public decimal Theta { get; set; }
 }

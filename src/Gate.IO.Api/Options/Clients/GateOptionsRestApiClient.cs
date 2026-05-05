@@ -1,6 +1,3 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics.Contracts;
-
 namespace Gate.IO.Api.Options;
 
 /// <summary>
@@ -19,15 +16,31 @@ public class GateOptionsRestApiClient
     // Constructor
     internal GateOptionsRestApiClient(GateRestApiClient root) => _ = root;
 
+    private static void AddPaging(ParameterCollection parameters, int? limit, int? offset)
+    {
+        parameters.AddOptional("limit", limit);
+        parameters.AddOptional("offset", offset);
+    }
+
+    private static void AddRawTimeRange(ParameterCollection parameters, long? from, long? to)
+    {
+        parameters.AddOptionalParameter("from", from);
+        parameters.AddOptionalParameter("to", to);
+    }
+
+    private static void AddTimeRange(ParameterCollection parameters, DateTime? from, DateTime? to)
+    {
+        parameters.AddOptionalSeconds("from", from);
+        parameters.AddOptionalSeconds("to", to);
+    }
+
     /// <summary>
     /// List all underlyings
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
-    {
-        return await _.SendRequestInternal<List<GateOptionsUnderlying>>(_.GetUrl(api, v4, options, "underlyings"), HttpMethod.Get, ct).ConfigureAwait(false);
-    }
+    public Task<RestCallResult<List<GateOptionsUnderlying>>> GetUnderlyingsAsync(CancellationToken ct = default)
+        => _.SendRequestInternal<List<GateOptionsUnderlying>>(_.GetUrl(api, v4, options, "underlyings"), HttpMethod.Get, ct);
 
     /// <summary>
     /// List all expiration times
@@ -35,14 +48,14 @@ public class GateOptionsRestApiClient
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<long>>> GetExpirationsAsync(string underlying, CancellationToken ct = default)
+    public Task<RestCallResult<List<long>>> GetExpirationsAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "underlying", underlying }
         };
 
-        return await _.SendRequestInternal<List<long>>(_.GetUrl(api, v4, options, "expirations"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<long>>(_.GetUrl(api, v4, options, "expirations"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -52,15 +65,24 @@ public class GateOptionsRestApiClient
     /// <param name="expiration">Unix timestamp of the expiration time</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsContract>>> GetContractsAsync(string underlying, long? expiration = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsContract>>> GetContractsAsync(string underlying, long? expiration = null, CancellationToken ct = default)
+        => GetContractsAsync(new GateOptionsContractQueryRequest { Underlying = underlying, Expiration = expiration }, ct);
+
+    /// <summary>
+    /// List all the contracts with specified underlying and expiration time
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsContract>>> GetContractsAsync(GateOptionsContractQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
-            { "underlying", underlying }
+            { "underlying", request.Underlying }
         };
-        parameters.AddOptionalParameter("expiration", expiration);
+        parameters.AddOptionalParameter("expiration", request.Expiration);
 
-        return await _.SendRequestInternal<List<GateOptionsContract>>(_.GetUrl(api, v4, options, "contracts"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsContract>>(_.GetUrl(api, v4, options, "contracts"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -69,10 +91,8 @@ public class GateOptionsRestApiClient
     /// <param name="contract">Contract</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsContract>> GetContractAsync(string contract, CancellationToken ct = default)
-    {
-        return await _.SendRequestInternal<GateOptionsContract>(_.GetUrl(api, v4, options, "contracts".AppendPath(contract)), HttpMethod.Get, ct, false).ConfigureAwait(false);
-    }
+    public Task<RestCallResult<GateOptionsContract>> GetContractAsync(string contract, CancellationToken ct = default)
+        => _.SendRequestInternal<GateOptionsContract>(_.GetUrl(api, v4, options, "contracts".AppendPath(contract)), HttpMethod.Get, ct, false);
 
     /// <summary>
     /// List settlement history
@@ -84,26 +104,33 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsSettlement>>> GetSettlementsAsync(
+    public Task<RestCallResult<List<GateOptionsSettlement>>> GetSettlementsAsync(
         string underlying,
         DateTime from,
         DateTime to,
         int limit = 100,
         int offset = 0,
         CancellationToken ct = default)
-    => await GetSettlementsAsync(underlying, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+        => GetSettlementsAsync(new GateOptionsSettlementQueryRequest
+        {
+            Underlying = underlying,
+            From = from,
+            To = to,
+            Limit = limit,
+            Offset = offset,
+        }, ct);
 
     /// <summary>
     /// List settlement history
     /// </summary>
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">End timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsSettlement>>> GetSettlementsAsync(
+    public Task<RestCallResult<List<GateOptionsSettlement>>> GetSettlementsAsync(
         string underlying,
         long? from = null,
         long? to = null,
@@ -114,13 +141,29 @@ public class GateOptionsRestApiClient
         var parameters = new ParameterCollection
         {
             { "underlying", underlying },
-            { "limit", limit },
-            { "offset", offset },
         };
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsSettlement>>(_.GetUrl(api, v4, options, "settlements"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsSettlement>>(_.GetUrl(api, v4, options, "settlements"), HttpMethod.Get, ct, false, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// List settlement history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsSettlement>>> GetSettlementsAsync(GateOptionsSettlementQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "underlying", request.Underlying },
+        };
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsSettlement>>(_.GetUrl(api, v4, options, "settlements"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -131,7 +174,7 @@ public class GateOptionsRestApiClient
     /// <param name="at">Timestamp</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsSettlement>> GetSettlementAsync(string underlying, string contract, long at, CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsSettlement>> GetSettlementAsync(string underlying, string contract, long at, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
@@ -139,7 +182,7 @@ public class GateOptionsRestApiClient
             { "at", at },
         };
 
-        return await _.SendRequestInternal<GateOptionsSettlement>(_.GetUrl(api, v4, options, "settlements".AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<GateOptionsSettlement>(_.GetUrl(api, v4, options, "settlements".AppendPath(contract)), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -153,33 +196,58 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetUserSettlementsAsync(underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateOptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => GetUserSettlementsAsync(new GateOptionsUserSettlementQueryRequest
+        {
+            Underlying = underlying,
+            Contract = contract,
+            From = from,
+            To = to,
+            Limit = limit,
+            Offset = offset,
+        }, ct);
 
     /// <summary>
     /// List my options settlements
     /// </summary>
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
     /// <param name="contract">Options contract name</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">End timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsUserSettlement>>> GetUserSettlementsAsync(string underlying, string contract = null, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "underlying", underlying },
-            { "limit", limit },
-            { "offset", offset },
         };
         parameters.AddOptionalParameter("contract", contract);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsUserSettlement>>(_.GetUrl(api, v4, options, "my_settlements"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsUserSettlement>>(_.GetUrl(api, v4, options, "my_settlements"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// List my options settlements
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsUserSettlement>>> GetUserSettlementsAsync(GateOptionsUserSettlementQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "underlying", request.Underlying },
+        };
+        parameters.AddOptionalParameter("contract", request.Contract);
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsUserSettlement>>(_.GetUrl(api, v4, options, "my_settlements"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -191,17 +259,26 @@ public class GateOptionsRestApiClient
     /// <param name="withId">Whether the order book update ID will be returned. This ID increases by 1 on every order book update</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsOrderBook>> GetOrderBookAsync(string contract, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsOrderBook>> GetOrderBookAsync(string contract, decimal interval = 0.0m, int limit = 10, bool withId = true, CancellationToken ct = default)
+        => GetOrderBookAsync(new GateOptionsOrderBookRequest { Contract = contract, Interval = interval, Limit = limit, WithId = withId }, ct);
+
+    /// <summary>
+    /// Options order book
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrderBook>> GetOrderBookAsync(GateOptionsOrderBookRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
-            { "contract", contract },
-            { "interval", interval },
-            { "limit", limit },
-            { "with_id", withId.ToString().ToLower() },
+            { "contract", request.Contract },
         };
+        parameters.AddOptionalString("interval", request.Interval);
+        parameters.AddOptional("limit", request.Limit);
+        parameters.AddOptional("with_id", request.WithId?.ToString().ToLower());
 
-        return await _.SendRequestInternal<GateOptionsOrderBook>(_.GetUrl(api, v4, options, "order_book"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<GateOptionsOrderBook>(_.GetUrl(api, v4, options, "order_book"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -210,14 +287,14 @@ public class GateOptionsRestApiClient
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsContractTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsContractTicker>>> GetContractTickersAsync(string underlying, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "underlying", underlying },
         };
 
-        return await _.SendRequestInternal<List<GateOptionsContractTicker>>(_.GetUrl(api, v4, options, "tickers"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsContractTicker>>(_.GetUrl(api, v4, options, "tickers"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -226,10 +303,10 @@ public class GateOptionsRestApiClient
     /// <param name="underlying">Underlying</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsUnderlyingTicker>> GetUnderlyingTickersAsync(string underlying, CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsUnderlyingTicker>> GetUnderlyingTickersAsync(string underlying, CancellationToken ct = default)
     {
         var endpoint = "underlying/tickers/{underlying}".Replace("{underlying}", underlying);
-        return await _.SendRequestInternal<GateOptionsUnderlyingTicker>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        return _.SendRequestInternal<GateOptionsUnderlyingTicker>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, false);
     }
 
     /// <summary>
@@ -242,31 +319,49 @@ public class GateOptionsRestApiClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsCandlestick>>> GetCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => await GetCandlesticksAsync(contract, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateOptionsCandlestick>>> GetCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+        => GetCandlesticksAsync(new GateOptionsCandlestickQueryRequest { Contract = contract, Interval = interval, From = from, To = to, Limit = limit }, ct);
 
     /// <summary>
     /// Get options candlesticks
     /// </summary>
     /// <param name="contract">Options contract name</param>
     /// <param name="interval">Interval time between data points</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">To timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">To timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsCandlestick>>> GetCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsCandlestick>>> GetCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "contract", contract },
         };
         parameters.AddEnum("interval", interval);
-        if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, null);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsCandlestick>>(_.GetUrl(api, v4, options, "candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsCandlestick>>(_.GetUrl(api, v4, options, "candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Get options candlesticks
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsCandlestick>>> GetCandlesticksAsync(GateOptionsCandlestickQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "contract", request.Contract },
+        };
+        parameters.AddOptionalEnum("interval", request.Interval);
+        AddPaging(parameters, request.Limit, null);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsCandlestick>>(_.GetUrl(api, v4, options, "candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -279,31 +374,49 @@ public class GateOptionsRestApiClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsCandlestickMark>>> GetUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => await GetUnderlyingCandlesticksAsync(underlying, interval, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateOptionsCandlestickMark>>> GetUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+        => GetUnderlyingCandlesticksAsync(new GateOptionsUnderlyingCandlestickQueryRequest { Underlying = underlying, Interval = interval, From = from, To = to, Limit = limit }, ct);
 
     /// <summary>
     /// Mark price candlesticks of an underlying
     /// </summary>
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
     /// <param name="interval">Interval time between data points</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">To timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">To timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsCandlestickMark>>> GetUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsCandlestickMark>>> GetUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "underlying", underlying },
         };
         parameters.AddEnum("interval", interval);
-        if (!from.HasValue && !to.HasValue) parameters.AddOptionalParameter("limit", limit);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, null);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsCandlestickMark>>(_.GetUrl(api, v4, options, "underlying/candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsCandlestickMark>>(_.GetUrl(api, v4, options, "underlying/candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Mark price candlesticks of an underlying
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsCandlestickMark>>> GetUnderlyingCandlesticksAsync(GateOptionsUnderlyingCandlestickQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "underlying", request.Underlying },
+        };
+        parameters.AddOptionalEnum("interval", request.Interval);
+        AddPaging(parameters, request.Limit, null);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsCandlestickMark>>(_.GetUrl(api, v4, options, "underlying/candlesticks"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -317,31 +430,46 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsTrade>>> GetTradesAsync(string contract, GateOptionsType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetTradesAsync(contract, type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateOptionsTrade>>> GetTradesAsync(string contract, GateOptionsType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => GetTradesAsync(new GateOptionsTradeQueryRequest { Contract = contract, Type = type, From = from, To = to, Limit = limit, Offset = offset }, ct);
 
     /// <summary>
     /// Options trade history
     /// </summary>
     /// <param name="contract">Options contract name</param>
     /// <param name="type">C is call, while P is put</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">To timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">To timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsTrade>>> GetTradesAsync(string contract, GateOptionsType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsTrade>>> GetTradesAsync(string contract, GateOptionsType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptionalParameter("contract", contract);
         parameters.AddOptionalEnum("type", type);
-        parameters.AddOptionalParameter("offset", offset);
-        parameters.AddOptionalParameter("limit", limit);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsTrade>>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, false, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsTrade>>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, false, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Options trade history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsTrade>>> GetTradesAsync(GateOptionsTradeQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalParameter("contract", request.Contract);
+        parameters.AddOptionalEnum("type", request.Type);
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsTrade>>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -349,54 +477,64 @@ public class GateOptionsRestApiClient
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsBalance>> GetBalanceAsync(CancellationToken ct = default)
-    {
-        return await _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, v4, options, "trades"), HttpMethod.Get, ct, true).ConfigureAwait(false);
-    }
+    public Task<RestCallResult<GateOptionsBalance>> GetBalanceAsync(CancellationToken ct = default)
+        => _.SendRequestInternal<GateOptionsBalance>(_.GetUrl(api, v4, options, "accounts"), HttpMethod.Get, ct, true);
 
     /// <summary>
     /// Query account information
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsAccount>> GetAccountAsync(CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsAccount>> GetAccountAsync(CancellationToken ct = default)
+        => _.SendRequestInternal<GateOptionsAccount>(_.GetUrl(api, v4, options, "accounts"), HttpMethod.Get, ct, true);
+
+    /// <summary>
+    /// List account changing history
+    /// </summary>
+    /// <param name="type">Changing Type:</param>
+    /// <param name="from">Start timestamp</param>
+    /// <param name="to">End timestamp</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsBalanceChange>>> GetBalanceHistoryAsync(GateOptionsBalanceChangeType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
+        => GetBalanceHistoryAsync(new GateOptionsBalanceHistoryQueryRequest { Type = type, From = from, To = to, Limit = limit, Offset = offset }, ct);
+
+    /// <summary>
+    /// List account changing history
+    /// </summary>
+    /// <param name="type">Changing Type:</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">End timestamp in Unix seconds</param>
+    /// <param name="limit">Maximum number of records to be returned in a single list</param>
+    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsBalanceChange>>> GetBalanceHistoryAsync(GateOptionsBalanceChangeType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsAccount>(_.GetUrl(api, v4, options, "accounts"), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalEnum("type", type);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
+
+        return _.SendRequestInternal<List<GateOptionsBalanceChange>>(_.GetUrl(api, v4, options, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
     /// List account changing history
     /// </summary>
-    /// <param name="type">Changing Type:</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
-    /// <param name="limit">Maximum number of records to be returned in a single list</param>
-    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsBalanceChange>>> GetBalanceHistoryAsync(GateOptionsBalanceChangeType type, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => await GetBalanceHistoryAsync(type, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
-
-    /// <summary>
-    /// List account changing history
-    /// </summary>
-    /// <param name="type">Changing Type:</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
-    /// <param name="limit">Maximum number of records to be returned in a single list</param>
-    /// <param name="offset">List offset, starting from 0</param>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsBalanceChange>>> GetBalanceHistoryAsync(GateOptionsBalanceChangeType type, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsBalanceChange>>> GetBalanceHistoryAsync(GateOptionsBalanceHistoryQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalEnum("type", type);
-        parameters.AddOptionalParameter("offset", offset);
-        parameters.AddOptionalParameter("limit", limit);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        parameters.AddOptionalEnum("type", request.Type);
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
 
-        return await _.SendRequestInternal<List<GateOptionsBalanceChange>>(_.GetUrl(api, v4, options, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsBalanceChange>>(_.GetUrl(api, v4, options, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -405,12 +543,21 @@ public class GateOptionsRestApiClient
     /// <param name="underlying">Underlying</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsPosition>>> GetUnderlyingPositionsAsync(string underlying, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsPosition>>> GetUnderlyingPositionsAsync(string underlying, CancellationToken ct = default)
+        => GetUnderlyingPositionsAsync(new GateOptionsPositionQueryRequest { Underlying = underlying }, ct);
+
+    /// <summary>
+    /// List user's positions of specified underlying
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsPosition>>> GetUnderlyingPositionsAsync(GateOptionsPositionQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalParameter("underlying", underlying);
+        parameters.AddOptionalParameter("underlying", request.Underlying);
 
-        return await _.SendRequestInternal<List<GateOptionsPosition>>(_.GetUrl(api, v4, options, "positions"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsPosition>>(_.GetUrl(api, v4, options, "positions"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -419,10 +566,10 @@ public class GateOptionsRestApiClient
     /// <param name="contract">Contract</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsPosition>> GetContractPositionAsync(string contract, CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsPosition>> GetContractPositionAsync(string contract, CancellationToken ct = default)
     {
         var endpoint = "positions/{contract}".Replace("{contract}", contract);
-        return await _.SendRequestInternal<GateOptionsPosition>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        return _.SendRequestInternal<GateOptionsPosition>(_.GetUrl(api, v4, options, endpoint), HttpMethod.Get, ct, true);
     }
 
     /// <summary>
@@ -432,13 +579,24 @@ public class GateOptionsRestApiClient
     /// <param name="contract">Contract</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUserLiquidation>>> GetUserLiquidationsAsync(string underlying, string contract = null, CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection();
-        parameters.AddOptionalParameter("underlying", underlying);
-        parameters.AddOptionalParameter("contract", contract);
+    public Task<RestCallResult<List<GateOptionsUserLiquidation>>> GetUserLiquidationsAsync(string underlying, string contract = null, CancellationToken ct = default)
+        => GetUserLiquidationsAsync(new GateOptionsUserLiquidationQueryRequest { Underlying = underlying, Contract = contract }, ct);
 
-        return await _.SendRequestInternal<List<GateOptionsUserLiquidation>>(_.GetUrl(api, v4, options, "position_close"), HttpMethod.Get, ct, true).ConfigureAwait(false);
+    /// <summary>
+    /// List user's liquidation history of specified underlying
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsUserLiquidation>>> GetUserLiquidationsAsync(GateOptionsUserLiquidationQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "underlying", request.Underlying },
+        };
+        parameters.AddOptionalParameter("contract", request.Contract);
+
+        return _.SendRequestInternal<List<GateOptionsUserLiquidation>>(_.GetUrl(api, v4, options, "position_close"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -450,12 +608,12 @@ public class GateOptionsRestApiClient
     /// <param name="price">Order price. 0 for market order with tif set as ioc (USDT)</param>
     /// <param name="close">Set as true to close the position, with size set to 0</param>
     /// <param name="reduceOnly">Set as true to be reduce-only order</param>
-    /// <param name="mmp">设置为 true 的时候，为MMP委托</param>
+    /// <param name="mmp">Set as true to create an MMP order</param>
     /// <param name="timeInForce">Time in force</param>
-    /// <param name="clientOrderId">User defined information. If not empty, must follow the rules below:</param>
+    /// <param name="clientOrderId">User defined information</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsOrder>> PlaceOrderAsync(
+    public Task<RestCallResult<GateOptionsOrder>> PlaceOrderAsync(
         string contract,
         long size,
         long? iceberg = null,
@@ -466,24 +624,44 @@ public class GateOptionsRestApiClient
         GateOptionsTimeInForce? timeInForce = null,
         string clientOrderId = null,
         CancellationToken ct = default)
+        => PlaceOrderAsync(new GateOptionsOrderRequest
+        {
+            Contract = contract,
+            Size = size,
+            Iceberg = iceberg,
+            Price = price,
+            Close = close,
+            ReduceOnly = reduceOnly,
+            Mmp = mmp,
+            TimeInForce = timeInForce,
+            ClientOrderId = clientOrderId,
+        }, ct);
+
+    /// <summary>
+    /// Create an order
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrder>> PlaceOrderAsync(GateOptionsOrderRequest request, CancellationToken ct = default)
     {
-        OptionsHelpers.ValidateContractSymbol(contract);
-        ExchangeHelpers.ValidateClientOrderId(clientOrderId, true);
+        OptionsHelpers.ValidateContractSymbol(request.Contract);
+        ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         var parameters = new ParameterCollection
         {
-            { "contract", contract },
-            { "size", size },
+            { "contract", request.Contract },
+            { "size", request.Size },
         };
-        parameters.AddOptional("iceberg", iceberg);
-        parameters.AddOptionalString("price", price);
-        parameters.AddOptional("close", close);
-        parameters.AddOptional("reduce_only", reduceOnly);
-        parameters.AddOptional("mmp", mmp);
-        parameters.AddOptionalEnum("tif", timeInForce);
-        parameters.AddOptional("text", clientOrderId);
+        parameters.AddOptional("iceberg", request.Iceberg);
+        parameters.AddOptionalString("price", request.Price);
+        parameters.AddOptional("close", request.Close);
+        parameters.AddOptional("reduce_only", request.ReduceOnly);
+        parameters.AddOptional("mmp", request.Mmp);
+        parameters.AddOptionalEnum("tif", request.TimeInForce);
+        parameters.AddOptional("text", request.ClientOrderId);
 
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -498,16 +676,16 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsOrder>>> GetOrdersAsync(
-    GateOptionsOrderStatus status,
-    string underlying,
-    string contract,
-    DateTime from,
-    DateTime to,
-    int limit = 100,
-    int offset = 0,
-    CancellationToken ct = default)
-        => await GetOrdersAsync(status, underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+    public Task<RestCallResult<List<GateOptionsOrder>>> GetOrdersAsync(
+        GateOptionsOrderStatus status,
+        string underlying,
+        string contract,
+        DateTime from,
+        DateTime to,
+        int limit = 100,
+        int offset = 0,
+        CancellationToken ct = default)
+        => GetOrdersAsync(new GateOptionsOrderQueryRequest { Status = status, Underlying = underlying, Contract = contract, From = from, To = to, Limit = limit, Offset = offset }, ct);
 
     /// <summary>
     /// List options orders
@@ -515,13 +693,13 @@ public class GateOptionsRestApiClient
     /// <param name="status">Only list the orders with this status</param>
     /// <param name="underlying">Underlying</param>
     /// <param name="contract">Options contract name</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">End timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsOrder>>> GetOrdersAsync(
+    public Task<RestCallResult<List<GateOptionsOrder>>> GetOrdersAsync(
         GateOptionsOrderStatus status,
         string underlying = null,
         string contract = null,
@@ -531,18 +709,32 @@ public class GateOptionsRestApiClient
         int offset = 0,
         CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection
-        {
-            { "limit", limit },
-            { "offset", offset },
-        };
+        var parameters = new ParameterCollection();
         parameters.AddEnum("status", status);
         parameters.AddOptionalParameter("underlying", underlying);
         parameters.AddOptionalParameter("contract", contract);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
 
-        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// List options orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsOrder>>> GetOrdersAsync(GateOptionsOrderQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddEnum("status", request.Status);
+        parameters.AddOptionalParameter("underlying", request.Underlying);
+        parameters.AddOptionalParameter("contract", request.Contract);
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -553,18 +745,27 @@ public class GateOptionsRestApiClient
     /// <param name="side">All bids or asks. Both included if not specified</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsOrder>>> CancelOrdersAsync(
+    public Task<RestCallResult<List<GateOptionsOrder>>> CancelOrdersAsync(
         string underlying = null,
         string contract = null,
         GateOptionsOrderSide? side = null,
         CancellationToken ct = default)
+        => CancelOrdersAsync(new GateOptionsCancelOrdersRequest { Underlying = underlying, Contract = contract, Side = side }, ct);
+
+    /// <summary>
+    /// Cancel all open orders matched
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsOrder>>> CancelOrdersAsync(GateOptionsCancelOrdersRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalEnum("side", side);
-        parameters.AddOptionalParameter("underlying", underlying);
-        parameters.AddOptionalParameter("contract", contract);
+        parameters.AddOptionalEnum("side", request.Side);
+        parameters.AddOptionalParameter("underlying", request.Underlying);
+        parameters.AddOptionalParameter("contract", request.Contract);
 
-        return await _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        return _.SendRequestInternal<List<GateOptionsOrder>>(_.GetUrl(api, v4, options, "orders"), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -573,10 +774,63 @@ public class GateOptionsRestApiClient
     /// <param name="orderId">Order Id</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
+    public Task<RestCallResult<GateOptionsOrder>> GetOrderAsync(long orderId, CancellationToken ct = default)
+        => _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Get, ct, true);
+
+    /// <summary>
+    /// Amend a single order
+    /// </summary>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="contract">Options contract name</param>
+    /// <param name="price">Order price</param>
+    /// <param name="size">Trade amount</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrder>> AmendOrderAsync(long orderId, string contract, decimal price, long size, CancellationToken ct = default)
+        => AmendOrderAsync(orderId, new GateOptionsOrderUpdateRequest { Contract = contract, Price = price, Size = size }, ct);
+
+    /// <summary>
+    /// Amend a single order
+    /// </summary>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrder>> AmendOrderAsync(long orderId, GateOptionsOrderUpdateRequest request, CancellationToken ct = default)
     {
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Get, ct, true).ConfigureAwait(false);
+        OptionsHelpers.ValidateContractSymbol(request.Contract);
+
+        var parameters = new ParameterCollection
+        {
+            { "contract", request.Contract },
+            { "size", request.Size },
+        };
+        parameters.AddString("price", request.Price);
+
+        return _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
+
+    /// <summary>
+    /// Update a single order
+    /// </summary>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="contract">Options contract name</param>
+    /// <param name="price">Order price</param>
+    /// <param name="size">Trade amount</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrder>> UpdateOrderAsync(long orderId, string contract, decimal price, long size, CancellationToken ct = default)
+        => AmendOrderAsync(orderId, contract, price, size, ct);
+
+    /// <summary>
+    /// Update a single order
+    /// </summary>
+    /// <param name="orderId">Order Id</param>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsOrder>> UpdateOrderAsync(long orderId, GateOptionsOrderUpdateRequest request, CancellationToken ct = default)
+        => AmendOrderAsync(orderId, request, ct);
 
     /// <summary>
     /// Cancel a single order
@@ -584,28 +838,38 @@ public class GateOptionsRestApiClient
     /// <param name="orderId">Order Id</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<GateOptionsOrder>> CancelOrderAsync(long orderId, CancellationToken ct = default)
-    {
-        return await _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true).ConfigureAwait(false);
-    }
+    public Task<RestCallResult<GateOptionsOrder>> CancelOrderAsync(long orderId, CancellationToken ct = default)
+        => _.SendRequestInternal<GateOptionsOrder>(_.GetUrl(api, v4, options, "orders".AppendPath(orderId.ToString())), HttpMethod.Delete, ct, true);
 
     /// <summary>
     /// Countdown cancel orders
-    /// Option order heartbeat detection, when the timeout time set by the user is reached, if the existing countdown is not canceled or a new countdown is set, the related option pending order will be automatically canceled.This interface can be called repeatedly to set a new countdown or cancel the countdown.Usage example: Repeat this interface at intervals of 30 seconds, with each countdown timeout set to 30 (seconds). If this interface is not called again within 30 seconds, all pending orders on the underlying contract you specified will be automatically cancelled.If underlying contract is not specified, user will be automatically cancelled If timeout is set to 0 within 30 seconds, the countdown timer will expire and the automatic order cancellation function will be cancelled.
     /// </summary>
     /// <param name="timeout">Countdown time in seconds</param>
     /// <param name="contract">Options contract name</param>
     /// <param name="underlying">Underlying</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<DateTime>> CancelAllAsync(int timeout, string contract = null, string underlying = null, CancellationToken ct = default)
+    public Task<RestCallResult<DateTime>> CancelAllAsync(int timeout, string contract = null, string underlying = null, CancellationToken ct = default)
+        => CancelAllAsync(new GateOptionsCountdownCancelAllRequest { Timeout = timeout, Contract = contract, Underlying = underlying }, ct);
+
+    /// <summary>
+    /// Countdown cancel orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public async Task<RestCallResult<DateTime>> CancelAllAsync(GateOptionsCountdownCancelAllRequest request, CancellationToken ct = default)
     {
+        if (request.Timeout != 0 && request.Timeout < 5)
+            throw new ArgumentException("Timeout must be 0 or at least 5 seconds", nameof(request.Timeout));
+
         var parameters = new ParameterCollection {
-            { "timeout", timeout },
+            { "timeout", request.Timeout },
         };
-        parameters.AddOptionalParameter("contract", contract);
-        parameters.AddOptionalParameter("underlying", underlying);
-        var result = await _.SendRequestInternal<GateOptionsCountdown>(_.GetUrl(api, v4, options, "countdown_cancel_all"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        parameters.AddOptionalParameter("contract", request.Contract);
+        parameters.AddOptionalParameter("underlying", request.Underlying);
+
+        var result = await _.SendRequestInternal<GateOptionsCountdown>(_.GetUrl(api, v4, options, "countdown_cancel_all"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -620,7 +884,7 @@ public class GateOptionsRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public async Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
+    public Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
         string underlying,
         string contract,
         DateTime from,
@@ -628,20 +892,20 @@ public class GateOptionsRestApiClient
         int limit = 100,
         int offset = 0,
         CancellationToken ct = default)
-        => await GetUserTradesAsync(underlying, contract, from.ConvertToMilliseconds(), to.ConvertToMilliseconds(), limit, offset, ct).ConfigureAwait(false);
+        => GetUserTradesAsync(new GateOptionsUserTradeQueryRequest { Underlying = underlying, Contract = contract, From = from, To = to, Limit = limit, Offset = offset }, ct);
 
     /// <summary>
     /// List personal trading history
     /// </summary>
     /// <param name="underlying">Underlying (Obtained by listing underlying endpoint)</param>
     /// <param name="contract">Options contract name</param>
-    /// <param name="from">Start timestamp</param>
-    /// <param name="to">End timestamp</param>
+    /// <param name="from">Start timestamp in Unix seconds</param>
+    /// <param name="to">End timestamp in Unix seconds</param>
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public  Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
+    public Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(
         string underlying,
         string contract = null,
         long? from = null,
@@ -653,14 +917,31 @@ public class GateOptionsRestApiClient
         var parameters = new ParameterCollection
         {
             { "underlying", underlying },
-            { "limit", limit },
-            { "offset", offset },
         };
         parameters.AddOptionalParameter("contract", contract);
-        parameters.AddOptionalParameter("from", from);
-        parameters.AddOptionalParameter("to", to);
+        AddPaging(parameters, limit, offset);
+        AddRawTimeRange(parameters, from, to);
 
-        return  _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// List personal trading history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateOptionsUserTrade>>> GetUserTradesAsync(GateOptionsUserTradeQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "underlying", request.Underlying },
+        };
+        parameters.AddOptionalParameter("contract", request.Contract);
+        AddPaging(parameters, request.Limit, request.Offset);
+        AddTimeRange(parameters, request.From, request.To);
+
+        return _.SendRequestInternal<List<GateOptionsUserTrade>>(_.GetUrl(api, v4, options, "my_trades"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -674,14 +955,23 @@ public class GateOptionsRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateOptionsMMP>> SetMMPAsync(string underlying, int window, int frozenPeriod, decimal quantityLimit, decimal deltaLimit, CancellationToken ct = default)
+        => SetMMPAsync(new GateOptionsMMPRequest { Underlying = underlying, Window = window, FrozenPeriod = frozenPeriod, QuantityLimit = quantityLimit, DeltaLimit = deltaLimit }, ct);
+
+    /// <summary>
+    /// MMP Settings
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOptionsMMP>> SetMMPAsync(GateOptionsMMPRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection {
-            { "underlying", underlying },
-            { "window", window },
-            { "frozen_period", frozenPeriod },
+            { "underlying", request.Underlying },
+            { "window", request.Window },
+            { "frozen_period", request.FrozenPeriod },
         };
-        parameters.AddString("qty_limit", quantityLimit);
-        parameters.AddString("delta_limit", deltaLimit);
+        parameters.AddString("qty_limit", request.QuantityLimit);
+        parameters.AddString("delta_limit", request.DeltaLimit);
 
         return _.SendRequestInternal<GateOptionsMMP>(_.GetUrl(api, v4, options, "mmp"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -692,7 +982,7 @@ public class GateOptionsRestApiClient
     /// <param name="underlying">Underlying</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateOptionsMMP>>> GetMMPAsync(string underlying=null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateOptionsMMP>>> GetMMPAsync(string underlying = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("underlying", underlying);

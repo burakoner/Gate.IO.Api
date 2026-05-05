@@ -28,7 +28,7 @@ public record GateOptionsUserTrade
     /// Order ID related
     /// </summary>
     [JsonProperty("order_id")]
-    public int OrderId { get; set; }
+    public long OrderId { get; set; }
 
     /// <summary>
     /// Trading size
@@ -51,6 +51,6 @@ public record GateOptionsUserTrade
     /// <summary>
     /// Trade role. Available values are &#x60;taker&#x60; and &#x60;maker&#x60;
     /// </summary>
-    [JsonProperty("role")]
+    [JsonProperty("role"), JsonConverter(typeof(MapConverter))]
     public GateOptionsTraderRole Role { get; set; }
 }

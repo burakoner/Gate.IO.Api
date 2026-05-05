@@ -27,7 +27,7 @@ public record GateOptionsBalanceChange
     /// <summary>
     /// Changing Type: - dnw: Deposit &amp; Withdraw - prem: Trading premium - fee: Trading fee - refr: Referrer rebate - point_dnw: POINT Deposit &amp; Withdraw - point_fee: POINT Trading fee - point_refr: POINT Referrer rebate
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateOptionsBalanceChangeType Type { get; set; }
 
     /// <summary>
