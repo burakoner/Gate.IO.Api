@@ -1,0 +1,17 @@
+{
+  "channel": "futures.auto_deleverages",
+  "event": "update",
+  "time": 1541505434,
+  "result": [
+    {
+      "entry_price": 209,
+      "fill_price": 215.1,
+      "position_size": 10,
+      "trade_size": 10,
+      "time": 1541486601,
+      "time_ms": 1541486601123,
+      "contract": "BTC_USDT_20230630",
+      "user": "1040"
+    }
+  ]
+}

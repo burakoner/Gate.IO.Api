@@ -1,0 +1,16 @@
+{
+  "channel": "futures.balances",
+  "event": "update",
+  "time": 1541505434,
+  "result": [
+    {
+      "balance": 9.998739899488,
+      "change": -0.000002074115,
+      "text": "BTC_USDT_20230630:3914424",
+      "time": 1547199246,
+      "time_ms": 1547199246123,
+      "type": "fee",
+      "user": "20011"
+    }
+  ]
+}

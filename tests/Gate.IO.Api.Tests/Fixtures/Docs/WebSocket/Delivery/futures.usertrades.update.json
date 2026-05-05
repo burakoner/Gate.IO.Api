@@ -1,0 +1,18 @@
+{
+  "time": 1543205083,
+  "channel": "futures.usertrades",
+  "event": "update",
+  "error": null,
+  "result": [
+    {
+      "contract": "BTC_USDT_20230630",
+      "create_time": 1545140672,
+      "create_time_ms": 1545140672371,
+      "id": "12651269",
+      "order_id": "56945246",
+      "price": "113.6",
+      "size": 10,
+      "role": "maker"
+    }
+  ]
+}

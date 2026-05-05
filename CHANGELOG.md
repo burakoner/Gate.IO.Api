@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Delivery WebSocket contract tests.
+    * Added documented Delivery WebSocket fixtures for subscription envelopes, public market streams, legacy order book snapshots and updates, diff order book streams, private user order/trade/risk streams, balance streams, position streams, and auto orders.
+    * Added serialization and validation coverage for common Delivery WebSocket subscribe/auth request shapes and documented order book limits.
   * Added Futures WebSocket contract tests.
     * Added documented Futures WebSocket fixtures for subscription envelopes, public market streams, order book streams, liquidation/stat streams, user order/trade/risk streams, balance streams, position streams, ADL ranks, and auto orders.
     * Added serialization and validation coverage for common Futures WebSocket subscribe/auth request shapes and documented order book limits.

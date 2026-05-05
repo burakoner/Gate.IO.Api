@@ -1,0 +1,27 @@
+{
+  "time": 1588212926,
+  "channel": "futures.positions",
+  "event": "update",
+  "error": null,
+  "result": [
+    {
+      "contract": "BTC_USDT_20230630",
+      "entry_price": 5999,
+      "history_pnl": 9.99872821972,
+      "history_point": -0.02954299895,
+      "last_close_pnl": -0.00011406187,
+      "leverage": 10,
+      "leverage_max": 100,
+      "liq_price": 5508.28,
+      "maintenance_rate": 0.005,
+      "margin": 0.001112608124,
+      "realised_pnl": -0.000072631078,
+      "realised_point": 0,
+      "risk_limit": 100,
+      "size": 70,
+      "time": 1588212925,
+      "time_ms": 1588212925123,
+      "user": "10003"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "time": 1551858330,
+  "channel": "futures.reduce_risk_limits",
+  "event": "update",
+  "error": null,
+  "result": [
+    {
+      "cancel_orders": 0,
+      "contract": "ETH_USD",
+      "leverage_max": 10,
+      "liq_price": 136.53,
+      "maintenance_rate": 0.09,
+      "risk_limit": 450,
+      "time": 1551858330,
+      "time_ms": 1551858330123,
+      "user": "20011"
+    }
+  ]
+}

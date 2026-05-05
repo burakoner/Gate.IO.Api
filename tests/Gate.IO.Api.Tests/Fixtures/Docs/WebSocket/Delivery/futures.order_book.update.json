@@ -1,0 +1,14 @@
+{
+  "channel": "futures.order_book",
+  "event": "update",
+  "time": 1541500167,
+  "time_ms": 1541500167123,
+  "result": [
+    {
+      "p": "97.5",
+      "s": 6541,
+      "contract": "BTC_USDT_20230630",
+      "id": 93973512
+    }
+  ]
+}
