@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added CrossEx REST API support against the current Gate API v4 CrossEx documentation.
+    * Added `api.CrossEx` and a new `CrossEx` module with client, enum, request, and response models.
+    * Covered trading pair, risk-limit, transfer currency, transfer history/create, order create/detail/update/cancel, convert quote/order, account query/update, leverage query/update, close position, interest-rate, fee, position, ADL rank, open-order, historical order/position/margin-interest/trade, account-book, and coin-discount-rate endpoints.
+    * Added request-object overloads for query and mutation calls, including transfer, order, convert, account, leverage, position, history, account-book, and coin-discount-rate requests.
+    * Kept semantically numeric CrossEx IDs, amounts, prices, quantities, rates, leverage, fees, limits, and timestamps typed as numeric or `DateTime` public properties while sending Gate's documented string body values where required.
+    * Sent CrossEx millisecond time filters for history/account-book endpoints and Unix-second filters for transfer history according to the current docs.
+    * Updated examples and README with CrossEx request-object overload usage.
   * Added P2P REST API support against the current Gate API v4 P2P documentation.
     * Added `api.P2p` and a new `P2p` module with client, enum, request, and response models.
     * Covered account info, counterparty info, payment methods, pending/completed order list, order detail, payment/receipt/cancel actions, advertisement publish/status/detail/list, chat history, chat send, and chat file upload endpoints.

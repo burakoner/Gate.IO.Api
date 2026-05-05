@@ -10,6 +10,7 @@ global using Gate.IO.Api.Account;
 global using Gate.IO.Api.Authentication;
 global using Gate.IO.Api.Clients.StreamApi;
 global using Gate.IO.Api.Converters;
+global using Gate.IO.Api.CrossEx;
 global using Gate.IO.Api.Delivery;
 global using Gate.IO.Api.Earn;
 global using Gate.IO.Api.EarnUni;

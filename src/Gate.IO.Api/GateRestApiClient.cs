@@ -102,6 +102,11 @@ public class GateRestApiClient : RestApiClient
     public GateP2pRestApiClient P2p { get; } // 4.105.4
 
     /// <summary>
+    /// CrossEx Client
+    /// </summary>
+    public GateCrossExRestApiClient CrossEx { get; } // 4.105.4
+
+    /// <summary>
     /// Gate.IO REST API Client Constructor
     /// </summary>
     public GateRestApiClient() : this(null, new GateRestApiClientOptions())
@@ -153,6 +158,7 @@ public class GateRestApiClient : RestApiClient
         Rebate = new GateRebateRestApiClient(this);
         Otc = new GateOtcRestApiClient(this);
         P2p = new GateP2pRestApiClient(this);
+        CrossEx = new GateCrossExRestApiClient(this);
     }
 
     #region Override Methods
