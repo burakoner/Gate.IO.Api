@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added OTC REST contract tests.
+    * Added documented OTC fixtures for quote, action, bank account, fiat order, stablecoin order, and fiat order detail responses.
+    * Added request construction tests for signed OTC quote, fiat/stable order creation, bank account, paid/cancel, list, and detail calls.
+    * Added validation coverage for PAY/GET quote amount requirements.
   * Added Earn REST contract tests.
     * Added documented Earn fixtures for dual investment, staking, auto-invest, and fixed-term earn response flows.
     * Added live public Earn captures for BTC dual investment plans and fixed-term USDT product listings.

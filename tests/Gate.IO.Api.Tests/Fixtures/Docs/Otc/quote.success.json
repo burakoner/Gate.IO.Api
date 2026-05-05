@@ -1,0 +1,29 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "url": "",
+    "memo": "",
+    "type": "BUY",
+    "pay_coin": "USD",
+    "get_coin": "USDT",
+    "pay_amount": "30000.00",
+    "get_amount": "29891.00",
+    "rate": "1.0036",
+    "rate_reci": "0.9964",
+    "promotion_code": "",
+    "side": "PAY",
+    "has_signature": "0",
+    "validity_period": "300",
+    "ex_rate": "0.9967",
+    "usdc_rate": "0.99990000",
+    "is_need_file": "0",
+    "gate_bank_id": "1",
+    "gate_bank_name": "",
+    "order_type": "FIAT",
+    "quote_token": "",
+    "refresh_limit": 20,
+    "refresh_limit_msg": ""
+  },
+  "timestamp": 1752051076
+}

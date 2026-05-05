@@ -1,0 +1,27 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "total": 20,
+    "page_size": 10,
+    "page_number": 1,
+    "total_page": 10,
+    "list": [
+      {
+        "id": 1,
+        "trade_no": "89875324974",
+        "pay_coin": "USDT",
+        "pay_icon": "https://icon.com",
+        "pay_amount": "30000.00",
+        "get_coin": "JDUSD",
+        "get_icon": "https://icon.com",
+        "get_amount": "20000.00",
+        "rate": "1.5",
+        "rate_reci": "0.6667",
+        "status": "PROCESSING",
+        "create_timest": 17878979789,
+        "create_time": "2025-09-09 10:00:00"
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "lists": [
+      {
+        "id": "762",
+        "bank_account_name": "hshsbshhh",
+        "bank_name": "jjjsjhs",
+        "bank_country": "Anguilla",
+        "bank_address": "jshhtestaddress879hao",
+        "bank_code": "",
+        "branch_code": "",
+        "iban": "1554 **** 8756",
+        "swift": "455876663",
+        "remittance_line_number": "4867645497945",
+        "agent_bank_name": "",
+        "agent_bank_swift": "",
+        "submit_time": "2026-01-21 05:56:49",
+        "update_time": "2026-01-21 05:57:09",
+        "status": "1",
+        "documentation_file_type": "",
+        "memo": "",
+        "is_default": 1,
+        "bank_id": "762",
+        "documentation_file_key_url": ""
+      }
+    ]
+  },
+  "timestamp": 1769998217
+}

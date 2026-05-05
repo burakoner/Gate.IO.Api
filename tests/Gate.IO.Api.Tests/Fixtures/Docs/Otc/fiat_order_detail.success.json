@@ -1,0 +1,22 @@
+{
+  "message": "success",
+  "code": 0,
+  "data": {
+    "order_id": "41",
+    "uid": "10001",
+    "type": "SELL",
+    "fiat_currency": "USD",
+    "fiat_amount": "199600",
+    "crypto_currency": "USDT",
+    "crypto_amount": "200000",
+    "rate": "0.998000",
+    "transfer_remark": "",
+    "status": "PROCESSIONG",
+    "db_status": "PAID",
+    "create_time": "2025-02-11 07:45:06",
+    "memo": "",
+    "side": "FIAT",
+    "promotion_code": "",
+    "trade_no": "20250207043457590939"
+  }
+}

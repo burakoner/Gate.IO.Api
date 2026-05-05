@@ -1,0 +1,79 @@
+using Gate.IO.Api.Otc;
+using Gate.IO.Api.Tests.Infrastructure;
+
+namespace Gate.IO.Api.Tests.Otc;
+
+[Trait("Category", "Contract")]
+public class OtcContractTests
+{
+    [Fact]
+    public void Documented_quote_and_action_responses_deserialize()
+    {
+        var quote = JsonFixture.Parse("Docs/Otc/quote.success.json")["data"]!.ToObject<GateOtcQuote>()!;
+        var action = JsonFixture.Deserialize<GateOtcActionResult>("Docs/Otc/action.success.json");
+        var stableAction = JsonFixture.Deserialize<GateOtcActionResult>("Docs/Otc/stablecoin_order_create.success.json");
+
+        Assert.Equal(GateOtcOrderType.Buy, quote.Type);
+        Assert.Equal("USD", quote.PayCoin);
+        Assert.Equal("USDT", quote.GetCoin);
+        Assert.Equal(30000m, quote.PayAmount);
+        Assert.Equal(29891m, quote.GetAmount);
+        Assert.Equal(1.0036m, quote.Rate);
+        Assert.Equal(0.9999m, quote.UsdcRate);
+        Assert.Equal(GateOtcQuoteSide.Pay, quote.Side);
+        Assert.Equal(GateOtcOrderKind.Fiat, quote.OrderType);
+        Assert.Equal(20, quote.RefreshLimit);
+        Assert.Equal(0, action.Code);
+        Assert.Equal("success", action.Message);
+        Assert.NotEqual(default, action.Timestamp);
+        Assert.Equal("string", stableAction.Message);
+    }
+
+    [Fact]
+    public void Documented_bank_responses_deserialize()
+    {
+        var unavailable = JsonFixture.Parse("Docs/Otc/default_bank.unavailable.json")["data"]!.ToObject<GateOtcBankAccount>()!;
+        var defaultBank = JsonFixture.Parse("Docs/Otc/default_bank.success.json")["data"]!.ToObject<GateOtcBankAccount>()!;
+        var bankList = JsonFixture.Parse("Docs/Otc/bank_list.success.json")["data"]!["lists"]!.ToObject<List<GateOtcBankAccount>>()!;
+
+        Assert.Equal(1, unavailable.Show);
+        Assert.Equal("test", unavailable.Message);
+        Assert.Equal("/otc/apply_person", unavailable.Url);
+        Assert.Equal(762, defaultBank.Id);
+        Assert.Equal("Anguilla", defaultBank.BankCountry);
+        Assert.Single(bankList);
+        Assert.Equal(762, bankList[0].BankId);
+        Assert.Equal("1554 **** 8756", bankList[0].Iban);
+        Assert.Equal("455876663", bankList[0].Swift);
+        Assert.Equal(1, bankList[0].IsDefault);
+        Assert.NotEqual(default, bankList[0].SubmitTime);
+    }
+
+    [Fact]
+    public void Documented_order_responses_deserialize()
+    {
+        var fiatOrders = JsonFixture.Parse("Docs/Otc/fiat_orders.success.json")["data"]!.ToObject<GateOtcFiatOrderPage>()!;
+        var stableOrders = JsonFixture.Parse("Docs/Otc/stablecoin_orders.success.json")["data"]!.ToObject<GateOtcStableCoinOrderPage>()!;
+        var detail = JsonFixture.Parse("Docs/Otc/fiat_order_detail.success.json")["data"]!.ToObject<GateOtcFiatOrderDetail>()!;
+
+        Assert.Equal(1, fiatOrders.PageNumber);
+        Assert.Equal(2, fiatOrders.Count);
+        Assert.Single(fiatOrders.List);
+        Assert.Equal(41, fiatOrders.List[0].OrderId);
+        Assert.Equal(GateOtcOrderType.Sell, fiatOrders.List[0].Type);
+        Assert.Equal("USDT", fiatOrders.List[0].CryptoCurrency);
+        Assert.Equal(199600m, fiatOrders.List[0].FiatAmount);
+        Assert.Equal(0.998m, fiatOrders.List[0].Rate);
+        Assert.Equal("USD", fiatOrders.List[0].FiatCurrencyInfo.Name);
+        Assert.Equal(20, stableOrders.Total);
+        Assert.Equal(1, stableOrders.List[0].Id);
+        Assert.Equal(30000m, stableOrders.List[0].PayAmount);
+        Assert.Equal(0.6667m, stableOrders.List[0].RateReciprocal);
+        Assert.NotEqual(default, stableOrders.List[0].CreateTimeStamp);
+        Assert.Equal(41, detail.OrderId);
+        Assert.Equal(10001, detail.UserId);
+        Assert.Equal(GateOtcOrderType.Sell, detail.Type);
+        Assert.Equal(GateOtcOrderKind.Fiat, detail.Side);
+        Assert.Equal("20250207043457590939", detail.TradeNumber);
+    }
+}

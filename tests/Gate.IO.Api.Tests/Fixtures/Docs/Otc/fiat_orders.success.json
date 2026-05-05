@@ -1,0 +1,37 @@
+{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "pn": 1,
+    "ps": 10,
+    "total_pn": 1,
+    "count": 2,
+    "list": [
+      {
+        "time": "2025-02-11 07:45:06",
+        "timestamp": 1739000013,
+        "order_id": "41",
+        "trade_no": "20250207043457590939",
+        "type": "SELL",
+        "status": "PROCESSIONG",
+        "db_status": "PAID",
+        "fiat_currency": "USD",
+        "fiat_currency_info": {
+          "name": "USD",
+          "icon": "http://icon.url"
+        },
+        "fiat_amount": "199600",
+        "ceypto_currency": "USDT",
+        "crypto_currency_info": {
+          "name": "USDT",
+          "icon": "http://icon.url"
+        },
+        "crypto_amount": "200000",
+        "rate": "0.998000",
+        "transfer_remark": "",
+        "gate_bank_account_iban": "89b9b9b9b",
+        "promotion_code": ""
+      }
+    ]
+  }
+}
