@@ -57,5 +57,5 @@ public enum GateFuturesOrderFinishAs : byte
     /// cancelled because self trade prevention
     /// </summary>
     [Map("stp")]
-    SelfTradePrevention = 8
+    SelfTradePrevention = 9
 }

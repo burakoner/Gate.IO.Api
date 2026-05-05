@@ -95,12 +95,24 @@ public record GateFuturesContract
     /// </summary>
     [JsonProperty("funding_rate")]
     public decimal FundingRate { get; set; }
+
+    /// <summary>
+    /// Indicative funding rate
+    /// </summary>
+    [JsonProperty("funding_rate_indicative")]
+    public decimal? FundingRateIndicative { get; set; }
     
     /// <summary>
     /// Funding application interval, unit in seconds
     /// </summary>
     [JsonProperty("funding_interval")]
     public int FundingInterval { get; set; }
+
+    /// <summary>
+    /// Funding offset
+    /// </summary>
+    [JsonProperty("funding_offset")]
+    public int? FundingOffset { get; set; }
     
     /// <summary>
     /// Next funding time
@@ -114,6 +126,12 @@ public record GateFuturesContract
     /// </summary>
     [JsonProperty("risk_limit_base")]
     public decimal RiskLimitBase { get; set; }
+
+    /// <summary>
+    /// Interest rate parameter used in funding rate and premium-related calculations
+    /// </summary>
+    [JsonProperty("interest_rate")]
+    public decimal? InterestRate { get; set; }
 
     /// <summary>
     /// Step of adjusting risk limit
@@ -180,6 +198,24 @@ public record GateFuturesContract
     /// </summary>
     [JsonProperty("position_size")]
     public long PositionSize { get; set; }
+
+    /// <summary>
+    /// Current long user count
+    /// </summary>
+    [JsonProperty("long_users")]
+    public long? LongUsers { get; set; }
+
+    /// <summary>
+    /// Current short user count
+    /// </summary>
+    [JsonProperty("short_users")]
+    public long? ShortUsers { get; set; }
+
+    /// <summary>
+    /// Funding rate depth impact value
+    /// </summary>
+    [JsonProperty("funding_impact_value")]
+    public decimal? FundingImpactValue { get; set; }
     
     /// <summary>
     /// Next funding time
@@ -251,4 +287,34 @@ public record GateFuturesContract
     [JsonProperty("delisted_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? DelistedTime { get; set; }
+
+    /// <summary>
+    /// Maximum slippage allowed for market orders
+    /// </summary>
+    [JsonProperty("market_order_slip_ratio")]
+    public decimal? MarketOrderSlipRatio { get; set; }
+
+    /// <summary>
+    /// Maximum number of contracts supported for market orders
+    /// </summary>
+    [JsonProperty("market_order_size_max")]
+    public decimal? MarketOrderSizeMaximum { get; set; }
+
+    /// <summary>
+    /// Upper and lower limits of funding rate
+    /// </summary>
+    [JsonProperty("funding_rate_limit")]
+    public decimal? FundingRateLimit { get; set; }
+
+    /// <summary>
+    /// Contract classification type
+    /// </summary>
+    [JsonProperty("contract_type")]
+    public string ContractClassificationType { get; set; }
+
+    /// <summary>
+    /// Whether decimal lot size is supported
+    /// </summary>
+    [JsonProperty("enable_decimal")]
+    public bool? EnableDecimal { get; set; }
 }

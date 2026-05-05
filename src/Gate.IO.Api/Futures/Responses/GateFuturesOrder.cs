@@ -182,4 +182,28 @@ public record GateFuturesOrder
     /// </summary>
     [JsonProperty("biz_info")]
     public string BusinessInfo { get; set; }
+
+    /// <summary>
+    /// Order value
+    /// </summary>
+    [JsonProperty("order_value")]
+    public decimal? OrderValue { get; set; }
+
+    /// <summary>
+    /// Trade value
+    /// </summary>
+    [JsonProperty("trade_value")]
+    public decimal? TradeValue { get; set; }
+
+    /// <summary>
+    /// The maximum slippage allowed for market orders, based on the latest market price
+    /// </summary>
+    [JsonProperty("market_order_slip_ratio")]
+    public decimal? MarketOrderSlipRatio { get; set; }
+
+    /// <summary>
+    /// Position margin mode
+    /// </summary>
+    [JsonProperty("pos_margin_mode")]
+    public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 }

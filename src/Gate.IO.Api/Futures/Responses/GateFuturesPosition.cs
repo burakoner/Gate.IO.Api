@@ -258,6 +258,25 @@ public record GateFuturesPosition
     /// </summary>
     [JsonProperty("pid")]
     public long? PID { get; set; }
+
+    /// <summary>
+    /// Position margin mode
+    /// </summary>
+    [JsonProperty("pos_margin_mode")]
+    public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
+
+    /// <summary>
+    /// Current leverage of the position
+    /// </summary>
+    [JsonProperty("lever")]
+    public decimal? Lever { get; set; }
+
+    /// <summary>
+    /// Historical position timestamp
+    /// </summary>
+    [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? Time { get; set; }
 }
 
 /// <summary>

@@ -1,6 +1,18 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated futures endpoints against the current Gate API v4 Futures documentation.
+    * Added request-object overloads for futures trades, candlesticks, funding rates, stats, liquidations, balance history, positions, orders, user trades, position close history, ADL history, countdown cancel-all, and price-triggered order queries.
+    * Added batch funding-rate history, historical position time-range, and futures trail-order endpoints.
+    * Switched Futures `DateTime` query filters to Unix seconds.
+    * Fixed futures position queries to send the documented `holding`, `limit`, and `offset` query parameters.
+    * Fixed futures cross-margin mode endpoints to send body parameters instead of query parameters.
+    * Added `GetLeverageAsync` and optional `pid` support for futures leverage updates.
+    * Added `market_order_slip_ratio` support to futures order requests and mapped enum serialization for futures order and price-triggered order request bodies.
+    * Added Futures response fields for contract funding and market-order metadata, order value/slippage/margin-mode metadata, and position leverage/margin mode.
+    * Fixed cancellation of all futures price-triggered orders so omitting the contract cancels all documented matches.
+    * Fixed the duplicate `GateFuturesOrderFinishAs.SelfTradePrevention` enum value.
+    * Updated examples and README with Futures request-object overload usage.
   * Audited the recent documentation updates for string-backed numeric fields and restored public numeric types where the API value is semantically numeric.
     * Kept Wallet transaction, transfer, small-balance, and transfer-status IDs numeric while still allowing JSON numeric strings to deserialize.
     * Restored isolated margin balance-history IDs and lending tier amounts to numeric types.

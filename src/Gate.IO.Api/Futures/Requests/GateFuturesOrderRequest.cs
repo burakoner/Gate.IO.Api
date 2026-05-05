@@ -44,7 +44,7 @@ public record GateFuturesOrderRequest
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
-    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -59,12 +59,18 @@ public record GateFuturesOrderRequest
     /// <summary>
     /// Set side to close dual-mode position. &#x60;close_long&#x60; closes the long side; while &#x60;close_short&#x60; the short one. Note &#x60;size&#x60; also needs to be set to 0
     /// </summary>
-    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
 
     /// <summary>
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
-    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesSelfTradeAction? SelfTradeAction { get; set; }
+
+    /// <summary>
+    /// The maximum slippage allowed for market orders, based on the latest market price
+    /// </summary>
+    [JsonProperty("market_order_slip_ratio", NullValueHandling = NullValueHandling.Ignore)]
+    public decimal? MarketOrderSlipRatio { get; set; }
 }

@@ -20,7 +20,7 @@ public record GateFuturesPriceTriggeredOrderRequest
     /// <summary>
     /// Order Type
     /// </summary>
-    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerType? Type { get; set; }
 }
 
@@ -56,7 +56,7 @@ public record GateFuturesInitial
     /// <summary>
     /// Time in force. If using market price, only ioc is supported.
     /// </summary>
-    [JsonProperty("tif")]
+    [JsonProperty("tif"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTimeInForce TimeInForce { get; set; }
     
     /// <summary>
@@ -74,7 +74,7 @@ public record GateFuturesInitial
     /// <summary>
     /// Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0
     /// </summary>
-    [JsonProperty("auto_size")]
+    [JsonProperty("auto_size"), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderAutoSize AutoSize { get; set; }
 }
 
@@ -92,7 +92,7 @@ public record GateFuturesTrigger
     /// <summary>
     /// Price Type
     /// </summary>
-    [JsonProperty("price_type")]
+    [JsonProperty("price_type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerPrice PriceType { get; set; }
 
     /// <summary>
@@ -104,7 +104,7 @@ public record GateFuturesTrigger
     /// <summary>
     /// Price trigger condition
     /// </summary>
-    [JsonProperty("rule")]
+    [JsonProperty("rule"), JsonConverter(typeof(MapConverter))]
     public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>
