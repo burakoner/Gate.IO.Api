@@ -1,0 +1,12 @@
+{
+  "data": {
+    "list": [
+      {
+        "category_id": 1,
+        "is_favorite": false,
+        "category_name": "Metals"
+      }
+    ]
+  },
+  "timestamp": 1769398039786
+}

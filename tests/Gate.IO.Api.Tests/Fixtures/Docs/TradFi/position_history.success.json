@@ -1,0 +1,30 @@
+{
+  "data": {
+    "list": [
+      {
+        "position_id": 2648854,
+        "symbol": "EURUSD",
+        "realized_pnl": "-2.4",
+        "realized_pnl_rate": "-0.0339783598282142",
+        "volume": "0.3",
+        "volume_closed": "0.3",
+        "price_open": "1.17722016",
+        "position_dir": "Long",
+        "price_tp": "0",
+        "price_sl": "0",
+        "counterparty_price": "",
+        "close_price": "1.1772198600000001",
+        "time_close": "1769223573",
+        "time_create": "1769223566",
+        "position_status": "1",
+        "realized_pnl_detail": {
+          "closed_pnl": "0",
+          "swap": "0",
+          "fee": "-2.4"
+        },
+        "close_detail": null
+      }
+    ]
+  },
+  "timestamp": 1769426795464
+}

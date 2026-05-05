@@ -1,0 +1,22 @@
+{
+  "data": {
+    "list": [
+      {
+        "order_id": 2630591,
+        "symbol": "USDCHF",
+        "symbol_desc": "US Dollar vs Swiss Franc",
+        "price_type": "trigger",
+        "state": 1,
+        "state_desc": "",
+        "finished": 0,
+        "side": 2,
+        "volume": "1.6",
+        "price": "5.000000",
+        "price_tp": "5.200000",
+        "price_sl": "4.800000",
+        "time_setup": 1768741530
+      }
+    ],
+    "timestamp": 1769426795464
+  }
+}

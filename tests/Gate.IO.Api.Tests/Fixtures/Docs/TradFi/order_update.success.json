@@ -1,0 +1,12 @@
+{
+  "data": {
+    "order_id": 2651172,
+    "symbol": "AUDUSD",
+    "state": "1",
+    "volume": "1",
+    "price": "2.00000",
+    "price_tp": "1.50000",
+    "price_sl": "0.80000"
+  },
+  "timestamp": 1769956396273
+}

@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added TradFi REST contract tests.
+    * Added documented TradFi fixtures for market categories, symbols, symbol details, candlesticks, tickers, MT5 account data, user creation, assets, transfers, orders, and positions.
+    * Added live public TradFi captures for current categories, symbol list, EURUSD ticker, and EURUSD candlesticks.
+    * Added request construction tests for unsigned TradFi market calls and signed symbol-detail, transfer, order, and position calls.
+    * Added opt-in public integration smoke tests for TradFi market endpoints.
   * Added Delivery REST contract tests.
     * Added documented Delivery fixtures for contracts, market depth, trades, candlesticks, tickers, insurance, risk limit tiers, account data, positions, settlements, personal trades, orders, and price-triggered orders.
     * Added live public Delivery captures for current USDT delivery contracts, market data, insurance history, and risk limit tiers.

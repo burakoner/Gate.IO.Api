@@ -1,0 +1,26 @@
+{
+  "data": {
+    "list": [
+      {
+        "symbol": "PLNJPY",
+        "symbol_desc": "PLN/JPY",
+        "category_name": "Forex",
+        "contract_volume": "100000",
+        "settlement_currency": "JPY",
+        "max_order_volume": "100",
+        "min_order_volume": "10",
+        "leverage": "25",
+        "price_precision": 4,
+        "price_sl_level": "100.00",
+        "swap_cost_type": "1",
+        "buy_swap_cost_rate": "7.937347",
+        "sell_swap_cost_rate": "-172.856426",
+        "swap_cost_3day": "3",
+        "trade_timezone": "GMT+2",
+        "trade_mode": "4",
+        "icon_link": ""
+      }
+    ]
+  },
+  "timestamp": 1769426795464
+}

@@ -1,0 +1,21 @@
+{
+  "data": {
+    "highest_price": "5093.04",
+    "lowest_price": "5003.61",
+    "price_change": "1.32",
+    "price_change_amount": "66.13",
+    "today_open_price": "5008.06",
+    "last_today_close_price": "4989.92",
+    "last_price": "5074.19",
+    "bid_price": "5073.83",
+    "ask_price": "5074.06",
+    "favorite": false,
+    "status": "open",
+    "close_time": 1769464800,
+    "open_time": 1769378400,
+    "next_open_time": 0,
+    "trade_mode": "4",
+    "category_name": "Metals"
+  },
+  "timestamp": 1769426795464
+}

@@ -1,0 +1,26 @@
+{
+  "data": {
+    "list": [
+      {
+        "order_id": 2648991,
+        "symbol": "USDCAD",
+        "symbol_desc": "USD VS CAD",
+        "price_type": "market",
+        "order_opt_type": 4,
+        "state": 4,
+        "state_desc": "Filled",
+        "side": 2,
+        "volume": "0.05",
+        "fill_volume": "0.05",
+        "close_pnl": "-1.49755",
+        "price": "1.3689",
+        "trigger_price": "1.3689",
+        "price_tp": "0",
+        "price_sl": "0",
+        "time_setup": 1769397512,
+        "time_done": 1769397512
+      }
+    ]
+  },
+  "timestamp": 1769426795464
+}

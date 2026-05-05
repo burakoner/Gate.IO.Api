@@ -1,0 +1,21 @@
+{
+  "data": {
+    "list": [
+      {
+        "symbol": "EURUSD",
+        "symbol_desc": "Euro vs United States Dollar",
+        "category_id": 6,
+        "status": "open",
+        "trade_mode": "4",
+        "icon_link": "https://gimg.staticimgs.com/image/eurusd.png",
+        "close_time": 1769464800,
+        "open_time": 1769378400,
+        "next_open_time": 0,
+        "settlement_currency": "USD",
+        "settlement_currency_symbol": "$",
+        "price_precision": 8
+      }
+    ]
+  },
+  "timestamp": 1769426795464
+}

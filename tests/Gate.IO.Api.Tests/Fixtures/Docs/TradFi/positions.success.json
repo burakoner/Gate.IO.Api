@@ -1,0 +1,22 @@
+{
+  "data": {
+    "list": [
+      {
+        "position_id": 2648925,
+        "margin": "2.354440320000000142",
+        "symbol": "EURUSD",
+        "symbol_desc": "Euro vs United States Dollar",
+        "unrealized_pnl": "8.06969999999992903440215741284191608428955078125",
+        "unrealized_pnl_rate": "0.0068548775107622",
+        "volume": "0.01",
+        "price_open": "1.177220",
+        "position_dir": "Long",
+        "price_tp": "0.000000",
+        "price_sl": "0.000000",
+        "counterparty_price": "1.1851598599999999539278405791264958679676055908203125",
+        "time_create": 1769319320
+      }
+    ],
+    "timestamp": 1769426795464
+  }
+}
