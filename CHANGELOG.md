@@ -1,6 +1,8 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added centralized logging tests.
+    * Covered shared REST success and failure logging plus WebSocket unsubscribe logging for disconnected sockets.
   * Added converter behavior tests.
     * Covered seconds and milliseconds timestamp deserialization, Gate decimal fields that may arrive as empty strings, mapped enum serialization/deserialization, array payload models, and stream event converters.
   * Added REST request construction smoke tests.
