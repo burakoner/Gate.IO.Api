@@ -8,6 +8,7 @@ global using ApiSharp.Models;
 global using ApiSharp.WebSocket;
 global using Gate.IO.Api.Account;
 global using Gate.IO.Api.Authentication;
+global using Gate.IO.Api.Bot;
 global using Gate.IO.Api.Clients.StreamApi;
 global using Gate.IO.Api.Converters;
 global using Gate.IO.Api.CrossEx;

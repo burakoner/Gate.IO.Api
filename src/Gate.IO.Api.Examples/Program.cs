@@ -1,5 +1,6 @@
 ﻿using Gate.IO.Api.Delivery;
 using Gate.IO.Api.Account;
+using Gate.IO.Api.Bot;
 using Gate.IO.Api.CrossEx;
 using Gate.IO.Api.Earn;
 using Gate.IO.Api.EarnUni;
@@ -535,6 +536,18 @@ internal class Program
         var p2p_15 = await api.P2p.GetChatHistoryAsync(new GateP2pChatHistoryRequest { TransactionId = 40_000_001, LastReceived = DateTime.UtcNow.AddMinutes(-10), FirstReceived = DateTime.UtcNow.AddHours(-1) });
         var p2p_16 = await api.P2p.SendChatMessageAsync(new GateP2pSendChatMessageRequest { TransactionId = 40_000_001, Type = GateP2pChatMessageType.Text, Message = "Payment completed, please check" });
         var p2p_17 = await api.P2p.UploadChatFileAsync(new GateP2pUploadChatFileRequest { ContentType = "image/png", Base64Content = "BASE64-CONTENT" });
+
+        // Bot Methods
+        var bot_01 = await api.Bot.GetStrategyRecommendationsAsync(new GateBotRecommendationRequest { Market = "BTC_USDT", StrategyType = GateBotStrategyType.SpotGrid, Scene = GateBotDiscoverScene.TopOne, Limit = 1 });
+        var bot_02 = await api.Bot.CreateSpotGridAsync(new GateBotSpotGridCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotSpotGridCreateParameters { Money = 100.0m, LowPrice = 50000.0m, HighPrice = 70000.0m, GridNumber = 10, PriceType = GateBotGridPriceType.Arithmetic } });
+        var bot_03 = await api.Bot.CreateMarginGridAsync(new GateBotMarginGridCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotMarginGridCreateParameters { Money = 100.0m, LowPrice = 50000.0m, HighPrice = 70000.0m, GridNumber = 10, PriceType = GateBotGridPriceType.Arithmetic, Leverage = 3.0m, Direction = GateBotFuturesDirection.Long } });
+        var bot_04 = await api.Bot.CreateInfiniteGridAsync(new GateBotInfiniteGridCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotInfiniteGridCreateParameters { Money = 100.0m, PriceFloor = 50000.0m, ProfitPerGrid = 0.01m, GridNumber = 10, PriceType = GateBotGridPriceType.Arithmetic } });
+        var bot_05 = await api.Bot.CreateFuturesGridAsync(new GateBotFuturesGridCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotFuturesGridCreateParameters { Money = 100.0m, LowPrice = 50000.0m, HighPrice = 70000.0m, GridNumber = 10, PriceType = GateBotGridPriceType.Arithmetic, Leverage = 3.0m, Direction = GateBotFuturesDirection.Long } });
+        var bot_06 = await api.Bot.CreateSpotMartingaleAsync(new GateBotSpotMartingaleCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotSpotMartingaleCreateParameters { InvestAmount = 100.0m, PriceDeviation = 0.02m, MaxOrders = 5, TakeProfitRatio = 0.01m } });
+        var bot_07 = await api.Bot.CreateContractMartingaleAsync(new GateBotContractMartingaleCreateRequest { Market = "BTC_USDT", CreateParameters = new GateBotContractMartingaleCreateParameters { InvestAmount = 100.0m, PriceDeviation = 0.02m, MaxOrders = 5, TakeProfitRatio = 0.01m, Direction = GateBotContractMartingaleDirection.Buy, Leverage = 3.0m } });
+        var bot_08 = await api.Bot.GetRunningPortfoliosAsync(new GateBotRunningPortfolioQueryRequest { StrategyType = GateBotStrategyType.SpotGrid, Market = "BTC_USDT", Page = 1, PageSize = 20 });
+        var bot_09 = await api.Bot.GetPortfolioDetailAsync(new GateBotPortfolioDetailRequest { StrategyId = "STRATEGY-ID", StrategyType = GateBotStrategyType.SpotGrid });
+        var bot_10 = await api.Bot.StopPortfolioAsync(new GateBotPortfolioStopRequest { StrategyId = "STRATEGY-ID", StrategyType = GateBotStrategyType.SpotGrid });
 
         // CrossEx Methods
         var crossex_01 = await api.CrossEx.GetSymbolsAsync(new GateCrossExSymbolsQueryRequest { Symbols = new[] { "BINANCE_FUTURE_BTC_USDT" } });

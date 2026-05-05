@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Bot REST API support against the current Gate API v4 Bot documentation.
+    * Added `api.Bot` and a new `Bot` module with client, enum, request, and response models.
+    * Covered AIHub strategy recommendations, spot grid, margin grid, infinite grid, futures grid, spot martingale, contract martingale, running strategy list, strategy detail, and strategy stop endpoints.
+    * Unwrapped Bot `code`/`message` response envelopes so public methods return the documented `data` payloads.
+    * Added request-object overloads for recommendation, strategy creation, running strategy, detail, and stop calls, including optional Bot request headers.
+    * Kept semantically numeric Bot amounts, prices, ratios, leverage, PnL values, counts, durations, and timestamps typed as numeric or `DateTime` public properties while sending Gate's documented string body/query values where required.
+    * Updated examples and README with Bot request-object overload usage.
   * Added CrossEx REST API support against the current Gate API v4 CrossEx documentation.
     * Added `api.CrossEx` and a new `CrossEx` module with client, enum, request, and response models.
     * Covered trading pair, risk-limit, transfer currency, transfer history/create, order create/detail/update/cancel, convert quote/order, account query/update, leverage query/update, close position, interest-rate, fee, position, ADL rank, open-order, historical order/position/margin-interest/trade, account-book, and coin-discount-rate endpoints.
