@@ -52,7 +52,7 @@ public  class GateSpotStreamOrderUpdate
     /// <summary>
     /// Gets or sets the Event.
     /// </summary>
-    [JsonProperty("event")]
+    [JsonProperty("event"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderUpdateEvent Event { get; set; }
 
     /// <summary>
@@ -64,13 +64,13 @@ public  class GateSpotStreamOrderUpdate
     /// <summary>
     /// Gets or sets the Type.
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType Type { get; set; }
 
     /// <summary>
     /// Gets or sets the order status.
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderStatus? Status { get; set; }
 
     /// <summary>
@@ -82,7 +82,7 @@ public  class GateSpotStreamOrderUpdate
     /// <summary>
     /// Gets or sets the Side.
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>

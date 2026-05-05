@@ -98,13 +98,13 @@ public class GateSpotStreamPriceOrder
     /// <summary>
     /// Order type.
     /// </summary>
-    [JsonProperty("order_type")]
+    [JsonProperty("order_type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType OrderType { get; set; }
 
     /// <summary>
     /// Order side.
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>

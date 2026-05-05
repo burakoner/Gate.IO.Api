@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Spot and Margin WebSocket contract tests.
+    * Added documented Spot WebSocket fixtures for subscription envelopes, public market streams, order book streams, user order/trade streams, balance streams, cross-margin loan updates, and price-order updates.
+    * Added serialization and validation coverage for common Spot WebSocket subscribe/auth request shapes and documented order book limits.
+    * Updated Spot stream enum parsing for trade side, order update, and price-order fields returned as strings by Gate WebSocket payloads.
   * Added Bot REST contract tests.
     * Added documented Bot fixtures for AIHub recommendations, strategy creation, running portfolios, portfolio detail, and portfolio stop responses.
     * Added signed request construction tests for Bot recommendation, grid creation, martingale creation, portfolio query/detail, and stop endpoints including optional `X-Gate-*` headers.

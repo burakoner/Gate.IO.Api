@@ -1,0 +1,20 @@
+{
+  "time": 1605248616,
+  "time_ms": 1605248616763,
+  "channel": "spot.cross_balances",
+  "event": "update",
+  "result": [
+    {
+      "timestamp": "1667556323",
+      "timestamp_ms": "1667556323730",
+      "user": "1000001",
+      "currency": "USDT",
+      "change": "0",
+      "total": "222244.3827652",
+      "available": "222244.3827",
+      "freeze": "5",
+      "freeze_change": "5.000000",
+      "change_type": "order-create"
+    }
+  ]
+}

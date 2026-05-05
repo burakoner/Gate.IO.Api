@@ -1,0 +1,17 @@
+{
+  "time": 1605248616,
+  "time_ms": 1605248616763,
+  "channel": "spot.funding_balances",
+  "event": "update",
+  "result": [
+    {
+      "timestamp": "1605248812",
+      "timestamp_ms": "1605248812123",
+      "user": "1000001",
+      "currency": "USDT",
+      "change": "0.01",
+      "freeze": "0",
+      "lent": "10.00000000"
+    }
+  ]
+}

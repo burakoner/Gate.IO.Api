@@ -1,0 +1,20 @@
+{
+  "time": 1605248616,
+  "time_ms": 1605248616763,
+  "channel": "spot.margin_balances",
+  "event": "update",
+  "result": [
+    {
+      "timestamp": "1605248812",
+      "timestamp_ms": "1605248812123",
+      "user": "1000001",
+      "currency_pair": "BTC_USDT",
+      "currency": "BTC",
+      "change": "-0.002",
+      "available": "999.999836",
+      "freeze": "1",
+      "borrowed": "0",
+      "interest": "0"
+    }
+  ]
+}

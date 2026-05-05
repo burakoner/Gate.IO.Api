@@ -1,0 +1,15 @@
+{
+  "time": 1611541000,
+  "id": 123456789,
+  "channel": "spot.orders",
+  "event": "subscribe",
+  "payload": [
+    "BTC_USDT",
+    "GT_USDT"
+  ],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

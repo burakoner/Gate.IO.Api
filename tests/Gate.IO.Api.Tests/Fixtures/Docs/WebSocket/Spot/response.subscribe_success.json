@@ -1,0 +1,11 @@
+{
+  "time": 1611541000,
+  "time_ms": 1611541000001,
+  "id": 123456789,
+  "channel": "spot.orders",
+  "event": "subscribe",
+  "error": null,
+  "result": {
+    "status": "success"
+  }
+}
