@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Announcements WebSocket stream support against the current Gate Announcement WebSocket documentation.
+    * Added `stream.Announcements` with ping and subscriptions for listing, delisting, fee, ETF, deposit/withdrawal, rename, precision, and engine upgrade announcement summaries.
+    * Added the Announcements WebSocket address, language/type enums, request handling, and announcement summary stream model.
   * Added CrossEx WebSocket stream support against the current Gate CrossEx WebSocket documentation.
     * Added `stream.CrossEx` with public market streams for last price, index price, mark price, order book, order book updates, tickers, trades, klines, funding rates, and open interest.
     * Added CrossEx private WebSocket login plus user order, asset, trade, position, margin position, and margin interest subscriptions.

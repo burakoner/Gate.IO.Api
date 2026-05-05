@@ -42,6 +42,10 @@ public class GateWebSocketClient
     /// Gets or sets the CrossEx.
     /// </summary>
     public GateCrossExStreamApiClient CrossEx { get; }
+    /// <summary>
+    /// Gets or sets the Announcements.
+    /// </summary>
+    public GateAnnouncementsStreamApiClient Announcements { get; }
 
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client class.
@@ -80,6 +84,7 @@ public class GateWebSocketClient
         TradFi = new GateTradFiStreamApiClient(this);
         Unified = new GateUnifiedStreamApiClient(this);
         CrossEx = new GateCrossExStreamApiClient(this);
+        Announcements = new GateAnnouncementsStreamApiClient(this);
     }
 
 }

@@ -7,6 +7,7 @@ global using ApiSharp.Extensions;
 global using ApiSharp.Models;
 global using ApiSharp.WebSocket;
 global using Gate.IO.Api.Account;
+global using Gate.IO.Api.Announcements;
 global using Gate.IO.Api.Bot;
 global using Gate.IO.Api.Base;
 global using Gate.IO.Api.Converters;

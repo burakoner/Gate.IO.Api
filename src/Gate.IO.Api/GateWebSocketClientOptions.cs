@@ -51,6 +51,12 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     /// Gets or sets the Stream CrossEx private data and API address.
     /// </summary>
     public string StreamCrossExPrivateAddress { get; set; }
+
+    // Stream-Announcements
+    /// <summary>
+    /// Gets or sets the Stream Announcements Address.
+    /// </summary>
+    public string StreamAnnouncementsAddress { get; set; }
     
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client Options class.
@@ -89,6 +95,9 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
         // Stream-CrossEx
         this.StreamCrossExPublicAddress = GateConstants.Default.StreamCrossExPublicAddress;
         this.StreamCrossExPrivateAddress = GateConstants.Default.StreamCrossExPrivateAddress;
+
+        // Stream-Announcements
+        this.StreamAnnouncementsAddress = GateConstants.Default.StreamAnnouncementsAddress;
 
         // Limits
         // this.MaxConnections = 300;

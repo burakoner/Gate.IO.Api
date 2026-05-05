@@ -51,6 +51,11 @@ internal record GateConstants
     public string StreamCrossExPrivateAddress { get; set; }
 
     /// <summary>
+    /// Stream-Announcements
+    /// </summary>
+    public string StreamAnnouncementsAddress { get; set; }
+
+    /// <summary>
     /// Gate.IO API Broker Id
     /// </summary>
     public string ChannelId { get; set; }
@@ -91,6 +96,9 @@ internal record GateConstants
         StreamCrossExPublicAddress = "wss://api.gateio.ws/ws/crossex/public",
         StreamCrossExPrivateAddress = "wss://api.gateio.ws/ws/crossex",
 
+        // Stream-Announcements
+        StreamAnnouncementsAddress = "wss://api.gateio.ws/ws/v4/ann",
+
         // Broker Id
         ChannelId = "phalchatha"
     };
@@ -130,6 +138,9 @@ internal record GateConstants
         // Stream-CrossEx
         StreamCrossExPublicAddress = "wss://api.gateio.ws/ws/crossex/public",
         StreamCrossExPrivateAddress = "wss://api.gateio.ws/ws/crossex",
+
+        // Stream-Announcements
+        StreamAnnouncementsAddress = "wss://api.gateio.ws/ws/v4/ann",
 
         // Broker Id
         ChannelId = "phalchatha"

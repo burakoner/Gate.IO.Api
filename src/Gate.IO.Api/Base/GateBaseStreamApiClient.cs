@@ -146,6 +146,36 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             return false;
         }
 
+        if (request is GateAnnouncementStreamRequest announcementRequest)
+        {
+            var announcementChannel = message["channel"]?.ToString();
+            if (!string.IsNullOrEmpty(announcementRequest.Channel) && announcementChannel != announcementRequest.Channel)
+                return false;
+
+            var eventName = message["event"]?.ToString();
+            if (eventName != announcementRequest.Event)
+                return false;
+
+            var announcementError = message["error"];
+            if (announcementError != null && announcementError.Type != JTokenType.Null)
+            {
+                var errorCode = announcementError["code"]?.ToString();
+                int.TryParse(errorCode, out var code);
+                callResult = new CallResult<object>(new ServerError(code, announcementError["message"]?.ToString()));
+                return true;
+            }
+
+            var announcementResult = message["result"];
+            if (announcementResult?.Type == JTokenType.Object && announcementResult["status"]?.ToString() == "success")
+            {
+                Log?.LogTrace($"Socket {connection.Id} announcement subscription completed");
+                callResult = new CallResult<object>(new object());
+                return true;
+            }
+
+            return false;
+        }
+
         var id = message["id"];
         if (id == null)
             return false;
@@ -189,6 +219,15 @@ public class GateBaseStreamApiClient : WebSocketApiClient
                 return false;
 
             return crossExRequest.Channel == crossExChannel.ToString();
+        }
+
+        if (request is GateAnnouncementStreamRequest announcementRequest)
+        {
+            var announcementChannel = message["channel"];
+            if (announcementChannel == null)
+                return false;
+
+            return announcementRequest.Channel == announcementChannel.ToString();
         }
 
         var bRequest = (GateStreamRequest)request;
@@ -256,6 +295,44 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             }).ConfigureAwait(false);
 
             return crossExSuccess;
+        }
+
+        if (subscription.Request is GateAnnouncementStreamRequest announcementRequest)
+        {
+            var announcementUnsub = new GateAnnouncementStreamRequest
+            {
+                Channel = announcementRequest.Channel,
+                Event = "unsubscribe",
+                Payload = announcementRequest.Payload
+            };
+            var announcementSuccess = false;
+
+            if (!connection.Connected)
+                return true;
+
+            await connection.SendAndWaitAsync(announcementUnsub, ClientOptions.ResponseTimeout, data =>
+            {
+                if (data.Type != JTokenType.Object)
+                    return false;
+
+                if (data["channel"]?.ToString() != announcementUnsub.Channel)
+                    return false;
+
+                if (data["event"]?.ToString() != announcementUnsub.Event)
+                    return false;
+
+                var result = data["result"];
+                if (result?.Type == JTokenType.Object && result["status"]?.ToString() == "success")
+                {
+                    announcementSuccess = true;
+                    return true;
+                }
+
+                var error = data["error"];
+                return error != null && error.Type != JTokenType.Null;
+            }).ConfigureAwait(false);
+
+            return announcementSuccess;
         }
 
         var request = (GateStreamRequest)subscription.Request!;
@@ -359,6 +436,18 @@ public class GateBaseStreamApiClient : WebSocketApiClient
 
             ((GateAuthentication)AuthenticationProvider).AuthenticateStreamRequest(request);
         }
+
+        return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
+    }
+
+    internal Task<CallResult<WebSocketUpdateSubscription>> AnnouncementSubscribeAsync<T>(string url, string channel, object payload, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+    {
+        var request = new GateAnnouncementStreamRequest
+        {
+            Channel = channel,
+            Event = "subscribe",
+            Payload = payload,
+        };
 
         return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
     }
