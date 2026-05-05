@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Announcements WebSocket contract tests.
+    * Added documented Announcements WebSocket fixtures for listing and engine-upgrade subscription requests, subscribe acknowledgements, and summary update payloads.
+    * Added serialization and validation coverage for announcement request payloads and required language selections.
   * Added CrossEx WebSocket contract tests.
     * Added documented CrossEx WebSocket fixtures for login, subscription envelopes, public market streams, private user streams, and WebSocket API responses.
     * Added serialization, login signing, and validation coverage for CrossEx WebSocket request shapes and documented order book level limits.

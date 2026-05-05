@@ -1,0 +1,8 @@
+{
+  "time": 1659956033,
+  "channel": "announcement.summary_listing",
+  "event": "subscribe",
+  "payload": [
+    "en"
+  ]
+}

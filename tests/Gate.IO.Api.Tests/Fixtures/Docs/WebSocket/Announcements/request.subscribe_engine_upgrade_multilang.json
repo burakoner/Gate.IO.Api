@@ -1,0 +1,9 @@
+{
+  "time": 1722844800,
+  "channel": "announcement.summary_engine_upgrade",
+  "event": "subscribe",
+  "payload": [
+    "cn",
+    "en"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "time": 1690365913,
+  "time_ms": 1690365913056,
+  "channel": "announcement.summary_listing",
+  "event": "subscribe",
+  "result": {
+    "status": "success"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "time": 1711968000,
+  "time_ms": 1711968000123,
+  "channel": "announcement.summary_precision",
+  "event": "update",
+  "result": {
+    "lang": "cn",
+    "origin_url": "https://www.gate.com/article/precision-update",
+    "title": "交易精度调整公告",
+    "brief": "Gate 将调整部分交易对的交易精度。",
+    "published_at": 1711968000
+  }
+}

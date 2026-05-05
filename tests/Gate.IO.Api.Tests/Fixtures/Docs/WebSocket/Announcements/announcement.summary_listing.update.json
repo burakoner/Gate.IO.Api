@@ -1,0 +1,13 @@
+{
+  "time": 1690365913,
+  "time_ms": 1690365913056,
+  "channel": "announcement.summary_listing",
+  "event": "update",
+  "result": {
+    "lang": "en",
+    "origin_url": "https://www.gate.com/article/228103",
+    "title": "Gate will commence Worldcoin(WLD) Trading at 7:30am UTC 24th July 2023 test",
+    "brief": "Gate is going to commence Worldcoin (WLD) trading in the WLD/USDT market.",
+    "published_at": 1690365913
+  }
+}
