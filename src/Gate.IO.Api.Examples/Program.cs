@@ -3,6 +3,7 @@ using Gate.IO.Api.Account;
 using Gate.IO.Api.Futures;
 using Gate.IO.Api.Margin;
 using Gate.IO.Api.Options;
+using Gate.IO.Api.Rebate;
 using Gate.IO.Api.Spot;
 using Gate.IO.Api.SubAccount;
 using Gate.IO.Api.Swap;
@@ -426,7 +427,17 @@ internal class Program
         var account_10 = await api.Account.GetDebitFeeAsync();
 
         // Rebate Methods
-        var rebate_01 = await api.Rebate.GetTransactionHistoryAsync();
-        var rebate_02 = await api.Rebate.GetCommissionHistoryAsync();
+        var rebate_01 = await api.Rebate.GetTransactionHistoryAsync(new GateRebateTransactionHistoryRequest { Symbol = "GT_USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_02 = await api.Rebate.GetCommissionHistoryAsync(new GateRebateCommissionHistoryRequest { Currency = "GT", CommissionType = GateRebateCommissionType.Direct, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_03 = await api.Rebate.GetPartnerTransactionHistoryAsync(new GateRebateTransactionHistoryRequest { Symbol = "GT_USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_04 = await api.Rebate.GetPartnerCommissionHistoryAsync(new GateRebateCommissionHistoryRequest { Currency = "GT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_05 = await api.Rebate.GetPartnerSubListAsync(new GateRebatePartnerSubListRequest { UserId = 1_000_000_001, Limit = 100 });
+        var rebate_06 = await api.Rebate.GetBrokerCommissionHistoryAsync(new GateRebateBrokerHistoryRequest { UserId = 1_000_000_001, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_07 = await api.Rebate.GetBrokerTransactionHistoryAsync(new GateRebateBrokerHistoryRequest { UserId = 1_000_000_001, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var rebate_08 = await api.Rebate.GetUserInfoAsync();
+        var rebate_09 = await api.Rebate.GetUserSubRelationAsync(new GateRebateUserSubRelationRequest { UserIds = new[] { 1_000_000_001L, 1_000_000_002L } });
+        var rebate_10 = await api.Rebate.GetRecentPartnerApplicationAsync();
+        var rebate_11 = await api.Rebate.CheckPartnerEligibilityAsync();
+        var rebate_12 = await api.Rebate.GetPartnerAggregatedDataAsync(new GateRebatePartnerAggregatedDataRequest { StartDate = "2024-01-01 00:00:00", EndDate = "2024-01-07 23:59:59", BusinessType = GateRebateBusinessType.All });
     }
 }

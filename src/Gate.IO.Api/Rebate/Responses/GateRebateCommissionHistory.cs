@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Rebate;
 
 /// <summary>
-/// GateRebateCommissionHistory
+/// Rebate commission history
 /// </summary>
 public record GateRebateCommissionHistory
 {
@@ -18,23 +18,23 @@ public record GateRebateCommissionHistory
     public long Total { get; set; }
 
     /// <summary>
-    /// List of comission history
+    /// List of commission history
     /// </summary>
     [JsonProperty("list")]
     public List<GateRebateCommissionHistoryRecord> List { get; set; } = [];
 }
 
 /// <summary>
-/// GateRebateCommissionHistoryRecord
+/// Rebate commission history record
 /// </summary>
 public record GateRebateCommissionHistoryRecord
 {
     /// <summary>
-    /// Commission Time. (unix timestamp)
+    /// Commission time
     /// </summary>
     [JsonProperty("commission_time")]
     [JsonConverter(typeof(DateTimeConverter))]
-    public DateTime TransactionTime { get; set; }
+    public DateTime CommissionTime { get; set; }
 
     /// <summary>
     /// User ID
@@ -49,20 +49,30 @@ public record GateRebateCommissionHistoryRecord
     public string GroupName { get; set; }
 
     /// <summary>
-    /// Commission Amount
+    /// Commission amount
     /// </summary>
     [JsonProperty("commission_amount")]
     public decimal CommissionAmount { get; set; }
 
     /// <summary>
-    /// Commission Asset
+    /// Commission asset
     /// </summary>
     [JsonProperty("commission_asset")]
     public string CommissionAsset { get; set; }
 
     /// <summary>
-    /// Source. SPOT - SPOT Rebate, FUTURES - Futures Rebate
+    /// Commission source
     /// </summary>
     [JsonProperty("source")]
     public string Source { get; set; }
+
+    /// <summary>
+    /// Commission time compatibility alias
+    /// </summary>
+    [JsonIgnore]
+    public DateTime TransactionTime
+    {
+        get => CommissionTime;
+        set => CommissionTime = value;
+    }
 }

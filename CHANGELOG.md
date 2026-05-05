@@ -1,6 +1,14 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated rebate endpoints against the current Gate API v4 Rebate documentation.
+    * Fixed agency transaction and commission history methods to deserialize the documented `total`/`list` response objects instead of lists.
+    * Added `Rebate/Requests` request models for transaction history, commission history, broker history, partner subordinate lists, user subordinate relationships, and partner aggregated data.
+    * Switched Rebate `DateTime` query filters to Unix seconds instead of milliseconds.
+    * Added partner transaction history, partner commission history, partner subordinate list, broker commission history, broker transaction history, user rebate info, user subordinate relationship, recent partner application, partner eligibility, and partner aggregated data endpoints.
+    * Added Rebate response models for broker sub-broker info, partner subordinate users, user subordinate relationships, partner application records, eligibility, and aggregated partner statistics.
+    * Kept semantically numeric Rebate IDs, amounts, fees, rates, counts, and totals as numeric public properties while supporting Gate's numeric string responses.
+    * Updated examples and README with Rebate request-object overload usage.
   * Updated account endpoints against the current Gate API v4 Account documentation.
     * Added `GetMainKeysAsync` for `GET /account/main_keys` with `GateAccountKeyInfo`, API key permission, and API key state models.
     * Added `Account/Requests` request models for STP group create/query, STP group user add/remove, and GT fee deduction calls.

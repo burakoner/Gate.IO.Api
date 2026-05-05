@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Rebate;
 
 /// <summary>
-/// GateRebateTransactionHistory
+/// Rebate transaction history
 /// </summary>
 public record GateRebateTransactionHistory
 {
@@ -25,12 +25,12 @@ public record GateRebateTransactionHistory
 }
 
 /// <summary>
-/// GateRebateTransactionHistoryRecord
+/// Rebate transaction history record
 /// </summary>
 public record GateRebateTransactionHistoryRecord
 {
     /// <summary>
-    /// Transaction Time. (unix timestamp)
+    /// Transaction time
     /// </summary>
     [JsonProperty("transaction_time")]
     [JsonConverter(typeof(DateTimeConverter))]
@@ -67,21 +67,40 @@ public record GateRebateTransactionHistoryRecord
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Commission Amount
+    /// Transaction amount
     /// </summary>
     [JsonProperty("amount")]
-    public decimal Commission  { get; set; }
+    public decimal Amount { get; set; }
 
     /// <summary>
-    /// Commission Asset
+    /// Transaction amount currency
     /// </summary>
     [JsonProperty("amount_asset")]
-    public string CommissionAsset { get; set; }
+    public string AmountAsset { get; set; }
 
     /// <summary>
-    /// Source. SPOT - SPOT Rebate, FUTURES - Futures Rebate
+    /// Commission source
     /// </summary>
     [JsonProperty("source")]
     public string Source { get; set; }
 
+    /// <summary>
+    /// Commission amount compatibility alias
+    /// </summary>
+    [JsonIgnore]
+    public decimal Commission
+    {
+        get => Amount;
+        set => Amount = value;
+    }
+
+    /// <summary>
+    /// Commission asset compatibility alias
+    /// </summary>
+    [JsonIgnore]
+    public string CommissionAsset
+    {
+        get => AmountAsset;
+        set => AmountAsset = value;
+    }
 }
