@@ -1,4 +1,4 @@
-namespace Gate.IO.Api;
+﻿namespace Gate.IO.Api;
 
 /// <summary>
 /// Represents the Gate Web Socket Client.
@@ -13,11 +13,11 @@ public class GateWebSocketClient
     public GateWebSocketClientOptions ClientOptions { get; }
 
     // Master Clients
-    internal StreamApiBaseClient Base { get; }
+    internal GateBaseStreamApiClient Base { get; }
     /// <summary>
     /// Gets or sets the Spot.
     /// </summary>
-    public StreamApiSpotClient Spot { get; }
+    public GateSpotStreamApiClient Spot { get; }
     /// <summary>
     /// Gets or sets the Futures.
     /// </summary>
@@ -29,7 +29,7 @@ public class GateWebSocketClient
     /// <summary>
     /// Gets or sets the Options.
     /// </summary>
-    public StreamApiOptionsClient Options { get; }
+    public GateOptionsStreamApiClient Options { get; }
 
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client class.
@@ -60,11 +60,11 @@ public class GateWebSocketClient
         Logger = logger;
         ClientOptions = options;
 
-        Base = new StreamApiBaseClient(this);
-        Spot = new StreamApiSpotClient(this);
+        Base = new GateBaseStreamApiClient(this);
+        Spot = new GateSpotStreamApiClient(this);
         Futures = new GateFuturesStreamApiClient(this);
         Delivery = new GateDeliveryStreamApiClient(this);
-        Options = new StreamApiOptionsClient(this);
+        Options = new GateOptionsStreamApiClient(this);
     }
 
 }

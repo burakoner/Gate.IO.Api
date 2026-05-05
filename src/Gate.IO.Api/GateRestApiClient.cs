@@ -12,104 +12,105 @@ public class GateRestApiClient : RestApiClient
     /// <summary>
     /// Wallet Client
     /// </summary>
-    public GateWalletRestApiClient Wallet { get; } // 4.105.4
+    public GateWalletRestApiClient Wallet { get; }
 
     /// <summary>
     /// Withdrawal Client
+    /// Alias for withdrawal endpoints under Wallet
     /// </summary>
-    public GateWalletRestApiClient Withdrawal => Wallet; // Alias for withdrawal endpoints under Wallet
+    public GateWalletRestApiClient Withdrawal => Wallet;
 
     /// <summary>
     /// SubAccount Client
     /// </summary>
-    public GateSubAccountRestApiClient SubAccount { get; } // 4.105.4
+    public GateSubAccountRestApiClient SubAccount { get; }
 
     /// <summary>
     /// Unified Client
     /// </summary>
-    public GateUnifiedRestApiClient Unified { get; } // 4.105.4
+    public GateUnifiedRestApiClient Unified { get; }
 
     /// <summary>
     /// Margin Client
     /// </summary>
-    public GateMarginRestApiClient IsolatedMargin { get; } // 4.105.4
+    public GateMarginRestApiClient IsolatedMargin { get; }
 
     /// <summary>
     /// Spot Client
     /// </summary>
-    public GateSpotRestApiClient Spot { get; } // 4.105.4
+    public GateSpotRestApiClient Spot { get; }
 
     /// <summary>
     /// Flash Swap Client
     /// </summary>
-    public GateSwapRestApiClient FlashSwap { get; } // 4.105.4
+    public GateSwapRestApiClient FlashSwap { get; }
 
     /// <summary>
     /// Perpetual Futures Client
     /// </summary>
-    public GateFuturesRestApiClient Futures { get; } // 4.105.4
+    public GateFuturesRestApiClient Futures { get; }
 
     /// <summary>
     /// Delivery Futures Client
     /// </summary>
-    public GateDeliveryRestApiClient Delivery { get; } // 4.105.4
+    public GateDeliveryRestApiClient Delivery { get; }
 
     /// <summary>
     /// TradFi Client
     /// </summary>
-    public GateTradFiRestApiClient TradFi { get; } // 4.105.4
+    public GateTradFiRestApiClient TradFi { get; }
 
     /// <summary>
     /// Options Client
     /// </summary>
-    public GateOptionsRestApiClient Options { get; } // 4.105.4
+    public GateOptionsRestApiClient Options { get; }
 
     /// <summary>
     /// EarnUni Client
     /// </summary>
-    public GateEarnUniRestApiClient EarnUni { get; } // 4.105.4
+    public GateEarnUniRestApiClient EarnUni { get; }
 
     // TODO: Collateral-loan
 
     /// <summary>
     /// Multi-Collateral Loan Client
     /// </summary>
-    public GateMultiCollateralLoanRestApiClient MultiCollateralLoan { get; } // 4.105.4
+    public GateMultiCollateralLoanRestApiClient MultiCollateralLoan { get; }
 
     /// <summary>
     /// Earn Client
     /// </summary>
-    public GateEarnRestApiClient Earn { get; } // 4.105.4
+    public GateEarnRestApiClient Earn { get; }
 
     /// <summary>
     /// Account Client
     /// </summary>
-    public GateAccountRestApiClient Account { get; } // 4.105.4
+    public GateAccountRestApiClient Account { get; }
 
     /// <summary>
     /// Rebate Client
     /// </summary>
-    public GateRebateRestApiClient Rebate { get; } // 4.105.4
+    public GateRebateRestApiClient Rebate { get; }
 
     /// <summary>
     /// OTC Client
     /// </summary>
-    public GateOtcRestApiClient Otc { get; } // 4.105.4
+    public GateOtcRestApiClient Otc { get; }
 
     /// <summary>
     /// P2P Client
     /// </summary>
-    public GateP2pRestApiClient P2p { get; } // 4.105.4
+    public GateP2pRestApiClient P2p { get; }
 
     /// <summary>
     /// CrossEx Client
     /// </summary>
-    public GateCrossExRestApiClient CrossEx { get; } // 4.105.4
+    public GateCrossExRestApiClient CrossEx { get; }
 
     /// <summary>
     /// Bot Client
     /// </summary>
-    public GateBotRestApiClient Bot { get; } // 4.105.4
+    public GateBotRestApiClient Bot { get; }
 
     /// <summary>
     /// Gate.IO REST API Client Constructor
@@ -151,7 +152,7 @@ public class GateRestApiClient : RestApiClient
         IsolatedMargin = new GateMarginRestApiClient(this);
         Spot = new GateSpotRestApiClient(this);
         FlashSwap = new GateSwapRestApiClient(this);
-        Futures = new GateFuturesRestApiClient (this);
+        Futures = new GateFuturesRestApiClient(this);
         Delivery = new GateDeliveryRestApiClient(this);
         TradFi = new GateTradFiRestApiClient(this);
 
@@ -169,7 +170,7 @@ public class GateRestApiClient : RestApiClient
 
     #region Override Methods
     /// <inheritdoc />
-    protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials) => new GateAuthenticationProvider(credentials);
+    protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials) => new GateAuthentication(credentials);
 
     /// <inheritdoc />
     protected override Error ParseErrorResponse(JToken error)

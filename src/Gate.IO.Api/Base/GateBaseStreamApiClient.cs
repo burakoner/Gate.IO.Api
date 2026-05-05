@@ -1,9 +1,9 @@
-namespace Gate.IO.Api.Clients.StreamApi;
+﻿namespace Gate.IO.Api.Base;
 
 /// <summary>
 /// Represents the Stream API Base Client.
 /// </summary>
-public class StreamApiBaseClient : WebSocketApiClient
+public class GateBaseStreamApiClient : WebSocketApiClient
 {
     // Internal
     internal ILogger Log { get => this.RootClient.Logger; }
@@ -15,7 +15,7 @@ public class StreamApiBaseClient : WebSocketApiClient
     /// </summary>
     public new GateWebSocketClientOptions ClientOptions { get { return (GateWebSocketClientOptions)base.ClientOptions; } }
 
-    internal StreamApiBaseClient(GateWebSocketClient root) : base(root.Logger, root.ClientOptions)
+    internal GateBaseStreamApiClient(GateWebSocketClient root) : base(root.Logger, root.ClientOptions)
     {
         RootClient = root;
 
@@ -36,7 +36,7 @@ public class StreamApiBaseClient : WebSocketApiClient
     /// </summary>
     protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
     {
-        return new GateAuthenticationProvider(credentials);
+        return new GateAuthentication(credentials);
     }
 
     /// <summary>
@@ -209,7 +209,7 @@ public class StreamApiBaseClient : WebSocketApiClient
             if (AuthenticationProvider == null)
                 throw new ArgumentNullException("ApiCredentials is null");
 
-            ((GateAuthenticationProvider)AuthenticationProvider).AuthenticateStreamRequest(request);
+            ((GateAuthentication)AuthenticationProvider).AuthenticateStreamRequest(request);
         }
 
         return SubscribeAsync(url, request, null, authenticated: false, onData, ct);

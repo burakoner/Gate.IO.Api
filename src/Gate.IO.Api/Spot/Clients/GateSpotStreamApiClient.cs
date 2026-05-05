@@ -1,11 +1,9 @@
-using Gate.IO.Api.Spot;
-
-namespace Gate.IO.Api.Clients.StreamApi;
+﻿namespace Gate.IO.Api.Spot;
 
 /// <summary>
 /// Represents the Stream API Spot Client.
 /// </summary>
-public class StreamApiSpotClient
+public class GateSpotStreamApiClient
 {
     // Channels
     private const string spotPingChannel = "spot.ping";
@@ -25,11 +23,11 @@ public class StreamApiSpotClient
 
     // Internal
     internal GateWebSocketClient RootClient { get; }
-    internal StreamApiBaseClient BaseClient { get; }
+    internal GateBaseStreamApiClient BaseClient { get; }
     internal GateWebSocketClientOptions ClientOptions { get; }
     private string BaseAddress { get => ClientOptions.StreamSpotAddress; }
 
-    internal StreamApiSpotClient(GateWebSocketClient root)
+    internal GateSpotStreamApiClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;

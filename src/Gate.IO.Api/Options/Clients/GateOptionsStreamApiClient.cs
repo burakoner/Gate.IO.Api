@@ -1,11 +1,9 @@
-using Gate.IO.Api.Options;
-
-namespace Gate.IO.Api.Clients.StreamApi;
+﻿namespace Gate.IO.Api.Options;
 
 /// <summary>
 /// Represents the Stream API Options Client.
 /// </summary>
-public class StreamApiOptionsClient
+public class GateOptionsStreamApiClient
 {
     // Channels
     private const string optionsPingChannel = "options.ping";
@@ -32,11 +30,11 @@ public class StreamApiOptionsClient
 
     // Internal
     internal GateWebSocketClient RootClient { get; }
-    internal StreamApiBaseClient BaseClient { get; }
+    internal GateBaseStreamApiClient BaseClient { get; }
     internal GateWebSocketClientOptions ClientOptions { get; }
     private string BaseAddress { get => ClientOptions.StreamOptionsAddress; }
 
-    internal StreamApiOptionsClient(GateWebSocketClient root)
+    internal GateOptionsStreamApiClient(GateWebSocketClient root)
     {
         RootClient = root;
         BaseClient = root.Base;

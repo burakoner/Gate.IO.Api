@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Models.StreamApi;
+﻿namespace Gate.IO.Api.Base;
 
 /// <summary>
 /// Represents the Gate Stream Response.

@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Represents the Gate Futures Stream API Client.
@@ -21,7 +21,7 @@ public class GateFuturesStreamApiClient
 
     // Internal
     internal GateWebSocketClient RootClient { get; }
-    internal StreamApiBaseClient BaseClient { get; }
+    internal GateBaseStreamApiClient BaseClient { get; }
     internal GateWebSocketClientOptions ClientOptions { get; }
 
     // Channels

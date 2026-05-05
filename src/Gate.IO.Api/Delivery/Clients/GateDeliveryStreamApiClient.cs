@@ -12,7 +12,7 @@ public class GateDeliveryStreamApiClient
 
     // Internal
     internal GateWebSocketClient RootClient { get; }
-    internal StreamApiBaseClient BaseClient { get; }
+    internal GateBaseStreamApiClient BaseClient { get; }
     internal GateWebSocketClientOptions ClientOptions { get; }
 
     // Channels

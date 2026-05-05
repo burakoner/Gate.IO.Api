@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Delivery;
+﻿namespace Gate.IO.Api.Delivery;
 
 /// <summary>
 /// Represents the Gate Delivery Stream API Settle Client.

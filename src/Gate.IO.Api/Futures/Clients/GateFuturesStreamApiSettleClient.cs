@@ -1,4 +1,4 @@
-namespace Gate.IO.Api.Futures;
+﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
 /// Represents the Gate Futures Stream API Settle Client.

@@ -1,6 +1,6 @@
-﻿namespace Gate.IO.Api.Authentication;
+﻿namespace Gate.IO.Api;
 
-internal class GateAuthenticationProvider(ApiCredentials credentials) : AuthenticationProvider(credentials ?? new ApiCredentials("", ""))
+internal class GateAuthentication(ApiCredentials credentials) : AuthenticationProvider(credentials ?? new ApiCredentials("", ""))
 {
     public override void AuthenticateRestApi(RestApiClient apiClient, Uri uri, HttpMethod method, bool signed, ArraySerialization serialization, SortedDictionary<string, object> query, SortedDictionary<string, object> body, string bodyContent, SortedDictionary<string, string> headers)
     {
