@@ -31,14 +31,29 @@ public class GateSubAccountRestApiClient
         string email = null,
         string remark = null,
         CancellationToken ct = default)
+        => CreateSubAccountAsync(new GateSubAccountCreateRequest
+        {
+            Login = login,
+            Password = password,
+            Email = email,
+            Remark = remark,
+        }, ct);
+
+    /// <summary>
+    /// Create a new sub-account
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateSubAccount>> CreateSubAccountAsync(GateSubAccountCreateRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
-            { "login_name", login },
+            { "login_name", request.Login },
         };
-        parameters.AddOptional("email", email);
-        parameters.AddOptional("password", password);
-        parameters.AddOptional("remark", remark);
+        parameters.AddOptional("email", request.Email);
+        parameters.AddOptional("password", request.Password);
+        parameters.AddOptional("remark", request.Remark);
 
         return _.SendRequestInternal<GateSubAccount>(_.GetUrl(api, version, sub_accounts, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -86,12 +101,28 @@ public class GateSubAccountRestApiClient
         IEnumerable<GateSubAccountApiKeyPermission> permissions = null,
         IEnumerable<string> ipWhitelist = null,
         CancellationToken ct = default)
+        => CreateApiKeyAsync(subAccountId, new GateSubAccountApiKeyRequest
+        {
+            Mode = mode,
+            Name = name,
+            Permissions = permissions,
+            IpWhitelist = ipWhitelist,
+        }, ct);
+
+    /// <summary>
+    /// Create API Key of the sub-account
+    /// </summary>
+    /// <param name="subAccountId">Sub-account user id</param>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateSubAccountApiKey>> CreateApiKeyAsync(long subAccountId, GateSubAccountApiKeyRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("mode", mode);
-        parameters.AddOptional("name", name);
-        parameters.AddOptional("perms", permissions);
-        parameters.AddOptional("ip_whitelist", ipWhitelist);
+        parameters.AddOptional("mode", request.Mode);
+        parameters.AddOptional("name", request.Name);
+        parameters.AddOptional("perms", request.Permissions);
+        parameters.AddOptional("ip_whitelist", request.IpWhitelist);
 
         return _.SendRequestInternal<GateSubAccountApiKey>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "keys"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -118,7 +149,7 @@ public class GateSubAccountRestApiClient
     /// <param name="ipWhitelist">ip white list (list will be removed if no value is passed)</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateSubAccountApiKey>> UpdateApiKeyAsync(
+    public Task<RestCallResult<object>> UpdateApiKeyAsync(
         long subAccountId,
         string apikey,
         int? mode = null,
@@ -126,14 +157,31 @@ public class GateSubAccountRestApiClient
         IEnumerable<GateSubAccountApiKeyPermission> permissions = null,
         IEnumerable<string> ipWhitelist = null,
         CancellationToken ct = default)
+        => UpdateApiKeyAsync(subAccountId, apikey, new GateSubAccountApiKeyRequest
+        {
+            Mode = mode,
+            Name = name,
+            Permissions = permissions,
+            IpWhitelist = ipWhitelist,
+        }, ct);
+
+    /// <summary>
+    /// Update API key of the sub-account
+    /// </summary>
+    /// <param name="subAccountId">Sub-account user id</param>
+    /// <param name="apikey">The API Key of the sub-account</param>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<object>> UpdateApiKeyAsync(long subAccountId, string apikey, GateSubAccountApiKeyRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("mode", mode);
-        parameters.AddOptional("name", name);
-        parameters.AddOptional("perms", permissions);
-        parameters.AddOptional("ip_whitelist", ipWhitelist);
+        parameters.AddOptional("mode", request.Mode);
+        parameters.AddOptional("name", request.Name);
+        parameters.AddOptional("perms", request.Permissions);
+        parameters.AddOptional("ip_whitelist", request.IpWhitelist);
 
-        return _.SendRequestInternal<GateSubAccountApiKey>(
+        return _.SendRequestInternal<object>(
             _.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()).AppendPath("keys").AppendPath(apikey), null),
             HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
@@ -170,7 +218,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> LockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "lock"), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "lock"), HttpMethod.Post, ct, true);
     }
 
     /// <summary>
@@ -181,7 +229,7 @@ public class GateSubAccountRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<object>> UnlockSubAccountAsync(long subAccountId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "unlock"), HttpMethod.Put, ct, true);
+        return _.SendRequestInternal<object>(_.GetUrl(api, version, sub_accounts.AppendPath(subAccountId.ToString()), "unlock"), HttpMethod.Post, ct, true);
     }
 
     /// <summary>

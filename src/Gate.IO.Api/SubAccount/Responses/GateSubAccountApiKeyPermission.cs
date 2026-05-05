@@ -9,6 +9,7 @@ public record GateSubAccountApiKeyPermission
     /// Permission name (all permissions will be removed if no value is passed)
     /// </summary>
     [JsonProperty("name")]
+    [JsonConverter(typeof(MapConverter))]
     public GateSubAccountApiKeyPermissionSection Name { get; set; }
 
     /// <summary>

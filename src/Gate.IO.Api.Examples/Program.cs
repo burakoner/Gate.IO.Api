@@ -3,6 +3,7 @@ using Gate.IO.Api.Futures;
 using Gate.IO.Api.Margin;
 using Gate.IO.Api.Options;
 using Gate.IO.Api.Spot;
+using Gate.IO.Api.SubAccount;
 using Gate.IO.Api.Swap;
 using Gate.IO.Api.Unified;
 using Gate.IO.Api.Wallet;
@@ -61,12 +62,19 @@ internal class Program
         var wallet_19 = await api.Wallet.GetLowCapExchangeListAsync();
 
         // SubAccount Methods
-        var subaccount_01 = await api.SubAccount.CreateSubAccountAsync("LOGIN-NAME", "PASSWORD", "EMAIL", "REMARKS");
+        var subaccount_01 = await api.SubAccount.CreateSubAccountAsync(new GateSubAccountCreateRequest { Login = "LOGIN-NAME", Password = "PASSWORD", Email = "EMAIL", Remark = "REMARKS" });
         var subaccount_02 = await api.SubAccount.GetSubAccountsAsync();
         var subaccount_03 = await api.SubAccount.GetSubAccountAsync(1_000_000_000);
-        var subaccount_04 = await api.SubAccount.CreateApiKeyAsync(1_000_000_000);
+        var subaccount_04 = await api.SubAccount.CreateApiKeyAsync(1_000_000_000, new GateSubAccountApiKeyRequest
+        {
+            Name = "spot",
+            Permissions = new List<GateSubAccountApiKeyPermission>
+            {
+                new GateSubAccountApiKeyPermission { Name = GateSubAccountApiKeyPermissionSection.Spot, ReadOnly = false }
+            },
+        });
         var subaccount_05 = await api.SubAccount.GetApiKeysAsync(1_000_000_000);
-        var subaccount_06 = await api.SubAccount.UpdateApiKeyAsync(1_000_000_000, "API-KEY");
+        var subaccount_06 = await api.SubAccount.UpdateApiKeyAsync(1_000_000_000, "API-KEY", new GateSubAccountApiKeyRequest { IpWhitelist = new List<string> { "127.0.0.1" } });
         var subaccount_07 = await api.SubAccount.DeleteApiKeyAsync(1_000_000_000, "API-KEY");
         var subaccount_08 = await api.SubAccount.GetApiKeyAsync(1_000_000_000, "API-KEY");
         var subaccount_09 = await api.SubAccount.LockSubAccountAsync(1_000_000_000);

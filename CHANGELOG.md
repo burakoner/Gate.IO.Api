@@ -1,6 +1,14 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated sub-account endpoints against the current Gate API v4 SubAccount documentation.
+    * Added request-object overloads for creating sub-accounts and creating/updating sub-account API keys.
+    * Added `GateSubAccountCreateRequest` and `GateSubAccountApiKeyRequest` under `SubAccount/Requests`.
+    * Fixed `LockSubAccountAsync` and `UnlockSubAccountAsync` to call `POST` instead of `PUT`.
+    * Updated `UpdateApiKeyAsync` to return a no-content result (`RestCallResult<object>`) per the current API response.
+    * Added `GateSubAccountApiKey.Secret` and typed API key states with `GateSubAccountApiKeyState`.
+    * Added `GateUnifiedAccountMode.SingleCurrency` for sub-account unified mode responses.
+    * Updated examples and README with SubAccount request-object overload usage.
   * Updated wallet endpoints against the current Gate API v4 Wallet documentation.
     * Added request-object overloads for high-parameter Wallet methods: withdrawal/deposit record queries, trading-account transfers, main-sub transfers, main-sub transfer history, sub-account to sub-account transfers, sub-account balance queries, and UID transfer history.
     * Added `GetLowCapExchangeListAsync` for `GET /wallet/getLowCapExchangeList`.

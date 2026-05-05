@@ -42,10 +42,16 @@ public record GateSubAccountApiKey
     public string Key { get; set; }
 
     /// <summary>
-    /// State 1 - normal 2 - locked 3 - frozen
+    /// API secret. Returned only when the key is created.
+    /// </summary>
+    [JsonProperty("secret")]
+    public string Secret { get; set; }
+
+    /// <summary>
+    /// State: 1 - normal, 2 - frozen, 3 - locked
     /// </summary>
     [JsonProperty("state")]
-    public int State { get; set; }
+    public GateSubAccountApiKeyState State { get; set; }
 
     /// <summary>
     /// Creation time

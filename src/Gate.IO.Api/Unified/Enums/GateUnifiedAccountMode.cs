@@ -22,4 +22,10 @@ public enum GateUnifiedAccountMode : byte
     /// </summary>
     [Map("portfolio")]
     Portfolio = 3,
+
+    /// <summary>
+    /// Single-currency margin mode
+    /// </summary>
+    [Map("single_currency")]
+    SingleCurrency = 4,
 }
