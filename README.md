@@ -441,14 +441,15 @@ var options_30 = await api.Options.ResetMMPAsync("UNDERLYING");
 
 // Account Methods
 var account_01 = await api.Account.GetAccountAsync();
-var account_02 = await api.Account.GetRateLimitsAsync();
-var account_03 = await api.Account.CreateStpGroupAsync("STP-NAME");
-var account_04 = await api.Account.GetStpGroupsAsync("STP-NAME");
-var account_05 = await api.Account.GetStpGroupUsersAsync(1_000_000_001);
-var account_06 = await api.Account.AddUserToStpGroupAsync(1_000_000_001, []);
-var account_07 = await api.Account.RemoveUserToStpGroupAsync(1_000_000_001, 2_000_000_001);
-var account_08 = await api.Account.SetGtDeductionAsync(true);
-var account_09 = await api.Account.GetGtDeductionAsync();
+var account_02 = await api.Account.GetMainKeysAsync();
+var account_03 = await api.Account.GetRateLimitsAsync();
+var account_04 = await api.Account.CreateStpGroupAsync(new GateAccountStpGroupRequest { Name = "STP-NAME" });
+var account_05 = await api.Account.GetStpGroupsAsync(new GateAccountStpGroupQueryRequest { Name = "STP-NAME" });
+var account_06 = await api.Account.GetStpGroupUsersAsync(1_000_000_001);
+var account_07 = await api.Account.AddUsersToStpGroupAsync(1_000_000_001, new GateAccountStpGroupUsersRequest { UserIds = new[] { 2_000_000_001L } });
+var account_08 = await api.Account.RemoveUsersFromStpGroupAsync(1_000_000_001, new GateAccountStpGroupUsersRequest { UserIds = new[] { 2_000_000_001L } });
+var account_09 = await api.Account.SetDebitFeeAsync(new GateAccountDebitFeeRequest { Enabled = true });
+var account_10 = await api.Account.GetDebitFeeAsync();
 
 // Rebate Methods
 var rebate_01 = await api.Rebate.GetTransactionHistoryAsync();

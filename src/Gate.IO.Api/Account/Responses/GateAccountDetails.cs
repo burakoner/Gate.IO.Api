@@ -15,13 +15,23 @@ public record GateAccountDetails
     /// IP whitelist
     /// </summary>
     [JsonProperty("ip_whitelist")]
-    public List<string> IpWhitelist { get; set; }
+    public List<string> IpWhitelist { get; set; } = [];
 
     /// <summary>
     /// CurrencyPair whitelisting
     /// </summary>
     [JsonProperty("currency_pairs")]
-    public List<string> Symbols { get; set; }
+    public List<string> CurrencyPairs { get; set; } = [];
+
+    /// <summary>
+    /// CurrencyPair whitelisting
+    /// </summary>
+    [JsonIgnore]
+    public List<string> Symbols
+    {
+        get => CurrencyPairs;
+        set => CurrencyPairs = value;
+    }
 
     /// <summary>
     /// User VIP level
@@ -33,7 +43,7 @@ public record GateAccountDetails
     /// API Key detail
     /// </summary>
     [JsonProperty("key")]
-    public GateAccountDetailsKey ApiKey { get; set; }
+    public GateAccountDetailsKey ApiKey { get; set; } = null!;
 
     /// <summary>
     /// User role

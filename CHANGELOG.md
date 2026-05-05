@@ -1,6 +1,14 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated account endpoints against the current Gate API v4 Account documentation.
+    * Added `GetMainKeysAsync` for `GET /account/main_keys` with `GateAccountKeyInfo`, API key permission, and API key state models.
+    * Added `Account/Requests` request models for STP group create/query, STP group user add/remove, and GT fee deduction calls.
+    * Added request-object overloads for STP group create/query, STP group user add/remove, and GT fee deduction updates.
+    * Added correctly named `AddUsersToStpGroupAsync`, `RemoveUserFromStpGroupAsync`, `RemoveUsersFromStpGroupAsync`, `GetDebitFeeAsync`, and `SetDebitFeeAsync` while preserving the existing compatibility methods.
+    * Updated STP group user removal to support multiple documented `user_id` values as a comma-separated query parameter.
+    * Updated Account response models with `CurrencyPairs`, `CreatorId`, main-key permission sections, and the documented legacy unified API key mode while preserving old aliases.
+    * Updated examples and README with Account request-object overload usage.
   * Updated options endpoints against the current Gate API v4 Options documentation.
     * Added request-object overloads for options contract, settlement, user settlement, order book, candlestick, trade, account-book, position, liquidation, order, cancel-order, countdown cancel-all, user trade, and MMP settings calls.
     * Added `Options/Requests` request models for the new Options client overloads.

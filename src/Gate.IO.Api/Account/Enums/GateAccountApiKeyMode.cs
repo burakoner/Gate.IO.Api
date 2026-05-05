@@ -12,7 +12,13 @@ public enum GateAccountApiKeyMode : byte
     ClassicAccount = 1,
 
     /// <summary>
-    /// portfolio margin account
+    /// Legacy unified mode
+    /// </summary>
+    [Map("2")]
+    LegacyUnifiedAccount = 2,
+
+    /// <summary>
+    /// Legacy name for unified account mode
     /// </summary>
     [Map("2")]
     PortfolioMarginAccount = 2,
