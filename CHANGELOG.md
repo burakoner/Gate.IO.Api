@@ -1,6 +1,14 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added EarnUni REST API support against the current Gate API v4 EarnUni documentation.
+    * Added `api.EarnUni` and a new `EarnUni` module with client, enum, request, and response models.
+    * Covered lending currencies, lending orders, lending records, total interest, interest records, interest status, annualized chart, and estimated-rate endpoints.
+    * Added request-object overloads for lend queries, lend create/update calls, lend-record queries, interest-record queries, and chart queries.
+    * Kept semantically numeric EarnUni amounts, rates, and chart values as decimal public properties while supporting Gate's numeric string responses.
+    * Sent EarnUni time filters as Unix seconds and preserved millisecond response timestamp deserialization through the existing date converter.
+    * Updated examples and README with EarnUni request-object overload usage.
+    * Removed the obsolete `SYNC.md` workspace sync note.
   * Updated rebate endpoints against the current Gate API v4 Rebate documentation.
     * Fixed agency transaction and commission history methods to deserialize the documented `total`/`list` response objects instead of lists.
     * Added `Rebate/Requests` request models for transaction history, commission history, broker history, partner subordinate lists, user subordinate relationships, and partner aggregated data.

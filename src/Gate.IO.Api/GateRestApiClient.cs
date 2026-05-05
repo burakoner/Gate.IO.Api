@@ -64,7 +64,11 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     public GateOptionsRestApiClient Options { get; } // 4.105.4
 
-    // TODO: EarnUni
+    /// <summary>
+    /// EarnUni Client
+    /// </summary>
+    public GateEarnUniRestApiClient EarnUni { get; } // 4.105.4
+
     // TODO: Collateral-loan
     // TODO: Multi-collateral-loan
     // TODO: Earn
@@ -124,6 +128,7 @@ public class GateRestApiClient : RestApiClient
         TradFi = new GateTradFiRestApiClient(this);
 
         Options = new GateOptionsRestApiClient(this);
+        EarnUni = new GateEarnUniRestApiClient(this);
         Account = new GateAccountRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);
     }

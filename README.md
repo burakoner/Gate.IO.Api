@@ -439,6 +439,19 @@ var options_28 = await api.Options.GetMMPAsync("UNDERLYING");
 var options_29 = await api.Options.SetMMPAsync(new GateOptionsMMPRequest { Underlying = "UNDERLYING", Window = 5000, FrozenPeriod = 200, QuantityLimit = 10.0m, DeltaLimit = 10.0m });
 var options_30 = await api.Options.ResetMMPAsync("UNDERLYING");
 
+// EarnUni Methods
+var earnuni_01 = await api.EarnUni.GetCurrenciesAsync();
+var earnuni_02 = await api.EarnUni.GetCurrencyAsync("USDT");
+var earnuni_03 = await api.EarnUni.GetLendsAsync(new GateEarnUniLendQueryRequest { Currency = "USDT", Limit = 100 });
+var earnuni_04 = await api.EarnUni.CreateLendAsync(new GateEarnUniLendRequest { Currency = "USDT", Amount = 100.0m, Type = GateEarnUniLendOperationType.Lend, MinimumRate = 0.0001m });
+var earnuni_05 = await api.EarnUni.UpdateLendAsync(new GateEarnUniLendUpdateRequest { Currency = "USDT", MinimumRate = 0.0001m });
+var earnuni_06 = await api.EarnUni.GetLendRecordsAsync(new GateEarnUniLendRecordQueryRequest { Currency = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Type = GateEarnUniLendOperationType.Lend });
+var earnuni_07 = await api.EarnUni.GetInterestAsync("USDT");
+var earnuni_08 = await api.EarnUni.GetInterestRecordsAsync(new GateEarnUniInterestRecordQueryRequest { Currency = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+var earnuni_09 = await api.EarnUni.GetInterestStatusAsync("USDT");
+var earnuni_10 = await api.EarnUni.GetChartAsync(new GateEarnUniChartQueryRequest { Asset = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+var earnuni_11 = await api.EarnUni.GetEstimatedRatesAsync();
+
 // Account Methods
 var account_01 = await api.Account.GetAccountAsync();
 var account_02 = await api.Account.GetMainKeysAsync();
