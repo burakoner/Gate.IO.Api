@@ -33,11 +33,13 @@ public record GateUnifiedLoan
     /// Create time
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 
     /// <summary>
     /// Last update time
     /// </summary>
     [JsonProperty("update_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? UpdateTime { get; set; }
 }

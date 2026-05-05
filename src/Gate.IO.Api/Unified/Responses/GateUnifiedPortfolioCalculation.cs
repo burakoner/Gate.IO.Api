@@ -28,7 +28,17 @@ public record GateUnifiedPortfolioCalculation
     /// Risk unit
     /// </summary>
     [JsonProperty("risk_unit")]
-    public List<GateUnifiedPortfolioCalculationRistUnit> RistUnits { get; set; } = [];
+    public List<GateUnifiedPortfolioCalculationRistUnit> RiskUnits { get; set; } = [];
+
+    /// <summary>
+    /// Risk unit
+    /// </summary>
+    [JsonIgnore]
+    public List<GateUnifiedPortfolioCalculationRistUnit> RistUnits
+    {
+        get => RiskUnits;
+        set => RiskUnits = value;
+    }
 }
 
 /// <summary>

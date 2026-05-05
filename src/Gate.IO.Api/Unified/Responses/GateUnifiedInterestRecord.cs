@@ -33,7 +33,13 @@ public record GateUnifiedInterestRecord
     /// Status
     /// </summary>
     [JsonProperty("status")]
-    public bool Success { get; set; }
+    public GateUnifiedInterestStatus Status { get; set; }
+
+    /// <summary>
+    /// Whether the deduction was successful
+    /// </summary>
+    [JsonIgnore]
+    public bool Success => Status == GateUnifiedInterestStatus.Success;
 
     /// <summary>
     /// Loan type
@@ -45,5 +51,6 @@ public record GateUnifiedInterestRecord
     /// Create time
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
 }

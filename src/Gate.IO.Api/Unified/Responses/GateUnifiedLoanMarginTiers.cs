@@ -15,7 +15,7 @@ public record GateUnifiedLoanMarginTiers
     /// Tiered margin
     /// </summary>
     [JsonProperty("margin_tiers")]
-    public List<GateUnifiedLoanMarginTier> DiscountTiers { get; set; } = [];
+    public List<GateUnifiedLoanMarginTier> MarginTiers { get; set; } = [];
 }
 
 /// <summary>
@@ -51,5 +51,5 @@ public record GateUnifiedLoanMarginTier
     /// Upper Limit
     /// </summary>
     [JsonProperty("upper_limit")]
-    public decimal UpperLimit { get; set; }
+    public string UpperLimit { get; set; }
 }

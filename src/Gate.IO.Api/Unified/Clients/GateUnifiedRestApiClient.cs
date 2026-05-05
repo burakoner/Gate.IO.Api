@@ -21,12 +21,36 @@ public class GateUnifiedRestApiClient
     /// <para><a href="https://www.gate.io/docs/developers/apiv4/#get-unified-account-information" /></para>
     /// </summary>
     /// <param name="currency">Filter by asset, for example `ETH`</param>
+    /// <param name="subAccountId">Sub-account user ID</param>
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(string currency = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(string currency = null, long? subAccountId = null, CancellationToken ct = default)
+        => GetAccountInfoAsync(new GateUnifiedAccountInfoRequest
+        {
+            Currency = currency,
+            SubAccountId = subAccountId,
+        }, ct);
+
+    /// <summary>
+    /// Get unified account info
+    /// </summary>
+    /// <param name="currency">Filter by asset, for example `ETH`</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(string currency, CancellationToken ct)
+        => GetAccountInfoAsync(currency, null, ct);
+
+    /// <summary>
+    /// Get unified account info
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(GateUnifiedAccountInfoRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("currency", currency);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("sub_uid", request.SubAccountId);
 
         return _.SendRequestInternal<GateUnifiedAccountInfo>(_.GetUrl(api, v4, unified, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -76,23 +100,17 @@ public class GateUnifiedRestApiClient
     }
 
     /// <summary>
-    /// Borrow or repay
-    /// <para><a href="https://www.gate.io/docs/developers/apiv4/en/#borrow-or-repay" /></para>
+    /// Batch query unified account maximum borrowable amount
     /// </summary>
-    /// <param name="currency">Asset name, for example `ETH`</param>
-    /// <param name="quantity">Quantity</param>
-    /// <param name="text">User defined text</param>
-    /// <param name="ct">Cancellation token</param>
+    /// <param name="currencies">Specify currency names for querying in an array, maximum 10 currencies</param>
+    /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<object>> BorrowAsync(string currency, decimal quantity, string text = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateUnifiedCurrencyAmount>>> GetBatchBorrowableAsync(IEnumerable<string> currencies, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.Add("currency", currency);
-        parameters.Add("type", "borrow");
-        parameters.AddString("amount", quantity);
-        parameters.AddOptional("text", text);
+        parameters.Add("currencies", string.Join(",", currencies));
 
-        return _.SendRequestInternal<object>(_.GetUrl(api, v4, unified, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<List<GateUnifiedCurrencyAmount>>(_.GetUrl(api, v4, unified, "batch_borrowable"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -101,20 +119,53 @@ public class GateUnifiedRestApiClient
     /// </summary>
     /// <param name="currency">Asset name, for example `ETH`</param>
     /// <param name="quantity">Quantity</param>
+    /// <param name="text">User defined text</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedLoanResult>> BorrowAsync(string currency, decimal quantity, string text = null, CancellationToken ct = default)
+        => BorrowOrRepayAsync(new GateUnifiedLoanRequest
+        {
+            Currency = currency,
+            Type = GateUnifiedLoanDirection.Borrow,
+            Amount = quantity,
+            Text = text,
+        }, ct);
+
+    /// <summary>
+    /// Borrow or repay
+    /// </summary>
+    /// <param name="currency">Asset name, for example `ETH`</param>
+    /// <param name="quantity">Quantity</param>
     /// <param name="repayAll">When set to 'true,' it overrides the 'amount,' allowing for direct full repayment.</param>
     /// <param name="text">User defined text</param>
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
-    public Task<RestCallResult<object>> RepayAsync(string currency, decimal quantity, bool? repayAll = null, string text = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateUnifiedLoanResult>> RepayAsync(string currency, decimal quantity, bool? repayAll = null, string text = null, CancellationToken ct = default)
+        => BorrowOrRepayAsync(new GateUnifiedLoanRequest
+        {
+            Currency = currency,
+            Type = GateUnifiedLoanDirection.Repay,
+            Amount = quantity,
+            RepaidAll = repayAll,
+            Text = text,
+        }, ct);
+
+    /// <summary>
+    /// Borrow or repay
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedLoanResult>> BorrowOrRepayAsync(GateUnifiedLoanRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.Add("currency", currency);
-        parameters.Add("type", "repay");
-        parameters.AddString("amount", quantity);
-        parameters.AddOptional("repaid_all", repayAll);
-        parameters.AddOptional("text", text);
+        parameters.Add("currency", request.Currency);
+        parameters.AddEnum("type", request.Type);
+        parameters.AddString("amount", request.Amount);
+        parameters.AddOptional("repaid_all", request.RepaidAll);
+        parameters.AddOptional("text", request.Text);
 
-        return _.SendRequestInternal<object>(_.GetUrl(api, v4, unified, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateUnifiedLoanResult>(_.GetUrl(api, v4, unified, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -128,12 +179,27 @@ public class GateUnifiedRestApiClient
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateUnifiedLoan>>> GetLoansAsync(string currency = null, int? page = null, int? limit = null, GateUnifiedLoanType? type = null, CancellationToken ct = default)
+        => GetLoansAsync(new GateUnifiedLoanQueryRequest
+        {
+            Currency = currency,
+            Page = page,
+            Limit = limit,
+            Type = type,
+        }, ct);
+
+    /// <summary>
+    /// Get loans
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateUnifiedLoan>>> GetLoansAsync(GateUnifiedLoanQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
-        parameters.AddOptionalEnum("type", type);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
+        parameters.AddOptionalEnum("type", request.Type);
 
         return _.SendRequestInternal<List<GateUnifiedLoan>>(_.GetUrl(api, v4, unified, "loans"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -149,12 +215,27 @@ public class GateUnifiedRestApiClient
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateUnifiedLoanRecord>>> GetLoanHistoryAsync(string currency = null, GateUnifiedLoanDirection? direction = null, int? page = null, int? limit = null, CancellationToken ct = default)
+        => GetLoanHistoryAsync(new GateUnifiedLoanRecordQueryRequest
+        {
+            Currency = currency,
+            Type = direction,
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// Get loan history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateUnifiedLoanRecord>>> GetLoanHistoryAsync(GateUnifiedLoanRecordQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalEnum("type", direction);
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
+        parameters.AddOptionalEnum("type", request.Type);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
 
         return _.SendRequestInternal<List<GateUnifiedLoanRecord>>(_.GetUrl(api, v4, unified, "loan_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -172,14 +253,31 @@ public class GateUnifiedRestApiClient
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateUnifiedInterestRecord>>> GetInterestHistoryAsync(string currency = null, int? page = null, int? limit = null, GateUnifiedLoanType? type = null, DateTime? startTime = null, DateTime? endTime = null, CancellationToken ct = default)
+        => GetInterestHistoryAsync(new GateUnifiedInterestRecordQueryRequest
+        {
+            Currency = currency,
+            Page = page,
+            Limit = limit,
+            Type = type,
+            From = startTime,
+            To = endTime,
+        }, ct);
+
+    /// <summary>
+    /// Get interest history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateUnifiedInterestRecord>>> GetInterestHistoryAsync(GateUnifiedInterestRecordQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
-        parameters.AddOptionalEnum("type", type);
-        parameters.AddOptionalMilliseconds("from", startTime);
-        parameters.AddOptionalMilliseconds("to", endTime);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
+        parameters.AddOptionalEnum("type", request.Type);
+        parameters.AddOptionalSeconds("from", request.From);
+        parameters.AddOptionalSeconds("to", request.To);
 
         return _.SendRequestInternal<List<GateUnifiedInterestRecord>>(_.GetUrl(api, v4, unified, "interest_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -207,20 +305,39 @@ public class GateUnifiedRestApiClient
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
     public Task<RestCallResult<object>> SetAccountModeAsync(GateUnifiedAccountMode mode, bool? usdtFutures = null, bool? spotHedge = null, bool? useFunding = null, bool? options = null, CancellationToken ct = default)
+        => SetAccountModeAsync(new GateUnifiedAccountModeRequest
+        {
+            Mode = mode,
+            Settings = new GateUnifiedAccountModeSettings
+            {
+                UsdtFutures = usdtFutures,
+                SpotHedge = spotHedge,
+                UseFunding = useFunding,
+                Options = options,
+            },
+        }, ct);
+
+    /// <summary>
+    /// Set unified account mode
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<object>> SetAccountModeAsync(GateUnifiedAccountModeRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddEnum("mode", mode);
-        if (usdtFutures != null || spotHedge != null || useFunding != null)
+        parameters.AddEnum("mode", request.Mode);
+        if (request.Settings != null && (request.Settings.UsdtFutures != null || request.Settings.SpotHedge != null || request.Settings.UseFunding != null || request.Settings.Options != null))
         {
             var inner = new ParameterCollection();
-            inner.AddOptional("usdt_futures", usdtFutures);
-            inner.AddOptional("spot_hedge", spotHedge);
-            inner.AddOptional("use_funding", useFunding);
-            inner.AddOptional("options", options);
+            inner.AddOptional("usdt_futures", request.Settings.UsdtFutures);
+            inner.AddOptional("spot_hedge", request.Settings.SpotHedge);
+            inner.AddOptional("use_funding", request.Settings.UseFunding);
+            inner.AddOptional("options", request.Settings.Options);
             parameters.Add("settings", inner);
         }
 
-        return _.SendRequestInternal<object>(_.GetUrl(api, v4, unified, "unified_mode"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<object>(_.GetUrl(api, v4, unified, "unified_mode"), HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -254,9 +371,12 @@ public class GateUnifiedRestApiClient
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateUnifiedCurrencyDiscountTiers>>> GetCurrencyDiscountTiersAsync(CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateUnifiedCurrencyDiscountTiers>>> GetCurrencyDiscountTiersAsync(CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateUnifiedCurrencyDiscountTiers>>(_.GetUrl(api, v4, unified, "currency_discount_tiers"), HttpMethod.Get, ct, true);
+        var result = await _.SendRequestInternal<List<List<GateUnifiedCurrencyDiscountTiers>>>(_.GetUrl(api, v4, unified, "currency_discount_tiers"), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        if (!result.Success) return result.As<List<GateUnifiedCurrencyDiscountTiers>>([]);
+
+        return result.As(result.Data?.SelectMany(x => x).ToList() ?? []);
     }
 
     /// <summary>
@@ -266,22 +386,33 @@ public class GateUnifiedRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateUnifiedLoanMarginTiers>>> GetLoanMarginTiersAsync(CancellationToken ct = default)
     {
-        return _.SendRequestInternal<List<GateUnifiedLoanMarginTiers>>(_.GetUrl(api, v4, unified, "loan_margin_tiers"), HttpMethod.Get, ct, true);
+        return _.SendRequestInternal<List<GateUnifiedLoanMarginTiers>>(_.GetUrl(api, v4, unified, "loan_margin_tiers"), HttpMethod.Get, ct, false);
     }
 
     /// <summary>
     /// Portfolio Margin Calculator
     /// When inputting simulated position portfolios, each position includes the position name and quantity held, supporting markets within the range of BTC and ETH perpetual contracts, options, and spot markets.When inputting simulated orders, each order includes the market identifier, order price, and order quantity, supporting markets within the range of BTC and ETH perpetual contracts, options, and spot markets.Market orders are not included.
     /// </summary>
-    /// <param name="requests">Prtfolio Calculator Requests</param>
+    /// <param name="request">Portfolio calculator request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedPortfolioCalculation>> CalculatePortfolioAsync(GateUnifiedPortfolioCalculatorRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
+
+        return _.SendRequestInternal<GateUnifiedPortfolioCalculation>(_.GetUrl(api, v4, unified, "portfolio_calculator"), HttpMethod.Post, ct, false, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Portfolio Margin Calculator
+    /// </summary>
+    /// <param name="requests">Portfolio calculator requests</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateUnifiedPortfolioCalculation>> CalculatePortfolioAsync(IEnumerable<GateUnifiedPortfolioCalculatorRequest> requests, CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection();
-        parameters.SetBody(requests);
-
-        return _.SendRequestInternal<GateUnifiedPortfolioCalculation>(_.GetUrl(api, v4, unified, "portfolio_calculator"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return CalculatePortfolioAsync(requests?.FirstOrDefault(), ct);
     }
 
     /// <summary>
@@ -304,20 +435,12 @@ public class GateUnifiedRestApiClient
     /// </summary>
     /// <param name="currency">Filter by asset, for example `ETH`</param>
     /// <param name="ct">Cancellation token</param>
-    public async Task<RestCallResult<List<GateUnifiedLeverageSetting>>> GetLeverageSettingsAsync(string currency = null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateUnifiedLeverageSetting>>> GetLeverageSettingsAsync(string currency = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency", currency);
 
-        if (currency == null)
-        {
-            return await _.SendRequestInternal<List<GateUnifiedLeverageSetting>>(_.GetUrl(api, v4, unified, "leverage/user_currency_setting"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
-        }
-        else
-        {
-            var result = await _.SendRequestInternal<GateUnifiedLeverageSetting>(_.GetUrl(api, v4, unified, "leverage/user_currency_setting"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
-            return result.As<List<GateUnifiedLeverageSetting>>([result.Data]);
-        }
+        return _.SendRequestInternal<List<GateUnifiedLeverageSetting>>(_.GetUrl(api, v4, unified, "leverage/user_currency_setting"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -328,10 +451,22 @@ public class GateUnifiedRestApiClient
     /// <param name="leverage">Leverage</param>
     /// <param name="ct">Cancellation token</param>
     public Task<RestCallResult<object>> SetLeverageSettingsAsync(string currency, decimal leverage, CancellationToken ct = default)
+        => SetLeverageSettingsAsync(new GateUnifiedLeverageSettingRequest
+        {
+            Currency = currency,
+            Leverage = leverage,
+        }, ct);
+
+    /// <summary>
+    /// Set the leverage for an asset
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation token</param>
+    public Task<RestCallResult<object>> SetLeverageSettingsAsync(GateUnifiedLeverageSettingRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.Add("currency", currency);
-        parameters.AddString("leverage", leverage);
+        parameters.Add("currency", request.Currency);
+        parameters.AddString("leverage", request.Leverage);
 
         return _.SendRequestInternal<object>(_.GetUrl(api, v4, unified, "leverage/user_currency_setting"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -342,12 +477,12 @@ public class GateUnifiedRestApiClient
     /// <param name="currency">Currency</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateUnifiedCurrency>>> GetCurrenciesAsync(string currency=null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateUnifiedCurrency>>> GetCurrenciesAsync(string currency = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency", currency);
 
-        return _.SendRequestInternal<List<GateUnifiedCurrency>>(_.GetUrl(api, v4, unified, "currencies"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateUnifiedCurrency>>(_.GetUrl(api, v4, unified, "currencies"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -359,15 +494,30 @@ public class GateUnifiedRestApiClient
     /// <param name="limit">Maximum number of items returned. Default: 100, minimum: 1, maximum: 100</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateUnifiedHistoricalLendingRates>> GetHistoricalLendingRatesAsync(string currency,int? tier =null, int? page = null, int? limit = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateUnifiedHistoricalLendingRates>> GetHistoricalLendingRatesAsync(string currency, int? tier = null, int? page = null, int? limit = null, CancellationToken ct = default)
+        => GetHistoricalLendingRatesAsync(new GateUnifiedHistoricalLendingRatesQueryRequest
+        {
+            Currency = currency,
+            Tier = tier?.ToString(),
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// Get historical lending rates
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedHistoricalLendingRates>> GetHistoricalLendingRatesAsync(GateUnifiedHistoricalLendingRatesQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptionalString("tier", tier);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("tier", request.Tier);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
 
-        return _.SendRequestInternal<GateUnifiedHistoricalLendingRates>(_.GetUrl(api, v4, unified, "history_loan_rate"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<GateUnifiedHistoricalLendingRates>(_.GetUrl(api, v4, unified, "history_loan_rate"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -379,11 +529,36 @@ public class GateUnifiedRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateUnifiedIsSuccess>> SetCollateralCurenciesAsync(GateUnifiedCollateralType type, IEnumerable<string> enableList = null, IEnumerable<string> disableList = null, CancellationToken ct = default)
+        => SetCollateralCurrenciesAsync(type, enableList, disableList, ct);
+
+    /// <summary>
+    /// Set collateral currency
+    /// </summary>
+    /// <param name="type">Collateral Type</param>
+    /// <param name="enableList">Currency list, where collateral_type=1(custom) indicates the addition logic</param>
+    /// <param name="disableList">Disable list, indicating the disable logic</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedIsSuccess>> SetCollateralCurrenciesAsync(GateUnifiedCollateralType type, IEnumerable<string> enableList = null, IEnumerable<string> disableList = null, CancellationToken ct = default)
+        => SetCollateralCurrenciesAsync(new GateUnifiedCollateralCurrenciesRequest
+        {
+            Type = type,
+            EnableList = enableList,
+            DisableList = disableList,
+        }, ct);
+
+    /// <summary>
+    /// Set collateral currency
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedIsSuccess>> SetCollateralCurrenciesAsync(GateUnifiedCollateralCurrenciesRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddEnum("collateral_type", type);
-        parameters.AddOptional("enable_list", enableList);
-        parameters.AddOptional("disable_list", disableList);
+        parameters.AddEnum("collateral_type", request.Type);
+        parameters.AddOptional("enable_list", request.EnableList);
+        parameters.AddOptional("disable_list", request.DisableList);
 
         return _.SendRequestInternal<GateUnifiedIsSuccess>(_.GetUrl(api, v4, unified, "collateral_currencies"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }

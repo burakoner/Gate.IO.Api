@@ -51,5 +51,5 @@ public record GateUnifiedCurrencyDiscountTier
     /// Upper Limit
     /// </summary>
     [JsonProperty("upper_limit")]
-    public decimal UpperLimit { get; set; }
+    public string UpperLimit { get; set; }
 }

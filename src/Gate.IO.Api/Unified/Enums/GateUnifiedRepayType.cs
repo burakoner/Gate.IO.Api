@@ -27,5 +27,11 @@ public enum GateUnifiedRepayType : byte
     /// Automatic repayment after cancelation
     /// </summary>
     [Map("cancel_auto_repay")]
-    CancelAutoRepay = 3
+    CancelAutoRepay = 3,
+
+    /// <summary>
+    /// Cross-currency repayment
+    /// </summary>
+    [Map("different_currencies_repayment")]
+    DifferentCurrenciesRepayment = 4
 }

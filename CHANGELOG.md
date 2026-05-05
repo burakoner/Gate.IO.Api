@@ -1,6 +1,17 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated unified endpoints against the current Gate API v4 Unified documentation.
+    * Added request-object overloads for account info, borrow/repay, loans, loan history, interest history, account mode, leverage settings, historical lending rates, and collateral currency updates.
+    * Added `GetBatchBorrowableAsync` for unified account batch borrowable queries.
+    * Fixed `SetAccountModeAsync` to call `PUT /unified/unified_mode` and include nested settings such as the options switch.
+    * Updated unified interest record queries to send `from` and `to` as Unix seconds.
+    * Fixed public unified endpoints to be called without authentication for currency discount tiers, loan margin tiers, portfolio calculator, supported currencies, and historical lending rates.
+    * Flattened nested currency discount tier responses.
+    * Updated borrow/repay calls to return `GateUnifiedLoanResult`.
+    * Updated unified response models for account mode, options order loss, balance versions, interest statuses, loan timestamps, loan margin tiers, portfolio risk units, repay types, and open-ended tier limits.
+    * Added correctly spelled `SetCollateralCurrenciesAsync` while preserving the existing `SetCollateralCurenciesAsync` compatibility method.
+    * Updated examples and README with Unified request-object overload usage.
   * Updated sub-account endpoints against the current Gate API v4 SubAccount documentation.
     * Added request-object overloads for creating sub-accounts and creating/updating sub-account API keys.
     * Added `GateSubAccountCreateRequest` and `GateSubAccountApiKeyRequest` under `SubAccount/Requests`.

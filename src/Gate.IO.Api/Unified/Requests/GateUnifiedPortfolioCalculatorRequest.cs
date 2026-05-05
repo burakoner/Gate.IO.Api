@@ -45,7 +45,7 @@ public record GateUnifiedPortfolioCalculatorRequest
     /// Whether to enable spot hedging
     /// </summary>
     [JsonProperty("spot_hedge", NullValueHandling = NullValueHandling.Ignore)]
-    public bool SpotHedge { get; set; }
+    public bool? SpotHedge { get; set; }
 }
 
 /// <summary>

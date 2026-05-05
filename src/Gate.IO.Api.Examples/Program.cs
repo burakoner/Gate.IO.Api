@@ -81,21 +81,29 @@ internal class Program
         var subaccount_10 = await api.SubAccount.UnlockSubAccountAsync(1_000_000_000);
 
         // Unified Methods
-        var unified_01 = await api.Unified.GetAccountInfoAsync();
+        var unified_01 = await api.Unified.GetAccountInfoAsync(new GateUnifiedAccountInfoRequest { Currency = "CURRENCY", SubAccountId = 1_000_000_000 });
         var unified_02 = await api.Unified.GetBorrowableAsync("CURRENCY");
         var unified_03 = await api.Unified.GetTransferableAsync("CURRENCY");
-        var unified_04 = await api.Unified.BorrowAsync("CURRENCY", 100.0m);
-        var unified_05 = await api.Unified.RepayAsync("CURRENCY", 100.0m);
-        var unified_06 = await api.Unified.GetLoansAsync();
-        var unified_07 = await api.Unified.GetLoanHistoryAsync();
-        var unified_08 = await api.Unified.GetInterestHistoryAsync();
-        var unified_09 = await api.Unified.GetRiskUnitsAsync();
-        var unified_10 = await api.Unified.SetAccountModeAsync(GateUnifiedAccountMode.Portfolio);
-        var unified_11 = await api.Unified.GetAccountModeAsync();
-        var unified_12 = await api.Unified.GetEstimatedLendingRatesAsync([]);
-        var unified_13 = await api.Unified.GetLeverageConfigsAsync("CURRENCY");
-        var unified_14 = await api.Unified.GetLeverageSettingsAsync();
-        var unified_15 = await api.Unified.SetLeverageSettingsAsync("CURRENCY", 10);
+        var unified_04 = await api.Unified.GetTransferablesAsync(new List<string> { "BTC", "ETH" });
+        var unified_05 = await api.Unified.GetBatchBorrowableAsync(new List<string> { "BTC", "ETH" });
+        var unified_06 = await api.Unified.BorrowOrRepayAsync(new GateUnifiedLoanRequest { Currency = "CURRENCY", Type = GateUnifiedLoanDirection.Borrow, Amount = 100.0m, Text = "CLIENT-ID" });
+        var unified_07 = await api.Unified.RepayAsync("CURRENCY", 100.0m, true);
+        var unified_08 = await api.Unified.GetLoansAsync(new GateUnifiedLoanQueryRequest { Currency = "CURRENCY", Type = GateUnifiedLoanType.Platform });
+        var unified_09 = await api.Unified.GetLoanHistoryAsync(new GateUnifiedLoanRecordQueryRequest { Currency = "CURRENCY", Type = GateUnifiedLoanDirection.Borrow });
+        var unified_10 = await api.Unified.GetInterestHistoryAsync(new GateUnifiedInterestRecordQueryRequest { Currency = "CURRENCY", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var unified_11 = await api.Unified.GetRiskUnitsAsync();
+        var unified_12 = await api.Unified.SetAccountModeAsync(new GateUnifiedAccountModeRequest { Mode = GateUnifiedAccountMode.Portfolio, Settings = new GateUnifiedAccountModeSettings { SpotHedge = true, Options = true } });
+        var unified_13 = await api.Unified.GetAccountModeAsync();
+        var unified_14 = await api.Unified.GetEstimatedLendingRatesAsync(new List<string> { "BTC", "ETH" });
+        var unified_15 = await api.Unified.GetCurrencyDiscountTiersAsync();
+        var unified_16 = await api.Unified.GetLoanMarginTiersAsync();
+        var unified_17 = await api.Unified.CalculatePortfolioAsync(new GateUnifiedPortfolioCalculatorRequest { SpotHedge = true });
+        var unified_18 = await api.Unified.GetLeverageConfigsAsync("CURRENCY");
+        var unified_19 = await api.Unified.GetLeverageSettingsAsync();
+        var unified_20 = await api.Unified.SetLeverageSettingsAsync(new GateUnifiedLeverageSettingRequest { Currency = "CURRENCY", Leverage = 10 });
+        var unified_21 = await api.Unified.GetCurrenciesAsync();
+        var unified_22 = await api.Unified.GetHistoricalLendingRatesAsync(new GateUnifiedHistoricalLendingRatesQueryRequest { Currency = "CURRENCY", Tier = "1" });
+        var unified_23 = await api.Unified.SetCollateralCurrenciesAsync(new GateUnifiedCollateralCurrenciesRequest { Type = GateUnifiedCollateralType.Custom, EnableList = new List<string> { "BTC" }, DisableList = new List<string> { "ETH" } });
 
         // Spot Methods
         var spot_01 = await api.Spot.GetCurrenciesAsync();

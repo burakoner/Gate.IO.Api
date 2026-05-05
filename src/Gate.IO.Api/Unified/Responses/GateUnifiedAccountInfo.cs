@@ -6,6 +6,12 @@ namespace Gate.IO.Api.Unified;
 public record GateUnifiedAccountInfo
 {
     /// <summary>
+    /// Unified account mode
+    /// </summary>
+    [JsonProperty("mode")]
+    public GateUnifiedAccountMode Mode { get; set; }
+
+    /// <summary>
     /// User id
     /// </summary>
     [JsonProperty("user_id")]
@@ -107,6 +113,12 @@ public record GateUnifiedAccountInfo
     /// </summary>
     [JsonProperty("spot_order_loss")]
     public decimal TotalOrderLoss { get; set; }
+
+    /// <summary>
+    /// Option pending order loss, in USDT
+    /// </summary>
+    [JsonProperty("options_order_loss")]
+    public decimal OptionsOrderLoss { get; set; }
 
     /// <summary>
     /// Spot hedging status
@@ -251,4 +263,10 @@ public record GateIoUnifiedAccountBalance
     /// </summary>
     [JsonProperty("enabled_collateral")]
     public bool? IsCollateralEnabled { get; set; }
+
+    /// <summary>
+    /// Balance version number
+    /// </summary>
+    [JsonProperty("balance_version")]
+    public long? BalanceVersion { get; set; }
 }
