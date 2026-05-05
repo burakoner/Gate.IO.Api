@@ -1,0 +1,23 @@
+{
+  "currency": "USDT",
+  "address": "TVjsyZ7fYF3Qh7xDemoAddress",
+  "min_deposit_amount": "0.01",
+  "multichain_addresses": [
+    {
+      "chain": "TRX",
+      "address": "TVjsyZ7fYF3Qh7xDemoAddress",
+      "payment_id": "",
+      "payment_name": "",
+      "obtain_failed": 0,
+      "min_confirms": 1
+    },
+    {
+      "chain": "ETH",
+      "address": "0x0000000000000000000000000000000000000000",
+      "payment_id": "",
+      "payment_name": "",
+      "obtain_failed": 0,
+      "min_confirms": 12
+    }
+  ]
+}

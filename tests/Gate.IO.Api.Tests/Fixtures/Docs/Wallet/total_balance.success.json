@@ -1,0 +1,24 @@
+{
+  "total": {
+    "amount": "100.5",
+    "currency": "USDT",
+    "unrealised_pnl": "1.2",
+    "borrowed": "0"
+  },
+  "details": {
+    "spot": {
+      "amount": "50",
+      "currency": "USDT"
+    },
+    "margin": {
+      "amount": "10",
+      "currency": "USDT",
+      "borrowed": "2"
+    },
+    "futures": {
+      "amount": "40.5",
+      "currency": "USDT",
+      "unrealised_pnl": "1.2"
+    }
+  }
+}

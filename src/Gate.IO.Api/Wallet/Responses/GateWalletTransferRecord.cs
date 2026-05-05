@@ -27,7 +27,7 @@ public record GateWalletTransferRecord
     /// <summary>
     /// Target sub user's account
     /// </summary>
-    [JsonProperty("sub_account_type")]
+    [JsonProperty("sub_account_type"), JsonConverter(typeof(MapConverter))]
     public GateWalletSubAccountType SubAccountType { get; set; }
 
     /// <summary>
@@ -45,7 +45,7 @@ public record GateWalletTransferRecord
     /// <summary>
     /// Transfer direction. to - transfer into sub account; from - transfer out from sub account
     /// </summary>
-    [JsonProperty("direction")]
+    [JsonProperty("direction"), JsonConverter(typeof(MapConverter))]
     public GateWalletTransferDirection Direction { get; set; }
 
     /// <summary>

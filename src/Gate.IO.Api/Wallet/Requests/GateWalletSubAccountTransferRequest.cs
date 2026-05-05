@@ -20,7 +20,7 @@ public record GateWalletSubAccountTransferRequest
     /// <summary>
     /// Transfer direction
     /// </summary>
-    [JsonProperty("direction")]
+    [JsonProperty("direction"), JsonConverter(typeof(MapConverter))]
     public GateWalletTransferDirection Direction { get; set; }
 
     /// <summary>
@@ -38,6 +38,6 @@ public record GateWalletSubAccountTransferRequest
     /// <summary>
     /// Target sub-account trading account
     /// </summary>
-    [JsonProperty("sub_account_type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("sub_account_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateWalletSubAccountType? SubAccountType { get; set; }
 }

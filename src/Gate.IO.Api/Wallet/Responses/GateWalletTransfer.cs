@@ -45,7 +45,7 @@ public record GateWalletTransfer
     /// <summary>
     /// Transfer Status
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateWalletUidTransferState Status { get; set; }
 
     /// <summary>
@@ -57,6 +57,6 @@ public record GateWalletTransfer
     /// <summary>
     /// Order Type
     /// </summary>
-    [JsonProperty("transaction_type")]
+    [JsonProperty("transaction_type"), JsonConverter(typeof(MapConverter))]
     public GateWalletTransferType TransferType { get; set; }
 }

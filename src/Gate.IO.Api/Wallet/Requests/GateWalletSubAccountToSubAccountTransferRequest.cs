@@ -20,7 +20,7 @@ public record GateWalletSubAccountToSubAccountTransferRequest
     /// <summary>
     /// Transfer from the account
     /// </summary>
-    [JsonProperty("sub_account_from_type")]
+    [JsonProperty("sub_account_from_type"), JsonConverter(typeof(MapConverter))]
     public GateWalletSubAccountType SenderSubAccountType { get; set; }
 
     /// <summary>
@@ -32,7 +32,7 @@ public record GateWalletSubAccountToSubAccountTransferRequest
     /// <summary>
     /// Transfer to the account
     /// </summary>
-    [JsonProperty("sub_account_to_type")]
+    [JsonProperty("sub_account_to_type"), JsonConverter(typeof(MapConverter))]
     public GateWalletSubAccountType RecipientSubAccountType { get; set; }
 
     /// <summary>

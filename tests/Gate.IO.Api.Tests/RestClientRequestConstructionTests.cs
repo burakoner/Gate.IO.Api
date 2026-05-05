@@ -98,6 +98,80 @@ public class RestClientRequestConstructionTests
         AssertSignedHeaders(request);
     }
 
+    [Fact]
+    public async Task Withdrawal_alias_post_request_serializes_request_object_body()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Withdrawal/withdraw.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Withdrawal.WithdrawAsync(new GateWalletWithdrawalRequest
+        {
+            Currency = "USDT",
+            Amount = 10.5m,
+            Chain = "TRX",
+            Address = "TVjsyZ7fYF3Qh7xDemoAddress",
+            Memo = "memo",
+            WithdrawalOrderId = "client-1",
+            WithdrawalId = "w1879219868",
+            AssetClass = GateWalletAssetClass.MainZone,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/withdrawals", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal("USDT", body["currency"]!.ToString());
+        Assert.Equal("10.5", body["amount"]!.ToString());
+        Assert.Equal("TRX", body["chain"]!.ToString());
+        Assert.Equal("client-1", body["withdraw_order_id"]!.ToString());
+        Assert.Equal("w1879219868", body["withdraw_id"]!.ToString());
+        Assert.Equal("SPOT", body["asset_class"]!.ToString());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_wallet_withdrawals_request_serializes_query_and_flattens_response()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Wallet/withdrawals.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Wallet.GetWithdrawalsAsync(new GateWalletWithdrawalQueryRequest
+        {
+            Currency = "USDT",
+            WithdrawalId = "w1879219868",
+            WithdrawalOrderId = "order_123456",
+            AssetClass = GateWalletAssetClass.MainZone,
+            From = DateTimeOffset.FromUnixTimeSeconds(1542000000).UtcDateTime,
+            To = DateTimeOffset.FromUnixTimeSeconds(1542003600).UtcDateTime,
+            Limit = 2,
+            Offset = 3,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.NotNull(result.Data);
+        Assert.Single(result.Data);
+        Assert.Equal("w1879219868", result.Data[0].Id);
+
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/wallet/withdrawals", request.RequestUri.AbsolutePath);
+
+        var query = ParseQuery(request.RequestUri);
+        Assert.Equal("USDT", query["currency"]);
+        Assert.Equal("w1879219868", query["withdraw_id"]);
+        Assert.Equal("order_123456", query["withdraw_order_id"]);
+        Assert.Equal("SPOT", query["asset_class"]);
+        Assert.Equal("1542000000", query["from"]);
+        Assert.Equal("1542003600", query["to"]);
+        Assert.Equal("2", query["limit"]);
+        Assert.Equal("3", query["offset"]);
+        AssertSignedHeaders(request);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {

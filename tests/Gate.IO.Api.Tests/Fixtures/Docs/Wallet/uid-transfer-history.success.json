@@ -1,0 +1,13 @@
+[
+  {
+    "id": 111,
+    "push_uid": 1132,
+    "receive_uid": 12324,
+    "currency": "BTC",
+    "amount": "1.2",
+    "status": "PENDING",
+    "create_time": 1706670777,
+    "message": "The other party has not completed KYC",
+    "transaction_type": "withdraw"
+  }
+]

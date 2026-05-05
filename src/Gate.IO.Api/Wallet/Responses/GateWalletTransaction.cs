@@ -9,7 +9,7 @@ public record GateWalletTransaction
     /// Record ID
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Hash record of the withdrawal
@@ -99,13 +99,13 @@ public record GateWalletTransaction
     /// SPOT: Main Zone
     /// PILOT: Innovation Zone
     /// </summary>
-    [JsonProperty("asset_class")]
+    [JsonProperty("asset_class"), JsonConverter(typeof(MapConverter))]
     public GateWalletAssetClass? AssetClass { get; set; }
 
     /// <summary>
     /// Record status.
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateWalletWithdrawalStatus Status { get; set; }
 
     /// <summary>

@@ -14,13 +14,13 @@ public record GateWalletTransferRequest
     /// <summary>
     /// Account to transfer from
     /// </summary>
-    [JsonProperty("from")]
+    [JsonProperty("from"), JsonConverter(typeof(MapConverter))]
     public GateWalletAccountType From { get; set; }
 
     /// <summary>
     /// Account to transfer to
     /// </summary>
-    [JsonProperty("to")]
+    [JsonProperty("to"), JsonConverter(typeof(MapConverter))]
     public GateWalletAccountType To { get; set; }
 
     /// <summary>

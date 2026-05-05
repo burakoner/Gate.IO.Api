@@ -1,0 +1,19 @@
+[
+  [
+    {
+      "id": "w1879219868",
+      "txid": "128988928203223323290",
+      "withdraw_order_id": "order_123456",
+      "timestamp": "1542000000",
+      "amount": "222.61",
+      "fee": "1.2",
+      "currency": "USDT",
+      "address": "1HkxtBAMrA3tP5ENnYY2CZortjZvFDH5Cs",
+      "status": "DONE",
+      "chain": "TRX",
+      "memo": "",
+      "withdraw_id": "w1879219868",
+      "asset_class": "SPOT"
+    }
+  ]
+]

@@ -44,7 +44,7 @@ public record GateWalletWithdrawalRequest
     /// <summary>
     /// The currency type of withdrawal record is empty by default. It supports users to query the withdrawal records in the main and innovation areas on demand.
     /// </summary>
-    [JsonProperty("asset_class", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("asset_class", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateWalletAssetClass? AssetClass { get; set; }
 
     /// <summary>

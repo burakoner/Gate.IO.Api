@@ -6,8 +6,8 @@ namespace Gate.IO.Api.Wallet;
 public record GateWalletTransferId
 {
     /// <summary>
-    /// Id
+    /// Order ID
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 }

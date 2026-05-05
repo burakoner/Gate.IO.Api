@@ -1,6 +1,12 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Wallet and Withdrawal REST contract tests.
+    * Added documented Wallet and Withdrawal response fixtures plus a captured public Wallet currency-chain fixture.
+    * Added contract tests for Wallet transactions, transfer records, balances, fees, withdrawal status, deposit addresses, currency chains, and UID transfer history.
+    * Added public Wallet integration smoke tests for `GET /wallet/currency_chains` behind the existing opt-in live-test switch.
+    * Added request construction tests for the `Withdrawal` alias and Wallet withdrawal query flattening.
+    * Corrected Wallet withdrawal and transfer ID models to match Gate's documented string ID fields and added mapped enum converters for Wallet request/response enum properties.
   * Added centralized logging tests.
     * Covered shared REST success and failure logging plus WebSocket unsubscribe logging for disconnected sockets.
   * Added converter behavior tests.
