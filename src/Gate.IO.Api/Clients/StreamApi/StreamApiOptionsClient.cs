@@ -1,5 +1,3 @@
-﻿using Gate.IO.Api.Models.StreamApi.Options;
-using Gate.IO.Api.Options;
 using Gate.IO.Api.Options;
 
 namespace Gate.IO.Api.Clients.StreamApi;
@@ -92,45 +90,45 @@ public class StreamApiOptionsClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsMarkPriceChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToSettlementsAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<OptionsStreamSettlement>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToSettlementsAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateOptionsStreamSettlement>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamSettlement>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamSettlement>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsSettlementsChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
     
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractsAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<OptionsStreamContract>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractsAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateOptionsStreamContract>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamContract>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamContract>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsContractsChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, Action<WebSocketDataEvent<OptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractCandlesticksAsync(string contract, GateOptionsCandlestickInterval interval, Action<WebSocketDataEvent<GateOptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(MapConverter.GetString(interval));
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsContractCandlesticksChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
     
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, Action<WebSocketDataEvent<OptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUnderlyingCandlesticksAsync(string underlying, GateOptionsCandlestickInterval interval, Action<WebSocketDataEvent<GateOptionsStreamCandlestick>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(MapConverter.GetString(interval));
         payload.Add(underlying);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUnderlyingCandlesticksChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<OptionsStreamBookTicker>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookTickersAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateOptionsStreamBookTicker>> onMessage, CancellationToken ct = default)
     {
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamBookTicker>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookTicker>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookTickerChannel, contracts, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string contract, int interval, int level, Action<WebSocketDataEvent<OptionsStreamBookDifference>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string contract, int interval, int level, Action<WebSocketDataEvent<GateOptionsStreamBookDifference>> onMessage, CancellationToken ct = default)
     {
         interval.ValidateIntValues(nameof(interval), 100, 1000);
         level.ValidateIntValues(nameof(level), 5, 10, 20, 50);
@@ -140,11 +138,11 @@ public class StreamApiOptionsClient
         payload.Add($"{interval}ms");
         payload.Add(level.ToString());
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamBookDifference>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookDifference>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookUpdateChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, int level, Action<WebSocketDataEvent<OptionsStreamBookSnapshot>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, int level, Action<WebSocketDataEvent<GateOptionsStreamBookSnapshot>> onMessage, CancellationToken ct = default)
     {
         level.ValidateIntValues(nameof(level), 1, 5, 10, 20, 50);
 
@@ -153,7 +151,7 @@ public class StreamApiOptionsClient
         payload.Add(level.ToString());
         payload.Add("0");
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<OptionsStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
@@ -183,56 +181,56 @@ public class StreamApiOptionsClient
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserTradesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(long userId, string contract, Action<WebSocketDataEvent<OptionsStreamUserLiquidation>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserLiquidationsAsync(long userId, string contract, Action<WebSocketDataEvent<GateOptionsStreamUserLiquidation>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamUserLiquidation>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamUserLiquidation>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserLiquidatesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserSettlementsAsync(long userId, string contract, Action<WebSocketDataEvent<OptionsStreamUserSettlement>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserSettlementsAsync(long userId, string contract, Action<WebSocketDataEvent<GateOptionsStreamUserSettlement>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamUserSettlement>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamUserSettlement>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserSettlementsChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionClosesAsync(long userId, string contract, Action<WebSocketDataEvent<OptionsStreamPositionClose>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionClosesAsync(long userId, string contract, Action<WebSocketDataEvent<GateOptionsStreamPositionClose>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamPositionClose>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamPositionClose>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserPositionClosesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(long userId, Action<WebSocketDataEvent<OptionsStreamBalance>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserBalancesAsync(long userId, Action<WebSocketDataEvent<GateOptionsStreamBalance>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamBalance>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamBalance>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserBalancesChannel, payload, true, handler, ct).ConfigureAwait(false);
     }
 
-    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(long userId, string contract, Action<WebSocketDataEvent<OptionsStreamPosition>> onMessage, CancellationToken ct = default)
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(long userId, string contract, Action<WebSocketDataEvent<GateOptionsStreamPosition>> onMessage, CancellationToken ct = default)
     {
         var payload = new List<string>();
         payload.Add(userId.ToString());
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<OptionsStreamPosition>>>>(data =>
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamPosition>>>>(data =>
         { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUserPositionsChannel, payload, true, handler, ct).ConfigureAwait(false);
     }

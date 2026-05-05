@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public  class SpotStreamBookSnapshot
+public  class GateSpotStreamBookSnapshot
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]

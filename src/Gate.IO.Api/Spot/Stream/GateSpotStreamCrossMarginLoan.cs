@@ -1,13 +1,10 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public  class SpotStreamCrossMarginBalance
+public  class GateSpotStreamCrossMarginLoan
 {
     [JsonProperty("timestamp")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Timestamp { get; set; }
-
-    [JsonProperty("timestamp_ms")]
-    public long TimeInMilliseconds { get; set; }
 
     [JsonProperty("user")]
     public long UserId { get; set; }
@@ -23,4 +20,10 @@ public  class SpotStreamCrossMarginBalance
 
     [JsonProperty("available")]
     public decimal Available { get; set; }
+
+    [JsonProperty("borrowed")]
+    public decimal Borrowed { get; set; }
+
+    [JsonProperty("interest")]
+    public decimal Interest { get; set; }
 }

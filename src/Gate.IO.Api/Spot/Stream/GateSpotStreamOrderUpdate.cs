@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public  class SpotStreamOrderUpdate
+public  class GateSpotStreamOrderUpdate
 {
     [JsonProperty("id")]
     public long OrderId { get; set; }

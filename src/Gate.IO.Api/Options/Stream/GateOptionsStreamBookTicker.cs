@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Options;
 
-public  class SpotStreamBookTicker
+public  class GateOptionsStreamBookTicker
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]

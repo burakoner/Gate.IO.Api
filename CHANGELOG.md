@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Moved Spot and Options stream models into their owning module folders.
+    * Moved Spot stream payload models from `Models/StreamApi/Spot` to `Spot/Stream` and renamed them from `SpotStream*` to `GateSpotStream*`.
+    * Moved Options stream payload models from `Models/StreamApi/Options` to `Options/Stream` and renamed them from `OptionsStream*` to `GateOptionsStream*`.
+    * Updated stream client subscriptions to use the new module namespaces and model names while leaving the root `Models/StreamApi` request/response/status/latency models in place.
   * Added Bot REST API support against the current Gate API v4 Bot documentation.
     * Added `api.Bot` and a new `Bot` module with client, enum, request, and response models.
     * Covered AIHub strategy recommendations, spot grid, margin grid, infinite grid, futures grid, spot martingale, contract martingale, running strategy list, strategy detail, and strategy stop endpoints.

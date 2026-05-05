@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public record SpotStreamTicker
+public record GateSpotStreamTicker
 {
     /// <summary>
     /// Currency pair

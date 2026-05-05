@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Options;
+namespace Gate.IO.Api.Options;
 
-public record OptionsStreamUserSettlement
+public record GateOptionsStreamUserSettlement
 {
     [JsonProperty("contract")]
     public string Contract { get; set; }

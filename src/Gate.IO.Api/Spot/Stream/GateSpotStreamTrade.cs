@@ -1,8 +1,8 @@
 using Gate.IO.Api.Spot;
 
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public record SpotStreamTrade
+public record GateSpotStreamTrade
 {
     /// <summary>
     /// Trade ID

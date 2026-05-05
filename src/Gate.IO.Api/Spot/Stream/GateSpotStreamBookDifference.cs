@@ -1,6 +1,8 @@
-namespace Gate.IO.Api.Models.StreamApi.Options;
+using Gate.IO.Api.Spot;
 
-public record OptionsStreamBookDifference
+namespace Gate.IO.Api.Spot;
+
+public  class GateSpotStreamBookDifference
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]
@@ -19,8 +21,8 @@ public record OptionsStreamBookDifference
     public long OrderBookLastUpdateId { get; set; }
 
     [JsonProperty("b", NullValueHandling = NullValueHandling.Ignore)]
-    public List<GateOptionsOrderBookEntry> Bids { get; set; }=[];
+    public List<GateSpotOrderBookEntry> Bids { get; set; }=[];
 
     [JsonProperty("a", NullValueHandling = NullValueHandling.Ignore)]
-    public List<GateOptionsOrderBookEntry> Asks { get; set; }=[];
+    public List<GateSpotOrderBookEntry> Asks { get; set; }=[];
 }

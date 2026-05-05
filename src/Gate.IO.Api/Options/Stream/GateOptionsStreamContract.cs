@@ -1,9 +1,9 @@
-namespace Gate.IO.Api.Models.StreamApi.Options;
+namespace Gate.IO.Api.Options;
 
 /// <summary>
 /// Represents an options contract stream object with detailed contract information.
 /// </summary>
-public record OptionsStreamContract
+public record GateOptionsStreamContract
 {
     /// <summary>
     /// The contract symbol or identifier.

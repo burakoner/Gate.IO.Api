@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public  class SpotStreamCandlestick
+public  class GateSpotStreamCandlestick
 {
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]

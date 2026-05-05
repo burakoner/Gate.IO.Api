@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Options;
 
 /// <summary>
-/// OptionsStreamUnderlyingTrade
+/// GateOptionsStreamUnderlyingTrade
 /// </summary>
 public record GateOptionsStreamUnderlyingTrade
 {

@@ -1,6 +1,6 @@
-namespace Gate.IO.Api.Models.StreamApi.Spot;
+namespace Gate.IO.Api.Spot;
 
-public  class SpotStreamMarginBalance
+public  class GateSpotStreamUserBalance
 {
     [JsonProperty("timestamp")]
     [JsonConverter(typeof(DateTimeConverter))]
@@ -15,21 +15,21 @@ public  class SpotStreamMarginBalance
     [JsonProperty("currency")]
     public string Currency { get; set; }
     
-    [JsonProperty("currency_pair")]
-    public string Symbol { get; set; }
-
     [JsonProperty("change")]
     public decimal Change { get; set; }
     
+    [JsonProperty("total")]
+    public decimal Total { get; set; }
+    
     [JsonProperty("available")]
     public decimal Available { get; set; }
-
+    
     [JsonProperty("freeze")]
     public decimal Freeze { get; set; }
-
-    [JsonProperty("borrowed")]
-    public decimal Borrowed { get; set; }
-
-    [JsonProperty("interest")]
-    public decimal Interest { get; set; }
+    
+    [JsonProperty("freeze_change")]
+    public decimal FreezeChange { get; set; }
+    
+    [JsonProperty("change_type")]
+    public GateSpotBalanceChangeType ChangeType { get; set; }
 }
