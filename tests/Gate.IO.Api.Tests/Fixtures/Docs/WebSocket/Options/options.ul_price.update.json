@@ -1,0 +1,11 @@
+{
+  "time": 1630576356,
+  "channel": "options.ul_price",
+  "event": "update",
+  "result": {
+    "underlying": "BTC_USDT",
+    "price": 49653.24,
+    "time": 1639143988,
+    "time_ms": 1639143988931
+  }
+}

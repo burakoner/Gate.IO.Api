@@ -1,0 +1,15 @@
+{
+  "channel": "options.liquidates",
+  "event": "update",
+  "time": 1630654851,
+  "result": [
+    {
+      "user": "1001",
+      "init_margin": 1190,
+      "maint_margin": 1042.5,
+      "order_margin": 0,
+      "time": 1639051907,
+      "time_ms": 1639051907000
+    }
+  ]
+}

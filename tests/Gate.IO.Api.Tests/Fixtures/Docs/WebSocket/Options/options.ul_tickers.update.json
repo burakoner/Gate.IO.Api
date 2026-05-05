@@ -1,0 +1,11 @@
+{
+  "time": 1630576352,
+  "channel": "options.ul_tickers",
+  "event": "update",
+  "result": {
+    "trade_put": 800,
+    "trade_call": 41700,
+    "index_price": "50695.43",
+    "name": "BTC_USDT"
+  }
+}

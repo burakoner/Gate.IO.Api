@@ -1,0 +1,19 @@
+{
+  "channel": "options.user_settlements",
+  "event": "update",
+  "time": 1639051907,
+  "result": [
+    {
+      "contract": "BTC_USDT-20211130-65000-C",
+      "realised_pnl": -13.028,
+      "settle_price": 70000,
+      "settle_profit": 5,
+      "size": 10,
+      "strike_price": 65000,
+      "underlying": "BTC_USDT",
+      "user": "9001",
+      "time": 1639051907,
+      "time_ms": 1639051907000
+    }
+  ]
+}

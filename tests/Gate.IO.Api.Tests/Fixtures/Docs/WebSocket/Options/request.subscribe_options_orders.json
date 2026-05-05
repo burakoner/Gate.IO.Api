@@ -1,0 +1,15 @@
+{
+  "time": 1630654851,
+  "id": 4002,
+  "channel": "options.orders",
+  "event": "subscribe",
+  "payload": [
+    "1001",
+    "BTC_USDT-20211130-65000-C"
+  ],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

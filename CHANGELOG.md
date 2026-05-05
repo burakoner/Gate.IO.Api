@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Options WebSocket contract tests.
+    * Added documented Options WebSocket fixtures for subscription envelopes, public ticker/trade/price/settlement/contract/candlestick/order-book streams, and private order/trade/liquidation/settlement/position/balance streams.
+    * Added serialization and validation coverage for Options WebSocket public subscribe payloads, private authenticated payloads, and documented order book interval/level limits.
   * Added TradFi WebSocket contract tests.
     * Added documented TradFi WebSocket fixtures for subscription envelopes, ticker, candlestick, best bid/ask, user order, user position, and user balance streams.
     * Added serialization coverage for TradFi WebSocket public object payloads, public array payloads, and private authenticated empty-array subscribe requests.

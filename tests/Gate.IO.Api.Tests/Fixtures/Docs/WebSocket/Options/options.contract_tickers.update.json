@@ -1,0 +1,25 @@
+{
+  "time": 1630576352,
+  "channel": "options.contract_tickers",
+  "event": "update",
+  "result": {
+    "name": "BTC_USDT-20211231-59800-P",
+    "last_price": "11349.5",
+    "mark_price": "11170.19",
+    "index_price": "",
+    "position_size": 993,
+    "bid1_price": "10611.7",
+    "bid1_size": 100,
+    "ask1_price": "11728.7",
+    "ask1_size": 100,
+    "vega": "34.8731",
+    "theta": "-72.80588",
+    "rho": "-28.53331",
+    "gamma": "0.00003",
+    "delta": "-0.78311",
+    "mark_iv": "0.86695",
+    "bid_iv": "0.65481",
+    "ask_iv": "0.88145",
+    "leverage": "3.5541112718136"
+  }
+}

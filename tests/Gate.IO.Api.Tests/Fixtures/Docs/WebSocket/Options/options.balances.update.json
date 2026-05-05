@@ -1,0 +1,16 @@
+{
+  "channel": "options.balances",
+  "event": "update",
+  "time": 1630654851,
+  "result": [
+    {
+      "balance": 60.79009,
+      "change": -0.5,
+      "text": "BTC_USDT-20211130-55000-P",
+      "type": "set",
+      "user": "11001",
+      "time": 1639051907,
+      "time_ms": 1639051907000
+    }
+  ]
+}

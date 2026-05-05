@@ -1,0 +1,11 @@
+{
+  "time": 1630654851,
+  "time_ms": 1630654851123,
+  "id": 4002,
+  "channel": "options.orders",
+  "event": "subscribe",
+  "error": null,
+  "result": {
+    "status": "success"
+  }
+}

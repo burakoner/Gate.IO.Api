@@ -1,0 +1,18 @@
+{
+  "channel": "options.position_closes",
+  "event": "update",
+  "time": 1630654851,
+  "result": [
+    {
+      "contract": "BTC_USDT-20211130-50000-C",
+      "pnl": -0.0056,
+      "settle_size": 0,
+      "side": "long",
+      "text": "web",
+      "underlying": "BTC_USDT",
+      "user": "11001",
+      "time": 1639051907,
+      "time_ms": 1639051907000
+    }
+  ]
+}

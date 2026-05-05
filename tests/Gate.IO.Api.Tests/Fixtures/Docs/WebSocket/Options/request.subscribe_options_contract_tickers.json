@@ -1,0 +1,9 @@
+{
+  "time": 1630576352,
+  "id": 4001,
+  "channel": "options.contract_tickers",
+  "event": "subscribe",
+  "payload": [
+    "BTC_USDT-20211231-59800-C"
+  ]
+}

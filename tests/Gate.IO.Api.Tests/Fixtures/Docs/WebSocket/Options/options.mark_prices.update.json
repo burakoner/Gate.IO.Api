@@ -1,0 +1,11 @@
+{
+  "time": 1630576356,
+  "channel": "options.mark_prices",
+  "event": "update",
+  "result": {
+    "contract": "BTC_USDT-20211231-59800-P",
+    "price": 11021.27,
+    "time": 1639143401,
+    "time_ms": 1639143401676
+  }
+}

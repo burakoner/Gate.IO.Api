@@ -1,0 +1,17 @@
+{
+  "time": 1630654851,
+  "channel": "options.positions",
+  "event": "update",
+  "error": null,
+  "result": [
+    {
+      "entry_price": 0,
+      "realised_pnl": -13.028,
+      "size": 0,
+      "contract": "BTC_USDT-20211130-65000-C",
+      "user": "9010",
+      "time": 1639051907,
+      "time_ms": 1639051907000
+    }
+  ]
+}

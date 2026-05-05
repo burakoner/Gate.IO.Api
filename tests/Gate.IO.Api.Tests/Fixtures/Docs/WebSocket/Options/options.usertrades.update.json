@@ -1,0 +1,20 @@
+{
+  "time": 1639144214,
+  "channel": "options.usertrades",
+  "event": "update",
+  "result": [
+    {
+      "id": "1",
+      "underlying": "BTC_USDT",
+      "order": "557940",
+      "contract": "BTC_USDT-20211216-44800-C",
+      "create_time": 1639144214,
+      "create_time_ms": 1639144214583,
+      "price": "4999",
+      "role": "taker",
+      "size": -1,
+      "fee": "0.001",
+      "text": "t-xer01sax4yu"
+    }
+  ]
+}

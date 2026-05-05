@@ -1,0 +1,16 @@
+{
+  "time": 1630576356,
+  "channel": "options.trades",
+  "event": "update",
+  "result": [
+    {
+      "contract": "BTC_USDT-20211231-59800-C",
+      "create_time": 1639144526,
+      "id": 12279,
+      "price": 997.8,
+      "size": -100,
+      "create_time_ms": 1639144526597,
+      "underlying": "BTC_USDT"
+    }
+  ]
+}
