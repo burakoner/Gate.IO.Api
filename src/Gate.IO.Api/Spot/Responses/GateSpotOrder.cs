@@ -55,7 +55,7 @@ public record GateSpotOrder
     /// <summary>
     /// Order status
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderStatus Status { get; set; }
     
     /// <summary>
@@ -67,19 +67,19 @@ public record GateSpotOrder
     /// <summary>
     /// Order Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType Type { get; set; }
     
     /// <summary>
     /// Account type. spot - use spot account; margin - use margin account; cross_margin - use cross margin account. Portfolio margin account must set to &#x60;cross-margin&#x60; 
     /// </summary>
-    [JsonProperty("account")]
+    [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType Account { get; set; }
     
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
     
     /// <summary>
@@ -96,7 +96,7 @@ public record GateSpotOrder
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none Only &#x60;ioc&#x60; and &#x60;fok&#x60; are supported when &#x60;type&#x60;&#x3D;&#x60;market&#x60;
     /// </summary>
-    [JsonProperty("time_in_force")]
+    [JsonProperty("time_in_force"), JsonConverter(typeof(MapConverter))]
     public GateSpotTimeInForce TimeInForce { get; set; }
     
     /// <summary>
@@ -216,13 +216,13 @@ public record GateSpotOrder
     /// <summary>
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
-    [JsonProperty("stp_act")]
+    [JsonProperty("stp_act"), JsonConverter(typeof(MapConverter))]
     public GateSpotSelfTradeAction? SelfTradingPreventionAction { get; set; }
 
     /// <summary>
     /// Order completion statuses include:
     /// </summary>
-    [JsonProperty("finish_as")]
+    [JsonProperty("finish_as"), JsonConverter(typeof(MapConverter))]
     public GateSpotFinishAs? FinishAs { get; set; }
 
     /// <summary>
@@ -239,6 +239,6 @@ public record GateSpotOrder
     /// <summary>
     /// Processing Mode
     /// </summary>
-    [JsonProperty("action_mode")]
+    [JsonProperty("action_mode"), JsonConverter(typeof(MapConverter))]
     public GateSpotActionMode? ActionMode { get; set; }
 }

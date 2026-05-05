@@ -15,7 +15,7 @@ public record GateSpotInsurance
     /// Balance
     /// </summary>
     [JsonProperty("balance")]
-    public long Balance { get; set; }
+    public decimal Balance { get; set; }
 
     /// <summary>
     /// Creation time, timestamp, milliseconds

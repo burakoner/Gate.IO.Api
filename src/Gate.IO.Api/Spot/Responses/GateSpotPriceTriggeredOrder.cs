@@ -40,7 +40,7 @@ public record GateSpotPriceTriggeredOrder : GateSpotPriceTriggeredOrderRequest
     /// <summary>
     /// Status
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateSpotTriggerStatus Status { get; set; }
 
     /// <summary>

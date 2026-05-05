@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1432329,
+    "user": 10001,
+    "market": "GT_USDT",
+    "ctime": 1621848612,
+    "ftime": 1621858612,
+    "fired_order_id": 0,
+    "status": "open",
+    "reason": "",
+    "trigger": {
+      "price": "1.5",
+      "rule": ">=",
+      "expiration": 86400
+    },
+    "put": {
+      "type": "limit",
+      "side": "buy",
+      "price": "1.4",
+      "amount": "10",
+      "account": "normal",
+      "time_in_force": "gtc",
+      "text": "t-auto"
+    }
+  }
+]

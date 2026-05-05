@@ -1,6 +1,12 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Spot REST contract tests.
+    * Added documented Spot fixtures for currencies, currency pairs, tickers, order book, trades, candlesticks, balances, account book, orders, batch orders, open orders, trade history, fees, cancellation, countdown cancellation, insurance history, and price-triggered orders.
+    * Added live public Spot captures for GT currency details, BTC_USDT market data, server time, and insurance history.
+    * Added request construction tests for unsigned Spot market/insurance calls and signed order, order query, and price-triggered order calls.
+    * Updated Spot parsing for documented mapped enum strings and corrected public insurance history to deserialize decimal balances without authentication.
+    * Updated Unified currency discount-tier parsing to handle both the older nested documented shape and the current flat public API response.
   * Added Isolated Margin REST contract tests.
     * Added documented Isolated Margin fixtures for balances, account book, funding accounts, auto repayment, transferable/borrowable amounts, lending markets, estimate rates, loans, loan records, interest records, leverage, and lending tiers.
     * Added live public Isolated Margin captures for lending markets, a BTC_USDT market detail, and BTC_USDT loan margin tiers.

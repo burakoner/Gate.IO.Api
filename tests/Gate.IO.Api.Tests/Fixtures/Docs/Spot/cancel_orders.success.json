@@ -1,0 +1,11 @@
+[
+  {
+    "currency_pair": "BTC_USDT",
+    "id": "1852454420",
+    "text": "t-abc123",
+    "succeeded": true,
+    "label": "",
+    "message": "",
+    "account": "spot"
+  }
+]

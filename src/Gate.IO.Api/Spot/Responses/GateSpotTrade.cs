@@ -33,7 +33,7 @@ public record GateSpotTrade
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>
@@ -57,7 +57,7 @@ public record GateSpotPrivateTrade : GateSpotTrade
     /// <summary>
     /// Trade role. No value in public endpoints
     /// </summary>
-    [JsonProperty("role")]
+    [JsonProperty("role"), JsonConverter(typeof(MapConverter))]
     public GateSpotTraderRole Role { get; set; }
 
     /// <summary>

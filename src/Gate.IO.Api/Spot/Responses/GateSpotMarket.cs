@@ -80,7 +80,7 @@ public record GateSpotMarket
     /// <summary>
     /// Trading Status
     /// </summary>
-    [JsonProperty("trade_status")]
+    [JsonProperty("trade_status"), JsonConverter(typeof(MapConverter))]
     public GateSpotMarketStatus Status { get; set; }
 
     /// <summary>
@@ -107,7 +107,7 @@ public record GateSpotMarket
     /// <summary>
     /// Trading pair type, normal: normal, premarket: pre-market
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotMarketType Type { get; set; }
 
     /// <summary>

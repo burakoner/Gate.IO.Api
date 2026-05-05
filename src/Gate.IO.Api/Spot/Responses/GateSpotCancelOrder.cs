@@ -44,6 +44,6 @@ public record GateSpotCancelOrder
     /// <summary>
     /// Empty by default. If cancelled order is cross margin order, this field is set to cross_margin
     /// </summary>
-    [JsonProperty("account")]
+    [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType? Account { get; set; }
 }

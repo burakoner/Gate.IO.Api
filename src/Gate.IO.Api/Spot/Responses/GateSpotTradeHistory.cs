@@ -45,13 +45,13 @@ public record GateSpotTradeHistory
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>
     /// Trade role. No value in public endpoints
     /// </summary>
-    [JsonProperty("role")]
+    [JsonProperty("role"), JsonConverter(typeof(MapConverter))]
     public GateSpotTraderRole Role { get; set; }
 
     /// <summary>

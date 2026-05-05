@@ -1,0 +1,16 @@
+{
+  "BTC_USDT": {
+    "user_id": 10001,
+    "taker_fee": "0.001",
+    "maker_fee": "0.001",
+    "rpi_maker_fee": "0",
+    "gt_discount": true,
+    "gt_taker_fee": "0.00075",
+    "gt_maker_fee": "0.00075",
+    "loan_fee": "0.0002",
+    "point_type": 1,
+    "currency_pair": "BTC_USDT",
+    "debit_fee": 3,
+    "rpi_mm": 0
+  }
+}

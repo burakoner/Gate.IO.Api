@@ -1016,7 +1016,7 @@ public class GateSpotRestApiClient
         parameters.AddOptional("page", request.Page);
         parameters.AddOptional("limit", request.Limit);
 
-        return _.SendRequestInternal<List<GateSpotInsurance>>(_.GetUrl(api, v4, spot, "insurance_history"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotInsurance>>(_.GetUrl(api, v4, spot, "insurance_history"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>

@@ -1,0 +1,29 @@
+{
+  "currency": "GT",
+  "name": "GateToken",
+  "delisted": false,
+  "withdraw_disabled": false,
+  "withdraw_delayed": false,
+  "deposit_disabled": false,
+  "trade_disabled": false,
+  "chain": "GT",
+  "chains": [
+    {
+      "name": "GT",
+      "addr": "",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false
+    },
+    {
+      "name": "ETH",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false,
+      "addr": "0xE66747a101bFF2dBA3697199DCcE5b743b454759"
+    }
+  ],
+  "total_supply": "2100000",
+  "market_cap": "18880000",
+  "category": []
+}

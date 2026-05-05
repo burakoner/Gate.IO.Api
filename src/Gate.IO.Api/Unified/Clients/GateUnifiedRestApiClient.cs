@@ -373,10 +373,17 @@ public class GateUnifiedRestApiClient
     /// <returns></returns>
     public async Task<RestCallResult<List<GateUnifiedCurrencyDiscountTiers>>> GetCurrencyDiscountTiersAsync(CancellationToken ct = default)
     {
-        var result = await _.SendRequestInternal<List<List<GateUnifiedCurrencyDiscountTiers>>>(_.GetUrl(api, v4, unified, "currency_discount_tiers"), HttpMethod.Get, ct, false).ConfigureAwait(false);
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, unified, "currency_discount_tiers"), HttpMethod.Get, ct, false).ConfigureAwait(false);
         if (!result.Success) return result.As<List<GateUnifiedCurrencyDiscountTiers>>([]);
 
-        return result.As(result.Data?.SelectMany(x => x).ToList() ?? []);
+        if (result.Data is not JArray array)
+            return result.As<List<GateUnifiedCurrencyDiscountTiers>>([]);
+
+        var tiers = array.First?.Type == JTokenType.Array
+            ? array.ToObject<List<List<GateUnifiedCurrencyDiscountTiers>>>()?.SelectMany(x => x).ToList()
+            : array.ToObject<List<GateUnifiedCurrencyDiscountTiers>>();
+
+        return result.As(tiers ?? []);
     }
 
     /// <summary>
