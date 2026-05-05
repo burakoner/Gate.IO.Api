@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added EarnUni REST contract tests.
+    * Added documented EarnUni fixtures for lending currencies, lending orders, lend records, interest totals, interest records, compounding status, chart data, and estimated rates.
+    * Added live public EarnUni captures for the full currency list and BTC currency details.
+    * Added contract tests for documented and captured EarnUni responses, signed request construction tests for lending and interest flows, and opt-in public integration smoke tests.
   * Added Rebate REST contract tests.
     * Added documented Rebate fixtures for agency, partner, broker, user, partner application, partner eligibility, and aggregated partner data flows.
     * Added contract tests for Rebate history records, partner subordinate data, broker nested sub-broker info, user relation data, and wrapped partner response payloads.

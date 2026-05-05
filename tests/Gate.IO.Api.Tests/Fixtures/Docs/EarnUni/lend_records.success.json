@@ -1,0 +1,11 @@
+[
+  {
+    "type": "lend",
+    "currency": "BTC",
+    "amount": "1",
+    "last_wallet_amount": "0.2",
+    "last_lent_amount": "0",
+    "last_frozen_amount": "0",
+    "create_time": 1673247054000
+  }
+]

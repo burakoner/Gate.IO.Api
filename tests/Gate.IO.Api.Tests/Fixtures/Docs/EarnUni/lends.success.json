@@ -1,0 +1,14 @@
+[
+  {
+    "currency": "BTC",
+    "current_amount": "20.999992",
+    "amount": "20.999992",
+    "lent_amount": "0",
+    "frozen_amount": "0",
+    "min_rate": "0.1",
+    "interest_status": "interest_dividend",
+    "reinvest_left_amount": "0",
+    "create_time": 1673247054000,
+    "update_time": 1673247054000
+  }
+]
