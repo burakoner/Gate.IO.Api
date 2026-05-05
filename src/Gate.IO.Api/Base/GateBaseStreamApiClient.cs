@@ -259,6 +259,15 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     /// </summary>
     protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
+        var channel = GetRequestChannel(subscription.Request);
+        var requestType = subscription.Request?.GetType().Name;
+        var stopwatch = Stopwatch.StartNew();
+        Log?.LogDebug(
+            "Gate WebSocket unsubscribe started: Socket={SocketId}; Channel={Channel}; RequestType={RequestType}",
+            connection.Id,
+            channel,
+            requestType);
+
         if (subscription.Request is GateCrossExStreamRequest crossExRequest)
         {
             var crossExUnsub = new GateCrossExStreamRequest
@@ -270,7 +279,14 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             var crossExSuccess = false;
 
             if (!connection.Connected)
+            {
+                Log?.LogDebug(
+                    "Gate WebSocket unsubscribe skipped because socket is disconnected: Socket={SocketId}; Channel={Channel}; RequestType={RequestType}",
+                    connection.Id,
+                    channel,
+                    requestType);
                 return true;
+            }
 
             await connection.SendAndWaitAsync(crossExUnsub, ClientOptions.ResponseTimeout, data =>
             {
@@ -294,6 +310,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
                 return error != null && error.Type != JTokenType.Null;
             }).ConfigureAwait(false);
 
+            LogWebSocketBooleanResult("unsubscribe", channel, requestType, stopwatch, crossExSuccess);
             return crossExSuccess;
         }
 
@@ -308,7 +325,14 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             var announcementSuccess = false;
 
             if (!connection.Connected)
+            {
+                Log?.LogDebug(
+                    "Gate WebSocket unsubscribe skipped because socket is disconnected: Socket={SocketId}; Channel={Channel}; RequestType={RequestType}",
+                    connection.Id,
+                    channel,
+                    requestType);
                 return true;
+            }
 
             await connection.SendAndWaitAsync(announcementUnsub, ClientOptions.ResponseTimeout, data =>
             {
@@ -332,6 +356,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
                 return error != null && error.Type != JTokenType.Null;
             }).ConfigureAwait(false);
 
+            LogWebSocketBooleanResult("unsubscribe", channel, requestType, stopwatch, announcementSuccess);
             return announcementSuccess;
         }
 
@@ -354,7 +379,14 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         }
 
         if (!connection.Connected)
+        {
+            Log?.LogDebug(
+                "Gate WebSocket unsubscribe skipped because socket is disconnected: Socket={SocketId}; Channel={Channel}; RequestType={RequestType}",
+                connection.Id,
+                channel,
+                requestType);
             return true;
+        }
 
         await connection.SendAndWaitAsync(unsub, ClientOptions.ResponseTimeout, data =>
         {
@@ -382,6 +414,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             return false;
         }).ConfigureAwait(false);
 
+        LogWebSocketBooleanResult("unsubscribe", channel, requestType, stopwatch, success);
         return success;
     }
     #endregion
@@ -419,7 +452,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
         => BaseSubscribeAsync(url, channel, (object)payload?.ToList(), authenticated, onData, ct);
 
-    internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateStreamRequest
         {
@@ -437,10 +470,10 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             ((GateAuthentication)AuthenticationProvider).AuthenticateStreamRequest(request);
         }
 
-        return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
+        return await SendLoggedWebSocketSubscribeAsync(url, channel, "subscribe", payload, authenticated, false, request, onData, ct).ConfigureAwait(false);
     }
 
-    internal Task<CallResult<WebSocketUpdateSubscription>> AnnouncementSubscribeAsync<T>(string url, string channel, object payload, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> AnnouncementSubscribeAsync<T>(string url, string channel, object payload, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateAnnouncementStreamRequest
         {
@@ -449,13 +482,13 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             Payload = payload,
         };
 
-        return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
+        return await SendLoggedWebSocketSubscribeAsync(url, channel, request.Event, payload, false, false, request, onData, ct).ConfigureAwait(false);
     }
 
     internal Task<CallResult<WebSocketUpdateSubscription>> CrossExSubscribeAsync<T>(string url, string channel, object payload, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
         => CrossExSubscribeAsync(url, channel, payload, false, onData, ct);
 
-    internal Task<CallResult<WebSocketUpdateSubscription>> CrossExSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+    internal async Task<CallResult<WebSocketUpdateSubscription>> CrossExSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateCrossExStreamRequest
         {
@@ -464,7 +497,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             Payload = payload,
         };
 
-        return SubscribeAsync(url, request, null, authenticated, onData, ct);
+        return await SendLoggedWebSocketSubscribeAsync(url, channel, request.Event, payload, authenticated, authenticated, request, onData, ct).ConfigureAwait(false);
     }
 
     internal async Task<CallResult<T>> CrossExQueryAsync<T>(string url, string channel, string eventName, object payload)
@@ -479,7 +512,35 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             Payload = payload,
         };
 
-        return await QueryAsync<T>(url, request, authenticated).ConfigureAwait(false);
+        var stopwatch = Stopwatch.StartNew();
+        Log?.LogDebug(
+            "Gate WebSocket query started: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; PayloadType={PayloadType}; ResponseType={ResponseType}",
+            FormatWebSocketEndpoint(url),
+            channel,
+            eventName,
+            authenticated,
+            payload?.GetType().Name,
+            typeof(T).Name);
+
+        try
+        {
+            var result = await QueryAsync<T>(url, request, authenticated).ConfigureAwait(false);
+            LogWebSocketCallResult(result, "query", url, channel, eventName, authenticated, stopwatch, typeof(T).Name);
+            return result;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Log?.LogError(
+                ex,
+                "Gate WebSocket query threw an exception: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; ElapsedMilliseconds={ElapsedMilliseconds}",
+                FormatWebSocketEndpoint(url),
+                channel,
+                eventName,
+                authenticated,
+                stopwatch.ElapsedMilliseconds);
+            throw;
+        }
     }
 
     /*
@@ -528,6 +589,11 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     {
         var ping = DateTime.UtcNow;
         var sw = Stopwatch.StartNew();
+        Log?.LogDebug(
+            "Gate WebSocket ping started: Endpoint={Endpoint}; Channel={Channel}",
+            FormatWebSocketEndpoint(endpoint),
+            channel);
+
         var response = await QueryAsync<GateStreamResponse<string>>(endpoint, new GateStreamRequest
         {
             Id = NextId(),
@@ -536,7 +602,23 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         var pong = DateTime.UtcNow;
         sw.Stop();
 
-        if (!response.Success) return new CallResult<GateStreamLatency>(response.Error);
+        if (!response.Success)
+        {
+            Log?.LogWarning(
+                "Gate WebSocket ping failed: Endpoint={Endpoint}; Channel={Channel}; ElapsedMilliseconds={ElapsedMilliseconds}; Error={Error}",
+                FormatWebSocketEndpoint(endpoint),
+                channel,
+                sw.ElapsedMilliseconds,
+                response.Error);
+            return new CallResult<GateStreamLatency>(response.Error);
+        }
+
+        Log?.LogDebug(
+            "Gate WebSocket ping succeeded: Endpoint={Endpoint}; Channel={Channel}; ElapsedMilliseconds={ElapsedMilliseconds}",
+            FormatWebSocketEndpoint(endpoint),
+            channel,
+            sw.ElapsedMilliseconds);
+
         return new CallResult<GateStreamLatency>(new GateStreamLatency
         {
             PingTime = ping,
@@ -592,6 +674,121 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         }).ConfigureAwait(false);
 
         return result ?? new CallResult<bool>(new ServerError("CrossEx WebSocket login timed out."));
+    }
+
+    private async Task<CallResult<WebSocketUpdateSubscription>> SendLoggedWebSocketSubscribeAsync<T>(
+        string url,
+        string channel,
+        string eventName,
+        object payload,
+        bool authenticated,
+        bool connectionAuthenticated,
+        object request,
+        Action<WebSocketDataEvent<T>> onData,
+        CancellationToken ct)
+    {
+        var stopwatch = Stopwatch.StartNew();
+        Log?.LogDebug(
+            "Gate WebSocket subscribe started: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; PayloadType={PayloadType}",
+            FormatWebSocketEndpoint(url),
+            channel,
+            eventName,
+            authenticated,
+            payload?.GetType().Name);
+
+        try
+        {
+            var result = await SubscribeAsync(url, request, null, connectionAuthenticated, onData, ct).ConfigureAwait(false);
+            LogWebSocketCallResult(result, "subscribe", url, channel, eventName, authenticated, stopwatch, nameof(WebSocketUpdateSubscription));
+            return result;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Log?.LogError(
+                ex,
+                "Gate WebSocket subscribe threw an exception: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; ElapsedMilliseconds={ElapsedMilliseconds}",
+                FormatWebSocketEndpoint(url),
+                channel,
+                eventName,
+                authenticated,
+                stopwatch.ElapsedMilliseconds);
+            throw;
+        }
+    }
+
+    private void LogWebSocketCallResult<T>(CallResult<T> result, string operation, string url, string channel, string eventName, bool authenticated, Stopwatch stopwatch, string responseType)
+    {
+        stopwatch.Stop();
+        if (result.Success)
+        {
+            Log?.LogDebug(
+                "Gate WebSocket {Operation} succeeded: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; ElapsedMilliseconds={ElapsedMilliseconds}; ResponseType={ResponseType}",
+                operation,
+                FormatWebSocketEndpoint(url),
+                channel,
+                eventName,
+                authenticated,
+                stopwatch.ElapsedMilliseconds,
+                responseType);
+        }
+        else
+        {
+            Log?.LogWarning(
+                "Gate WebSocket {Operation} failed: Endpoint={Endpoint}; Channel={Channel}; Event={Event}; Authenticated={Authenticated}; ElapsedMilliseconds={ElapsedMilliseconds}; Error={Error}",
+                operation,
+                FormatWebSocketEndpoint(url),
+                channel,
+                eventName,
+                authenticated,
+                stopwatch.ElapsedMilliseconds,
+                result.Error);
+        }
+    }
+
+    private void LogWebSocketBooleanResult(string operation, string channel, string requestType, Stopwatch stopwatch, bool success)
+    {
+        stopwatch.Stop();
+        if (success)
+        {
+            Log?.LogDebug(
+                "Gate WebSocket {Operation} succeeded: Channel={Channel}; RequestType={RequestType}; ElapsedMilliseconds={ElapsedMilliseconds}",
+                operation,
+                channel,
+                requestType,
+                stopwatch.ElapsedMilliseconds);
+        }
+        else
+        {
+            Log?.LogWarning(
+                "Gate WebSocket {Operation} failed: Channel={Channel}; RequestType={RequestType}; ElapsedMilliseconds={ElapsedMilliseconds}",
+                operation,
+                channel,
+                requestType,
+                stopwatch.ElapsedMilliseconds);
+        }
+    }
+
+    private static string GetRequestChannel(object request)
+    {
+        if (request is GateCrossExStreamRequest crossExRequest)
+            return crossExRequest.Channel;
+
+        if (request is GateAnnouncementStreamRequest announcementRequest)
+            return announcementRequest.Channel;
+
+        if (request is GateStreamRequest streamRequest)
+            return streamRequest.Channel;
+
+        return null;
+    }
+
+    private static string FormatWebSocketEndpoint(string url)
+    {
+        if (Uri.TryCreate(url, UriKind.Absolute, out var uri))
+            return uri.GetLeftPart(UriPartial.Path);
+
+        return url;
     }
 
 }

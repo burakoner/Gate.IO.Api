@@ -224,7 +224,55 @@ public class GateRestApiClient : RestApiClient
     {
         Thread.CurrentThread.CurrentCulture = CI;
         Thread.CurrentThread.CurrentUICulture = CI;
-        return await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
+
+        var endpoint = uri.AbsolutePath;
+        var stopwatch = Stopwatch.StartNew();
+        Logger?.LogDebug(
+            "Gate REST request started: {Method} {Endpoint}. Signed={Signed}; QueryParameters={QueryParameterCount}; BodyParameters={BodyParameterCount}; ResponseType={ResponseType}",
+            method.Method,
+            endpoint,
+            signed,
+            queryParameters?.Count ?? 0,
+            bodyParameters?.Count ?? 0,
+            typeof(T).Name);
+
+        try
+        {
+            var result = await SendRequestAsync<T>(uri, method, cancellationToken, signed, queryParameters, bodyParameters, headerParameters, arraySerialization, deserializer, ignoreRatelimit, requestWeight).ConfigureAwait(false);
+            stopwatch.Stop();
+
+            if (result.Success)
+            {
+                Logger?.LogDebug(
+                    "Gate REST request succeeded: {Method} {Endpoint} in {ElapsedMilliseconds}ms. ResponseType={ResponseType}",
+                    method.Method,
+                    endpoint,
+                    stopwatch.ElapsedMilliseconds,
+                    typeof(T).Name);
+            }
+            else
+            {
+                Logger?.LogWarning(
+                    "Gate REST request failed: {Method} {Endpoint} in {ElapsedMilliseconds}ms. Error={Error}",
+                    method.Method,
+                    endpoint,
+                    stopwatch.ElapsedMilliseconds,
+                    result.Error);
+            }
+
+            return result;
+        }
+        catch (Exception ex)
+        {
+            stopwatch.Stop();
+            Logger?.LogError(
+                ex,
+                "Gate REST request threw an exception: {Method} {Endpoint} after {ElapsedMilliseconds}ms",
+                method.Method,
+                endpoint,
+                stopwatch.ElapsedMilliseconds);
+            throw;
+        }
     }
 
     internal string CheckOrderId(long? orderId, string clientOrderId)

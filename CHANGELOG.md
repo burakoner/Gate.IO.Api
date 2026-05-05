@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added centralized request logging across REST and WebSocket clients.
+    * REST requests now log start, success, failure, exception, elapsed time, endpoint, response type, and signed/request parameter metadata from the shared request path.
+    * WebSocket subscribe, query, ping, and unsubscribe flows now log through shared stream client paths without duplicating logging in every module client.
   * Added Alpha REST API support against the current Gate Alpha API documentation.
     * Added `rest.Alpha` for Alpha account assets, account book history, quotes, order placement, order queries, currencies, tickers, and token information.
     * Added Alpha request models, response models, and separate enums for order side, gas mode, order status, quote error type, and currency status.
