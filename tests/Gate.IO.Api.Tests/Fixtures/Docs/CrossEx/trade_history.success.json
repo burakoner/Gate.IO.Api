@@ -1,0 +1,22 @@
+[
+  {
+    "user_id": "900001",
+    "transaction_id": "678901",
+    "order_id": "234567",
+    "text": "t-cross-order",
+    "symbol": "BINANCE_FUTURE_BTC_USDT",
+    "exchange_type": "BINANCE",
+    "business_type": "FUTURE",
+    "side": "BUY",
+    "qty": "0.01",
+    "price": "60000",
+    "fee": "0.3",
+    "fee_coin": "USDT",
+    "fee_rate": "0.0005",
+    "match_role": "taker",
+    "rpnl": "0",
+    "position_mode": "DUAL",
+    "position_side": "LONG",
+    "create_time": 1739014413
+  }
+]

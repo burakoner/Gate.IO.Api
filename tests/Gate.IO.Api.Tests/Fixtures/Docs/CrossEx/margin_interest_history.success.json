@@ -1,0 +1,15 @@
+[
+  {
+    "user_id": "900001",
+    "symbol": "BINANCE_MARGIN_BTC_USDT",
+    "interest_id": "567890",
+    "liability_id": "567891",
+    "liability": "100",
+    "liability_coin": "USDT",
+    "interest": "0.01",
+    "interest_rate": "0.000001",
+    "interest_type": "AUTO",
+    "create_time": 1739014413,
+    "exchange_type": "BINANCE"
+  }
+]

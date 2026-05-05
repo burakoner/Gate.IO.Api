@@ -1,0 +1,32 @@
+[
+  {
+    "user_id": "900001",
+    "order_id": "234567",
+    "client_order_id": "t-cross-order",
+    "state": "FILLED",
+    "symbol": "BINANCE_FUTURE_BTC_USDT",
+    "side": "BUY",
+    "type": "LIMIT",
+    "attribute": "NORMAL",
+    "exchange_type": "BINANCE",
+    "business_type": "FUTURE",
+    "qty": "0.01",
+    "quote_qty": "0",
+    "price": "60000",
+    "tif": "GTC",
+    "executed_qty": "0.01",
+    "executed_amount": "600",
+    "executed_avg_price": "60000",
+    "fee_currency": "USDT",
+    "fee": "0.3",
+    "reduce_only": false,
+    "leverage": "3",
+    "reason": "",
+    "last_executed_qty": "0.01",
+    "last_executed_price": "60000",
+    "last_executed_amount": "600",
+    "position_side": "LONG",
+    "create_time": 1739014413,
+    "update_time": 1739014416
+  }
+]

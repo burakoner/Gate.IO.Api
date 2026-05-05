@@ -1,0 +1,9 @@
+{
+  "quote_id": "cross-quote-001",
+  "valid_ms": "3000",
+  "from_coin": "USDT",
+  "to_coin": "BTC",
+  "from_amount": "100",
+  "to_amount": "0.00166",
+  "price": "60240.96385542"
+}

@@ -1,0 +1,1 @@
+[{"symbol":"BINANCE_FUTURE_ADA_USDT","exchange_type":"BINANCE","business_type":"FUTURE","state":"live","min_size":"1","min_notional":"5","lot_size":"1","tick_size":"0.00010","max_num_orders":"100","max_market_size":"2000000","max_limit_size":"6000000","contract_size":null,"liquidation_fee":"0.012500","default_leverage":"3","delist_time":"0"}]

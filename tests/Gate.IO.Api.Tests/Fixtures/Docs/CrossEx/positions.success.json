@@ -1,0 +1,25 @@
+[
+  {
+    "user_id": "900001",
+    "position_id": "456789",
+    "symbol": "BINANCE_FUTURE_BTC_USDT",
+    "position_side": "LONG",
+    "initial_margin": "100",
+    "maintenance_margin": "20",
+    "position_qty": "0.01",
+    "position_value": "600",
+    "upnl": "5.5",
+    "upnl_rate": "0.0091",
+    "avg_price": "60000",
+    "mark_price": "60550",
+    "leverage": "3",
+    "max_leverage": "20",
+    "risk_limit": "50000",
+    "fee": "0.3",
+    "funding_fee": "0.01",
+    "funding_time": 1739016000,
+    "create_time": 1739014413,
+    "update_time": 1739015413,
+    "closed_pnl": "0"
+  }
+]

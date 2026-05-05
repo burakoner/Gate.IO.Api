@@ -1,0 +1,25 @@
+[
+  {
+    "position_id": "456790",
+    "user_id": "900001",
+    "symbol": "BINANCE_MARGIN_BTC_USDT",
+    "closed_type": "close",
+    "closed_pnl": "8",
+    "closed_pnl_rate": "0.013",
+    "open_avg_price": "60000",
+    "closed_avg_price": "60800",
+    "max_position_qty": "0.01",
+    "closed_qty": "0.01",
+    "closed_value": "608",
+    "fee": "0.3",
+    "liq_fee": "0",
+    "funding_fee": "0",
+    "interest": "0.01",
+    "position_side": "LONG",
+    "position_mode": "SINGLE",
+    "leverage": "3",
+    "bussiness_type": "MARGIN",
+    "create_time": 1739014413,
+    "update_time": 1739016413
+  }
+]

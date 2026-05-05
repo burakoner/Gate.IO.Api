@@ -1,0 +1,25 @@
+[
+  {
+    "user_id": "900001",
+    "position_id": "456790",
+    "symbol": "BINANCE_MARGIN_BTC_USDT",
+    "position_side": "LONG",
+    "initial_margin": "100",
+    "maintenance_margin": "20",
+    "asset_qty": "0.01",
+    "asset_coin": "BTC",
+    "position_value": "600",
+    "liability": "100",
+    "liability_coin": "USDT",
+    "interest": "0.01",
+    "max_position_qty": "1",
+    "entry_price": "60000",
+    "index_price": "60550",
+    "upnl": "5.5",
+    "upnl_rate": "0.0091",
+    "leverage": "3",
+    "max_leverage": "10",
+    "create_time": 1739014413,
+    "update_time": 1739015413
+  }
+]

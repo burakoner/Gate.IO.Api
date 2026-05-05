@@ -1,0 +1,10 @@
+[
+  {
+    "coin": "USDT",
+    "exchange_type": "BINANCE",
+    "tier": 1,
+    "min_value": "0",
+    "max_value": "100000",
+    "discount_rate": "1"
+  }
+]

@@ -1,0 +1,16 @@
+[
+  {
+    "exchange_type": "BINANCE",
+    "spot_maker_fee": "0.001",
+    "spot_taker_fee": "0.001",
+    "future_maker_fee": "0.0002",
+    "future_taker_fee": "0.0005",
+    "special_fee_list": [
+      {
+        "symbol": "BINANCE_FUTURE_BTC_USDT",
+        "taker_fee_rate": "0.0004",
+        "maker_fee_rate": "0.0001"
+      }
+    ]
+  }
+]

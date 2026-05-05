@@ -1,0 +1,13 @@
+[
+  {
+    "id": "789012",
+    "user_id": "900001",
+    "business_id": "234567",
+    "statement_type": "trade",
+    "exchange_type": "BINANCE",
+    "coin": "USDT",
+    "change": "-0.3",
+    "balance": "1200.25",
+    "create_time": 1739014413
+  }
+]

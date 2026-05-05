@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added CrossEx REST contract tests.
+    * Added documented CrossEx fixtures for symbols, risk limits, transfers, orders, convert, account, leverage, fee, position, history, trade, account-book, and coin-discount responses.
+    * Added live public CrossEx captures for symbol rules, risk limits, and transfer currencies plus opt-in public integration smoke tests.
+    * Added signed request construction tests for CrossEx transfer, order, convert, account, leverage, position, fee, history, trade, account-book, and discount endpoints.
+    * Updated CrossEx symbol parsing to tolerate `null` `contract_size` values from the live public API.
   * Added P2P REST contract tests.
     * Added documented P2P fixtures for account, payment method, transaction, advertisement, chat, upload, and action response flows.
     * Added signed request construction tests for P2P account, transaction, advertisement, and chat endpoints.

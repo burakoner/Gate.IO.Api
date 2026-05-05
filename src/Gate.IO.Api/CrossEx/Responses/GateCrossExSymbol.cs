@@ -75,7 +75,7 @@ public record GateCrossExSymbol
     /// Gets or sets the Contract Size.
     /// </summary>
     [JsonProperty("contract_size")]
-    public decimal ContractSize { get; set; }
+    public decimal? ContractSize { get; set; }
 
     /// <summary>
     /// Gets or sets the Liquidation Fee.

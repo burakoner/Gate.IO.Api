@@ -1,0 +1,15 @@
+[
+  {
+    "id": "123456",
+    "text": "t-cross-transfer",
+    "from_account_type": "SPOT",
+    "to_account_type": "CROSSEX",
+    "coin": "USDT",
+    "amount": "100.5",
+    "actual_receive": "100.5",
+    "status": "SUCCESS",
+    "fail_reason": "",
+    "create_time": 1739014413,
+    "update_time": 1739014416
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "user_id": "900001",
+  "available_margin": "1000.5",
+  "margin_balance": "1200.25",
+  "initial_margin": "100",
+  "maintenance_margin": "20",
+  "initial_margin_rate": "0.0833",
+  "maintenance_margin_rate": "0.0166",
+  "position_mode": "DUAL",
+  "account_limit": "100000",
+  "create_time": 1739014413,
+  "update_time": 1739015413,
+  "account_mode": "CROSS_EXCHANGE",
+  "exchange_type": "BINANCE",
+  "assets": [
+    {
+      "user_id": "900001",
+      "coin": "USDT",
+      "exchange_type": "BINANCE",
+      "balance": "1200.25",
+      "upnl": "5.5",
+      "equity": "1205.75",
+      "futures_initial_margin": "100",
+      "futures_maintenance_margin": "20",
+      "borrowing_initial_margin": "0",
+      "borrowing_maintenance_margin": "0",
+      "available_balance": "1100.25",
+      "liability": "0"
+    }
+  ]
+}
