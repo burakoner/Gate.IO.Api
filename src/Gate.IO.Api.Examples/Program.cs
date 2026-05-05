@@ -3,6 +3,7 @@ using Gate.IO.Api.Account;
 using Gate.IO.Api.EarnUni;
 using Gate.IO.Api.Futures;
 using Gate.IO.Api.Margin;
+using Gate.IO.Api.MultiCollateralLoan;
 using Gate.IO.Api.Options;
 using Gate.IO.Api.Rebate;
 using Gate.IO.Api.Spot;
@@ -427,6 +428,20 @@ internal class Program
         var earnuni_09 = await api.EarnUni.GetInterestStatusAsync("USDT");
         var earnuni_10 = await api.EarnUni.GetChartAsync(new GateEarnUniChartQueryRequest { Asset = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
         var earnuni_11 = await api.EarnUni.GetEstimatedRatesAsync();
+
+        // Multi-Collateral Loan Methods
+        var multiCollateralLoan_01 = await api.MultiCollateralLoan.GetOrdersAsync(new GateMultiCollateralLoanOrderQueryRequest { OrderType = GateMultiCollateralLoanOrderType.Current, Sort = GateMultiCollateralLoanOrderSort.TimeDescending, Limit = 100 });
+        var multiCollateralLoan_02 = await api.MultiCollateralLoan.PlaceOrderAsync(new GateMultiCollateralLoanOrderRequest { BorrowCurrency = "BTC", BorrowAmount = 1.0m, OrderType = GateMultiCollateralLoanOrderType.Fixed, FixedType = GateMultiCollateralLoanFixedType.SevenDays, FixedRate = 0.00001m, AutoRenew = true, AutoRepay = true, CollateralCurrencies = new[] { new GateMultiCollateralLoanCurrencyAmount { Currency = "USDT", Amount = 1000.0m } } });
+        var multiCollateralLoan_03 = await api.MultiCollateralLoan.GetOrderAsync(1_000_000_001);
+        var multiCollateralLoan_04 = await api.MultiCollateralLoan.GetRepaymentRecordsAsync(new GateMultiCollateralLoanRepaymentRecordQueryRequest { Type = GateMultiCollateralLoanRepaymentType.Repay, BorrowCurrency = "BTC", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var multiCollateralLoan_05 = await api.MultiCollateralLoan.RepayAsync(new GateMultiCollateralLoanRepayRequest { OrderId = 1_000_000_001, RepayItems = new[] { new GateMultiCollateralLoanRepayItem { Currency = "BTC", Amount = 1.0m, RepaidAll = false } } });
+        var multiCollateralLoan_06 = await api.MultiCollateralLoan.GetCollateralRecordsAsync(new GateMultiCollateralLoanCollateralRecordQueryRequest { CollateralCurrency = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var multiCollateralLoan_07 = await api.MultiCollateralLoan.AdjustCollateralAsync(new GateMultiCollateralLoanCollateralAdjustRequest { OrderId = 1_000_000_001, Type = GateMultiCollateralLoanCollateralOperationType.Append, Collaterals = new[] { new GateMultiCollateralLoanCurrencyAmount { Currency = "USDT", Amount = 1000.0m } } });
+        var multiCollateralLoan_08 = await api.MultiCollateralLoan.GetCurrencyQuotasAsync(new GateMultiCollateralLoanCurrencyQuotaRequest { Type = GateMultiCollateralLoanCurrencyQuotaType.Collateral, Currencies = new[] { "BTC", "USDT" } });
+        var multiCollateralLoan_09 = await api.MultiCollateralLoan.GetCurrenciesAsync();
+        var multiCollateralLoan_10 = await api.MultiCollateralLoan.GetLtvAsync();
+        var multiCollateralLoan_11 = await api.MultiCollateralLoan.GetFixedRatesAsync();
+        var multiCollateralLoan_12 = await api.MultiCollateralLoan.GetCurrentRatesAsync(new GateMultiCollateralLoanCurrentRateRequest { Currencies = new[] { "BTC", "GT" }, VipLevel = "0" });
 
         // Account Methods
         var account_01 = await api.Account.GetAccountAsync();

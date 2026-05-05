@@ -16,6 +16,7 @@ global using Gate.IO.Api.Futures;
 global using Gate.IO.Api.Helpers;
 global using Gate.IO.Api.Margin;
 global using Gate.IO.Api.Models.StreamApi;
+global using Gate.IO.Api.MultiCollateralLoan;
 global using Gate.IO.Api.Options;
 global using Gate.IO.Api.Rebate;
 global using Gate.IO.Api.Spot;

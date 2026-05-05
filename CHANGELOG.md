@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Multi-Collateral Loan REST API support against the current Gate API v4 Multi-collateral-loan documentation.
+    * Added `api.MultiCollateralLoan` and a new `MultiCollateralLoan` module with client, enum, request, and response models.
+    * Covered order list/create/detail, repayment record/create, collateral record/adjustment, quota, supported currencies, LTV, fixed-rate, and current-rate endpoints.
+    * Added request-object overloads for order queries and creation, repayment records and repayment, collateral records and adjustment, currency quota, and current-rate queries.
+    * Kept semantically numeric order/record IDs, amounts, prices, LTV values, quotas, and rates as numeric public properties while supporting Gate's numeric string responses.
+    * Sent Multi-Collateral Loan time filters as Unix seconds and mapped response timestamps with the existing date converter.
+    * Updated examples and README with Multi-Collateral Loan request-object overload usage.
   * Added EarnUni REST API support against the current Gate API v4 EarnUni documentation.
     * Added `api.EarnUni` and a new `EarnUni` module with client, enum, request, and response models.
     * Covered lending currencies, lending orders, lending records, total interest, interest records, interest status, annualized chart, and estimated-rate endpoints.
