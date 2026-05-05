@@ -15,6 +15,7 @@
     * Added request-object overloads for quote, fiat order creation, stablecoin order creation, order actions, and fiat/stablecoin order list queries.
     * Unwrapped OTC `code`/`message` response envelopes for data endpoints while preserving action result metadata for order actions.
     * Kept semantically numeric order/user/bank IDs, amounts, rates, counts, and timestamps as numeric or `DateTime` public properties while sending string body/query values where the API requires them.
+    * Split OTC request and response models into separate files for easier review and maintenance.
     * Updated examples and README with OTC request-object overload usage.
   * Added Earn REST API support against the current Gate API v4 Earn documentation.
     * Added `api.Earn` and a new `Earn` module with client, enum, request, and response models.
@@ -23,6 +24,7 @@
     * Covered Auto Invest plan create/update/stop/add-position, coin, minimum-amount, execution-record, order-detail, configuration, detail, and list endpoints.
     * Covered Fixed-Term Earn product list, product-by-asset list, subscription list/create, early redemption, and history endpoints.
     * Added request-object overloads for high-parameter Earn methods and kept semantically numeric IDs, amounts, rates, prices, quantities, and timestamps typed as numeric or `DateTime` public properties.
+    * Split Earn request and response models into separate files for easier review and maintenance.
     * Updated examples and README with Earn request-object overload usage.
   * Added Multi-Collateral Loan REST API support against the current Gate API v4 Multi-collateral-loan documentation.
     * Added `api.MultiCollateralLoan` and a new `MultiCollateralLoan` module with client, enum, request, and response models.

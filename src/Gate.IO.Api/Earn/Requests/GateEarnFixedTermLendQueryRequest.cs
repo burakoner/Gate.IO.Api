@@ -1,0 +1,47 @@
+namespace Gate.IO.Api.Earn;
+
+/// <summary>
+/// Fixed-term Earn subscription order query request
+/// </summary>
+public record GateEarnFixedTermLendQueryRequest
+{
+    /// <summary>
+    /// Product ID
+    /// </summary>
+    public long? ProductId { get; set; }
+
+    /// <summary>
+    /// Order ID
+    /// </summary>
+    public long? OrderId { get; set; }
+
+    /// <summary>
+    /// Currency
+    /// </summary>
+    public string Asset { get; set; }
+
+    /// <summary>
+    /// Order type
+    /// </summary>
+    public GateEarnFixedTermOrderType OrderType { get; set; }
+
+    /// <summary>
+    /// Page number
+    /// </summary>
+    public int Page { get; set; } = 1;
+
+    /// <summary>
+    /// Page size
+    /// </summary>
+    public int Limit { get; set; } = 100;
+
+    /// <summary>
+    /// Sub-business type
+    /// </summary>
+    public int? SubBusiness { get; set; }
+
+    /// <summary>
+    /// Business filter JSON
+    /// </summary>
+    public string BusinessFilter { get; set; }
+}
