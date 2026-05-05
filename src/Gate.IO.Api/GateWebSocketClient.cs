@@ -30,6 +30,10 @@ public class GateWebSocketClient
     /// Gets or sets the Options.
     /// </summary>
     public GateOptionsStreamApiClient Options { get; }
+    /// <summary>
+    /// Gets or sets the TradFi.
+    /// </summary>
+    public GateTradFiStreamApiClient TradFi { get; }
 
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client class.
@@ -65,6 +69,7 @@ public class GateWebSocketClient
         Futures = new GateFuturesStreamApiClient(this);
         Delivery = new GateDeliveryStreamApiClient(this);
         Options = new GateOptionsStreamApiClient(this);
+        TradFi = new GateTradFiStreamApiClient(this);
     }
 
 }

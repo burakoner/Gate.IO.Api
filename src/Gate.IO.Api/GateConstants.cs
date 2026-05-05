@@ -31,6 +31,11 @@ internal record GateConstants
     public string StreamOptionsAddress { get; set; }
 
     /// <summary>
+    /// Stream-TradFi
+    /// </summary>
+    public string StreamTradFiAddress { get; set; }
+
+    /// <summary>
     /// Gate.IO API Broker Id
     /// </summary>
     public string ChannelId { get; set; }
@@ -61,6 +66,9 @@ internal record GateConstants
         // Stream-Options
         StreamOptionsAddress = "wss://op-ws.gateio.live/v4/ws",
 
+        // Stream-TradFi
+        StreamTradFiAddress = "wss://fx-ws.gateio.ws/v4/ws/tradfi",
+
         // Broker Id
         ChannelId = "phalchatha"
     };
@@ -90,6 +98,9 @@ internal record GateConstants
 
         // Stream-Options
         StreamOptionsAddress = "wss://op-ws-testnet.gateio.live/v4/ws",
+
+        // Stream-TradFi
+        StreamTradFiAddress = "wss://fx-ws.gateio.ws/v4/ws/tradfi",
 
         // Broker Id
         ChannelId = "phalchatha"

@@ -28,6 +28,12 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     /// Gets or sets the Stream Options Address.
     /// </summary>
     public string StreamOptionsAddress { get; set; }
+
+    // Stream-TradFi
+    /// <summary>
+    /// Gets or sets the Stream TradFi Address.
+    /// </summary>
+    public string StreamTradFiAddress { get; set; }
     
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client Options class.
@@ -56,6 +62,9 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
 
         // Stream-Options
         this.StreamOptionsAddress = GateConstants.Default.StreamOptionsAddress;
+
+        // Stream-TradFi
+        this.StreamTradFiAddress = GateConstants.Default.StreamTradFiAddress;
 
         // Limits
         // this.MaxConnections = 300;

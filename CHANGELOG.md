@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added TradFi WebSocket stream support against the current Gate TradFi WebSocket documentation.
+    * Added `stream.TradFi` with ping, ticker, candlestick, best bid/ask, user order, user position, and user balance subscriptions.
+    * Added the TradFi WebSocket base address to client options and constants.
+    * Added TradFi stream models and stream-specific enums for order operation type and position side.
+    * Updated TradFi kline intervals with the WebSocket-documented `5m`, `30m`, and `1M` values.
   * Updated Delivery WebSocket streams against the current Gate Delivery WebSocket API documentation.
     * Added BTC-settled Delivery clients and WebSocket addresses alongside the existing USDT settlement.
     * Added normal Delivery candlestick subscription support in addition to mark-price candlesticks.
