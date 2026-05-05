@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added a public REST endpoint catalog for live capture work.
+    * Centralized safe unauthenticated REST endpoints, documentation links, committed live fixture paths, and client smoke-test coverage metadata.
+    * Added unit tests that validate catalog uniqueness, committed live fixture availability, and live smoke-test module coverage.
   * Added Announcements WebSocket contract tests.
     * Added documented Announcements WebSocket fixtures for listing and engine-upgrade subscription requests, subscribe acknowledgements, and summary update payloads.
     * Added serialization and validation coverage for announcement request payloads and required language selections.
