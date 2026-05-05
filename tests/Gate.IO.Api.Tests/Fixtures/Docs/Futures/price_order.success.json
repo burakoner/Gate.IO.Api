@@ -1,0 +1,30 @@
+{
+  "initial": {
+    "contract": "BTC_USDT",
+    "size": 100,
+    "price": "5.03",
+    "close": false,
+    "tif": "gtc",
+    "text": "t-test",
+    "reduce_only": false,
+    "auto_size": "close_long"
+  },
+  "trigger": {
+    "strategy_type": 0,
+    "price_type": 0,
+    "price": "3000",
+    "rule": 1,
+    "expiration": 86400
+  },
+  "id": 1283293,
+  "id_string": "1283293",
+  "user": 1234,
+  "create_time": 1514764800,
+  "finish_time": 1514764900,
+  "trade_id": 13566,
+  "status": "finished",
+  "finish_as": "cancelled",
+  "reason": "",
+  "me_order_id": 13566,
+  "order_type": "close-long-order"
+}

@@ -1,6 +1,12 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Futures REST contract tests.
+    * Added documented Futures fixtures for contracts, market depth, trades, candlesticks, tickers, funding rates, insurance, stats, index constituents, liquidations, risk limit tiers, account data, orders, and price-triggered orders.
+    * Added live public Futures captures for BTC_USDT market data, batch funding rates, liquidation history, index constituents, and risk limit tiers.
+    * Added request construction tests for unsigned Futures market calls and signed order and price-triggered order calls.
+    * Added opt-in public integration smoke tests for Futures market endpoints.
+    * Updated Futures parsing for mapped enum response fields, batch funding-rate responses that may be nested or flat, public risk-limit tier requests, and documented numeric trigger-order fields.
   * Added Flash Swap REST contract tests.
     * Added documented Flash Swap fixtures for supported currency pairs, order preview, order creation, order listing, and single-order lookup.
     * Added live public Flash Swap captures for supported currency-pair queries.

@@ -104,13 +104,13 @@ public record GateFuturesTrigger
     /// <summary>
     /// How the order will be triggered
     /// </summary>
-    [JsonProperty("strategy_type"), JsonConverter(typeof(GateMapConverter))]
+    [JsonProperty("strategy_type"), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
     public GateFuturesTriggerStrategy StrategyType { get; set; }
     
     /// <summary>
     /// Price Type
     /// </summary>
-    [JsonProperty("price_type"), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("price_type"), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
     public GateFuturesTriggerPrice PriceType { get; set; }
 
     /// <summary>
@@ -122,7 +122,7 @@ public record GateFuturesTrigger
     /// <summary>
     /// Price trigger condition
     /// </summary>
-    [JsonProperty("rule"), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("rule"), JsonConverter(typeof(GateFuturesTriggerConditionConverter))]
     public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>

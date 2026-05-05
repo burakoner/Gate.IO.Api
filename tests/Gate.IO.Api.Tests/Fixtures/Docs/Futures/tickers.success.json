@@ -1,0 +1,27 @@
+[
+  {
+    "contract": "BTC_USDT",
+    "last": "38026",
+    "change_percentage": "1.25",
+    "total_size": "123456",
+    "low_24h": "37000",
+    "high_24h": "39000",
+    "volume_24h": "98765",
+    "volume_24h_base": "12.345",
+    "volume_24h_quote": "469000",
+    "volume_24h_settle": "469000",
+    "mark_price": "37985.6",
+    "funding_rate": "0.0001",
+    "index_price": "37954.92",
+    "quanto_base_rate": "1",
+    "lowest_ask": "38026.1",
+    "lowest_size": "12",
+    "highest_bid": "38025.9",
+    "highest_size": "8",
+    "change_utc0": "1.1",
+    "change_utc8": "1.2",
+    "change_price": "10.1",
+    "change_utc0_price": "9.1",
+    "change_utc8_price": "8.1"
+  }
+]

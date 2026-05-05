@@ -1,0 +1,11 @@
+{
+  "index": "BTC_USDT",
+  "constituents": [
+    {
+      "exchange": "Gate",
+      "symbols": [
+        "BTC_USDT"
+      ]
+    }
+  ]
+}

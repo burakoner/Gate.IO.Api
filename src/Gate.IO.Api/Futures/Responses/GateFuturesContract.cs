@@ -14,7 +14,7 @@ public record GateFuturesContract
     /// <summary>
     /// Futures contract type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesContractType Type { get; set; }
 
     /// <summary>
@@ -44,7 +44,7 @@ public record GateFuturesContract
     /// <summary>
     /// Mark price type, internal - based on internal trading, index - based on external index price
     /// </summary>
-    [JsonProperty("mark_type")]
+    [JsonProperty("mark_type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesMarkType MarkType { get; set; }
     
     /// <summary>
@@ -264,7 +264,7 @@ public record GateFuturesContract
     /// <summary>
     /// FuturesStatus Type包含：prelaunch(预上线), trading(Trade中),delisting(下架中), delisted(已下架), circuit_breaker（熔断)
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateFuturesContractStatus Status { get; set; }
 
     /// <summary>

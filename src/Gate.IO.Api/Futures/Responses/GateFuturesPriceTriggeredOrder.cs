@@ -46,13 +46,13 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     /// <summary>
     /// Status
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPriceTriggerStatus Status { get; set; }
 
     /// <summary>
     /// How order is finished
     /// </summary>
-    [JsonProperty("finish_as")]
+    [JsonProperty("finish_as"), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderFinishAs? FinishAs { get; set; }
 
     /// <summary>

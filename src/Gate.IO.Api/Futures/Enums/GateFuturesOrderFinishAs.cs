@@ -57,5 +57,22 @@ public enum GateFuturesOrderFinishAs : byte
     /// cancelled because self trade prevention
     /// </summary>
     [Map("stp")]
-    SelfTradePrevention = 9
+    SelfTradePrevention = 9,
+    /// <summary>
+    /// Price-triggered order succeeded.
+    /// </summary>
+    [Map("succeeded")]
+    Succeeded = 10,
+
+    /// <summary>
+    /// Price-triggered order failed.
+    /// </summary>
+    [Map("failed")]
+    Failed = 11,
+
+    /// <summary>
+    /// Price-triggered order expired.
+    /// </summary>
+    [Map("expired")]
+    Expired = 12
 }

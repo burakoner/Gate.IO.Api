@@ -180,8 +180,17 @@ public class GateFuturesRestApiClient
         parameters.SetBody(request);
 
         var endpoint = "{settle}/funding_rates".Replace("{settle}", MapConverter.GetString(settle));
-        var result = await _.SendRequestInternal<List<List<GateFuturesBatchFundingRate>>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters);
-        return result.As(result.Data?.SelectMany(x => x).ToList() ?? []);
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, false, bodyParameters: parameters);
+        if (!result.Success) return result.As<List<GateFuturesBatchFundingRate>>([]);
+
+        if (result.Data is not JArray array)
+            return result.As<List<GateFuturesBatchFundingRate>>([]);
+
+        var rates = array.First?.Type == JTokenType.Array
+            ? array.ToObject<List<List<GateFuturesBatchFundingRate>>>()?.SelectMany(x => x).ToList()
+            : array.ToObject<List<GateFuturesBatchFundingRate>>();
+
+        return result.As(rates ?? []);
     }
 
     // Futures insurance balance history
@@ -254,7 +263,7 @@ public class GateFuturesRestApiClient
         parameters.AddOptionalParameter("offset", offset);
 
         var endpoint = "{settle}/risk_limit_tiers".Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateFuturesRiskLimitTier>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateFuturesRiskLimitTier>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Query futures account

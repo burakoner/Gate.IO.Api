@@ -1,0 +1,18 @@
+[
+  {
+    "time": 1605175500,
+    "lsr_taker": "0.95",
+    "lsr_account": "1.05",
+    "long_liq_size": "12",
+    "long_liq_amount": "0.12",
+    "long_liq_usd": "4560",
+    "short_liq_size": "8",
+    "short_liq_amount": "0.08",
+    "short_liq_usd": "3040",
+    "open_interest": "100000",
+    "open_interest_usd": "3802600000",
+    "top_lsr_account": "1.2",
+    "top_lsr_size": "1.1",
+    "mark_price": "38026"
+  }
+]
