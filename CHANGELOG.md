@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added REST request construction smoke tests.
+    * Added reusable test infrastructure for capturing outgoing HTTP requests without calling the live API.
+    * Added Alpha client request construction tests for public GET query serialization, signed GET query/header serialization, and signed POST request-object body serialization.
   * Added APIv4 authentication contract tests.
     * Added fixture-backed tests for Gate's official REST signature examples for signed GET and POST requests.
     * Added authentication behavior tests for unsigned requests and missing credentials.
