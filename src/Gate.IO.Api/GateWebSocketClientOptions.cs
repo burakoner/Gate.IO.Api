@@ -1,19 +1,37 @@
-﻿namespace Gate.IO.Api;
+namespace Gate.IO.Api;
 
+/// <summary>
+/// Represents the Gate Web Socket Client Options.
+/// </summary>
 public class GateWebSocketClientOptions : WebSocketApiClientOptions
 {
     // Stream-Spot
+    /// <summary>
+    /// Gets or sets the Stream Spot Address.
+    /// </summary>
     public string StreamSpotAddress { get; set; }
 
     // Stream-Perpetual Futures
+    /// <summary>
+    /// Gets or sets the Stream Perpetual Futures Addresses.
+    /// </summary>
     public Dictionary<GateFuturesSettlement, string> StreamPerpetualFuturesAddresses { get; set; }
 
     // Stream-Delivery Futures
+    /// <summary>
+    /// Gets or sets the Stream Delivery Futures Addresses.
+    /// </summary>
     public Dictionary<GateDeliverySettlement, string> StreamDeliveryFuturesAddresses { get; set; }
 
     // Stream-Options
+    /// <summary>
+    /// Gets or sets the Stream Options Address.
+    /// </summary>
     public string StreamOptionsAddress { get; set; }
     
+    /// <summary>
+    /// Initializes a new instance of the Gate Web Socket Client Options class.
+    /// </summary>
     public GateWebSocketClientOptions()
     {
         // Base Address

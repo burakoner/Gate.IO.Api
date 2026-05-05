@@ -5,6 +5,9 @@ namespace Gate.IO.Api.CrossEx;
 /// </summary>
 public record GateCrossExHistoricalMarginPosition : GateCrossExHistoricalPosition
 {
+    /// <summary>
+    /// Gets or sets the Interest.
+    /// </summary>
     [JsonProperty("interest")]
     public decimal? Interest { get; set; }
 

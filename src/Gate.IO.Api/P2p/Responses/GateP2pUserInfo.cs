@@ -191,6 +191,9 @@ public record GateP2pUserInfo
     [JsonProperty("trade_versatile")]
     public bool? TradeVersatile { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

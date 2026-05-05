@@ -150,6 +150,9 @@ public record GateP2pTransaction
     [JsonProperty("convert_info")]
     public GateP2pConvertInfo ConvertInfo { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

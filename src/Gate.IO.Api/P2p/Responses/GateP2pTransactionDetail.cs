@@ -297,6 +297,9 @@ public record GateP2pTransactionDetail
     [JsonProperty("supported_pay_types")]
     public List<string> SupportedPaymentTypes { get; set; } = [];
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

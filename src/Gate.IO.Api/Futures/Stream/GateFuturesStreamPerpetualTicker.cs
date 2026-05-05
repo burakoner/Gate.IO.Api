@@ -1,5 +1,8 @@
 namespace Gate.IO.Api.Futures;
 
+/// <summary>
+/// Represents the Gate Futures Stream Perpetual Ticker.
+/// </summary>
 public record GateFuturesStreamPerpetualTicker
 {
     /// <summary>

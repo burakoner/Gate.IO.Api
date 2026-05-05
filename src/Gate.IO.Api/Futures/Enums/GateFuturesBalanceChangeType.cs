@@ -36,7 +36,7 @@ public enum GateFuturesBalanceChangeType : byte
     Funding = 5,
 
     /// <summary>
-    /// POINT Deposit & Withdraw
+    /// POINT deposit and withdrawal
     /// </summary>
     [Map("point_dnw")]
     PointDNW = 6,

@@ -47,6 +47,9 @@ public record GateP2pPaymentOption
     [JsonProperty("trade_tips")]
     public string TradeTips { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

@@ -5,5 +5,8 @@ namespace Gate.IO.Api.Delivery;
 /// </summary>
 public record GateDeliveryPriceTriggeredOrderCancelRequest
 {
+    /// <summary>
+    /// Gets or sets the Contract.
+    /// </summary>
     public string Contract { get; set; }
 }

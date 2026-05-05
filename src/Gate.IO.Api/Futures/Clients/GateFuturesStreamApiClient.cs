@@ -1,10 +1,22 @@
-﻿namespace Gate.IO.Api.Futures;
+namespace Gate.IO.Api.Futures;
 
+/// <summary>
+/// Represents the Gate Futures Stream API Client.
+/// </summary>
 public class GateFuturesStreamApiClient
 {
     // Public
+    /// <summary>
+    /// Gets or sets the BTC.
+    /// </summary>
     public GateFuturesStreamApiSettleClient BTC { get; }
+    /// <summary>
+    /// Gets or sets the USD.
+    /// </summary>
     public GateFuturesStreamApiSettleClient USD { get; }
+    /// <summary>
+    /// Gets or sets the USDT.
+    /// </summary>
     public GateFuturesStreamApiSettleClient USDT { get; }
 
     // Internal

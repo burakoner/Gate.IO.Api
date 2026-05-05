@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Cleaned project build warnings.
+    * Added missing XML documentation summaries for public API models, request objects, stream payloads, stream clients, and enums.
+    * Fixed malformed XML documentation comments so documentation generation succeeds cleanly.
   * Moved Spot and Options stream models into their owning module folders.
     * Moved Spot stream payload models from `Models/StreamApi/Spot` to `Spot/Stream` and renamed them from `SpotStream*` to `GateSpotStream*`.
     * Moved Options stream payload models from `Models/StreamApi/Options` to `Options/Stream` and renamed them from `OptionsStream*` to `GateOptionsStream*`.

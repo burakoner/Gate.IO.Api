@@ -1,7 +1,13 @@
 namespace Gate.IO.Api.Spot;
 
+/// <summary>
+/// Represents the Gate Spot Stream Candlestick.
+/// </summary>
 public  class GateSpotStreamCandlestick
 {
+    /// <summary>
+    /// Gets or sets the Time.
+    /// </summary>
     [JsonProperty("t")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
@@ -43,7 +49,7 @@ public  class GateSpotStreamCandlestick
     public decimal BaseVolume { get; set; }
 
     /// <summary>
-    /// Name of the subscription, in the format of<interval>_<cp>
+    /// Name of the subscription, in the format interval_currency-pair
     /// </summary>
     [JsonProperty("n")]
     public string Subscription { get; set; }

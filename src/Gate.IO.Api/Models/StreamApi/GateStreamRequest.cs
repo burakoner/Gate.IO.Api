@@ -1,4 +1,4 @@
-﻿namespace Gate.IO.Api.Models.StreamApi;
+namespace Gate.IO.Api.Models.StreamApi;
 
 internal record GateStreamRequest
 {
@@ -21,23 +21,44 @@ internal record GateStreamRequest
     public StreamRequestAuth Auth { get; set; }
 }
 
+/// <summary>
+/// Represents the Stream Request Auth.
+/// </summary>
 public record StreamRequestAuth
 {
+    /// <summary>
+    /// Gets or sets the Method.
+    /// </summary>
     [JsonProperty("method")]
     public string Method { get; set; } = "api_key";
 
+    /// <summary>
+    /// Gets or sets the API Key.
+    /// </summary>
     [JsonProperty("KEY")]
     public string ApiKey { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Signature.
+    /// </summary>
     [JsonProperty("SIGN")]
     public string Signature { get; set; }
 }
 
+/// <summary>
+/// Represents the Stream Request Event.
+/// </summary>
 public enum StreamRequestEvent : byte
 {
+    /// <summary>
+    /// Represents the Subscribe value.
+    /// </summary>
     [Map("subscribe")]
     Subscribe=1,
 
+    /// <summary>
+    /// Represents the Unsubscribe value.
+    /// </summary>
     [Map("unsubscribe")]
     Unsubscribe=2
 }

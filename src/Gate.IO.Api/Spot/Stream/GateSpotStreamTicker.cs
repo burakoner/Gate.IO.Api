@@ -1,5 +1,8 @@
 namespace Gate.IO.Api.Spot;
 
+/// <summary>
+/// Represents the Gate Spot Stream Ticker.
+/// </summary>
 public record GateSpotStreamTicker
 {
     /// <summary>

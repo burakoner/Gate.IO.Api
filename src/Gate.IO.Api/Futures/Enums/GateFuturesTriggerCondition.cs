@@ -6,13 +6,13 @@
 public enum GateFuturesTriggerCondition : byte
 {
     /// <summary>
-    /// Enum GreaterThanOrEqualTo for value: >=
+    /// Greater than or equal to trigger condition
     /// </summary>
     [Map(">=")]
     GreaterThanOrEqualTo = 1,
 
     /// <summary>
-    /// Enum LessThanOrEqualTo for value: <=
+    /// Less than or equal to trigger condition
     /// </summary>
     [Map("<=")]
     LessThanOrEqualTo = 2

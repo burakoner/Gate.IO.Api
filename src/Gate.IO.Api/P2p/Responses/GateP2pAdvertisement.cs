@@ -289,6 +289,9 @@ public record GateP2pAdvertisement
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? Timestamp { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

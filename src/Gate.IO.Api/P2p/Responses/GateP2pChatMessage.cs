@@ -54,6 +54,9 @@ public record GateP2pChatMessage
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? Time { get; set; }
 
+    /// <summary>
+    /// Gets or sets the Additional Data.
+    /// </summary>
     [JsonExtensionData]
     public IDictionary<string, JToken> AdditionalData { get; set; }
 }

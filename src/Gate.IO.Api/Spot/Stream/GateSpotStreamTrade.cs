@@ -2,6 +2,9 @@ using Gate.IO.Api.Spot;
 
 namespace Gate.IO.Api.Spot;
 
+/// <summary>
+/// Represents the Gate Spot Stream Trade.
+/// </summary>
 public record GateSpotStreamTrade
 {
     /// <summary>

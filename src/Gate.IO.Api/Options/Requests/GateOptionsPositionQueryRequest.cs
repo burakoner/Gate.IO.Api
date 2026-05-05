@@ -5,5 +5,8 @@ namespace Gate.IO.Api.Options;
 /// </summary>
 public record GateOptionsPositionQueryRequest
 {
+    /// <summary>
+    /// Gets or sets the Underlying.
+    /// </summary>
     public string Underlying { get; set; }
 }

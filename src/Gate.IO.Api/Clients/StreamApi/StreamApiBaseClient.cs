@@ -1,5 +1,8 @@
-﻿namespace Gate.IO.Api.Clients.StreamApi;
+namespace Gate.IO.Api.Clients.StreamApi;
 
+/// <summary>
+/// Represents the Stream API Base Client.
+/// </summary>
 public class StreamApiBaseClient : WebSocketApiClient
 {
     // Internal
@@ -7,6 +10,9 @@ public class StreamApiBaseClient : WebSocketApiClient
     internal GateWebSocketClient RootClient { get; }
 
     // Options
+    /// <summary>
+    /// Executes the Client Options operation.
+    /// </summary>
     public new GateWebSocketClientOptions ClientOptions { get { return (GateWebSocketClientOptions)base.ClientOptions; } }
 
     internal StreamApiBaseClient(GateWebSocketClient root) : base(root.Logger, root.ClientOptions)
@@ -25,11 +31,17 @@ public class StreamApiBaseClient : WebSocketApiClient
     }
 
     #region Override Methods
+    /// <summary>
+    /// Represents the Create Authentication Provider value.
+    /// </summary>
     protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials)
     {
         return new GateAuthenticationProvider(credentials);
     }
 
+    /// <summary>
+    /// Represents the Handle Query Response value.
+    /// </summary>
     protected override bool HandleQueryResponse<T>(WebSocketConnection connection, object request, JToken data, out CallResult<T> callResult)
     {
         callResult = null;
@@ -53,6 +65,9 @@ public class StreamApiBaseClient : WebSocketApiClient
         return false;
     }
 
+    /// <summary>
+    /// Represents the Handle Subscription Response value.
+    /// </summary>
     protected override bool HandleSubscriptionResponse(WebSocketConnection connection, WebSocketSubscription subscription, object request, JToken message, out CallResult<object> callResult)
     {
         callResult = null;
@@ -87,6 +102,9 @@ public class StreamApiBaseClient : WebSocketApiClient
         return true;
     }
 
+    /// <summary>
+    /// Represents the Message Matches Handler value.
+    /// </summary>
     protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken message, object request)
     {
         if (message.Type != JTokenType.Object)
@@ -100,16 +118,25 @@ public class StreamApiBaseClient : WebSocketApiClient
         return bRequest.Channel == channel.ToString();
     }
 
+    /// <summary>
+    /// Represents the Message Matches Handler value.
+    /// </summary>
     protected override bool MessageMatchesHandler(WebSocketConnection connection, JToken message, string identifier)
     {
         return true;
     }
 
+    /// <summary>
+    /// Represents the Authenticate value.
+    /// </summary>
     protected override Task<CallResult<bool>> AuthenticateAsync(WebSocketConnection connection)
     {
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Represents the Unsubscribe value.
+    /// </summary>
     protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
         var topics = ((GateStreamRequest)subscription.Request!).Payload;
@@ -211,12 +238,21 @@ public class StreamApiBaseClient : WebSocketApiClient
     }
     */
 
+    /// <summary>
+    /// Executes the Base Unsubscribe operation.
+    /// </summary>
     public async Task BaseUnsubscribeAsync(int subscriptionId)
         => await this.UnsubscribeAsync(subscriptionId).ConfigureAwait(false);
 
+    /// <summary>
+    /// Executes the Base Unsubscribe operation.
+    /// </summary>
     public async Task BaseUnsubscribeAsync(WebSocketUpdateSubscription subscription)
         => await this.UnsubscribeAsync(subscription).ConfigureAwait(false);
 
+    /// <summary>
+    /// Executes the Base Unsubscribe All operation.
+    /// </summary>
     public async Task BaseUnsubscribeAllAsync()
         => await this.UnsubscribeAllAsync().ConfigureAwait(false);
     #endregion
