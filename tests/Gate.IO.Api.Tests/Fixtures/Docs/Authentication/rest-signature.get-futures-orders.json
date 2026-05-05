@@ -1,0 +1,10 @@
+{
+  "key": "key",
+  "secret": "secret",
+  "method": "GET",
+  "path": "/api/v4/futures/orders",
+  "query_string": "contract=BTC_USD&status=finished&limit=50",
+  "body": "",
+  "timestamp": "1541993715",
+  "expected_signature": "55f84ea195d6fe57ce62464daaa7c3c02fa9d1dde954e4c898289c9a2407a3d6fb3faf24deff16790d726b66ac9f74526668b13bd01029199cc4fcc522418b8a"
+}

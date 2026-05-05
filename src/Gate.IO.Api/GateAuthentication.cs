@@ -29,17 +29,23 @@ internal class GateAuthentication(ApiCredentials credentials) : AuthenticationPr
         }
 
         // Signature
-        var signbody = new StringBuilder();
-        signbody.Append(method.ToString().ToUpper() + "\n");
-        signbody.Append(uri.AbsolutePath + "\n");
-        signbody.Append(HttpUtility.UrlDecode(uri.Query.TrimStart('?')) + "\n");
-        signbody.Append(SignSHA512(bodyContent, SignatureOutputType.Hex).ToLower() + "\n");
-        signbody.Append(timestamp);
-        var signature = SignHMACSHA512(signbody.ToString()).ToLower();
+        var queryString = HttpUtility.UrlDecode(uri.Query.TrimStart('?'));
+        var signature = CreateRestSignature(method, uri.AbsolutePath, queryString, bodyContent, timestamp);
         headers.Add("SIGN", signature);
 
         // Broker Id
         headers.Add("X-Gate-Channel-Id", GateConstants.Default.ChannelId);
+    }
+
+    internal string CreateRestSignature(HttpMethod method, string path, string queryString, string bodyContent, string timestamp)
+    {
+        var signbody = new StringBuilder();
+        signbody.Append(method.ToString().ToUpper() + "\n");
+        signbody.Append(path + "\n");
+        signbody.Append((queryString ?? string.Empty) + "\n");
+        signbody.Append(SignSHA512(bodyContent ?? string.Empty, SignatureOutputType.Hex).ToLower() + "\n");
+        signbody.Append(timestamp);
+        return SignHMACSHA512(signbody.ToString()).ToLower();
     }
 
     public void AuthenticateStreamRequest(GateStreamRequest request)

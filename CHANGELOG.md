@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added APIv4 authentication contract tests.
+    * Added fixture-backed tests for Gate's official REST signature examples for signed GET and POST requests.
+    * Added authentication behavior tests for unsigned requests and missing credentials.
+    * Exposed the internal REST signature builder to the test assembly so the production signing path is covered directly.
   * Added the initial automated test project and Alpha API fixtures.
     * Added an xUnit test project with shared JSON fixture loading, public HTTP capture helpers, and opt-in live public integration tests controlled by `GATEIO_RUN_LIVE_TESTS`.
     * Added documented Alpha response fixtures, captured live public Alpha responses, and contract tests for Alpha account, quote, order, currency, ticker, and token models.

@@ -1,0 +1,10 @@
+{
+  "key": "key",
+  "secret": "secret",
+  "method": "POST",
+  "path": "/api/v4/futures/orders",
+  "query_string": "",
+  "body": "{\"contract\":\"BTC_USD\",\"type\":\"limit\",\"size\":100,\"price\":6800,\"time_in_force\":\"gtc\"}",
+  "timestamp": "1541993715",
+  "expected_signature": "eae42da914a590ddf727473aff25fc87d50b64783941061f47a3fdb92742541fc4c2c14017581b4199a1418d54471c269c03a38d788d802e2c306c37636389f0"
+}
