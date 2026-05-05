@@ -1,0 +1,13 @@
+{
+  "time": 1768372119511,
+  "channel": "tradfi.order_book",
+  "event": "update",
+  "result": [
+    {
+      "time": 1768372119504,
+      "symbol": "XAUUSD",
+      "bid": "4633.24",
+      "ask": "4633.33"
+    }
+  ]
+}

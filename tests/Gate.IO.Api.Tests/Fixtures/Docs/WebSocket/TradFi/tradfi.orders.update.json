@@ -1,0 +1,23 @@
+{
+  "time": 1768373164534,
+  "channel": "tradfi.orders",
+  "event": "update",
+  "result": [
+    {
+      "order_id": "2536849",
+      "gate_uid": 2124580619,
+      "symbol": "NZDSEK",
+      "side": 2,
+      "volume": "0.01",
+      "fill_volume": "0",
+      "price": "5.29483",
+      "price_tp": "0.00000",
+      "price_sl": "0.00000",
+      "finished": "0",
+      "finished_as": "-",
+      "time_setup": 1768373164,
+      "timestamp": 1768373164491,
+      "order_opt_type": 1
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "time": 1768362181,
+  "id": 3001,
+  "channel": "tradfi.tickers",
+  "event": "subscribe",
+  "payload": {
+    "markets": [
+      "XAUUSD"
+    ]
+  }
+}

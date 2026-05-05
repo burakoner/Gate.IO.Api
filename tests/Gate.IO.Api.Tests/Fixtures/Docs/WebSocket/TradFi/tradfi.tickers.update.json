@@ -1,0 +1,17 @@
+{
+  "time": 1768362181817,
+  "channel": "tradfi.tickers",
+  "event": "update",
+  "result": [
+    {
+      "timestamp": 1768341600,
+      "symbol": "XAUUSD",
+      "open_price": "4587.16",
+      "last_price": "4622.95",
+      "price_change_amount": "35.79",
+      "price_change_rate": "0.78",
+      "high": "4625.59",
+      "low": "4587.07"
+    }
+  ]
+}

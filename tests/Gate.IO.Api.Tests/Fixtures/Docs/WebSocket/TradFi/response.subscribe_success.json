@@ -1,0 +1,10 @@
+{
+  "time": 1768373164,
+  "id": 3002,
+  "channel": "tradfi.orders",
+  "event": "subscribe",
+  "error": null,
+  "result": {
+    "status": "success"
+  }
+}

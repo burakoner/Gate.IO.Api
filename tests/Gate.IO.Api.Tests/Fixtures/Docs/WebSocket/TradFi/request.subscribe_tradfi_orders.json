@@ -1,0 +1,12 @@
+{
+  "time": 1768373164,
+  "id": 3002,
+  "channel": "tradfi.orders",
+  "event": "subscribe",
+  "payload": [],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

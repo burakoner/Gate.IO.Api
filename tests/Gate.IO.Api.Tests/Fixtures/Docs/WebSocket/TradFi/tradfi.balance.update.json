@@ -1,0 +1,14 @@
+{
+  "time": 1768373369028,
+  "channel": "tradfi.balance",
+  "event": "update",
+  "result": [
+    {
+      "deal_id": "84776",
+      "gate_uid": 2124580619,
+      "change": "-20",
+      "comment": "",
+      "timestamp": 1768373368990
+    }
+  ]
+}
