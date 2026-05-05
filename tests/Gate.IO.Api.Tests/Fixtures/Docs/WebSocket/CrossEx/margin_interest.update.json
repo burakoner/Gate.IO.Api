@@ -1,0 +1,22 @@
+{
+  "channel": "margin_interest",
+  "event": "subscribe",
+  "payload": {
+    "user_id": "20251115",
+    "symbol": "OKX_MARGIN_DOGE_USDT",
+    "interest_id": "2101724189861376",
+    "liability_id": "2101724189861120",
+    "liability": "10",
+    "liability_coin": "USDT",
+    "interest": "0.0000343",
+    "interest_rate": "0.00000343",
+    "interest_type": "IMMEDIATE_OPEN_ORDER",
+    "create_time": "1763365295219"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168984
+}

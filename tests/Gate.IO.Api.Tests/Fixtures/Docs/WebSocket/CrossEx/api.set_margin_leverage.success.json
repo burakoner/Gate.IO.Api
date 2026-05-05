@@ -1,0 +1,14 @@
+{
+  "channel": "set_margin_leverage",
+  "event": "api",
+  "payload": {
+    "symbol": "OKX_MARGIN_ADA_USDT",
+    "leverage": "10"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168948
+}

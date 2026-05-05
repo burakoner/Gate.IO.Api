@@ -1,0 +1,12 @@
+{
+  "event": "login",
+  "payload": {
+    "conn_id": "644ff57f-add4-407a-97aa-b654c4ede839"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168928
+}

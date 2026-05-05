@@ -1,0 +1,9 @@
+{
+  "time": 1754272114,
+  "event": "login",
+  "payload": {
+    "method": "api_key",
+    "api_key": "key",
+    "sign": "3f3a73022c2aa7d873a21d271e23e827373440365be942badd1ccb5290ea8b0d2f064485689baba80c12d2127ef90822f787ffd1039c6ba298e1e5d4a4ef3ba0"
+  }
+}

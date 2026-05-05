@@ -1,0 +1,14 @@
+{
+  "channel": "close_position",
+  "event": "api",
+  "payload": {
+    "order_id": "2072652940337152",
+    "text": "2072652940337152"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168948
+}

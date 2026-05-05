@@ -1,0 +1,11 @@
+{
+  "time": 1773384822,
+  "channel": "open_interest",
+  "event": "update",
+  "result": {
+    "s": "OKX_FUTURE_BTC_USDT",
+    "oi": "2929823.88000001813",
+    "oiV": "29298.2388000001813"
+  },
+  "time_ms": 1773384822164
+}

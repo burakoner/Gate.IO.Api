@@ -1,0 +1,10 @@
+{
+  "time": 1771988975,
+  "channel": "last_price",
+  "event": "update",
+  "result": {
+    "s": "BINANCE_SPOT_BTC_USDT",
+    "lp": "65873.49000000"
+  },
+  "time_ms": 1771988975033
+}

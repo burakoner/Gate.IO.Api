@@ -1,0 +1,10 @@
+{
+  "time": 1771990349,
+  "channel": "mark_price",
+  "event": "update",
+  "result": {
+    "s": "BINANCE_FUTURE_BTC_USDT",
+    "mp": "65566.30000000"
+  },
+  "time_ms": 1771990349113
+}

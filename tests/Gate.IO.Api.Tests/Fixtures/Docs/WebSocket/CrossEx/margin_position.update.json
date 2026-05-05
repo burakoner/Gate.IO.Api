@@ -1,0 +1,33 @@
+{
+  "channel": "margin_position",
+  "event": "subscribe",
+  "payload": {
+    "user_id": "20251115",
+    "position_id": "20116122196200192",
+    "symbol": "OKX_MARGIN_DOGE_USDT",
+    "position_side": "LONG",
+    "initial_margin": "3.339831063595188875",
+    "maintenance_margin": "0.20743774877",
+    "asset_qty": "61.72130605",
+    "asset_coin": "DOGE",
+    "position_value": "9.9969999409185",
+    "liability": "10.00003424116",
+    "liability_coin": "USDT",
+    "interest": "0.0000343",
+    "max_position_qty": "61.72130605",
+    "entry_price": "0.162018605585874506",
+    "index_price": "0.16197",
+    "upnl": "-0.0030343002415",
+    "upnl_rate": "-0.000909",
+    "leverage": "3",
+    "max_leverage": "8",
+    "create_time": "1763365175843",
+    "update_time": "1763365689548"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168984
+}

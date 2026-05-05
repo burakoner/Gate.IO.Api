@@ -1,0 +1,15 @@
+{
+  "channel": "update_accounts",
+  "event": "api",
+  "payload": {
+    "account_mode": "ISOLATED_EXCHANGE",
+    "position_mode": "DUAL",
+    "exchange_type": "BINANCE"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168948
+}

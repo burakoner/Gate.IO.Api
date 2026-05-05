@@ -1,0 +1,13 @@
+{
+  "channel": "order",
+  "event": "subscribe",
+  "payload": [
+    "OKX_FUTURE_ADA_USDT"
+  ],
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168929
+}

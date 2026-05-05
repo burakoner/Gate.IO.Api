@@ -1,0 +1,8 @@
+{
+  "time": 1754272114,
+  "event": "subscribe",
+  "channel": "order",
+  "payload": [
+    "GATE_FUTURE_ETH_USDT"
+  ]
+}

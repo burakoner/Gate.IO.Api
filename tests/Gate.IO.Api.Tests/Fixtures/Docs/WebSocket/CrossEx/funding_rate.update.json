@@ -1,0 +1,11 @@
+{
+  "time": 1773382659,
+  "channel": "funding_rate",
+  "event": "update",
+  "result": {
+    "s": "BINANCE_FUTURE_BTC_USDT",
+    "r": "0.00002534",
+    "T": 1773388800000
+  },
+  "time_ms": 1773382659999
+}

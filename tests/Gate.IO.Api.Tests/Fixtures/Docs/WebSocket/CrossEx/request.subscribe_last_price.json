@@ -1,0 +1,10 @@
+{
+  "time": 1754272114,
+  "event": "subscribe",
+  "channel": "last_price",
+  "payload": [
+    "BINANCE_SPOT_BTC_USDT",
+    "OKX_FUTURE_BTC_USDT",
+    "GATE_FUTURE_ETH_USDT"
+  ]
+}

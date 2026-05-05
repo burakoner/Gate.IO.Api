@@ -1,0 +1,10 @@
+{
+  "time": 1771990104,
+  "channel": "index_price",
+  "event": "update",
+  "result": {
+    "s": "BINANCE_MARGIN_BTC_USDT",
+    "ip": "65590.40739130"
+  },
+  "time_ms": 1771990104116
+}

@@ -1,0 +1,40 @@
+{
+  "channel": "order",
+  "event": "update",
+  "payload": {
+    "attribute": "COMMON",
+    "business_type": "FUTURE",
+    "create_time": "1756434169096",
+    "exchange_type": "OKX",
+    "executed_amount": "0",
+    "executed_avg_price": "0",
+    "executed_qty": "0",
+    "fee": "0",
+    "fee_coin": "",
+    "last_executed_amount": "0",
+    "last_executed_price": "0",
+    "last_executed_qty": "0",
+    "leverage": "3",
+    "order_id": "2072652940337152",
+    "position_side": "NONE",
+    "price": "0.8499",
+    "qty": "10",
+    "quote_qty": "0",
+    "reason": "{\"label\":\"TRADE_INSUFFICIENT_AVAILABLE_MARGIN_ERROR\",\"message\":\"Insufficient availableMargin\"}",
+    "reduce_only": "false",
+    "side": "BUY",
+    "state": "FAIL",
+    "symbol": "OKX_FUTURE_ADA_USDT",
+    "text": "2072652940337152",
+    "time_in_force": "GTC",
+    "type": "MARKET",
+    "update_time": "1756434169098",
+    "user_id": "2124485957"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168968
+}

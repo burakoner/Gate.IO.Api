@@ -1,0 +1,33 @@
+{
+  "channel": "position",
+  "event": "update",
+  "payload": {
+    "create_time": "1756434169096",
+    "entry_price": "0",
+    "fee": "0",
+    "funding_fee": "0",
+    "funding_time": "0",
+    "initial_margin": "0",
+    "leverage": "3",
+    "maintenance_margin": "0",
+    "mark_price": "0.8499",
+    "max_leverage": "20",
+    "position_id": "20087051449819136",
+    "position_qty": "0",
+    "position_side": "NONE",
+    "position_value": "0",
+    "risk_limit": "1",
+    "symbol": "OKX_FUTURE_ADA_USDT",
+    "update_time": "1756434169098",
+    "upnl": "0",
+    "upnl_rate": "0",
+    "user_id": "2124485957",
+    "closed_pnl": "12"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168984
+}

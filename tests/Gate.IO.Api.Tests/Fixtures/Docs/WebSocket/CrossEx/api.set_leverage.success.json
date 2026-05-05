@@ -1,0 +1,14 @@
+{
+  "channel": "set_leverage",
+  "event": "api",
+  "payload": {
+    "symbol": "GATE_FUTURE_ETH_USDT",
+    "leverage": "10"
+  },
+  "result": {
+    "code": "100000",
+    "message": "success"
+  },
+  "time": 1756434168,
+  "time_ms": 1756434168948
+}

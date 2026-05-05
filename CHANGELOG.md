@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added CrossEx WebSocket contract tests.
+    * Added documented CrossEx WebSocket fixtures for login, subscription envelopes, public market streams, private user streams, and WebSocket API responses.
+    * Added serialization, login signing, and validation coverage for CrossEx WebSocket request shapes and documented order book level limits.
   * Added Unified WebSocket contract tests.
     * Added documented Unified WebSocket fixtures for authenticated asset overview and asset-detail subscription envelopes plus update notifications.
     * Added serialization and validation coverage for Unified WebSocket authenticated subscribe payloads and `!all` asset-detail subscription rules.
