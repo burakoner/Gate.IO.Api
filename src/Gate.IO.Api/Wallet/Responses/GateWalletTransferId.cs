@@ -9,5 +9,5 @@ public record GateWalletTransferId
     /// Id
     /// </summary>
     [JsonProperty("id")]
-    public string Id { get; set; }
+    public long Id { get; set; }
 }

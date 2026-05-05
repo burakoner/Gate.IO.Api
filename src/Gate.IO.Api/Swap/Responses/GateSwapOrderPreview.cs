@@ -9,7 +9,7 @@ public record GateSwapOrderPreview
     /// Preview result ID
     /// </summary>
     [JsonProperty("preview_id")]
-    public string PreviewId { get; set; }
+    public long PreviewId { get; set; }
 
     /// <summary>
     /// Currency to sell which can be retrieved from supported currency list API GET /flash_swap/currencies

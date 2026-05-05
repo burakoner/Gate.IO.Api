@@ -9,13 +9,13 @@ public record GateMarginTier
     /// Maximum loan limit
     /// </summary>
     [JsonProperty("upper_limit")]
-    public string UpperLimit { get; set; }
+    public decimal UpperLimit { get; set; }
 
     /// <summary>
     /// Maximum loan limit
     /// </summary>
     [JsonProperty("tier_amount")]
-    public string TierAmount
+    public decimal TierAmount
     {
         get => UpperLimit;
         set => UpperLimit = value;

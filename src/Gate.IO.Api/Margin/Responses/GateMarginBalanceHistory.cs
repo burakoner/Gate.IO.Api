@@ -9,7 +9,7 @@ public record GateMarginBalanceHistory
     /// Balance change record ID
     /// </summary>
     [JsonProperty("id")]
-    public string Id { get; set; }
+    public long Id { get; set; }
 
     /// <summary>
     /// Balance changed timestamp

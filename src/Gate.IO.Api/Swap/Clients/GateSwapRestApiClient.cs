@@ -63,7 +63,6 @@ public class GateSwapRestApiClient
     /// <param name="buyAmount">Amount to buy (based on the preview result)</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    [Obsolete("Use the string previewId overload because Gate returns preview IDs as strings.")]
     public Task<RestCallResult<GateSwapOrder>> PlaceOrderAsync(
         long previewId,
         string sellCurrency,
@@ -71,7 +70,14 @@ public class GateSwapRestApiClient
         string buyCurrency,
         decimal buyAmount,
         CancellationToken ct = default)
-        => PlaceOrderAsync(previewId.ToString(CultureInfo.InvariantCulture), sellCurrency, sellAmount, buyCurrency, buyAmount, ct);
+        => PlaceOrderAsync(new GateSwapOrderRequest
+        {
+            BuyCurrency = buyCurrency,
+            BuyAmount = buyAmount,
+            SellCurrency = sellCurrency,
+            SellAmount = sellAmount,
+            PreviewId = previewId,
+        }, ct);
 
     /// <summary>
     /// Create a flash swap order
@@ -91,14 +97,19 @@ public class GateSwapRestApiClient
         string buyCurrency,
         decimal buyAmount,
         CancellationToken ct = default)
-        => PlaceOrderAsync(new GateSwapOrderRequest
+    {
+        if (!long.TryParse(previewId, NumberStyles.Integer, CultureInfo.InvariantCulture, out var parsedPreviewId))
+            throw new ArgumentException("PreviewId must be a numeric value", nameof(previewId));
+
+        return PlaceOrderAsync(new GateSwapOrderRequest
         {
             BuyCurrency = buyCurrency,
             BuyAmount = buyAmount,
             SellCurrency = sellCurrency,
             SellAmount = sellAmount,
-            PreviewId = previewId,
+            PreviewId = parsedPreviewId,
         }, ct);
+    }
 
     /// <summary>
     /// Create a flash swap order
@@ -109,7 +120,7 @@ public class GateSwapRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateSwapOrder>> PlaceOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
     {
-        if (string.IsNullOrEmpty(request.PreviewId))
+        if (!request.PreviewId.HasValue)
             throw new ArgumentException("PreviewId is required for flash swap order creation", nameof(request.PreviewId));
         if (!request.SellAmount.HasValue)
             throw new ArgumentException("SellAmount is required for flash swap order creation", nameof(request.SellAmount));
@@ -117,7 +128,7 @@ public class GateSwapRestApiClient
             throw new ArgumentException("BuyAmount is required for flash swap order creation", nameof(request.BuyAmount));
 
         var parameters = new ParameterCollection();
-        parameters.Add("preview_id", request.PreviewId);
+        parameters.AddString("preview_id", request.PreviewId.Value);
         parameters.Add("sell_currency", request.SellCurrency);
         parameters.AddOptionalString("sell_amount", request.SellAmount);
         parameters.Add("buy_currency", request.BuyCurrency);
@@ -241,7 +252,7 @@ public class GateSwapRestApiClient
     [Obsolete("Use PreviewOrderAsync(GateSwapPreviewRequest request, CancellationToken ct = default).")]
     public Task<RestCallResult<GateSwapOrderPreview>> PreviewOrderAsync(GateSwapOrderRequest request, CancellationToken ct = default)
     {
-        if (!string.IsNullOrEmpty(request.PreviewId))
+        if (request.PreviewId.HasValue)
             throw new ArgumentException("PreviewId must be null for preview endpoint", nameof(request.PreviewId));
 
         return PreviewOrderAsync(new GateSwapPreviewRequest

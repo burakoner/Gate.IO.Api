@@ -1,12 +1,17 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Audited the recent documentation updates for string-backed numeric fields and restored public numeric types where the API value is semantically numeric.
+    * Kept Wallet transaction, transfer, small-balance, and transfer-status IDs numeric while still allowing JSON numeric strings to deserialize.
+    * Restored isolated margin balance-history IDs and lending tier amounts to numeric types.
+    * Restored Flash Swap preview IDs to numeric types in request and response models while keeping the string preview-id overload for numeric string inputs.
+    * Updated Spot currency supply and market-cap fields to decimal values.
+    * Left semantic string fields as strings where the API can return non-numeric values, such as withdrawal IDs and open-ended unified tier limits.
   * Updated flash swap endpoints against the current Gate API v4 Flash Swap documentation.
     * Added request-object overloads for flash swap currency-pair queries and order-list queries.
     * Added `GateSwapPreviewRequest` for flash swap order previews and kept the old `GateSwapOrderRequest` preview overload as an obsolete compatibility path.
     * Updated flash swap preview flows to support providing either `sell_amount` or `buy_amount`.
-    * Changed flash swap preview IDs to strings in request and preview response models.
-    * Added string-based `PlaceOrderAsync` overload while preserving the existing long preview-id overload for compatibility.
+    * Kept flash swap preview IDs as numeric values in request and preview response models and added a string-based `PlaceOrderAsync` overload for numeric string inputs.
     * Updated flash swap currency-pair query default limit to 1000 and validate it against the documented 1-1000 range.
     * Added `GateSwapOrder.UpdateTime` for the `update_time` value returned by flash swap order responses.
     * Updated examples and README with Flash Swap request-object overload usage.
@@ -34,7 +39,7 @@
     * Fixed authentication flags for isolated margin estimate-rate and current lending-tier endpoints.
     * Updated borrow/repay and leverage-setting calls to return no-content results per the current API.
     * Split isolated margin loan records into `GateMarginLoanRecord` and added `GateMarginLoanType` for active loans and interest records.
-    * Updated isolated margin response models for string record IDs, timestamp converters, interest statuses, and tier upper-limit/tier-amount values.
+    * Updated isolated margin response models for timestamp converters, interest statuses, and tier upper-limit/tier-amount values.
     * Updated examples and README with Isolated Margin request-object overload usage.
   * Updated unified endpoints against the current Gate API v4 Unified documentation.
     * Added request-object overloads for account info, borrow/repay, loans, loan history, interest history, account mode, leverage settings, historical lending rates, and collateral currency updates.
@@ -62,14 +67,14 @@
     * Switched Wallet time query parameters to Unix seconds.
     * Flattened nested-list Wallet responses for withdrawal records, sub-account futures balances, small balances, and small balance history.
     * Updated Wallet response models with missing fields for currency chains, deposit addresses, withdrawal records, sub-account balances, trading fees, total balances, small balance history, and UID transfer history.
-    * Fixed Wallet response field types for transfer status IDs, withdrawal fee percentages, sub-account margin locked amounts, and small balance history IDs.
+    * Fixed Wallet response field types for withdrawal fee percentages and sub-account margin locked amounts while keeping numeric IDs numeric.
     * Added `GateWalletSubAccountType.Options`.
     * Updated examples and README with Wallet request-object overload usage and the low-cap token endpoint.
   * Updated wallet withdrawal endpoints against the current Gate API v4 Withdrawal documentation.
     * Fixed `GateWalletRestApiClient.WithdrawAsync` parameter ordering so the sixth argument maps to `withdraw_order_id`.
     * Added `GateWalletWithdrawalRequest` and `WithdrawAsync(GateWalletWithdrawalRequest request, CancellationToken ct = default)`.
     * Added string-based `CancelWithdrawalAsync(string withdrawalId, CancellationToken ct = default)` while preserving the existing long overload.
-    * Changed `GateWalletTransaction.Id`, `GateWalletTransaction.BlockNumber`, and `GateWalletTransferId.Id` to string to match API responses.
+    * Kept `GateWalletTransaction.Id`, `GateWalletTransaction.BlockNumber`, and `GateWalletTransferId.Id` as numeric public properties while supporting Gate's numeric string responses.
     * Added newer withdrawal status enum values: `CANCELPEND`, `FVERIFY`, `LOCKED`, and `REJECT`.
     * Added `GateRestApiClient.Withdrawal` as an alias to `Wallet` for discoverability without moving ownership away from the Wallet client.
 

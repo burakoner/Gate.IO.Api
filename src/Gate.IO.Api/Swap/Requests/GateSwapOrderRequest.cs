@@ -9,7 +9,7 @@ public record GateSwapOrderRequest
     /// Preview result ID
     /// </summary>
     [JsonProperty("preview_id")]
-    public string PreviewId { get; set; }
+    public long? PreviewId { get; set; }
 
     /// <summary>
     /// The name of the asset being sold, as obtained from the "GET /flash_swap/currency_pairs" API, which retrieves a list of supported flash swap currency pairs.
