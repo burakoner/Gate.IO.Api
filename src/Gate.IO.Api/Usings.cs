@@ -19,6 +19,7 @@ global using Gate.IO.Api.Margin;
 global using Gate.IO.Api.Models.StreamApi;
 global using Gate.IO.Api.MultiCollateralLoan;
 global using Gate.IO.Api.Options;
+global using Gate.IO.Api.Otc;
 global using Gate.IO.Api.Rebate;
 global using Gate.IO.Api.Spot;
 global using Gate.IO.Api.SubAccount;

@@ -523,6 +523,18 @@ var rebate_09 = await api.Rebate.GetUserSubRelationAsync(new GateRebateUserSubRe
 var rebate_10 = await api.Rebate.GetRecentPartnerApplicationAsync();
 var rebate_11 = await api.Rebate.CheckPartnerEligibilityAsync();
 var rebate_12 = await api.Rebate.GetPartnerAggregatedDataAsync(new GateRebatePartnerAggregatedDataRequest { StartDate = "2024-01-01 00:00:00", EndDate = "2024-01-07 23:59:59", BusinessType = GateRebateBusinessType.All });
+
+// OTC Methods
+var otc_01 = await api.Otc.GetQuoteAsync(new GateOtcQuoteRequest { Side = GateOtcQuoteSide.Pay, PayCoin = "USDT", GetCoin = "USD", PayAmount = 30000.0m, CreateQuoteToken = true });
+var otc_02 = await api.Otc.CreateFiatOrderAsync(new GateOtcFiatOrderRequest { Type = GateOtcOrderType.Buy, CryptoCurrency = "USDT", FiatCurrency = "USD", CryptoAmount = 30000.0m, FiatAmount = 30000.0m, QuoteToken = "QUOTE-TOKEN", BankId = 1_000_000_001 });
+var otc_03 = await api.Otc.CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest { PayCoin = "USDC", GetCoin = "USDT", PayAmount = 30000.0m, GetAmount = 20000.0m, Side = GateOtcQuoteSide.Pay, QuoteToken = "QUOTE-TOKEN" });
+var otc_04 = await api.Otc.GetDefaultBankAccountAsync();
+var otc_05 = await api.Otc.GetBankAccountsAsync();
+var otc_06 = await api.Otc.MarkFiatOrderAsPaidAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
+var otc_07 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
+var otc_08 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
+var otc_09 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderListRequest { CoinName = "USDT", Status = "PROCESSING", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
+var otc_10 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
 ```
 
 ## WebSocket Api Examples

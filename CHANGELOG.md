@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added OTC REST API support against the current Gate API v4 OTC documentation.
+    * Added `api.Otc` and a new `Otc` module with client, enum, request, and response models.
+    * Covered quote, fiat order create/paid/cancel/list/detail, stablecoin order create/list, default bank account, and bank account list endpoints.
+    * Added request-object overloads for quote, fiat order creation, stablecoin order creation, order actions, and fiat/stablecoin order list queries.
+    * Unwrapped OTC `code`/`message` response envelopes for data endpoints while preserving action result metadata for order actions.
+    * Kept semantically numeric order/user/bank IDs, amounts, rates, counts, and timestamps as numeric or `DateTime` public properties while sending string body/query values where the API requires them.
+    * Updated examples and README with OTC request-object overload usage.
   * Added Earn REST API support against the current Gate API v4 Earn documentation.
     * Added `api.Earn` and a new `Earn` module with client, enum, request, and response models.
     * Covered Dual Investment product/order/balance/refund/reinvest/recommendation endpoints.

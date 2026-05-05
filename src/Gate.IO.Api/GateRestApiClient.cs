@@ -92,6 +92,11 @@ public class GateRestApiClient : RestApiClient
     public GateRebateRestApiClient Rebate { get; } // 4.105.4
 
     /// <summary>
+    /// OTC Client
+    /// </summary>
+    public GateOtcRestApiClient Otc { get; } // 4.105.4
+
+    /// <summary>
     /// Gate.IO REST API Client Constructor
     /// </summary>
     public GateRestApiClient() : this(null, new GateRestApiClientOptions())
@@ -141,6 +146,7 @@ public class GateRestApiClient : RestApiClient
         Earn = new GateEarnRestApiClient(this);
         Account = new GateAccountRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);
+        Otc = new GateOtcRestApiClient(this);
     }
 
     #region Override Methods
