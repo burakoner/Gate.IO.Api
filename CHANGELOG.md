@@ -24,6 +24,7 @@
     * Unwrapped OTC `code`/`message` response envelopes for data endpoints while preserving action result metadata for order actions.
     * Kept semantically numeric order/user/bank IDs, amounts, rates, counts, and timestamps as numeric or `DateTime` public properties while sending string body/query values where the API requires them.
     * Split OTC request and response models into separate files for easier review and maintenance.
+    * Split OTC enum definitions into separate files to match the request and response model layout.
     * Updated examples and README with OTC request-object overload usage.
   * Added Earn REST API support against the current Gate API v4 Earn documentation.
     * Added `api.Earn` and a new `Earn` module with client, enum, request, and response models.
