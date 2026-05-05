@@ -1,0 +1,20 @@
+[
+  {
+    "contract": "BTC_USDT_20200814",
+    "last": "9017",
+    "low_24h": "8800",
+    "high_24h": "9200",
+    "change_percentage": "4.43",
+    "total_size": "32323904",
+    "volume_24h": "184040",
+    "volume_24h_base": "286",
+    "volume_24h_quote": "184040",
+    "volume_24h_settle": "184040",
+    "mark_price": "9019",
+    "index_price": "9005.3",
+    "highest_bid": "9016.9",
+    "highest_size": "100",
+    "lowest_ask": "9017.1",
+    "lowest_size": "1000"
+  }
+]

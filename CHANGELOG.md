@@ -1,6 +1,12 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Delivery REST contract tests.
+    * Added documented Delivery fixtures for contracts, market depth, trades, candlesticks, tickers, insurance, risk limit tiers, account data, positions, settlements, personal trades, orders, and price-triggered orders.
+    * Added live public Delivery captures for current USDT delivery contracts, market data, insurance history, and risk limit tiers.
+    * Added request construction tests for unsigned Delivery market calls and signed order, settlement, and price-triggered order calls.
+    * Added opt-in public integration smoke tests for Delivery market endpoints.
+    * Updated Delivery parsing for mapped contract enum fields, public risk-limit tier requests, and documented position-close side values.
   * Added Futures REST contract tests.
     * Added documented Futures fixtures for contracts, market depth, trades, candlesticks, tickers, funding rates, insurance, stats, index constituents, liquidations, risk limit tiers, account data, orders, and price-triggered orders.
     * Added live public Futures captures for BTC_USDT market data, batch funding rates, liquidation history, index constituents, and risk limit tiers.

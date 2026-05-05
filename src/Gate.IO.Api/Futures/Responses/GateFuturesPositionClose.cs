@@ -21,7 +21,7 @@ public record GateFuturesPositionClose
     /// <summary>
     /// Position side, long or short
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPositionSide Side { get; set; }
 
     /// <summary>

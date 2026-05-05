@@ -1,0 +1,11 @@
+[
+  {
+    "maintenance_rate": "0.01",
+    "tier": 1,
+    "initial_rate": "0.02",
+    "leverage_max": "50",
+    "risk_limit": "20000",
+    "contract": "BTC_USDT_20200814",
+    "deduction": "0"
+  }
+]

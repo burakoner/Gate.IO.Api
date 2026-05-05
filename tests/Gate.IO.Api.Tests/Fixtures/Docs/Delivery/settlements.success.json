@@ -1,0 +1,13 @@
+[
+  {
+    "time": 1548654951,
+    "contract": "BTC_USDT_20200814",
+    "size": 600,
+    "leverage": "25",
+    "margin": "0.006705256878",
+    "entry_price": "3536.123",
+    "settle_price": "3421.54",
+    "profit": "-6.87498",
+    "fee": "0.03079386"
+  }
+]

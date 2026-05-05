@@ -20,13 +20,13 @@ public record GateDeliveryContract
     /// <summary>
     /// Cycle type, e.g. WEEKLY, QUARTERLY
     /// </summary>
-    [JsonProperty("cycle")]
+    [JsonProperty("cycle"), JsonConverter(typeof(MapConverter))]
     public GateFuturesDeliveryCycle Cycle { get; set; }
 
     /// <summary>
     /// Futures contract type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesContractType Type { get; set; }
 
     /// <summary>
@@ -56,7 +56,7 @@ public record GateDeliveryContract
     /// <summary>
     /// Mark price type, internal - based on internal trading, index - based on external index price
     /// </summary>
-    [JsonProperty("mark_type")]
+    [JsonProperty("mark_type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesMarkType MarkType { get; set; }
 
     /// <summary>

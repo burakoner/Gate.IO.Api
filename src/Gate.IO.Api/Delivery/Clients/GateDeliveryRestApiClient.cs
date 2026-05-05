@@ -381,7 +381,7 @@ public class GateDeliveryRestApiClient
         parameters.AddOptionalParameter("offset", offset);
 
         var endpoint = "{settle}/risk_limit_tiers".Replace("{settle}", MapConverter.GetString(settle));
-        return _.SendRequestInternal<List<GateDeliveryRiskLimitTier>>(_.GetUrl(api, v4, delivery, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateDeliveryRiskLimitTier>>(_.GetUrl(api, v4, delivery, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     // Create a price-triggered order

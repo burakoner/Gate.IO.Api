@@ -1,0 +1,17 @@
+[
+  {
+    "time": 1548654951,
+    "contract": "BTC_USDT_20200814",
+    "side": "long",
+    "pnl": "10.5",
+    "pnl_pnl": "10.1",
+    "pnl_fund": "0.2",
+    "pnl_fee": "0.2",
+    "text": "t-close",
+    "max_size": "100",
+    "accum_size": "100",
+    "first_open_time": 1548650000,
+    "long_price": "3536.123",
+    "short_price": "3421.54"
+  }
+]
