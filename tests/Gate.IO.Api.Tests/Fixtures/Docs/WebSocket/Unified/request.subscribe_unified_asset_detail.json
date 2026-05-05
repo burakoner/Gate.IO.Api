@@ -1,0 +1,15 @@
+{
+  "time": 1716796362,
+  "id": 5002,
+  "channel": "unified.asset_detail",
+  "event": "subscribe",
+  "payload": [
+    "BTC",
+    "ETH"
+  ],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

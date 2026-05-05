@@ -1,0 +1,12 @@
+{
+  "time": 1700625194,
+  "id": 5001,
+  "channel": "unified.assets",
+  "event": "subscribe",
+  "payload": [],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

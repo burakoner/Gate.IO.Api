@@ -1,0 +1,11 @@
+{
+  "time": 1716796362,
+  "time_ms": 1716796362915,
+  "id": 5002,
+  "channel": "unified.asset_detail",
+  "event": "subscribe",
+  "error": null,
+  "result": {
+    "status": "success"
+  }
+}

@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Unified WebSocket contract tests.
+    * Added documented Unified WebSocket fixtures for authenticated asset overview and asset-detail subscription envelopes plus update notifications.
+    * Added serialization and validation coverage for Unified WebSocket authenticated subscribe payloads and `!all` asset-detail subscription rules.
   * Added Options WebSocket contract tests.
     * Added documented Options WebSocket fixtures for subscription envelopes, public ticker/trade/price/settlement/contract/candlestick/order-book streams, and private order/trade/liquidation/settlement/position/balance streams.
     * Added serialization and validation coverage for Options WebSocket public subscribe payloads, private authenticated payloads, and documented order book interval/level limits.
