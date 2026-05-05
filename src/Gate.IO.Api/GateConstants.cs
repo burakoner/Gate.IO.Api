@@ -36,6 +36,11 @@ internal record GateConstants
     public string StreamTradFiAddress { get; set; }
 
     /// <summary>
+    /// Stream-Unified
+    /// </summary>
+    public string StreamUnifiedAddress { get; set; }
+
+    /// <summary>
     /// Gate.IO API Broker Id
     /// </summary>
     public string ChannelId { get; set; }
@@ -69,6 +74,9 @@ internal record GateConstants
         // Stream-TradFi
         StreamTradFiAddress = "wss://fx-ws.gateio.ws/v4/ws/tradfi",
 
+        // Stream-Unified
+        StreamUnifiedAddress = "wss://ws.gate.com/v4/ws/unified",
+
         // Broker Id
         ChannelId = "phalchatha"
     };
@@ -101,6 +109,9 @@ internal record GateConstants
 
         // Stream-TradFi
         StreamTradFiAddress = "wss://fx-ws.gateio.ws/v4/ws/tradfi",
+
+        // Stream-Unified
+        StreamUnifiedAddress = "wss://ws.gate.com/v4/ws/unified",
 
         // Broker Id
         ChannelId = "phalchatha"

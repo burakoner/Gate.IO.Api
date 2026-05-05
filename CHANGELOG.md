@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Unified WebSocket stream support against the current Gate Unified WebSocket documentation.
+    * Added `stream.Unified` with ping, asset overview, and asset detail subscriptions.
+    * Added the Unified WebSocket base address to client options and constants.
+    * Added Unified stream models for account-level asset overview and per-currency asset detail updates.
   * Updated Options WebSocket streams against the current Gate Options WebSocket documentation.
     * Corrected the mark-price stream channel to `options.mark_prices`.
     * Fixed contract and underlying candlestick subscriptions to handle the documented array payloads and added the missing `10s`, `4h`, `8h`, `1d`, and `7d` interval values.

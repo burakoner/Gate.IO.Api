@@ -34,6 +34,10 @@ public class GateWebSocketClient
     /// Gets or sets the TradFi.
     /// </summary>
     public GateTradFiStreamApiClient TradFi { get; }
+    /// <summary>
+    /// Gets or sets the Unified.
+    /// </summary>
+    public GateUnifiedStreamApiClient Unified { get; }
 
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client class.
@@ -70,6 +74,7 @@ public class GateWebSocketClient
         Delivery = new GateDeliveryStreamApiClient(this);
         Options = new GateOptionsStreamApiClient(this);
         TradFi = new GateTradFiStreamApiClient(this);
+        Unified = new GateUnifiedStreamApiClient(this);
     }
 
 }

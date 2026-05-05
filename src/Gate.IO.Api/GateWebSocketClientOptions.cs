@@ -34,6 +34,12 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     /// Gets or sets the Stream TradFi Address.
     /// </summary>
     public string StreamTradFiAddress { get; set; }
+
+    // Stream-Unified
+    /// <summary>
+    /// Gets or sets the Stream Unified Address.
+    /// </summary>
+    public string StreamUnifiedAddress { get; set; }
     
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client Options class.
@@ -65,6 +71,9 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
 
         // Stream-TradFi
         this.StreamTradFiAddress = GateConstants.Default.StreamTradFiAddress;
+
+        // Stream-Unified
+        this.StreamUnifiedAddress = GateConstants.Default.StreamUnifiedAddress;
 
         // Limits
         // this.MaxConnections = 300;
