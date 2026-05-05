@@ -18,10 +18,10 @@ public record GateAlphaQuote
     public decimal MinimumAmount { get; set; }
 
     /// <summary>
-    /// Maximum order size.
+    /// Maximum order size, as returned by Gate.
     /// </summary>
     [JsonProperty("max_amount")]
-    public decimal MaximumAmount { get; set; }
+    public string MaximumAmount { get; set; }
 
     /// <summary>
     /// Token price in USDT.

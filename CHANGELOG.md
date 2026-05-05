@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added the initial automated test project and Alpha API fixtures.
+    * Added an xUnit test project with shared JSON fixture loading, public HTTP capture helpers, and opt-in live public integration tests controlled by `GATEIO_RUN_LIVE_TESTS`.
+    * Added documented Alpha response fixtures, captured live public Alpha responses, and contract tests for Alpha account, quote, order, currency, ticker, and token models.
+    * Added REST client surface tests to guard the currently exposed top-level API modules.
+    * Corrected Alpha quote `max_amount` handling to stay string-based because Gate's documented response can contain non-decimal values.
   * Added centralized request logging across REST and WebSocket clients.
     * REST requests now log start, success, failure, exception, elapsed time, endpoint, response type, and signed/request parameter metadata from the shared request path.
     * WebSocket subscribe, query, ping, and unsubscribe flows now log through shared stream client paths without duplicating logging in every module client.
