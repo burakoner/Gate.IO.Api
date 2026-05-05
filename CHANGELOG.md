@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added P2P REST contract tests.
+    * Added documented P2P fixtures for account, payment method, transaction, advertisement, chat, upload, and action response flows.
+    * Added signed request construction tests for P2P account, transaction, advertisement, and chat endpoints.
   * Added OTC REST contract tests.
     * Added documented OTC fixtures for quote, action, bank account, fiat order, stablecoin order, and fiat order detail responses.
     * Added request construction tests for signed OTC quote, fiat/stable order creation, bank account, paid/cancel, list, and detail calls.

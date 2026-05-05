@@ -1,0 +1,43 @@
+{
+  "timestamp": 1767151138.989862,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "is_self": true,
+    "user_timest": "2025/11/19",
+    "counterparties_num": 12,
+    "email_verified": "1",
+    "verified": "1",
+    "has_phone": "1",
+    "user_name": "merchant_demo",
+    "user_note": "Preferred counterparty",
+    "complete_transactions": "128",
+    "paid_transactions": "68",
+    "accepted_transactions": "60",
+    "transactions_used_time": "300",
+    "cancelled_used_time_month": "2",
+    "complete_transactions_month": "32",
+    "complete_rate_month": 96,
+    "orders_buy_rate_month": 53,
+    "is_black": 0,
+    "is_follow": 0,
+    "have_traded": 1,
+    "biz_uid": "biz_uid_demo_9f3a7c",
+    "blue_vip": 0,
+    "work_status": 1,
+    "registration_days": 42,
+    "first_trade_days": 30,
+    "need_replenish": 0,
+    "merchant_info": {
+      "type": "0",
+      "market": "USD"
+    },
+    "online_status": 1,
+    "work_hours": null,
+    "transactions_month": 6400.5,
+    "transactions_all": 28600.75,
+    "trade_versatile": false
+  },
+  "version": "1.0.0"
+}

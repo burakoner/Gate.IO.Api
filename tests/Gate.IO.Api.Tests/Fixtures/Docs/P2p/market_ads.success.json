@@ -1,0 +1,19 @@
+{
+  "timestamp": 1767088892.014117,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "index": 1,
+      "asset": "USDT",
+      "fiat_unit": "USD",
+      "adv_no": "2124000001",
+      "price": "1.270",
+      "max_single_trans_amount": "500",
+      "min_single_trans_amount": "10",
+      "nick_name": "merchant_demo"
+    }
+  ],
+  "version": "1.0.0"
+}

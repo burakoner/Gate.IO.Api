@@ -1,0 +1,41 @@
+{
+  "timestamp": 1767088742.640278,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "type_buy": 0,
+        "timest": "2025-02-07T07:44:03Z",
+        "timest_expire": "2025-02-07T08:14:03Z",
+        "timestamp": 1738914243,
+        "rate": "1.001",
+        "amount": "25",
+        "total": "25.025",
+        "txid": "40000002",
+        "status": "DONE",
+        "its_realname": "Buyer Demo",
+        "its_uid": "biz_uid_demo_9f3a7c",
+        "its_nick": "buyer_demo",
+        "seller_realname": "Merchant Demo",
+        "buyer_realname": "Buyer Demo",
+        "cancelable": 0,
+        "currency_type": "USDT",
+        "want_type": "USD",
+        "hide_payment": 1,
+        "sel_paytype": "swift",
+        "pay_others": [],
+        "cd_time": "0",
+        "order_type": 1,
+        "order_tag": [
+          "completed"
+        ]
+      }
+    ],
+    "trans_time": [],
+    "count": 1,
+    "exported_num": 1
+  },
+  "version": "1.0.0"
+}

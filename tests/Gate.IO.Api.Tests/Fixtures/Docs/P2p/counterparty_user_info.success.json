@@ -1,0 +1,29 @@
+{
+  "timestamp": 1767152416.755602,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "is_self": false,
+    "user_timest": "2025/11/19",
+    "email_verified": "1",
+    "verified": "1",
+    "has_phone": "1",
+    "user_name": "counterparty_demo",
+    "user_note": "",
+    "complete_transactions": "86",
+    "paid_transactions": "44",
+    "accepted_transactions": "42",
+    "transactions_used_time": "420",
+    "cancelled_used_time_month": "1",
+    "complete_transactions_month": "18",
+    "complete_rate_month": 95,
+    "is_follow": 0,
+    "have_traded": 0,
+    "biz_uid": "biz_uid_demo_b84d21",
+    "registration_days": 180,
+    "first_trade_days": 90,
+    "trade_versatile": false
+  },
+  "version": "1.0.0"
+}

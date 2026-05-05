@@ -1,0 +1,67 @@
+{
+  "timestamp": 1767088730.168468,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "list": [
+      {
+        "type_buy": 1,
+        "timest": "2025-02-08T11:33:33Z",
+        "timest_expire": "2025-02-08T12:03:33Z",
+        "timestamp": 1739014413,
+        "rate": "1.002",
+        "amount": "50.5",
+        "total": "50.601",
+        "txid": "40000001",
+        "status": "PAYMENT_PENDING",
+        "its_realname": "Counterparty Demo",
+        "its_uid": "biz_uid_demo_b84d21",
+        "its_nick": "counterparty_demo",
+        "seller_realname": "Merchant Demo",
+        "buyer_realname": "Counterparty Demo",
+        "cancelable": 1,
+        "currency_type": "USDT",
+        "want_type": "USD",
+        "hide_payment": 0,
+        "sel_paytype": "bank",
+        "pay_others": [
+          {
+            "id": "10001",
+            "account_des": "Bank Transfer",
+            "pay_type": "bank",
+            "pay_name": "Bank",
+            "account": "1554 **** 8756",
+            "memo": "invoice number",
+            "trade_tips": "Use your verified name"
+          }
+        ],
+        "cd_time": "1200",
+        "order_type": 0,
+        "order_tag": [
+          "normal"
+        ],
+        "convert_info": {
+          "convert_type": "USDT",
+          "convert_status": "success",
+          "pre_rate": "1.0000",
+          "rate": "0.9998",
+          "pre_fiat_rate": "1.0020",
+          "fiat_rate": "1.0018",
+          "amount": "50.5",
+          "convert_amount": "50.4899",
+          "slippage": "0.02",
+          "status": "completed"
+        }
+      }
+    ],
+    "trans_time": [
+      {
+        "od_time": "1200"
+      }
+    ],
+    "count": 1,
+    "exported_num": 0
+  },
+  "version": "1.0.0"
+}

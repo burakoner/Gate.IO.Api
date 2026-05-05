@@ -1,0 +1,42 @@
+{
+  "timestamp": 1767088400.815641,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": [
+    {
+      "pay_type": "bank",
+      "pay_name": "Bank Transfer",
+      "ids": [
+        "10001"
+      ],
+      "list": [
+        {
+          "id": "10001",
+          "uid": "900001",
+          "bankid": "1554 **** 8756",
+          "nickname": "USD bank",
+          "bankname": "Demo Bank",
+          "bankbranch": "Main",
+          "bankcity": "New York",
+          "bankprov": "NY",
+          "bankaddr": "1554 **** 8756",
+          "bankdesc": "Business account",
+          "hold_uid": "900001",
+          "hold_username": "merchant_demo",
+          "real_name": "Merchant Demo",
+          "account_des": "Demo USD account",
+          "pay_type": "bank",
+          "file": "https://example.invalid/bank.png",
+          "file_key": "bank/demo-key",
+          "account": "155400008756",
+          "memo": "invoice number",
+          "code": "BANK",
+          "memo_ext": "branch memo",
+          "trade_tips": "Use your verified name"
+        }
+      ]
+    }
+  ],
+  "version": "1.0.0"
+}

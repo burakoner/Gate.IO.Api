@@ -1,0 +1,33 @@
+{
+  "timestamp": 1767009723.123456,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "messages": [
+      {
+        "is_sell": 1,
+        "msg_type": 0,
+        "type": 0,
+        "msg": "Payment sent",
+        "username": "counterparty_demo",
+        "msg_obj": null,
+        "uid": "biz_uid_demo_b84d21",
+        "timest": 1739015013
+      },
+      {
+        "is_sell": 0,
+        "msg_type": 1,
+        "type": 1,
+        "msg": "receipt.png",
+        "username": "merchant_demo",
+        "msg_obj": {
+          "file_key": "c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments"
+        },
+        "uid": "biz_uid_demo_9f3a7c",
+        "timest": 1739015113
+      }
+    ]
+  },
+  "version": "1.0.0"
+}

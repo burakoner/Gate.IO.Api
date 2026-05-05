@@ -1,0 +1,72 @@
+{
+  "timestamp": 1767088815.257083,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "is_sell": 1,
+    "txid": "40000001",
+    "orderid": "2124000001",
+    "timest": 1739014413,
+    "last_pay_time": 1739016213,
+    "remain_pay_time": "900",
+    "currency_type": "USDT",
+    "want_type": "USD",
+    "symbol": "$",
+    "rate": "1.002",
+    "amount": "50.5",
+    "total": "50.601",
+    "status": "PAYMENT_PENDING",
+    "reason_id": "",
+    "reason_desc": "",
+    "cancel_time": "",
+    "in_appeal": 0,
+    "dispute_time": 0,
+    "cancelable": 1,
+    "hide_payment": 0,
+    "trade_tips": "Please pay from an account under your real name",
+    "show_bank": "1",
+    "bankname": "Demo Bank",
+    "bankbranch": "Main",
+    "bankid": "1554 **** 8756",
+    "bank_holder_realname": "Merchant Demo",
+    "show_ali": "0",
+    "aliname": "",
+    "is_alicode": 0,
+    "show_wechat": "0",
+    "wename": "",
+    "show_others": "1",
+    "pay_others": [
+      {
+        "id": "10001",
+        "account_des": "Bank Transfer",
+        "pay_type": "bank",
+        "pay_name": "Bank",
+        "account": "1554 **** 8756",
+        "memo": "invoice number",
+        "trade_tips": "Use your verified name"
+      }
+    ],
+    "sel_paytype": "bank",
+    "its_uid": "biz_uid_demo_b84d21",
+    "its_nickname": "counterparty_demo",
+    "its_realname": "Counterparty Demo",
+    "have_traded": 1,
+    "appeal_allow_cancel": 0,
+    "appeal_verdict_has_open": "0",
+    "im_unread": 2,
+    "payment_voucher_url": [
+      "https://example.invalid/voucher.png"
+    ],
+    "timest_paid": 1739015013,
+    "own_realname": "Merchant Demo",
+    "order_type": 0,
+    "is_show_receive": 1,
+    "show_seller_contact_info": true,
+    "supported_pay_types": [
+      "bank",
+      "swift"
+    ]
+  },
+  "version": "1.0.0"
+}
