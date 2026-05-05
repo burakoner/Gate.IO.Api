@@ -1,0 +1,37 @@
+{
+  "order_id": "10005578",
+  "order_type": "fixed",
+  "fixed_type": "7d",
+  "fixed_rate": 0.00001,
+  "expire_time": 1703820105,
+  "auto_renew": true,
+  "auto_repay": true,
+  "current_ltv": "0.0001004349664281",
+  "status": "lent",
+  "borrow_time": 1702615021,
+  "total_left_repay_usdt": "106.491212982",
+  "total_left_collateral_usdt": "1060300.18",
+  "borrow_currencies": [
+    {
+      "currency": "GT",
+      "index_price": "10.6491",
+      "left_repay_principal": "10",
+      "left_repay_interest": "0.00002",
+      "left_repay_usdt": "106.491212982"
+    }
+  ],
+  "collateral_currencies": [
+    {
+      "currency": "BTC",
+      "index_price": "112794.7",
+      "left_collateral": "9.4",
+      "left_collateral_usdt": "1060270.18"
+    },
+    {
+      "currency": "USDT",
+      "index_price": "1",
+      "left_collateral": "30",
+      "left_collateral_usdt": "30"
+    }
+  ]
+}

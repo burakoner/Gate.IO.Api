@@ -1,0 +1,59 @@
+[
+  {
+    "order_id": 10005679,
+    "record_id": 1348,
+    "init_ltv": "0.2141",
+    "before_ltv": "0.215",
+    "after_ltv": "0.312",
+    "borrow_time": 1702995889,
+    "repay_time": 1703053927,
+    "borrow_currencies": [
+      {
+        "currency": "BAT",
+        "index_price": "103.02",
+        "before_amount": "1",
+        "before_amount_usdt": "103.02",
+        "after_amount": "0.999017",
+        "after_amount_usdt": "102.91873134"
+      }
+    ],
+    "collateral_currencies": [
+      {
+        "currency": "ETC",
+        "index_price": "0.6014228107",
+        "before_amount": "1000",
+        "before_amount_usdt": "601.4228107",
+        "after_amount": "1000",
+        "after_amount_usdt": "601.4228107"
+      }
+    ],
+    "repaid_currencies": [
+      {
+        "currency": "BAT",
+        "index_price": "103.02",
+        "repaid_amount": "0.001",
+        "repaid_principal": "0.000983",
+        "repaid_interest": "0.000017",
+        "repaid_amount_usdt": "0.10302"
+      }
+    ],
+    "total_interest_list": [
+      {
+        "currency": "BAT",
+        "index_price": "103.02",
+        "amount": "0.000017",
+        "amount_usdt": "0.00175134"
+      }
+    ],
+    "left_repay_interest_list": [
+      {
+        "currency": "BAT",
+        "index_price": "103.02",
+        "before_amount": "0.000017",
+        "before_amount_usdt": "0.00175134",
+        "after_amount": "0",
+        "after_amount_usdt": "0"
+      }
+    ]
+  }
+]

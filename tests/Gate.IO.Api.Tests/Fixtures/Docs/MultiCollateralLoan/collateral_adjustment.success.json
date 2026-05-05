@@ -1,0 +1,10 @@
+{
+  "order_id": 10005679,
+  "collateral_currencies": [
+    {
+      "succeeded": true,
+      "currency": "btc",
+      "amount": "0.5"
+    }
+  ]
+}

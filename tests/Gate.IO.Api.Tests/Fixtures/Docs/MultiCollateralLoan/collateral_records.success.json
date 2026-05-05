@@ -1,0 +1,29 @@
+[
+  {
+    "order_id": 10000417,
+    "record_id": 10000452,
+    "before_ltv": "0.00039345555621480000",
+    "after_ltv": "0.00019672777810740000",
+    "operate_time": 1688461924,
+    "borrow_currencies": [
+      {
+        "currency": "BTC",
+        "index_price": "30000",
+        "before_amount": "0.1",
+        "before_amount_usdt": "1000",
+        "after_amount": "0.6",
+        "after_amount_usdt": "1006"
+      }
+    ],
+    "collateral_currencies": [
+      {
+        "currency": "BTC",
+        "index_price": "30000",
+        "before_amount": "0.1",
+        "before_amount_usdt": "1000",
+        "after_amount": "0.6",
+        "after_amount_usdt": "1006"
+      }
+    ]
+  }
+]

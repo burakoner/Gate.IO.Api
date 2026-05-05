@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Multi-Collateral Loan REST contract tests.
+    * Added documented Multi-Collateral Loan fixtures for orders, repayment records/results, collateral records/results, currency quotas, supported currencies, LTV, fixed rates, and current rates.
+    * Added live public Multi-Collateral Loan captures for supported currencies, LTV, fixed rates, and BTC/GT current rates.
+    * Added contract tests, signed request construction tests, validation tests, and opt-in public integration smoke tests for Multi-Collateral Loan flows.
   * Added EarnUni REST contract tests.
     * Added documented EarnUni fixtures for lending currencies, lending orders, lend records, interest totals, interest records, compounding status, chart data, and estimated rates.
     * Added live public EarnUni captures for the full currency list and BTC currency details.

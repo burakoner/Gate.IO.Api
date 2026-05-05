@@ -1,0 +1,19 @@
+{
+  "order_id": 10005679,
+  "repaid_currencies": [
+    {
+      "succeeded": false,
+      "label": "INVALID_PARAM_VALUE",
+      "message": "Invalid parameter value",
+      "currency": "BTC",
+      "repaid_principal": "1",
+      "repaid_interest": "0.0001"
+    },
+    {
+      "succeeded": true,
+      "currency": "BTC",
+      "repaid_principal": "1",
+      "repaid_interest": "0.0001"
+    }
+  ]
+}

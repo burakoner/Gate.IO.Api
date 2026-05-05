@@ -1,0 +1,19 @@
+{
+  "loan_currencies": [
+    {
+      "currency": "BTC",
+      "price": "1212"
+    },
+    {
+      "currency": "GT",
+      "price": "12"
+    }
+  ],
+  "collateral_currencies": [
+    {
+      "currency": "BTC",
+      "index_price": "1212",
+      "discount": "0.7"
+    }
+  ]
+}

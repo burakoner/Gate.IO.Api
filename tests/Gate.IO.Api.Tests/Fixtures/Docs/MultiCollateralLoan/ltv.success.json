@@ -1,0 +1,5 @@
+{
+  "init_ltv": "0.7",
+  "alert_ltv": "0.8",
+  "liquidate_ltv": "0.9"
+}
