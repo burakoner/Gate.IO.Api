@@ -1,0 +1,18 @@
+{
+  "create_timest": 1775027285,
+  "delivery_timest": 1775289600,
+  "exercise_price": "71303.44279",
+  "invest_amount": "1",
+  "invest_currency": "BTC",
+  "name": "BTC_USDT-20260404-71303.44279-C",
+  "order_id": 9497,
+  "req_id": "tIvdY7nh",
+  "refund_service_charge": 0,
+  "settle_price": "68781.0063",
+  "settlement_amount": "0.99486528",
+  "settlement_currency": "BTC",
+  "settlement_interest": "0",
+  "settlement_principle": "0.99486528",
+  "type": "call",
+  "money_back_timest": 1775027958
+}

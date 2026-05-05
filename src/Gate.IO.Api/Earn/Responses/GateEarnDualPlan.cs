@@ -91,5 +91,6 @@ public record GateEarnDualPlan
     /// Value per unit
     /// </summary>
     [JsonProperty("per_value")]
+    [JsonConverter(typeof(GateDecimalConverter))]
     public decimal? PerValue { get; set; }
 }

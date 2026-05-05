@@ -1,0 +1,20 @@
+[
+  {
+    "id": 6787627,
+    "type": "Buy",
+    "amount": "0.031",
+    "plan_id": 142583,
+    "side": 2,
+    "asset": "USDT",
+    "record_id": 1770805384904919,
+    "total_money": "2.72583",
+    "market": "SOL/USDT",
+    "price": "87.93",
+    "create_time": 1773656162,
+    "total": "2.72583",
+    "fund_flow": "auto_invest",
+    "error_code": 0,
+    "error_msg": "",
+    "status": 1
+  }
+]

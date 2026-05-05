@@ -1,0 +1,22 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "list": [
+      {
+        "id": 2,
+        "asset": "USDT",
+        "lock_up_period": 7,
+        "year_rate": "0.0084",
+        "type": 1,
+        "pre_redeem": 1,
+        "reinvest": 1,
+        "simple_earn": 1,
+        "min_vip": 0,
+        "max_vip": 0,
+        "sale_status": 1
+      }
+    ]
+  },
+  "timestamp": 1734338466
+}

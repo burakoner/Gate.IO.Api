@@ -1,0 +1,11 @@
+{
+  "id": 142583,
+  "amount": "100",
+  "money": "USDT",
+  "next_time": 1773656162,
+  "period_type": "monthly",
+  "period_day": 1,
+  "period_hour": 1,
+  "fund_flow": "auto_invest",
+  "fund_source": "spot"
+}

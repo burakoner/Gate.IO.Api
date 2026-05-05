@@ -1,0 +1,37 @@
+[
+  {
+    "pid": 64,
+    "productType": 1,
+    "isDefi": 1,
+    "currency": "USDT",
+    "estimateApr": "0.038",
+    "minStakeAmount": "1",
+    "maxStakeAmount": "100000",
+    "protocolName": "Compound",
+    "redeemPeriod": 2,
+    "exchangeRate": "1",
+    "exchangeRateReserve": "1",
+    "extraInterest": [
+      {
+        "start_time": 1754524800,
+        "end_time": 1755907200,
+        "reward_coin": "COMP",
+        "segment_interest": [
+          {
+            "money_min": "0",
+            "money_max": "10000",
+            "money_rate": "0.01"
+          }
+        ]
+      }
+    ],
+    "currencyRewards": [
+      {
+        "apr": "0.038",
+        "reward_coin": "USDT",
+        "interest_delay_days": 1,
+        "reward_delay_days": -1
+      }
+    ]
+  }
+]

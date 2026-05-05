@@ -1,0 +1,23 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "list": [
+      {
+        "id": 11,
+        "name": "USDT-TEST",
+        "asset": "USDT",
+        "lock_up_period": 16,
+        "min_lend_amount": "1",
+        "user_max_lend_amount": "100000",
+        "total_lend_amount": "100000000",
+        "year_rate": "0.03",
+        "status": 2,
+        "create_time": "2024-12-13T03:29:41.103Z",
+        "user_total_amount": "0"
+      }
+    ],
+    "total": 12
+  },
+  "timestamp": 1734338466
+}

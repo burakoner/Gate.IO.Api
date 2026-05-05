@@ -1,0 +1,18 @@
+[
+  {
+    "id": 9497,
+    "category": 1,
+    "type": "call",
+    "invest_currency": "BTC",
+    "exercise_currency": "USDT",
+    "apy_display": "0.125",
+    "exercise_price": "71303.44279",
+    "delivery_timest": 1775289600,
+    "min_amount": "0.001",
+    "max_amount": "10",
+    "min_copies": 1,
+    "max_copies": 1000,
+    "invest_days": 3,
+    "invest_hours": "72"
+  }
+]

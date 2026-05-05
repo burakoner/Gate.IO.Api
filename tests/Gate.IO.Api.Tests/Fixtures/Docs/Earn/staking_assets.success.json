@@ -1,0 +1,35 @@
+[
+  {
+    "pid": 64,
+    "mortgage_coin": "USDT",
+    "mortgage_amount": "1.0000000000",
+    "createStamp": 1750764156,
+    "extra_income": "0",
+    "freeze_amount": "0.0000000000",
+    "move_income": "0.0000000000",
+    "type": 1,
+    "status": 1,
+    "income_total": "0",
+    "yesterday_income_multi": [],
+    "defi_income": {
+      "total": [
+        {
+          "coin": "COMP",
+          "amount": "0.0000076200"
+        }
+      ]
+    },
+    "reward_coins": [
+      {
+        "reward_coin": "USDT",
+        "interest_delay_days": 1,
+        "reward_delay_days": -1
+      },
+      {
+        "reward_coin": "COMP",
+        "interest_delay_days": 1,
+        "reward_delay_days": 15
+      }
+    ]
+  }
+]

@@ -1,0 +1,47 @@
+{
+  "code": 0,
+  "message": "",
+  "data": {
+    "list": [
+      {
+        "id": 1,
+        "business": 1,
+        "order_id": 5862476630,
+        "user_id": 10001,
+        "asset": "USDT",
+        "product_id": 476,
+        "lock_up_period": 7,
+        "principal": "1",
+        "year_rate": "0.0100000000",
+        "product_type": 1,
+        "interest": "0.00019178",
+        "status": 1,
+        "reinvest_status": 1,
+        "redeem_account_type": 1,
+        "origin_order": "",
+        "redeem_type": 0,
+        "redeem_time": null,
+        "finish_time": "2026-04-15T00:00:00Z",
+        "create_time": "2026-04-08T00:00:00Z",
+        "year_rate_perent": "1",
+        "total_year_rate_percent": "1",
+        "total_interest": "0.00019178",
+        "product_info": {
+          "pre_redeem": 1,
+          "reinvest": 1,
+          "redeem_account": 1,
+          "min_vip": 0,
+          "max_vip": 0
+        },
+        "bonus_info": null,
+        "coupon_info": null,
+        "redeem_at": null,
+        "finish_at": 1776211200,
+        "create_at": 1775606400,
+        "icon": "https://static.gateio.ws/images/coin_icon/64/USDT.png"
+      }
+    ],
+    "total": 1
+  },
+  "timestamp": 1734338466
+}

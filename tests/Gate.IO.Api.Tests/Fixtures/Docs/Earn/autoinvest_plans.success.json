@@ -1,0 +1,37 @@
+{
+  "page": 1,
+  "page_size": 20,
+  "page_count": 1,
+  "total_count": 1,
+  "list": [
+    {
+      "id": 142583,
+      "version": 1,
+      "name": "Monthly BTC",
+      "create_time": 1773650000,
+      "update_time": 1773651000,
+      "user_id": 10001,
+      "money": "USDT",
+      "amount": "100",
+      "period_type": "monthly",
+      "period_day": 1,
+      "period_hour": 1,
+      "portfolio": [
+        {
+          "asset": "BTC",
+          "ratio": "100",
+          "cum_invest": "100",
+          "cum_hold": "0.001",
+          "cum_redeem": "0",
+          "avg_price": "100000",
+          "redeem_status": 0,
+          "lend_amount": "0"
+        }
+      ],
+      "next_time": 1773656162,
+      "period": 1,
+      "fund_source": "spot",
+      "fund_flow": "auto_invest"
+    }
+  ]
+}

@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Earn REST contract tests.
+    * Added documented Earn fixtures for dual investment, staking, auto-invest, and fixed-term earn response flows.
+    * Added live public Earn captures for BTC dual investment plans and fixed-term USDT product listings.
+    * Added request construction tests for public Earn reads and signed dual investment, staking, auto-invest, and fixed-term calls.
+    * Updated dual investment product parsing to tolerate Gate's live empty-string `per_value` values.
   * Added Multi-Collateral Loan REST contract tests.
     * Added documented Multi-Collateral Loan fixtures for orders, repayment records/results, collateral records/results, currency quotas, supported currencies, LTV, fixed rates, and current rates.
     * Added live public Multi-Collateral Loan captures for supported currencies, LTV, fixed rates, and BTC/GT current rates.

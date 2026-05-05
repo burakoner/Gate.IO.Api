@@ -1,0 +1,10 @@
+[
+  {
+    "coin": "BTC",
+    "max_limit": "10"
+  },
+  {
+    "coin": "USDT",
+    "max_limit": "100000"
+  }
+]

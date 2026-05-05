@@ -1,0 +1,17 @@
+{
+  "id": 123456,
+  "pid": 64,
+  "uid": 10001,
+  "coin": "USDT",
+  "type": 0,
+  "subtype": "stake",
+  "amount": "10",
+  "exchange_rate": "1",
+  "exchange_amount": "10",
+  "updateStamp": 1755907200,
+  "createStamp": 1755820800,
+  "status": 1,
+  "protocol_type": 1,
+  "client_order_id": "t-custom-text",
+  "source": "api"
+}
