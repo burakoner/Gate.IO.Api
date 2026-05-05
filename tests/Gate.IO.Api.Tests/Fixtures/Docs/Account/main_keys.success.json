@@ -1,0 +1,52 @@
+[
+  {
+    "state": 1,
+    "mode": 1,
+    "name": "test1",
+    "user_id": 1,
+    "perms": [
+      {
+        "name": "account",
+        "read_only": false
+      },
+      {
+        "name": "spot",
+        "read_only": false
+      }
+    ],
+    "ip_whitelist": [],
+    "currency_pairs": [
+      "BTC_USD",
+      "ETH_USD"
+    ],
+    "key": "c5dcfbf1f3a7*****",
+    "created_at": 1753030929,
+    "update_at": 1756300567,
+    "last_access": 1753030929
+  },
+  {
+    "state": 1,
+    "mode": 1,
+    "name": "test2",
+    "user_id": 1,
+    "perms": [
+      {
+        "name": "spot",
+        "read_only": false
+      },
+      {
+        "name": "account",
+        "read_only": false
+      }
+    ],
+    "ip_whitelist": [],
+    "currency_pairs": [
+      "BTC_USD",
+      "ETH_USD"
+    ],
+    "key": "52fd0035f665*****",
+    "created_at": 1753897991,
+    "update_at": 1756300567,
+    "last_access": 1753897991
+  }
+]

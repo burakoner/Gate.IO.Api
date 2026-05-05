@@ -1,0 +1,16 @@
+[
+  {
+    "type": "spot",
+    "tier": "1",
+    "ratio": "0",
+    "main_ratio": "0",
+    "updated_at": "1728230400"
+  },
+  {
+    "type": "futures",
+    "tier": "1",
+    "ratio": "0",
+    "main_ratio": "0",
+    "updated_at": "1728230400"
+  }
+]

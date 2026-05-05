@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Account REST contract tests.
+    * Added documented Account fixtures for account detail, main account keys, rate limits, STP groups, STP group users, and GT debit-fee configuration.
+    * Added contract tests for Account detail, API key metadata, numeric-string rate limit fields, STP group data, and debit-fee responses.
+    * Added request construction tests for signed Account read calls, STP group creation/query/user membership calls, and GT debit-fee configuration.
   * Added Options REST contract tests.
     * Added documented Options fixtures for underlyings, expirations, contracts, settlements, market data, account data, positions, liquidations, orders, user trades, countdown cancellation, and MMP flows.
     * Added live public Options captures for BTC_USDT underlyings, expirations, contracts, market depth, tickers, candlesticks, settlements, and trades.
