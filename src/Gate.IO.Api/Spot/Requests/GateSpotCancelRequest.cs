@@ -20,7 +20,7 @@ public record GateSpotCancelRequest
     /// <summary>
     /// If cancelled order is cross margin order or is portfolio margin account's API key, this field must be set and can only be cross_marginIf cancelled order is cross margin order, this field must be set and can only be cross_margin
     /// </summary>
-    [JsonProperty("account", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("account", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType? Account { get; set; }
 
     /// <summary>
@@ -30,6 +30,6 @@ public record GateSpotCancelRequest
     /// RESULT: No clearing informatio
     /// FULL: Full mode (default)
     /// </summary>
-    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotActionMode? ActionMode { get; set; }
 }

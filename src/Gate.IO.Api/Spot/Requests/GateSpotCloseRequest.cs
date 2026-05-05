@@ -35,6 +35,6 @@ public record GateSpotCloseRequest
     /// <summary>
     /// Processing Mode
     /// </summary>
-    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotActionMode? ProcessingMode { get; set; }
 }

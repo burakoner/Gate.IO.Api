@@ -140,9 +140,9 @@ var spot_03 = await api.Spot.GetMarketsAsync();
 var spot_04 = await api.Spot.GetMarketAsync("SYMBOL");
 var spot_05 = await api.Spot.GetTickersAsync();
 var spot_06 = await api.Spot.GetOrderBookAsync("SYMBOL");
-var spot_07 = await api.Spot.GetTradesAsync("SYMBOL");
-var spot_08 = await api.Spot.GetPrivateTradesAsync("SYMBOL"); // Private (Signed)
-var spot_09 = await api.Spot.GetCandlesticksAsync("SYMBOL", GateSpotCandlestickInterval.FourHours);
+var spot_07 = await api.Spot.GetTradesAsync(new GateSpotTradeQueryRequest { Symbol = "SYMBOL", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
+var spot_08 = await api.Spot.GetPrivateTradesAsync(new GateSpotTradeQueryRequest { Symbol = "SYMBOL", Limit = 100 }); // Private (Signed)
+var spot_09 = await api.Spot.GetCandlesticksAsync(new GateSpotCandlestickQueryRequest { Symbol = "SYMBOL", Interval = GateSpotCandlestickInterval.FourHours, Limit = 100 });
 var spot_10 = await api.Spot.GetUserFeeRatesAsync(["SYMBOL"]);
 var spot_11 = await api.Spot.GetBalancesAsync();
 var spot_12 = await api.Spot.PlaceOrdersAsync(new List<GateSpotOrderRequest>
@@ -157,7 +157,7 @@ var spot_12 = await api.Spot.PlaceOrdersAsync(new List<GateSpotOrderRequest>
     }
 }
 );
-var spot_13 = await api.Spot.GetOpenOrdersAsync();
+var spot_13 = await api.Spot.GetOpenOrdersAsync(new GateSpotOpenOrdersRequest { Account = GateSpotAccountType.Spot, Limit = 100 });
 var spot_14 = await api.Spot.CloseLiquidatedPositionsAsync(new GateSpotCloseRequest
 {
     Symbol = "SYMBOL",
@@ -172,15 +172,16 @@ var spot_16 = await api.Spot.PlaceOrderAsync(new GateSpotOrderRequest
     Type = GateSpotOrderType.Market,
     Side = GateSpotOrderSide.Buy,
     TimeInForce = GateSpotTimeInForce.GoodTillCancelled,
-    Amount = 100.01m
+    Amount = 100.01m,
+    Slippage = 0.03m
 });
-var spot_17 = await api.Spot.GetOrdersAsync("SYMBOL", GateSpotOrderQueryStatus.Open);
+var spot_17 = await api.Spot.GetOrdersAsync(new GateSpotOrderQueryRequest { Symbol = "SYMBOL", Status = GateSpotOrderQueryStatus.Open, Account = GateSpotAccountType.Spot, Limit = 100 });
 var spot_18 = await api.Spot.CancelOrdersAsync("SYMBOL");
 var spot_19 = await api.Spot.GetOrderAsync("SYMBOL", 1_000_000_000);
 var spot_20 = await api.Spot.CancelOrderAsync("SYMBOL", 1_000_000_000);
-var spot_21 = await api.Spot.GetTradeHistoryAsync();
+var spot_21 = await api.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest { Symbol = "SYMBOL", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
 var spot_22 = await api.Spot.GetServerTimeAsync();
-var spot_23 = await api.Spot.CancelAllAsync(30);
+var spot_23 = await api.Spot.CancelAllAsync(new GateSpotCountdownCancelAllRequest { Timeout = 30, Symbol = "SYMBOL" });
 var spot_24 = await api.Spot.PlacePriceTriggeredOrderAsync(
     "SYMBOL",
     100.01m,
@@ -203,7 +204,7 @@ var spot_25 = await api.Spot.PlacePriceTriggeredOrderAsync(new GateSpotPriceTrig
     },
     Order = new GateSpotTriggerOrder
     {
-        Account = GateSpotAccountType.Spot,
+        Account = GateSpotPriceTriggeredOrderAccountType.Normal,
         Type = GateSpotOrderType.Limit,
         Side = GateSpotOrderSide.Buy,
         TimeInForce = GateSpotTriggerTimeInForce.GoodTillCancelled,
@@ -212,7 +213,7 @@ var spot_25 = await api.Spot.PlacePriceTriggeredOrderAsync(new GateSpotPriceTrig
         ClientOrderId = "CLIENT-ORDER-ID"
     }
 });
-var spot_26 = await api.Spot.GetPriceTriggeredOrdersAsync(GateSpotTriggerFilter.Open);
+var spot_26 = await api.Spot.GetPriceTriggeredOrdersAsync(new GateSpotPriceTriggeredOrderQueryRequest { Status = GateSpotTriggerFilter.Open, Account = GateSpotPriceTriggeredOrderAccountType.Normal, Symbol = "SYMBOL" });
 var spot_27 = await api.Spot.CancelPriceTriggeredOrdersAsync();
 var spot_28 = await api.Spot.GetPriceTriggeredOrderAsync();
 var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();

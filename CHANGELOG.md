@@ -1,6 +1,20 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated spot endpoints against the current Gate API v4 Spot documentation.
+    * Added request-object overloads for market trades, private trades, candlesticks, transaction history, open orders, orders, personal trade history, countdown cancel-all, insurance history, and price-triggered order queries.
+    * Added `Spot/Requests` query models for the new Spot client overloads.
+    * Switched Spot `DateTime` query filters to Unix seconds for trade, candlestick, order, account-book, insurance, and personal trade-history queries.
+    * Added Spot order `slippage` support for market orders.
+    * Fixed Spot order body serialization by applying mapped enum converters to order, cancel, close-position, and price-triggered order requests.
+    * Fixed batch Spot order cancellation to send cancel requests in the request body.
+    * Removed stale Spot validation that rejected `auto_borrow` and `auto_repay` when both are enabled.
+    * Added `GateSpotPriceTriggeredOrderAccountType` for price-triggered order account values `normal`, `margin`, and `unified`.
+    * Fixed personal Spot trade history so order filters are optional.
+    * Added missing Spot response fields for currency supply/category data, market price-limit data, slippage, GT maker/taker fees, trade deal value, RPI maker fee, and RPI market maker status.
+    * Updated Spot response models for fractional `create_time_ms` values and added the `price_protect_cancelled` finish status.
+    * Added correctly spelled `GateSpotOrder.FinishAs` while preserving the obsolete `FiniashAs` compatibility alias.
+    * Updated examples and README with Spot request-object overload usage.
   * Updated isolated margin endpoints against the current Gate API v4 Isolated-Margin documentation.
     * Added request-object overloads for balance history, transferable amount, borrow/repay, loans, loan records, interest records, maximum borrowable, and leverage setting.
     * Added `Margin/Requests` request models for the isolated margin client.

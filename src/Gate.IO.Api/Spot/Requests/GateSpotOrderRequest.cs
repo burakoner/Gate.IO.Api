@@ -23,19 +23,19 @@ public record GateSpotOrderRequest
     /// <summary>
     /// Order Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType Type { get; set; }
 
     /// <summary>
     /// Account type. spot - use spot account; margin - use margin account; cross_margin - use cross margin account. Portfolio margin account must set to &#x60;cross-margin&#x60; 
     /// </summary>
-    [JsonProperty("account")]
+    [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType Account { get; set; }
 
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>
@@ -53,7 +53,7 @@ public record GateSpotOrderRequest
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none Only &#x60;ioc&#x60; and &#x60;fok&#x60; are supported when &#x60;type&#x60;&#x3D;&#x60;market&#x60;
     /// </summary>
-    [JsonProperty("time_in_force", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("time_in_force", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -61,6 +61,12 @@ public record GateSpotOrderRequest
     /// </summary>
     [JsonProperty("iceberg", NullValueHandling = NullValueHandling.Ignore)]
     public decimal? Iceberg { get; set; }
+
+    /// <summary>
+    /// Maximum price deviation for market orders
+    /// </summary>
+    [JsonProperty("slippage", NullValueHandling = NullValueHandling.Ignore)]
+    public decimal? Slippage { get; set; }
 
     /// <summary>
     /// Used in margin or cross margin trading to allow automatic loan of insufficient amount if balance is not enough.
@@ -77,12 +83,12 @@ public record GateSpotOrderRequest
     /// <summary>
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
-    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotSelfTradeAction? SelfTradeAction { get; set; }
 
     /// <summary>
     /// Processing Mode
     /// </summary>
-    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotActionMode? ActionMode { get; set; }
 }

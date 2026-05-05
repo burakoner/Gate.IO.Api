@@ -121,4 +121,56 @@ public record GateSpotMarket
     /// </summary>
     [JsonProperty("st_tag")]
     public bool? StTag { get; set; }
+
+    /// <summary>
+    /// Maximum Quote Rise Percentage
+    /// </summary>
+    [JsonProperty("up_rate")]
+    public decimal? UpRate { get; set; }
+
+    /// <summary>
+    /// Maximum Quote Decline Percentage
+    /// </summary>
+    [JsonProperty("down_rate")]
+    public decimal? DownRate { get; set; }
+
+    /// <summary>
+    /// Maximum supported slippage ratio for Spot market orders
+    /// </summary>
+    [JsonProperty("slippage")]
+    public decimal? Slippage { get; set; }
+
+    /// <summary>
+    /// Maximum market order quantity
+    /// </summary>
+    [JsonProperty("market_order_max_stock")]
+    public decimal? MarketOrderMaxStock { get; set; }
+
+    /// <summary>
+    /// Maximum market order amount
+    /// </summary>
+    [JsonProperty("market_order_max_money")]
+    public decimal? MarketOrderMaxMoney { get; set; }
+
+    /// <summary>
+    /// Maximum market order quantity
+    /// </summary>
+    [Obsolete("Use MarketOrderMaxStock instead.")]
+    [JsonProperty("max_market_order_stock")]
+    public decimal? MaxMarketOrderStock
+    {
+        get => MarketOrderMaxStock;
+        set => MarketOrderMaxStock = value;
+    }
+
+    /// <summary>
+    /// Maximum market order amount
+    /// </summary>
+    [Obsolete("Use MarketOrderMaxMoney instead.")]
+    [JsonProperty("max_market_order_money")]
+    public decimal? MaxMarketOrderMoney
+    {
+        get => MarketOrderMaxMoney;
+        set => MarketOrderMaxMoney = value;
+    }
 }

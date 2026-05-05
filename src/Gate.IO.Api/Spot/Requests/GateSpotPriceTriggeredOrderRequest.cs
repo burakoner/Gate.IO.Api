@@ -38,7 +38,7 @@ public record GateSpotTriggerPrice
     /// <summary>
     /// Price trigger condition
     /// </summary>
-    [JsonProperty("rule")]
+    [JsonProperty("rule"), JsonConverter(typeof(MapConverter))]
     public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>
@@ -56,13 +56,13 @@ public record GateSpotTriggerOrder
     /// <summary>
     /// Order Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType Type { get; set; }
     
     /// <summary>
     /// Order side
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderSide Side { get; set; }
     
     /// <summary>
@@ -81,20 +81,20 @@ public record GateSpotTriggerOrder
     public string Amount { get; set; }
 
     /// <summary>
-    /// Trading account type. Portfolio margin account must set to cross_margin
+    /// Trading account type
     /// - normal: spot trading
     /// - margin: margin trading
-    /// - cross_margin: cross_margin trading
+    /// - unified: unified account
     /// </summary>
-    [JsonProperty("account")]
-    public GateSpotAccountType Account { get; set; }
+    [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
+    public GateSpotPriceTriggeredOrderAccountType Account { get; set; }
     
     /// <summary>
     /// time_in_force
     /// - gtc: GoodTillCancelled
     /// - ioc: ImmediateOrCancelled, taker only
     /// </summary>
-    [JsonProperty("time_in_force", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("time_in_force", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateSpotTriggerTimeInForce? TimeInForce { get; set; }
 
     /// <summary>

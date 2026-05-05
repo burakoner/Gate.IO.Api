@@ -104,6 +104,12 @@ public record GateSpotOrder
     /// </summary>
     [JsonProperty("iceberg", NullValueHandling = NullValueHandling.Ignore)]
     public decimal? Iceberg { get; set; }
+
+    /// <summary>
+    /// Maximum price deviation for market orders
+    /// </summary>
+    [JsonProperty("slippage", NullValueHandling = NullValueHandling.Ignore)]
+    public decimal? Slippage { get; set; }
     
     /// <summary>
     /// Used in margin or cross margin trading to allow automatic loan of insufficient amount if balance is not enough.
@@ -217,7 +223,18 @@ public record GateSpotOrder
     /// Order completion statuses include:
     /// </summary>
     [JsonProperty("finish_as")]
-    public GateSpotFinishAs? FiniashAs { get; set; }
+    public GateSpotFinishAs? FinishAs { get; set; }
+
+    /// <summary>
+    /// Order completion statuses include:
+    /// </summary>
+    [Obsolete("Use FinishAs instead.")]
+    [JsonIgnore]
+    public GateSpotFinishAs? FiniashAs
+    {
+        get => FinishAs;
+        set => FinishAs = value;
+    }
 
     /// <summary>
     /// Processing Mode

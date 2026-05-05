@@ -76,4 +76,10 @@ public enum GateSpotFinishAs : byte
     /// </summary>
     [Map("stp")]
     SelfTradePrevention = 11,
+
+    /// <summary>
+    /// Cancelled due to price protection mechanism
+    /// </summary>
+    [Map("price_protect_cancelled")]
+    PriceProtectCancelled = 12,
 }

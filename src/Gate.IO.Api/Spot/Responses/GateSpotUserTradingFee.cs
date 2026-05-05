@@ -24,6 +24,12 @@ public record GateSpotUserTradingFee
     public decimal MakerFee { get; set; }
 
     /// <summary>
+    /// RPI maker fee rate
+    /// </summary>
+    [JsonProperty("rpi_maker_fee")]
+    public decimal? RpiMakerFee { get; set; }
+
+    /// <summary>
     /// If GT deduction is enabled
     /// </summary>
     [JsonProperty("gt_discount")]
@@ -64,4 +70,10 @@ public record GateSpotUserTradingFee
     /// </summary>
     [JsonProperty("debit_fee")]
     public int DebitFee { get; set; }
+
+    /// <summary>
+    /// RPI market maker type
+    /// </summary>
+    [JsonProperty("rpi_mm")]
+    public int? RpiMarketMaker { get; set; }
 }

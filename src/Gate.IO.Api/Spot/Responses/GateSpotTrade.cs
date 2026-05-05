@@ -22,7 +22,7 @@ public record GateSpotTrade
     /// Trading time, with millisecond precision
     /// </summary>
     [JsonProperty("create_time_ms")]
-    public long CreateTimeInMilliseconds { get; set; }
+    public decimal CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Currency pair
@@ -89,6 +89,12 @@ public record GateSpotPrivateTrade : GateSpotTrade
     /// </summary>
     [JsonProperty("gt_fee")]
     public decimal GTFee { get; set; }
+
+    /// <summary>
+    /// Total executed value
+    /// </summary>
+    [JsonProperty("deal")]
+    public decimal? Deal { get; set; }
 
     /// <summary>
     /// The custom data that the user remarked when amending the order
