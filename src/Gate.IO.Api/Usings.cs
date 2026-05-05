@@ -20,6 +20,7 @@ global using Gate.IO.Api.Rebate;
 global using Gate.IO.Api.Spot;
 global using Gate.IO.Api.SubAccount;
 global using Gate.IO.Api.Swap;
+global using Gate.IO.Api.TradFi;
 global using Gate.IO.Api.Unified;
 global using Gate.IO.Api.Wallet;
 global using Microsoft.Extensions.Logging;

@@ -55,6 +55,11 @@ public class GateRestApiClient : RestApiClient
     public GateDeliveryRestApiClient Delivery { get; } // 4.105.4
 
     /// <summary>
+    /// TradFi Client
+    /// </summary>
+    public GateTradFiRestApiClient TradFi { get; } // 4.105.4
+
+    /// <summary>
     /// Options Client
     /// </summary>
     public GateOptionsRestApiClient Options { get; } // 4.105.4
@@ -116,7 +121,7 @@ public class GateRestApiClient : RestApiClient
         FlashSwap = new GateSwapRestApiClient(this);
         Futures = new GateFuturesRestApiClient (this);
         Delivery = new GateDeliveryRestApiClient(this);
-
+        TradFi = new GateTradFiRestApiClient(this);
 
         Options = new GateOptionsRestApiClient(this);
         Account = new GateAccountRestApiClient(this);

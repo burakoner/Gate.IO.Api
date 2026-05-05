@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added TradFi REST API support against the current Gate API v4 TradFi documentation.
+    * Added `api.TradFi` and a new `TradFi` module with client, enum, request, and response models.
+    * Covered MT5 account, symbol categories, symbols, symbol details, klines, tickers, user creation, account assets, transactions, orders, order history, positions, and position history endpoints.
+    * Added request-object overloads for TradFi symbol details, klines, transaction queries/transfers, order creation/update/history, and position update/close/history calls.
+    * Unwrapped TradFi response envelopes so public methods return the documented data payloads in the same style as the other clients.
+    * Kept semantically numeric TradFi IDs, prices, volumes, balances, and PnL fields as numeric public properties while preserving string fields where the API can return empty values.
+    * Updated examples and README with TradFi usage.
   * Updated delivery endpoints against the current Gate API v4 Delivery documentation.
     * Added request-object overloads for delivery trades, candlesticks, balance history, orders, order cancellation, user trades, position close history, liquidations, settlements, risk-limit tiers, and price-triggered order queries/cancellation.
     * Added `Delivery/Requests` query and cancellation models for the new Delivery client overloads.
