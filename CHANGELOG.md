@@ -1,6 +1,8 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added converter behavior tests.
+    * Covered seconds and milliseconds timestamp deserialization, Gate decimal fields that may arrive as empty strings, mapped enum serialization/deserialization, array payload models, and stream event converters.
   * Added REST request construction smoke tests.
     * Added reusable test infrastructure for capturing outgoing HTTP requests without calling the live API.
     * Added Alpha client request construction tests for public GET query serialization, signed GET query/header serialization, and signed POST request-object body serialization.
