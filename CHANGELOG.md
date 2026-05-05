@@ -1,6 +1,15 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated flash swap endpoints against the current Gate API v4 Flash Swap documentation.
+    * Added request-object overloads for flash swap currency-pair queries and order-list queries.
+    * Added `GateSwapPreviewRequest` for flash swap order previews and kept the old `GateSwapOrderRequest` preview overload as an obsolete compatibility path.
+    * Updated flash swap preview flows to support providing either `sell_amount` or `buy_amount`.
+    * Changed flash swap preview IDs to strings in request and preview response models.
+    * Added string-based `PlaceOrderAsync` overload while preserving the existing long preview-id overload for compatibility.
+    * Updated flash swap currency-pair query default limit to 1000 and validate it against the documented 1-1000 range.
+    * Added `GateSwapOrder.UpdateTime` for the `update_time` value returned by flash swap order responses.
+    * Updated examples and README with Flash Swap request-object overload usage.
   * Updated spot endpoints against the current Gate API v4 Spot documentation.
     * Added request-object overloads for market trades, private trades, candlesticks, transaction history, open orders, orders, personal trade history, countdown cancel-all, insurance history, and price-triggered order queries.
     * Added `Spot/Requests` query models for the new Spot client overloads.

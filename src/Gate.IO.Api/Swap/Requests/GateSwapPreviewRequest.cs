@@ -1,18 +1,12 @@
 namespace Gate.IO.Api.Swap;
 
 /// <summary>
-/// GateSwapOrderPreview
+/// Flash swap order preview request
 /// </summary>
-public record GateSwapOrderPreview
+public record GateSwapPreviewRequest
 {
     /// <summary>
-    /// Preview result ID
-    /// </summary>
-    [JsonProperty("preview_id")]
-    public string PreviewId { get; set; }
-
-    /// <summary>
-    /// Currency to sell which can be retrieved from supported currency list API GET /flash_swap/currencies
+    /// The name of the asset being sold
     /// </summary>
     [JsonProperty("sell_currency")]
     public string SellCurrency { get; set; }
@@ -24,7 +18,7 @@ public record GateSwapOrderPreview
     public decimal? SellAmount { get; set; }
 
     /// <summary>
-    /// Currency to buy which can be retrieved from supported currency list API GET /flash_swap/currencies
+    /// The name of the asset being purchased
     /// </summary>
     [JsonProperty("buy_currency")]
     public string BuyCurrency { get; set; }
@@ -34,10 +28,4 @@ public record GateSwapOrderPreview
     /// </summary>
     [JsonProperty("buy_amount")]
     public decimal? BuyAmount { get; set; }
-
-    /// <summary>
-    /// Price
-    /// </summary>
-    [JsonProperty("price")]
-    public decimal Price { get; set; }
 }

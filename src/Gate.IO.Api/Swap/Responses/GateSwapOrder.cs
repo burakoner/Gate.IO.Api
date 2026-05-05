@@ -19,6 +19,13 @@ public record GateSwapOrder
     public DateTime CreateTime { get; set; }
 
     /// <summary>
+    /// Last update time of order (in milliseconds)
+    /// </summary>
+    [JsonProperty("update_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? UpdateTime { get; set; }
+
+    /// <summary>
     /// User ID
     /// </summary>
     [JsonProperty("user_id")]
