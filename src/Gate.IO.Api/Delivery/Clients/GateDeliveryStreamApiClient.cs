@@ -6,6 +6,11 @@
 public class GateDeliveryStreamApiClient
 {
     /// <summary>
+    /// BTC Delivery Futures API Client
+    /// </summary>
+    public GateDeliveryStreamApiSettleClient BTC { get; }
+
+    /// <summary>
     /// USDT Delivery Futures API Client
     /// </summary>
     public GateDeliveryStreamApiSettleClient USDT { get; }
@@ -39,6 +44,7 @@ public class GateDeliveryStreamApiClient
         BaseClient = root.Base;
         ClientOptions = root.ClientOptions;
 
+        BTC = new GateDeliveryStreamApiSettleClient(this, GateDeliverySettlement.BTC);
         USDT = new GateDeliveryStreamApiSettleClient(this, GateDeliverySettlement.USDT);
     }
     internal async Task UnsubscribeAsync(int subscriptionId)
@@ -96,6 +102,15 @@ public class GateDeliveryStreamApiClient
     }
 
     internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(GateDeliverySettlement settle, string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
+        => await SubscribeToOrderBookAsync(settle, contract, limit, onMessage, null, ct).ConfigureAwait(false);
+
+    internal async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookAsync(
+        GateDeliverySettlement settle,
+        string contract,
+        int limit,
+        Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onSnapshot,
+        Action<WebSocketDataEvent<GateDeliveryStreamOrderBookUpdate>> onUpdate,
+        CancellationToken ct = default)
     {
         limit.ValidateIntValues(nameof(limit), 1, 5, 10, 20, 50, 100);
         // interval.ValidateIntValues(nameof(interval), 100, 1000);
@@ -105,7 +120,30 @@ public class GateDeliveryStreamApiClient
         payload.Add(limit.ToString());
         payload.Add($"0");
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateFuturesStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<JToken>>>(data =>
+        {
+            if (data.Data.Data == null || data.Data.Data.Type == JTokenType.Null)
+                return;
+
+            if (data.Data.Data.Type == JTokenType.Object)
+            {
+                var snapshot = data.Data.Data.ToObject<GateFuturesStreamBookSnapshot>();
+                if (snapshot != null)
+                    onSnapshot?.Invoke(data.As(snapshot, data.Data.Channel));
+
+                return;
+            }
+
+            if (data.Data.Data.Type != JTokenType.Array)
+                return;
+
+            foreach (var token in data.Data.Data)
+            {
+                var update = token.ToObject<GateDeliveryStreamOrderBookUpdate>();
+                if (update != null)
+                    onUpdate?.Invoke(data.As(update, data.Data.Channel));
+            }
+        });
         return await BaseClient.BaseSubscribeAsync(ClientOptions.StreamDeliveryFuturesAddresses[settle], futuresOrderBookChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 

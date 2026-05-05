@@ -14,6 +14,11 @@ public class GateDeliveryRestApiClient
     internal GateRestApiClient _ { get; }
 
     /// <summary>
+    /// BTC Settled Delivery Futures Client
+    /// </summary>
+    public GateDeliveryRestApiSettleClient BTC { get; }
+
+    /// <summary>
     /// USDT Settled Delivery Futures Client
     /// </summary>
     public GateDeliveryRestApiSettleClient USDT { get; }
@@ -31,9 +36,11 @@ public class GateDeliveryRestApiClient
     {
         _ = root;
 
+        BTC = new GateDeliveryRestApiSettleClient(this, GateDeliverySettlement.BTC);
         USDT = new GateDeliveryRestApiSettleClient(this, GateDeliverySettlement.USDT);
         Clients = new Dictionary<GateDeliverySettlement, GateDeliveryRestApiSettleClient>
         {
+            { GateDeliverySettlement.BTC, BTC },
             { GateDeliverySettlement.USDT, USDT },
         };
     }

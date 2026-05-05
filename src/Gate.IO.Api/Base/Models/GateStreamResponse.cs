@@ -94,7 +94,13 @@ public enum StreamResponseEvent : byte
     /// Represents the Api value.
     /// </summary>
     [Map("api")]
-    Api = 3
+    Api = 3,
+
+    /// <summary>
+    /// Represents the All value.
+    /// </summary>
+    [Map("all")]
+    All = 4
 }
 
 internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>
@@ -108,6 +114,7 @@ internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Subscribe, "subscribe"),
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Unsubscribe, "unsubscribe"),
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Api, "api"),
+        new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.All, "all"),
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.None, ""),
     };
 }

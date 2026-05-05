@@ -54,6 +54,7 @@ internal record GateConstants
 
         // Stream-Delivery Futures
         StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string> {
+            { GateDeliverySettlement.BTC, "wss://fx-ws.gateio.ws/v4/ws/delivery/btc" },
             { GateDeliverySettlement.USDT, "wss://fx-ws.gateio.ws/v4/ws/delivery/usdt" },
         },
 
@@ -83,6 +84,7 @@ internal record GateConstants
 
         // Stream-Delivery Futures
         StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string> {
+            { GateDeliverySettlement.BTC, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/btc" },
             { GateDeliverySettlement.USDT, "wss://fx-ws-testnet.gateio.ws/v4/ws/delivery/usdt" },
         },
 

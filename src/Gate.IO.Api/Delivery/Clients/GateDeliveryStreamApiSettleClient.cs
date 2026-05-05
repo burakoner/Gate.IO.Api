@@ -74,6 +74,23 @@ public class GateDeliveryStreamApiSettleClient
         => await MainClient.SubscribeToOrderBookSnapshotsAsync(this.Settlement, contract, /*int interval,*/  limit, onMessage, ct).ConfigureAwait(false);
 
     /// <summary>
+    /// Executes the Subscribe To Legacy Order Book operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookAsync(
+        string contract,
+        int limit,
+        Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onSnapshot,
+        Action<WebSocketDataEvent<GateDeliveryStreamOrderBookUpdate>> onUpdate,
+        CancellationToken ct = default)
+        => await MainClient.SubscribeToOrderBookAsync(this.Settlement, contract, limit, onSnapshot, onUpdate, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Candlesticks operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToCandlesticksAsync(this.Settlement, "", contract, interval, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
     /// Executes the Subscribe To Mark Price Candlesticks operation.
     /// </summary>
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToMarkPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)

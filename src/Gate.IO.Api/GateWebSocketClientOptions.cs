@@ -50,6 +50,7 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
         // Stream-Delivery Futures
         this.StreamDeliveryFuturesAddresses = new Dictionary<GateDeliverySettlement, string>
         {
+            { GateDeliverySettlement.BTC, GateConstants.Default.StreamDeliveryFuturesAddresses[GateDeliverySettlement.BTC] },
             { GateDeliverySettlement.USDT, GateConstants.Default.StreamDeliveryFuturesAddresses[GateDeliverySettlement.USDT] },
         };
 

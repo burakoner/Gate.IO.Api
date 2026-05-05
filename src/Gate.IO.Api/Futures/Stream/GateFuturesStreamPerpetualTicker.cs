@@ -60,6 +60,24 @@ public record GateFuturesStreamPerpetualTicker
     public decimal Volume24hBase { get; set; }
 
     /// <summary>
+    /// Trade volume in recent 24h, in BTC. Delivery futures only.
+    /// </summary>
+    [JsonProperty("volume_24h_btc")]
+    public decimal? Volume24hBtc { get; set; }
+
+    /// <summary>
+    /// Trade volume in recent 24h, in USD. Delivery futures only.
+    /// </summary>
+    [JsonProperty("volume_24h_usd")]
+    public decimal? Volume24hUsd { get; set; }
+
+    /// <summary>
+    /// Quanto base rate. Delivery futures can return this field as an empty string.
+    /// </summary>
+    [JsonProperty("quanto_base_rate"), JsonConverter(typeof(GateDecimalConverter))]
+    public decimal? QuantoBaseRate { get; set; }
+
+    /// <summary>
     /// Trade volume in recent 24h, in quote currency
     /// </summary>
     [JsonProperty("volume_24h_quote")]

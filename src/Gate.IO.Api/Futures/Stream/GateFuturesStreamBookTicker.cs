@@ -27,7 +27,7 @@ public  class GateFuturesStreamBookTicker
     /// <summary>
     /// Gets or sets the Best Bid Price.
     /// </summary>
-    [JsonProperty("b")]
+    [JsonProperty("b"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal BestBidPrice { get; set; }
 
     /// <summary>
@@ -39,7 +39,7 @@ public  class GateFuturesStreamBookTicker
     /// <summary>
     /// Gets or sets the Best Ask Price.
     /// </summary>
-    [JsonProperty("a")]
+    [JsonProperty("a"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal BestAskPrice { get; set; }
 
     /// <summary>

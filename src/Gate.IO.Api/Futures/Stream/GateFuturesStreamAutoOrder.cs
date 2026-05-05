@@ -99,13 +99,13 @@ public record GateFuturesStreamAutoOrderStopTrigger
     /// <summary>
     /// Gets or sets the Trigger Price.
     /// </summary>
-    [JsonProperty("trigger_price")]
+    [JsonProperty("trigger_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? TriggerPrice { get; set; }
 
     /// <summary>
     /// Gets or sets the Order Price.
     /// </summary>
-    [JsonProperty("order_price")]
+    [JsonProperty("order_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? OrderPrice { get; set; }
 }
 

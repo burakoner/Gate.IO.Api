@@ -6,6 +6,12 @@
 public enum GateDeliverySettlement : byte
 {
     /// <summary>
+    /// BTC
+    /// </summary>
+    [Map("btc")]
+    BTC = 1,
+
+    /// <summary>
     /// USDT
     /// </summary>
     [Map("usdt")]

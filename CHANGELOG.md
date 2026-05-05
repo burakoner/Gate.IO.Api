@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated Delivery WebSocket streams against the current Gate Delivery WebSocket API documentation.
+    * Added BTC-settled Delivery clients and WebSocket addresses alongside the existing USDT settlement.
+    * Added normal Delivery candlestick subscription support in addition to mark-price candlesticks.
+    * Added a Delivery legacy order-book subscription overload that handles both `all` snapshots and `update` price-level notifications.
+    * Updated shared futures/delivery stream parsing for Delivery ticker fields, empty book-ticker prices, empty auto-order stop prices, and `all` stream response events.
   * Updated Futures WebSocket streams against the current Gate Futures WebSocket API documentation.
     * Added `futures.obu`, `futures.public_liquidates`, `futures.contract_stats`, and `futures.position_adl_rank` subscription methods.
     * Fixed `futures.order_book_update` validation to allow the documented `20ms` and `100ms` update speeds with the current depth limits.
