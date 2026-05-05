@@ -1,6 +1,13 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added P2P REST API support against the current Gate API v4 P2P documentation.
+    * Added `api.P2p` and a new `P2p` module with client, enum, request, and response models.
+    * Covered account info, counterparty info, payment methods, pending/completed order list, order detail, payment/receipt/cancel actions, advertisement publish/status/detail/list, chat history, chat send, and chat file upload endpoints.
+    * Added request-object overloads for account, payment, order, advertisement, and chat endpoints, including the high-parameter advertisement publish/edit call.
+    * Unwrapped P2P `code`/`message` response envelopes for data endpoints while preserving action result metadata for mutation endpoints.
+    * Kept semantically numeric P2P order/ad/payment IDs, prices, amounts, rates, counts, and timestamps as numeric or `DateTime` public properties while sending Gate's documented string body values where required.
+    * Updated examples and README with P2P request-object overload usage.
   * Added OTC REST API support against the current Gate API v4 OTC documentation.
     * Added `api.Otc` and a new `Otc` module with client, enum, request, and response models.
     * Covered quote, fiat order create/paid/cancel/list/detail, stablecoin order create/list, default bank account, and bank account list endpoints.

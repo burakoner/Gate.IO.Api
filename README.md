@@ -535,6 +535,25 @@ var otc_07 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { Orde
 var otc_08 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
 var otc_09 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderListRequest { CoinName = "USDT", Status = "PROCESSING", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
 var otc_10 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
+
+// P2P Methods
+var p2p_01 = await api.P2p.GetUserInfoAsync();
+var p2p_02 = await api.P2p.GetCounterpartyUserInfoAsync(new GateP2pCounterpartyUserInfoRequest { BusinessUserId = "BIZ-UID" });
+var p2p_03 = await api.P2p.GetPaymentMethodsAsync(new GateP2pPaymentMethodsRequest { Fiat = "USD" });
+var p2p_04 = await api.P2p.GetPendingTransactionsAsync(new GateP2pPendingTransactionsRequest { CryptoCurrency = "USDT", FiatCurrency = "USD", OrderTab = GateP2pOrderTab.Pending, SelectType = GateP2pOrderSide.Sell, StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
+var p2p_05 = await api.P2p.GetCompletedTransactionsAsync(new GateP2pCompletedTransactionsRequest { CryptoCurrency = "USDT", FiatCurrency = "USD", SelectType = GateP2pOrderSide.Sell, QueryDispute = true, Page = 1, PerPage = 10 });
+var p2p_06 = await api.P2p.GetTransactionDetailsAsync(new GateP2pTransactionDetailsRequest { TransactionId = 40_000_001, Channel = "" });
+var p2p_07 = await api.P2p.ConfirmPaymentAsync(new GateP2pConfirmPaymentRequest { TransactionId = 40_000_001, PaymentMethod = "bank" });
+var p2p_08 = await api.P2p.ConfirmReceiptAsync(new GateP2pTransactionIdRequest { TransactionId = 40_000_001 });
+var p2p_09 = await api.P2p.CancelOrderAsync(new GateP2pCancelOrderRequest { TransactionId = 40_000_001, ReasonId = "1", ReasonMemo = "Canceled after agreement with the counterparty" });
+var p2p_10 = await api.P2p.SubmitAdvertisementAsync(new GateP2pAdRequest { CurrencyType = "USDT", ExchangeType = "USD", Type = GateP2pAdOperationType.PublishSell, UnitPrice = 1.1m, Number = 100.0m, PayType = "bank", PayTypeJson = "{\"bank\":\"10001\"}", MinAmount = 10.0m, MaxAmount = 500.0m, RateFixed = 1, ExpireMinutes = 20 });
+var p2p_11 = await api.P2p.UpdateAdvertisementStatusAsync(new GateP2pAdStatusUpdateRequest { AdvertisementId = 2_124_000_001, Status = GateP2pAdStatusUpdate.Delisted });
+var p2p_12 = await api.P2p.GetAdvertisementAsync(new GateP2pAdvertisementIdRequest { AdvertisementId = 2_124_000_001 });
+var p2p_13 = await api.P2p.GetMyAdvertisementsAsync(new GateP2pAdListRequest { Asset = "USDT", FiatUnit = "USD", TradeType = GateP2pOrderSide.Sell });
+var p2p_14 = await api.P2p.GetAdvertisementsAsync(new GateP2pAdListRequest { Asset = "USDT", FiatUnit = "USD", TradeType = GateP2pOrderSide.Sell });
+var p2p_15 = await api.P2p.GetChatHistoryAsync(new GateP2pChatHistoryRequest { TransactionId = 40_000_001, LastReceived = DateTime.UtcNow.AddMinutes(-10), FirstReceived = DateTime.UtcNow.AddHours(-1) });
+var p2p_16 = await api.P2p.SendChatMessageAsync(new GateP2pSendChatMessageRequest { TransactionId = 40_000_001, Type = GateP2pChatMessageType.Text, Message = "Payment completed, please check" });
+var p2p_17 = await api.P2p.UploadChatFileAsync(new GateP2pUploadChatFileRequest { ContentType = "image/png", Base64Content = "BASE64-CONTENT" });
 ```
 
 ## WebSocket Api Examples
