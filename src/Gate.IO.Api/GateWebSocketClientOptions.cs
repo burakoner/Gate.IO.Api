@@ -40,6 +40,17 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
     /// Gets or sets the Stream Unified Address.
     /// </summary>
     public string StreamUnifiedAddress { get; set; }
+
+    // Stream-CrossEx
+    /// <summary>
+    /// Gets or sets the Stream CrossEx public market data address.
+    /// </summary>
+    public string StreamCrossExPublicAddress { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Stream CrossEx private data and API address.
+    /// </summary>
+    public string StreamCrossExPrivateAddress { get; set; }
     
     /// <summary>
     /// Initializes a new instance of the Gate Web Socket Client Options class.
@@ -74,6 +85,10 @@ public class GateWebSocketClientOptions : WebSocketApiClientOptions
 
         // Stream-Unified
         this.StreamUnifiedAddress = GateConstants.Default.StreamUnifiedAddress;
+
+        // Stream-CrossEx
+        this.StreamCrossExPublicAddress = GateConstants.Default.StreamCrossExPublicAddress;
+        this.StreamCrossExPrivateAddress = GateConstants.Default.StreamCrossExPrivateAddress;
 
         // Limits
         // this.MaxConnections = 300;

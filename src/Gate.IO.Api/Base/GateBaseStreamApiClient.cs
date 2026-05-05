@@ -46,6 +46,38 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     {
         callResult = null;
 
+        if (request is GateCrossExStreamRequest crossExRequest)
+        {
+            var channel = data["channel"]?.ToString();
+            var eventName = data["event"]?.ToString();
+            if ((crossExRequest.Event == "login" && eventName == "login") || (!string.IsNullOrEmpty(crossExRequest.Channel) && channel == crossExRequest.Channel))
+            {
+                var crossExError = data["error"];
+                if (crossExError != null && crossExError.Type != JTokenType.Null)
+                {
+                    var errorCode = crossExError["code"]?.ToString();
+                    int.TryParse(errorCode, out var code);
+                    callResult = new CallResult<T>(new ServerError(code, crossExError["message"]?.ToString()));
+                    return true;
+                }
+
+                var crossExResult = data["result"];
+                if (crossExResult?.Type == JTokenType.Object)
+                {
+                    var resultCode = crossExResult["code"]?.ToString();
+                    if (!string.IsNullOrEmpty(resultCode) && resultCode != "100000")
+                    {
+                        int.TryParse(resultCode, out var code);
+                        callResult = new CallResult<T>(new ServerError(code, crossExResult["message"]?.ToString()));
+                        return true;
+                    }
+                }
+
+                callResult = new CallResult<T>(JsonConvert.DeserializeObject<T>(data.ToString()));
+                return true;
+            }
+        }
+
         // Ping Request
         if (request is GateStreamRequest req && req.Channel.EndsWith(".ping"))
         {
@@ -73,6 +105,46 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         callResult = null;
         if (message.Type != JTokenType.Object)
             return false;
+
+        if (request is GateCrossExStreamRequest crossExRequest)
+        {
+            var crossExChannel = message["channel"]?.ToString();
+            if (!string.IsNullOrEmpty(crossExRequest.Channel) && crossExChannel != crossExRequest.Channel)
+                return false;
+
+            var eventName = message["event"]?.ToString();
+            if (eventName != crossExRequest.Event)
+                return false;
+
+            var crossExError = message["error"];
+            if (crossExError != null && crossExError.Type != JTokenType.Null)
+            {
+                var errorCode = crossExError["code"]?.ToString();
+                int.TryParse(errorCode, out var code);
+                callResult = new CallResult<object>(new ServerError(code, crossExError["message"]?.ToString()));
+                return true;
+            }
+
+            var crossExResult = message["result"];
+            if (crossExResult?.Type == JTokenType.Object && crossExResult["code"] != null)
+            {
+                var resultCode = crossExResult["code"]?.ToString();
+                if (resultCode == "100000")
+                {
+                    Log?.LogTrace($"Socket {connection.Id} CrossEx subscription completed");
+                    callResult = new CallResult<object>(new object());
+                }
+                else
+                {
+                    int.TryParse(resultCode, out var code);
+                    callResult = new CallResult<object>(new ServerError(code, crossExResult["message"]?.ToString()));
+                }
+
+                return true;
+            }
+
+            return false;
+        }
 
         var id = message["id"];
         if (id == null)
@@ -110,6 +182,15 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         if (message.Type != JTokenType.Object)
             return false;
 
+        if (request is GateCrossExStreamRequest crossExRequest)
+        {
+            var crossExChannel = message["channel"];
+            if (crossExChannel == null)
+                return false;
+
+            return crossExRequest.Channel == crossExChannel.ToString();
+        }
+
         var bRequest = (GateStreamRequest)request;
         var channel = message["channel"];
         if (channel == null)
@@ -131,7 +212,7 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     /// </summary>
     protected override Task<CallResult<bool>> AuthenticateAsync(WebSocketConnection connection)
     {
-        throw new NotImplementedException();
+        return AuthenticateCrossExAsync(connection);
     }
 
     /// <summary>
@@ -139,6 +220,44 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     /// </summary>
     protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
+        if (subscription.Request is GateCrossExStreamRequest crossExRequest)
+        {
+            var crossExUnsub = new GateCrossExStreamRequest
+            {
+                Channel = crossExRequest.Channel,
+                Event = "unsubscribe",
+                Payload = crossExRequest.Payload
+            };
+            var crossExSuccess = false;
+
+            if (!connection.Connected)
+                return true;
+
+            await connection.SendAndWaitAsync(crossExUnsub, ClientOptions.ResponseTimeout, data =>
+            {
+                if (data.Type != JTokenType.Object)
+                    return false;
+
+                if (data["channel"]?.ToString() != crossExUnsub.Channel)
+                    return false;
+
+                if (data["event"]?.ToString() != crossExUnsub.Event)
+                    return false;
+
+                var result = data["result"];
+                if (result?.Type == JTokenType.Object && result["code"]?.ToString() == "100000")
+                {
+                    crossExSuccess = true;
+                    return true;
+                }
+
+                var error = data["error"];
+                return error != null && error.Type != JTokenType.Null;
+            }).ConfigureAwait(false);
+
+            return crossExSuccess;
+        }
+
         var request = (GateStreamRequest)subscription.Request!;
         var unsub = new GateStreamRequest
         {
@@ -212,6 +331,14 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     internal async Task<bool> BaseUnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
         => await this.UnsubscribeAsync(connection, subscription).ConfigureAwait(false);
 
+    internal GateCrossExStreamLoginPayload CreateCrossExLoginPayload(long timestamp)
+    {
+        if (AuthenticationProvider == null)
+            throw new ArgumentNullException("ApiCredentials is null");
+
+        return ((GateAuthentication)AuthenticationProvider).CreateCrossExLoginPayload(timestamp);
+    }
+
     internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
         => BaseSubscribeAsync(url, channel, (object)payload?.ToList(), authenticated, onData, ct);
 
@@ -234,6 +361,36 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         }
 
         return SubscribeAsync(url, request, null, authenticated: false, onData, ct);
+    }
+
+    internal Task<CallResult<WebSocketUpdateSubscription>> CrossExSubscribeAsync<T>(string url, string channel, object payload, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+        => CrossExSubscribeAsync(url, channel, payload, false, onData, ct);
+
+    internal Task<CallResult<WebSocketUpdateSubscription>> CrossExSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+    {
+        var request = new GateCrossExStreamRequest
+        {
+            Channel = channel,
+            Event = "subscribe",
+            Payload = payload,
+        };
+
+        return SubscribeAsync(url, request, null, authenticated, onData, ct);
+    }
+
+    internal async Task<CallResult<T>> CrossExQueryAsync<T>(string url, string channel, string eventName, object payload)
+        => await CrossExQueryAsync<T>(url, channel, eventName, payload, false).ConfigureAwait(false);
+
+    internal async Task<CallResult<T>> CrossExQueryAsync<T>(string url, string channel, string eventName, object payload, bool authenticated)
+    {
+        var request = new GateCrossExStreamRequest
+        {
+            Channel = channel,
+            Event = eventName,
+            Payload = payload,
+        };
+
+        return await QueryAsync<T>(url, request, authenticated).ConfigureAwait(false);
     }
 
     /*
@@ -298,6 +455,54 @@ public class GateBaseStreamApiClient : WebSocketApiClient
             Latency = sw.Elapsed,
             PongMessage = ""
         });
+    }
+
+    private async Task<CallResult<bool>> AuthenticateCrossExAsync(WebSocketConnection connection)
+    {
+        if (AuthenticationProvider == null)
+            throw new ArgumentNullException("ApiCredentials is null");
+
+        var timestamp = DateTime.UtcNow.ConvertToSeconds();
+        var request = new GateCrossExStreamRequest
+        {
+            Event = "login",
+            Payload = ((GateAuthentication)AuthenticationProvider).CreateCrossExLoginPayload(timestamp),
+        };
+
+        CallResult<bool> result = null;
+        await connection.SendAndWaitAsync(request, ClientOptions.ResponseTimeout, data =>
+        {
+            if (data.Type != JTokenType.Object || data["event"]?.ToString() != "login")
+                return false;
+
+            var error = data["error"];
+            if (error != null && error.Type != JTokenType.Null)
+            {
+                var errorCode = error["code"]?.ToString();
+                int.TryParse(errorCode, out var code);
+                result = new CallResult<bool>(new ServerError(code, error["message"]?.ToString()));
+                return true;
+            }
+
+            var response = data["result"];
+            if (response?.Type == JTokenType.Object && response["code"]?.ToString() == "100000")
+            {
+                result = new CallResult<bool>(true);
+                return true;
+            }
+
+            if (response?.Type == JTokenType.Object && response["code"] != null)
+            {
+                var responseCode = response["code"]?.ToString();
+                int.TryParse(responseCode, out var code);
+                result = new CallResult<bool>(new ServerError(code, response["message"]?.ToString()));
+                return true;
+            }
+
+            return false;
+        }).ConfigureAwait(false);
+
+        return result ?? new CallResult<bool>(new ServerError("CrossEx WebSocket login timed out."));
     }
 
 }

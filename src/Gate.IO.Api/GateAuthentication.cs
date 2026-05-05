@@ -54,4 +54,18 @@ internal class GateAuthentication(ApiCredentials credentials) : AuthenticationPr
             Signature = signature
         };
     }
+
+    public GateCrossExStreamLoginPayload CreateCrossExLoginPayload(long timestamp)
+    {
+        if (Credentials is null || Credentials.Key is null || Credentials.Secret is null || string.IsNullOrEmpty(Credentials.Key.GetString()))
+            throw new ArgumentException("No valid API credentials provided. Key/Secret/PassPhrase needed.");
+
+        var signatureBody = $"channel=&event=login&time={timestamp}";
+        var signature = SignHMACSHA512(signatureBody).ToLower();
+        return new GateCrossExStreamLoginPayload
+        {
+            ApiKey = Credentials.Key!.GetString(),
+            Sign = signature
+        };
+    }
 }

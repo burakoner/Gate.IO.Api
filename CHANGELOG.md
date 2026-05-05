@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added CrossEx WebSocket stream support against the current Gate CrossEx WebSocket documentation.
+    * Added `stream.CrossEx` with public market streams for last price, index price, mark price, order book, order book updates, tickers, trades, klines, funding rates, and open interest.
+    * Added CrossEx private WebSocket login plus user order, asset, trade, position, margin position, and margin interest subscriptions.
+    * Added CrossEx WebSocket API commands for order placement/cancel/update, futures and margin leverage updates, account settings updates, and full position close.
+    * Added CrossEx WebSocket addresses, stream request/response models, public market payload models, and kline interval enum.
   * Added Unified WebSocket stream support against the current Gate Unified WebSocket documentation.
     * Added `stream.Unified` with ping, asset overview, and asset detail subscriptions.
     * Added the Unified WebSocket base address to client options and constants.

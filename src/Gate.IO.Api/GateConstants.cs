@@ -41,6 +41,16 @@ internal record GateConstants
     public string StreamUnifiedAddress { get; set; }
 
     /// <summary>
+    /// Stream-CrossEx public market data
+    /// </summary>
+    public string StreamCrossExPublicAddress { get; set; }
+
+    /// <summary>
+    /// Stream-CrossEx private data and API
+    /// </summary>
+    public string StreamCrossExPrivateAddress { get; set; }
+
+    /// <summary>
     /// Gate.IO API Broker Id
     /// </summary>
     public string ChannelId { get; set; }
@@ -77,6 +87,10 @@ internal record GateConstants
         // Stream-Unified
         StreamUnifiedAddress = "wss://ws.gate.com/v4/ws/unified",
 
+        // Stream-CrossEx
+        StreamCrossExPublicAddress = "wss://api.gateio.ws/ws/crossex/public",
+        StreamCrossExPrivateAddress = "wss://api.gateio.ws/ws/crossex",
+
         // Broker Id
         ChannelId = "phalchatha"
     };
@@ -112,6 +126,10 @@ internal record GateConstants
 
         // Stream-Unified
         StreamUnifiedAddress = "wss://ws.gate.com/v4/ws/unified",
+
+        // Stream-CrossEx
+        StreamCrossExPublicAddress = "wss://api.gateio.ws/ws/crossex/public",
+        StreamCrossExPrivateAddress = "wss://api.gateio.ws/ws/crossex",
 
         // Broker Id
         ChannelId = "phalchatha"
