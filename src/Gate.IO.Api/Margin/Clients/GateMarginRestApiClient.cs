@@ -27,8 +27,8 @@ public class GateMarginRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateMarginBalance>>> GetBalancesAsync(string symbol = null, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("currency_pair", symbol);
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency_pair", symbol);
 
         return _.SendRequestInternal<List<GateMarginBalance>>(_.GetUrl(api, v4, margin, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -55,17 +55,33 @@ public class GateMarginRestApiClient
         int page = 1,
         int limit = 100,
         CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection
+        => GetBalanceHistoryAsync(new GateMarginBalanceHistoryQueryRequest
         {
-            { "limit", limit },
-            { "page", page },
-        };
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptional("type", type);
-        parameters.AddOptionalMilliseconds("from", from);
-        parameters.AddOptionalMilliseconds("to", to);
+            Currency = currency,
+            Symbol = symbol,
+            From = from,
+            To = to,
+            Type = type,
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// List margin account balance change history
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginBalanceHistory>>> GetBalanceHistoryAsync(GateMarginBalanceHistoryQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddOptional("type", request.Type);
+        parameters.AddOptionalSeconds("from", request.From);
+        parameters.AddOptionalSeconds("to", request.To);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
 
         return _.SendRequestInternal<List<GateMarginBalanceHistory>>(_.GetUrl(api, v4, margin, "account_book"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -80,8 +96,8 @@ public class GateMarginRestApiClient
         string currency = null,
         CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object>();
-        parameters.AddOptionalParameter("currency", currency);
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency", currency);
 
         return _.SendRequestInternal<List<GateMarginFundingBalance>>(_.GetUrl(api, v4, margin, "funding_accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -97,7 +113,7 @@ public class GateMarginRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddEnum("status", status);
 
-        return _.SendRequestInternal<GateMarginAutoRepayment>(_.GetUrl(api, v4, margin, "auto_repay"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<GateMarginAutoRepayment>(_.GetUrl(api, v4, margin, "auto_repay"), HttpMethod.Post, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -118,11 +134,23 @@ public class GateMarginRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(string currency, string symbol = null, CancellationToken ct = default)
+        => GetTransferableAmountAsync(new GateMarginTransferableAmountRequest
+        {
+            Currency = currency,
+            Symbol = symbol,
+        }, ct);
+
+    /// <summary>
+    /// Get the max transferable amount for a specific margin currency
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateMarginAmount>> GetTransferableAmountAsync(GateMarginTransferableAmountRequest request, CancellationToken ct = default)
     {
-        var parameters = new Dictionary<string, object> {
-            { "currency", currency },
-        };
-        parameters.AddOptionalParameter("currency_pair", symbol);
+        var parameters = new ParameterCollection();
+        parameters.Add("currency", request.Currency);
+        parameters.AddOptional("currency_pair", request.Symbol);
 
         return _.SendRequestInternal<GateMarginAmount>(_.GetUrl(api, v4, margin, "transferable"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -160,7 +188,7 @@ public class GateMarginRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddParameter("currencies", string.Join(",", currencies));
 
-        return _.SendRequestInternal<Dictionary<string, decimal>>(_.GetUrl(api, v4, marginuni, "estimate_rate"), HttpMethod.Get, ct, false, queryParameters: parameters);
+        return _.SendRequestInternal<Dictionary<string, decimal>>(_.GetUrl(api, v4, marginuni, "estimate_rate"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -171,22 +199,18 @@ public class GateMarginRestApiClient
     /// <param name="amount">The amount of lending or repaying</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateMarginOrder>> BorrowAsync(
+    public Task<RestCallResult<object>> BorrowAsync(
         string symbol,
         string currency,
         decimal amount,
         CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection
+        => BorrowOrRepayAsync(new GateMarginLoanRequest
         {
-            { "type", "borrow" },
-            { "currency", currency },
-            { "currency_pair", symbol },
-        };
-        parameters.AddString("amount", amount);
-
-        return _.SendRequestInternal<GateMarginOrder>(_.GetUrl(api, v4, marginuni, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
-    }
+            Symbol = symbol,
+            Currency = currency,
+            Amount = amount,
+            Type = GateMarginUniOrderType.Borrow,
+        }, ct);
 
     /// <summary>
     /// Repay
@@ -197,23 +221,37 @@ public class GateMarginRestApiClient
     /// <param name="repaidAll">Full repayment. Repay operation only. If the value is true, the amount will be ignored and the loan will be repaid in full.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateMarginOrder>> RepayAsync(
+    public Task<RestCallResult<object>> RepayAsync(
         string symbol,
         string currency,
         decimal amount,
         bool? repaidAll = null,
         CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection
+        => BorrowOrRepayAsync(new GateMarginLoanRequest
         {
-            { "type", "repay" },
-            { "currency", currency },
-            { "currency_pair", symbol },
-        };
-        parameters.AddString("amount", amount);
-        parameters.AddOptional("repaid_all", repaidAll?.ToString().ToLowerInvariant());
+            Symbol = symbol,
+            Currency = currency,
+            Amount = amount,
+            Type = GateMarginUniOrderType.Repay,
+            RepaidAll = repaidAll,
+        }, ct);
 
-        return _.SendRequestInternal<GateMarginOrder>(_.GetUrl(api, v4, marginuni, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    /// <summary>
+    /// Borrow or repay
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<object>> BorrowOrRepayAsync(GateMarginLoanRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddEnum("type", request.Type);
+        parameters.Add("currency", request.Currency);
+        parameters.Add("currency_pair", request.Symbol);
+        parameters.AddString("amount", request.Amount);
+        parameters.AddOptional("repaid_all", request.RepaidAll);
+
+        return _.SendRequestInternal<object>(_.GetUrl(api, v4, marginuni, "loans"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -226,19 +264,32 @@ public class GateMarginRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateMarginLoan>>> GetLoansAsync(
-        string symbol,
-        string currency,
+        string symbol = null,
+        string currency = null,
         int? page = null,
         int? limit = null,
         CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection
+        => GetLoansAsync(new GateMarginLoanQueryRequest
         {
-            { "currency", currency },
-            { "currency_pair", symbol },
-        };
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
+            Symbol = symbol,
+            Currency = currency,
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// List loans
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginLoan>>> GetLoansAsync(GateMarginLoanQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
 
         return _.SendRequestInternal<List<GateMarginLoan>>(_.GetUrl(api, v4, marginuni, "loans"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -253,22 +304,38 @@ public class GateMarginRestApiClient
     /// <param name="limit">Maximum response items. Default: 100, minimum: 1, Maximum: 100</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateMarginLoan>>> GetLoanHistoryAsync(
+    public Task<RestCallResult<List<GateMarginLoanRecord>>> GetLoanHistoryAsync(
         string symbol = null,
         string currency = null,
         GateMarginUniOrderType? type = null,
         int? page = null,
         int? limit = null,
         CancellationToken ct = default)
+        => GetLoanHistoryAsync(new GateMarginLoanRecordQueryRequest
+        {
+            Symbol = symbol,
+            Currency = currency,
+            Type = type,
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// Get loan records
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginLoanRecord>>> GetLoanHistoryAsync(GateMarginLoanRecordQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptionalEnum("type", type);
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
+        parameters.AddOptionalEnum("type", request.Type);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
 
-        return _.SendRequestInternal<List<GateMarginLoan>>(_.GetUrl(api, v4, marginuni, "loan_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateMarginLoanRecord>>(_.GetUrl(api, v4, marginuni, "loan_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -276,9 +343,11 @@ public class GateMarginRestApiClient
     /// </summary>
     /// <param name="symbol">Currency pair</param>
     /// <param name="currency">Currency</param>
-    /// <param name="type">type: borrow - borrow, repay - repay</param>
+    /// <param name="type">Deprecated; ignored by the current API.</param>
     /// <param name="page">Page number</param>
     /// <param name="limit">Maximum response items. Default: 100, minimum: 1, Maximum: 100</param>
+    /// <param name="from">Start timestamp of the query</param>
+    /// <param name="to">Time range ending, default to current time</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateMarginInterest>>> GetInterestHistoryAsync(
@@ -287,14 +356,34 @@ public class GateMarginRestApiClient
         string type = null,
         int? page = null,
         int? limit = null,
+        DateTime? from = null,
+        DateTime? to = null,
         CancellationToken ct = default)
+        => GetInterestHistoryAsync(new GateMarginInterestRecordQueryRequest
+        {
+            Symbol = symbol,
+            Currency = currency,
+            Page = page,
+            Limit = limit,
+            From = from,
+            To = to,
+        }, ct);
+
+    /// <summary>
+    /// List interest records
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateMarginInterest>>> GetInterestHistoryAsync(GateMarginInterestRecordQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddOptional("type", type);
-        parameters.AddOptional("currency", currency);
-        parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptional("page", page);
-        parameters.AddOptional("limit", limit);
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
+        parameters.AddOptionalSeconds("from", request.From);
+        parameters.AddOptionalSeconds("to", request.To);
 
         return _.SendRequestInternal<List<GateMarginInterest>>(_.GetUrl(api, v4, marginuni, "interest_records"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -310,10 +399,23 @@ public class GateMarginRestApiClient
         string symbol,
         string currency,
         CancellationToken ct = default)
+        => GetMaximumBorrowableAsync(new GateMarginBorrowableRequest
+        {
+            Symbol = symbol,
+            Currency = currency,
+        }, ct);
+
+    /// <summary>
+    /// Get maximum borrowable
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateMarginBorrowable>> GetMaximumBorrowableAsync(GateMarginBorrowableRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.Add("currency", currency);
-        parameters.Add("currency_pair", symbol);
+        parameters.Add("currency", request.Currency);
+        parameters.Add("currency_pair", request.Symbol);
 
         return _.SendRequestInternal<GateMarginBorrowable>(_.GetUrl(api, v4, marginuni, "borrowable"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
@@ -343,7 +445,7 @@ public class GateMarginRestApiClient
         var parameters = new ParameterCollection();
         parameters.Add("currency_pair", symbol);
 
-        return _.SendRequestInternal<List<GateMarginTier>>(_.GetUrl(api, v4, margin, "loan_margin_tiers"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateMarginTier>>(_.GetUrl(api, v4, margin, "loan_margin_tiers"), HttpMethod.Get, ct, false, queryParameters: parameters);
     }
 
     /// <summary>
@@ -353,13 +455,26 @@ public class GateMarginRestApiClient
     /// <param name="symbol">Market</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateMarginLeverage>> SetLeverageAsync(int leverage, string symbol=null, CancellationToken ct = default)
+    public Task<RestCallResult<object>> SetLeverageAsync(int leverage, string symbol = null, CancellationToken ct = default)
+        => SetLeverageAsync(new GateMarginLeverageSettingRequest
+        {
+            Leverage = leverage,
+            Symbol = symbol,
+        }, ct);
+
+    /// <summary>
+    /// Set user market leverage multiplier
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<object>> SetLeverageAsync(GateMarginLeverageSettingRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        parameters.AddString("leverage", leverage);
-        parameters.AddOptional("currency_pair", symbol);
+        parameters.AddString("leverage", request.Leverage);
+        parameters.AddOptional("currency_pair", request.Symbol);
 
-        return _.SendRequestInternal<GateMarginLeverage>(_.GetUrl(api, v4, marginleverage, "user_market_setting"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return _.SendRequestInternal<object>(_.GetUrl(api, v4, marginleverage, "user_market_setting"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
@@ -369,7 +484,7 @@ public class GateMarginRestApiClient
     /// <param name="symbol">Market</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateMarginBalance>>> GetIsolatedBalancesAsync(string symbol=null, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateMarginBalance>>> GetIsolatedBalancesAsync(string symbol = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);

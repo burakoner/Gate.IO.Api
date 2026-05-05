@@ -39,11 +39,12 @@ public record GateMarginInterest
     /// Type
     /// </summary>
     [JsonProperty("type")]
-    public GateMarginUniOrderType Type { get; set; }
+    public GateMarginLoanType Type { get; set; }
 
     /// <summary>
     /// Create time
     /// </summary>
     [JsonProperty("create_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
     public DateTime CreateTime { get; set; }
 }

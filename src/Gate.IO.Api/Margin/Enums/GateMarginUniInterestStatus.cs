@@ -8,12 +8,12 @@ public enum GateMarginUniInterestStatus : byte
     /// <summary>
     /// Fail
     /// </summary>
-    [Map("0")]
+    [Map("0", "fail")]
     Fail = 0,
 
     /// <summary>
     /// Success
     /// </summary>
-    [Map("1")]
+    [Map("1", "success")]
     Success = 1,
 }

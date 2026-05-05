@@ -1,6 +1,18 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated isolated margin endpoints against the current Gate API v4 Isolated-Margin documentation.
+    * Added request-object overloads for balance history, transferable amount, borrow/repay, loans, loan records, interest records, maximum borrowable, and leverage setting.
+    * Added `Margin/Requests` request models for the isolated margin client.
+    * Fixed balance history and interest history query timestamps to send Unix seconds.
+    * Added `from` and `to` filters for isolated margin interest record queries.
+    * Stopped sending the stale `type` query parameter for isolated margin interest record queries.
+    * Fixed `SetAutoRepaymentAsync` to send `status` as a query parameter.
+    * Fixed authentication flags for isolated margin estimate-rate and current lending-tier endpoints.
+    * Updated borrow/repay and leverage-setting calls to return no-content results per the current API.
+    * Split isolated margin loan records into `GateMarginLoanRecord` and added `GateMarginLoanType` for active loans and interest records.
+    * Updated isolated margin response models for string record IDs, timestamp converters, interest statuses, and tier upper-limit/tier-amount values.
+    * Updated examples and README with Isolated Margin request-object overload usage.
   * Updated unified endpoints against the current Gate API v4 Unified documentation.
     * Added request-object overloads for account info, borrow/repay, loans, loan history, interest history, account mode, leverage settings, historical lending rates, and collateral currency updates.
     * Added `GetBatchBorrowableAsync` for unified account batch borrowable queries.

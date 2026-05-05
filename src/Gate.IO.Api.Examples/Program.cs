@@ -190,21 +190,25 @@ internal class Program
         var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();
 
         // Isolated Margin Methods
-        var margin_01 = await api.IsolatedMargin.GetBalancesAsync();
-        var margin_02 = await api.IsolatedMargin.GetBalanceHistoryAsync();
-        var margin_03 = await api.IsolatedMargin.GetFundingBalancesAsync();
+        var margin_01 = await api.IsolatedMargin.GetBalancesAsync("SYMBOL");
+        var margin_02 = await api.IsolatedMargin.GetBalanceHistoryAsync(new GateMarginBalanceHistoryQueryRequest { Symbol = "SYMBOL", Currency = "CURRENCY", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var margin_03 = await api.IsolatedMargin.GetFundingBalancesAsync("CURRENCY");
         var margin_04 = await api.IsolatedMargin.SetAutoRepaymentAsync(GateMarginAutoRepaymentStatus.Enabled);
         var margin_05 = await api.IsolatedMargin.GetAutoRepaymentAsync();
-        var margin_06 = await api.IsolatedMargin.GetTransferableAmountAsync("CURRENCY");
-        var margin_11 = await api.IsolatedMargin.GetMarketsAsync();
-        var margin_12 = await api.IsolatedMargin.GetMarketsAsync("SYMBOL");
-        var margin_13 = await api.IsolatedMargin.GetEstimatedInterestRateAsync(["BTC", "ETH"]);
-        var margin_14 = await api.IsolatedMargin.BorrowAsync("SYMBOL", "CURRENCY", 100.0m);
-        var margin_15 = await api.IsolatedMargin.RepayAsync("SYMBOL", "CURRENCY", 100.0m);
-        var margin_16 = await api.IsolatedMargin.GetLoansAsync("SYMBOL", "CURRENCY");
-        var margin_17 = await api.IsolatedMargin.GetLoanHistoryAsync();
-        var margin_18 = await api.IsolatedMargin.GetInterestHistoryAsync();
-        var margin_19 = await api.IsolatedMargin.GetMaximumBorrowableAsync("SYMBOL", "CURRENCY");
+        var margin_06 = await api.IsolatedMargin.GetTransferableAmountAsync(new GateMarginTransferableAmountRequest { Currency = "CURRENCY", Symbol = "SYMBOL" });
+        var margin_07 = await api.IsolatedMargin.GetMarketsAsync();
+        var margin_08 = await api.IsolatedMargin.GetMarketsAsync("SYMBOL");
+        var margin_09 = await api.IsolatedMargin.GetEstimatedInterestRateAsync(new List<string> { "BTC", "ETH" });
+        var margin_10 = await api.IsolatedMargin.BorrowOrRepayAsync(new GateMarginLoanRequest { Symbol = "SYMBOL", Currency = "CURRENCY", Type = GateMarginUniOrderType.Borrow, Amount = 100.0m });
+        var margin_11 = await api.IsolatedMargin.RepayAsync("SYMBOL", "CURRENCY", 100.0m, true);
+        var margin_12 = await api.IsolatedMargin.GetLoansAsync(new GateMarginLoanQueryRequest { Symbol = "SYMBOL", Currency = "CURRENCY" });
+        var margin_13 = await api.IsolatedMargin.GetLoanHistoryAsync(new GateMarginLoanRecordQueryRequest { Symbol = "SYMBOL", Currency = "CURRENCY", Type = GateMarginUniOrderType.Borrow });
+        var margin_14 = await api.IsolatedMargin.GetInterestHistoryAsync(new GateMarginInterestRecordQueryRequest { Symbol = "SYMBOL", Currency = "CURRENCY", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+        var margin_15 = await api.IsolatedMargin.GetMaximumBorrowableAsync(new GateMarginBorrowableRequest { Symbol = "SYMBOL", Currency = "CURRENCY" });
+        var margin_16 = await api.IsolatedMargin.GetUserLendingTiersAsync("SYMBOL");
+        var margin_17 = await api.IsolatedMargin.GetCurrentLendingTiersAsync("SYMBOL");
+        var margin_18 = await api.IsolatedMargin.SetLeverageAsync(new GateMarginLeverageSettingRequest { Symbol = "SYMBOL", Leverage = 10 });
+        var margin_19 = await api.IsolatedMargin.GetIsolatedBalancesAsync("SYMBOL");
 
         // Flash-Swap Methods
         var swap_02 = await api.FlashSwap.GetMarketsAsync();

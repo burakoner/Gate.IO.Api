@@ -9,7 +9,17 @@ public record GateMarginTier
     /// Maximum loan limit
     /// </summary>
     [JsonProperty("upper_limit")]
-    public decimal UpperLimit { get; set; }
+    public string UpperLimit { get; set; }
+
+    /// <summary>
+    /// Maximum loan limit
+    /// </summary>
+    [JsonProperty("tier_amount")]
+    public string TierAmount
+    {
+        get => UpperLimit;
+        set => UpperLimit = value;
+    }
 
     /// <summary>
     /// Maintenance margin rate
