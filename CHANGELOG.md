@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Flash Swap REST contract tests.
+    * Added documented Flash Swap fixtures for supported currency pairs, order preview, order creation, order listing, and single-order lookup.
+    * Added live public Flash Swap captures for supported currency-pair queries.
+    * Added request construction tests for unsigned Flash Swap market queries and signed preview, order creation, order listing, and single-order lookup calls.
+    * Added opt-in public integration smoke tests for `GET /flash_swap/currency_pairs`.
   * Added Spot REST contract tests.
     * Added documented Spot fixtures for currencies, currency pairs, tickers, order book, trades, candlesticks, balances, account book, orders, batch orders, open orders, trade history, fees, cancellation, countdown cancellation, insurance history, and price-triggered orders.
     * Added live public Spot captures for GT currency details, BTC_USDT market data, server time, and insurance history.
