@@ -48,6 +48,12 @@ public record GateOptionsOrder
     /// </summary>
     [JsonProperty("contract")]
     public string Contract { get; set; }
+
+    /// <summary>
+    /// Underlying name
+    /// </summary>
+    [JsonProperty("underlying")]
+    public string Underlying { get; set; }
     
     /// <summary>
     /// Order size. Specify positive number to make a bid, and negative number to ask
@@ -142,4 +148,17 @@ public record GateOptionsOrder
     /// </summary>
     [JsonProperty("refr")]
     public decimal? ReferrerRebate { get; set; }
+
+    /// <summary>
+    /// Creation time of the WebSocket message
+    /// </summary>
+    [JsonProperty("time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    public DateTime? Time { get; set; }
+
+    /// <summary>
+    /// Creation time of the WebSocket message in milliseconds
+    /// </summary>
+    [JsonProperty("time_ms")]
+    public long? TimeInMilliseconds { get; set; }
 }

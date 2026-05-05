@@ -12,7 +12,7 @@ public class GateOptionsStreamApiClient
     private const string optionsContractTradesChannel = "options.trades";
     private const string optionsUnderlyingTradesChannel = "options.ul_trades";
     private const string optionsUnderlyingPriceChannel = "options.ul_price";
-    private const string optionsMarkPriceChannel = "options.mark_price";
+    private const string optionsMarkPriceChannel = "options.mark_prices";
     private const string optionsSettlementsChannel = "options.settlements";
     private const string optionsContractsChannel = "options.contracts";
     private const string optionsContractCandlesticksChannel = "options.contract_candlesticks";
@@ -148,7 +148,8 @@ public class GateOptionsStreamApiClient
         payload.Add(MapConverter.GetString(interval));
         payload.Add(contract);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamCandlestick>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsContractCandlesticksChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
     
@@ -161,7 +162,8 @@ public class GateOptionsStreamApiClient
         payload.Add(MapConverter.GetString(interval));
         payload.Add(underlying);
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamCandlestick>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<IEnumerable<GateOptionsStreamCandlestick>>>>(data =>
+        { foreach (var row in data.Data.Data) onMessage(data.As(row, data.Data.Channel)); });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsUnderlyingCandlesticksChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
@@ -172,6 +174,21 @@ public class GateOptionsStreamApiClient
     {
         var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookTicker>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookTickerChannel, contracts, false, handler, ct).ConfigureAwait(false);
+    }
+
+    /// <summary>
+    /// Executes the Subscribe To Order Book Differences operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookDifferencesAsync(string contract, int interval, Action<WebSocketDataEvent<GateOptionsStreamBookDifference>> onMessage, CancellationToken ct = default)
+    {
+        interval.ValidateIntValues(nameof(interval), 100, 1000);
+
+        var payload = new List<string>();
+        payload.Add(contract);
+        payload.Add($"{interval}ms");
+
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookDifference>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookUpdateChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -195,6 +212,17 @@ public class GateOptionsStreamApiClient
     /// Executes the Subscribe To Order Book Snapshots operation.
     /// </summary>
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, int level, Action<WebSocketDataEvent<GateOptionsStreamBookSnapshot>> onMessage, CancellationToken ct = default)
+        => await SubscribeToOrderBookAsync(contract, level, onMessage, null, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Order Book operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookAsync(
+        string contract,
+        int level,
+        Action<WebSocketDataEvent<GateOptionsStreamBookSnapshot>> onSnapshot,
+        Action<WebSocketDataEvent<GateOptionsStreamOrderBookUpdate>> onUpdate,
+        CancellationToken ct = default)
     {
         level.ValidateIntValues(nameof(level), 1, 5, 10, 20, 50);
 
@@ -203,7 +231,30 @@ public class GateOptionsStreamApiClient
         payload.Add(level.ToString());
         payload.Add("0");
 
-        var handler = new Action<WebSocketDataEvent<GateStreamResponse<GateOptionsStreamBookSnapshot>>>(data => onMessage(data.As(data.Data.Data, data.Data.Channel)));
+        var handler = new Action<WebSocketDataEvent<GateStreamResponse<JToken>>>(data =>
+        {
+            if (data.Data.Data == null || data.Data.Data.Type == JTokenType.Null)
+                return;
+
+            if (data.Data.Data.Type == JTokenType.Object)
+            {
+                var snapshot = data.Data.Data.ToObject<GateOptionsStreamBookSnapshot>();
+                if (snapshot != null)
+                    onSnapshot?.Invoke(data.As(snapshot, data.Data.Channel));
+
+                return;
+            }
+
+            if (data.Data.Data.Type != JTokenType.Array)
+                return;
+
+            foreach (var token in data.Data.Data)
+            {
+                var update = token.ToObject<GateOptionsStreamOrderBookUpdate>();
+                if (update != null)
+                    onUpdate?.Invoke(data.As(update, data.Data.Channel));
+            }
+        });
         return await BaseClient.BaseSubscribeAsync(BaseAddress, optionsOrderBookChannel, payload, false, handler, ct).ConfigureAwait(false);
     }
 

@@ -26,7 +26,7 @@ public record GateOptionsStreamPositionClose
     /// <summary>
     /// Gets or sets the Side.
     /// </summary>
-    [JsonProperty("side")]
+    [JsonProperty("side"), JsonConverter(typeof(MapConverter))]
     public GateOptionsSide Side { get; set; }
 
     /// <summary>

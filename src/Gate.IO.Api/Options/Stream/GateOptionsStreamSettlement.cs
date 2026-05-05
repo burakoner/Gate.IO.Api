@@ -44,7 +44,7 @@ public record GateOptionsStreamSettlement
     /// <summary>
     /// Gets or sets the Period.
     /// </summary>
-    [JsonProperty("tag")]
+    [JsonProperty("tag"), JsonConverter(typeof(MapConverter))]
     public GateOptionsContractPeriod Period { get; set; }
 
     /// <summary>

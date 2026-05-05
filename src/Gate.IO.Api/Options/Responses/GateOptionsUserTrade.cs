@@ -19,16 +19,35 @@ public record GateOptionsUserTrade
     public DateTime CreateTime { get; set; }
 
     /// <summary>
+    /// Trading time in milliseconds
+    /// </summary>
+    [JsonProperty("create_time_ms")]
+    public long? CreateTimeInMilliseconds { get; set; }
+
+    /// <summary>
     /// Options contract name
     /// </summary>
     [JsonProperty("contract")]
     public string Contract { get; set; }
 
     /// <summary>
+    /// Underlying name
+    /// </summary>
+    [JsonProperty("underlying")]
+    public string Underlying { get; set; }
+
+    /// <summary>
     /// Order ID related
     /// </summary>
     [JsonProperty("order_id")]
     public long OrderId { get; set; }
+
+    [JsonProperty("order")]
+    internal long StreamOrderId
+    {
+        get => OrderId;
+        set => OrderId = value;
+    }
 
     /// <summary>
     /// Trading size
@@ -53,4 +72,16 @@ public record GateOptionsUserTrade
     /// </summary>
     [JsonProperty("role"), JsonConverter(typeof(MapConverter))]
     public GateOptionsTraderRole Role { get; set; }
+
+    /// <summary>
+    /// Fee deducted
+    /// </summary>
+    [JsonProperty("fee")]
+    public decimal? Fee { get; set; }
+
+    /// <summary>
+    /// User defined information
+    /// </summary>
+    [JsonProperty("text")]
+    public string ClientOrderId { get; set; }
 }

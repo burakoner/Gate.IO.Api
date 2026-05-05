@@ -14,19 +14,19 @@ public record GateOptionsContractTicker
     /// <summary>
     /// Last trading price (quote currency)
     /// </summary>
-    [JsonProperty("last_price")]
+    [JsonProperty("last_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal LastPrice { get; set; }
 
     /// <summary>
     /// Current mark price (quote currency)
     /// </summary>
-    [JsonProperty("mark_price")]
+    [JsonProperty("mark_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal MarkPrice { get; set; }
 
     /// <summary>
     /// Current index price (quote currency)
     /// </summary>
-    [JsonProperty("index_price")]
+    [JsonProperty("index_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal IndexPrice { get; set; }
 
     /// <summary>
@@ -38,7 +38,7 @@ public record GateOptionsContractTicker
     /// <summary>
     /// Best ask price
     /// </summary>
-    [JsonProperty("ask1_price")]
+    [JsonProperty("ask1_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal BestAskPrice { get; set; }
 
     /// <summary>
@@ -50,7 +50,7 @@ public record GateOptionsContractTicker
     /// <summary>
     /// Best bid price
     /// </summary>
-    [JsonProperty("bid1_price")]
+    [JsonProperty("bid1_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal BestBidPrice { get; set; }
 
     /// <summary>

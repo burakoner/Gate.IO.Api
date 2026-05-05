@@ -6,6 +6,12 @@
 public enum GateOptionsCandlestickInterval
 {
     /// <summary>
+    /// Ten Seconds
+    /// </summary>
+    [Map("10s")]
+    TenSeconds = 10,
+
+    /// <summary>
     /// One Minute
     /// </summary>
     [Map("1m")]
@@ -34,4 +40,28 @@ public enum GateOptionsCandlestickInterval
     /// </summary>
     [Map("1h")]
     OneHour = 3600,
+
+    /// <summary>
+    /// Four Hours
+    /// </summary>
+    [Map("4h")]
+    FourHours = 14400,
+
+    /// <summary>
+    /// Eight Hours
+    /// </summary>
+    [Map("8h")]
+    EightHours = 28800,
+
+    /// <summary>
+    /// One Day
+    /// </summary>
+    [Map("1d")]
+    OneDay = 86400,
+
+    /// <summary>
+    /// Seven Days
+    /// </summary>
+    [Map("7d")]
+    SevenDays = 604800,
 }

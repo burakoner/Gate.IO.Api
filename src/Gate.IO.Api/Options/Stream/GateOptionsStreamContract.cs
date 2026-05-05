@@ -95,13 +95,13 @@ public record GateOptionsStreamContract
     /// The maximum allowed order size.
     /// </summary>
     [JsonProperty("order_size_max")]
-    public decimal MaximumOrderSize { get; set; }
+    public long MaximumOrderSize { get; set; }
 
     /// <summary>
     /// The minimum allowed order size.
     /// </summary>
     [JsonProperty("order_size_min")]
-    public decimal MinimumOrderSize { get; set; }
+    public long MinimumOrderSize { get; set; }
 
     /// <summary>
     /// The maximum number of allowed open orders.
@@ -130,7 +130,7 @@ public record GateOptionsStreamContract
     /// <summary>
     /// The period tag of the contract (e.g., week, month).
     /// </summary>
-    [JsonProperty("tag")]
+    [JsonProperty("tag"), JsonConverter(typeof(MapConverter))]
     public GateOptionsContractPeriod Period { get; set; }
 
     /// <summary>

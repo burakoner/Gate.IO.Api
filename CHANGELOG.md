@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated Options WebSocket streams against the current Gate Options WebSocket documentation.
+    * Corrected the mark-price stream channel to `options.mark_prices`.
+    * Fixed contract and underlying candlestick subscriptions to handle the documented array payloads and added the missing `10s`, `4h`, `8h`, `1d`, and `7d` interval values.
+    * Added a legacy Options order-book subscription overload that can receive both `all` snapshots and `update` price-level notifications.
+    * Updated Options stream parsing for empty book-ticker prices, empty ticker index prices, mapped stream enums, underlying ticker names, order message timestamps, and newly documented user-trade fields.
   * Added TradFi WebSocket stream support against the current Gate TradFi WebSocket documentation.
     * Added `stream.TradFi` with ping, ticker, candlestick, best bid/ask, user order, user position, and user balance subscriptions.
     * Added the TradFi WebSocket base address to client options and constants.

@@ -26,7 +26,7 @@ public record GateOptionsStreamBalance
     /// <summary>
     /// Gets or sets the Type.
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateOptionsBalanceChangeType Type { get; set; }
 
     /// <summary>

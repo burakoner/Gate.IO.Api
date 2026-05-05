@@ -6,6 +6,12 @@ namespace Gate.IO.Api.Options;
 public record GateOptionsUnderlyingTicker
 {
     /// <summary>
+    /// Underlying name
+    /// </summary>
+    [JsonProperty("name")]
+    public string Name { get; set; }
+
+    /// <summary>
     /// Total put options trades amount in last 24h
     /// </summary>
     [JsonProperty("trade_put")]
