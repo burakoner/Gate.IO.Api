@@ -89,4 +89,28 @@ public enum GateWalletWithdrawalStatus : byte
     /// </summary>
     [Map("REVIEW")]
     UnderReview = 14,
+
+    /// <summary>
+    /// Withdrawal Cancellation Pending
+    /// </summary>
+    [Map("CANCELPEND")]
+    CancellationPending = 15,
+
+    /// <summary>
+    /// Facial Verification in Progress
+    /// </summary>
+    [Map("FVERIFY")]
+    FacialVerification = 16,
+
+    /// <summary>
+    /// Wallet-Side Order Locked
+    /// </summary>
+    [Map("LOCKED")]
+    Locked = 17,
+
+    /// <summary>
+    /// Rejected
+    /// </summary>
+    [Map("REJECT")]
+    Rejected = 18,
 }

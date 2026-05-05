@@ -1,5 +1,14 @@
 ## Change Log & Release Notes
 
+* Unreleased
+  * Updated wallet withdrawal endpoints against the current Gate API v4 Withdrawal documentation.
+    * Fixed `GateWalletRestApiClient.WithdrawAsync` parameter ordering so the sixth argument maps to `withdraw_order_id`.
+    * Added `GateWalletWithdrawalRequest` and `WithdrawAsync(GateWalletWithdrawalRequest request, CancellationToken ct = default)`.
+    * Added string-based `CancelWithdrawalAsync(string withdrawalId, CancellationToken ct = default)` while preserving the existing long overload.
+    * Changed `GateWalletTransaction.Id`, `GateWalletTransaction.BlockNumber`, and `GateWalletTransferId.Id` to string to match API responses.
+    * Added newer withdrawal status enum values: `CANCELPEND`, `FVERIFY`, `LOCKED`, and `REJECT`.
+    * Added `GateRestApiClient.Withdrawal` as an alias to `Wallet` for discoverability without moving ownership away from the Wallet client.
+
 * Version 4.105.10 - 19 Oct 2025
   * ApiSharp updated to version 4.1.0
 

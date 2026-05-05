@@ -9,7 +9,7 @@ public record GateWalletTransaction
     /// Record ID
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Hash record of the withdrawal
@@ -21,7 +21,7 @@ public record GateWalletTransaction
     /// Block Number
     /// </summary>
     [JsonProperty("block_number")]
-    public int? BlockNumber { get; set; }
+    public string BlockNumber { get; set; }
 
     /// <summary>
     /// Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)

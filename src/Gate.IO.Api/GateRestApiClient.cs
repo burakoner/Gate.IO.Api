@@ -15,6 +15,11 @@ public class GateRestApiClient : RestApiClient
     public GateWalletRestApiClient Wallet { get; } // 4.105.4
 
     /// <summary>
+    /// Withdrawal Client
+    /// </summary>
+    public GateWalletRestApiClient Withdrawal => Wallet; // Alias for withdrawal endpoints under Wallet
+
+    /// <summary>
     /// SubAccount Client
     /// </summary>
     public GateSubAccountRestApiClient SubAccount { get; } // 4.105.4

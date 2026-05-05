@@ -26,8 +26,8 @@ public class GateWalletRestApiClient
     /// <param name="chain">Name of the chain used in withdrawals</param>
     /// <param name="address">Withdrawal address. Required for withdrawals</param>
     /// <param name="memo">Additional remarks with regards to the withdrawal</param>
-    /// <param name="withdrawalId">The withdrawal record id starts with w, such as: w1879219868. When withdraw_id is not empty, the value querys this withdrawal record and no longer querys according to time</param>
     /// <param name="withdrawalOrderId">Client order id, up to 32 length and can only include 0-9, A-Z, a-z, underscore(_), hyphen(-) or dot(.)</param>
+    /// <param name="withdrawalId">The withdrawal record id starts with w, such as: w1879219868. When withdraw_id is not empty, the value queries this withdrawal record and no longer queries according to time</param>
     /// <param name="assetClass">The currency type of withdrawal record is empty by default. It supports users to query the withdrawal records in the main and innovation areas on demand.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
@@ -37,22 +37,42 @@ public class GateWalletRestApiClient
         string chain,
         string address,
         string memo = null,
-        string withdrawalId = null,
         string withdrawalOrderId = null,
+        string withdrawalId = null,
         GateWalletAssetClass? assetClass = null,
         CancellationToken ct = default)
+        => WithdrawAsync(new GateWalletWithdrawalRequest
+        {
+            Currency = currency,
+            Amount = amount,
+            Chain = chain,
+            Address = address,
+            Memo = memo,
+            WithdrawalOrderId = withdrawalOrderId,
+            WithdrawalId = withdrawalId,
+            AssetClass = assetClass,
+        }, ct);
+
+    /// <summary>
+    /// Withdraw
+    /// Withdrawals to Gate addresses do not incur transaction fees.
+    /// </summary>
+    /// <param name="request">Withdrawal Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateWalletTransaction>> WithdrawAsync(GateWalletWithdrawalRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
-            { "currency", currency },
-            { "address", address },
-            { "chain", chain },
+            { "currency", request.Currency },
+            { "address", request.Address },
+            { "chain", request.Chain },
         };
-        parameters.AddOptional("withdraw_order_id", withdrawalOrderId);
-        parameters.AddString("amount", amount);
-        parameters.AddOptional("memo", memo);
-        parameters.AddOptional("withdraw_id", withdrawalId);
-        parameters.AddOptionalEnum("asset_class", assetClass);
+        parameters.AddOptional("withdraw_order_id", request.WithdrawalOrderId);
+        parameters.AddString("amount", request.Amount);
+        parameters.AddOptional("memo", request.Memo);
+        parameters.AddOptional("withdraw_id", request.WithdrawalId);
+        parameters.AddOptionalEnum("asset_class", request.AssetClass);
 
         return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, v4, withdrawals, null), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -88,9 +108,20 @@ public class GateWalletRestApiClient
     /// <param name="withdrawalId">Withdrawal Id</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    public Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(string withdrawalId, CancellationToken ct = default)
+    {
+        return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, v4, withdrawals, withdrawalId), HttpMethod.Delete, ct, true);
+    }
+
+    /// <summary>
+    /// Cancel withdrawal with specified ID
+    /// </summary>
+    /// <param name="withdrawalId">Withdrawal Id</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
     public Task<RestCallResult<GateWalletTransaction>> CancelWithdrawalAsync(long withdrawalId, CancellationToken ct = default)
     {
-        return _.SendRequestInternal<GateWalletTransaction>(_.GetUrl(api, v4, withdrawals, withdrawalId.ToString()), HttpMethod.Delete, ct, true);
+        return CancelWithdrawalAsync(withdrawalId.ToString(), ct);
     }
 
     /// <summary>
