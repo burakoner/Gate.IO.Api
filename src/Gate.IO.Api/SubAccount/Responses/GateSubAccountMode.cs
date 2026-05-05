@@ -22,6 +22,6 @@ public record GateSubAccountMode
     /// <summary>
     /// Unified account mode
     /// </summary>
-    [JsonProperty("mode")]
+    [JsonProperty("mode"), JsonConverter(typeof(MapConverter))]
     public GateUnifiedAccountMode Mode { get; set; }
 }

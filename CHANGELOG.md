@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added SubAccount REST contract tests.
+    * Added documented SubAccount response fixtures for sub-account listing/creation, API key listing/creation/retrieval, and unified-mode lookup.
+    * Added request construction tests for signed sub-account creation/listing, API key permission/IP whitelist serialization, and unified-mode path handling.
+    * Updated SubAccount response parsing for documented unified account mode strings and the API key example's `update_at` timestamp alias.
   * Added Wallet and Withdrawal REST contract tests.
     * Added documented Wallet and Withdrawal response fixtures plus a captured public Wallet currency-chain fixture.
     * Added contract tests for Wallet transactions, transfer records, balances, fees, withdrawal status, deposit addresses, currency chains, and UID transfer history.

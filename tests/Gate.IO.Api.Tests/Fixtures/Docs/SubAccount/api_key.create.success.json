@@ -1,0 +1,36 @@
+{
+  "state": 1,
+  "name": "spot",
+  "user_id": 100000,
+  "perms": [
+    {
+      "name": "options",
+      "read_only": false
+    },
+    {
+      "name": "spot",
+      "read_only": false
+    },
+    {
+      "name": "delivery",
+      "read_only": false
+    },
+    {
+      "name": "wallet",
+      "read_only": false
+    },
+    {
+      "name": "futures",
+      "read_only": false
+    }
+  ],
+  "ip_whitelist": [
+    "127.0.0.1",
+    "127.0.0.2"
+  ],
+  "mode": 1,
+  "secret": "cddcc6e5e78060e013860bdbe5e737830b96821c027664586fb38b411808f4fd",
+  "key": "eb8815bf99d7bb5f8ad6497bdc4774a8",
+  "created_at": 1663683330,
+  "updated_at": 1663683330
+}

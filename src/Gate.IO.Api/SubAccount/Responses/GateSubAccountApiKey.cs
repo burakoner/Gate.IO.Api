@@ -67,6 +67,10 @@ public record GateSubAccountApiKey
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime UpdatedAt { get; set; }
 
+    [JsonProperty("update_at")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    internal DateTime UpdateAt { set => UpdatedAt = value; }
+
     /// <summary>
     /// Last access time
     /// </summary>
