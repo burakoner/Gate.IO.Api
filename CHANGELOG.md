@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Isolated Margin REST contract tests.
+    * Added documented Isolated Margin fixtures for balances, account book, funding accounts, auto repayment, transferable/borrowable amounts, lending markets, estimate rates, loans, loan records, interest records, leverage, and lending tiers.
+    * Added live public Isolated Margin captures for lending markets, a BTC_USDT market detail, and BTC_USDT loan margin tiers.
+    * Added request construction tests for signed balance history, loan, and auto-repayment calls plus unsigned public market and lending-tier requests.
+    * Updated Isolated Margin parsing for documented mapped enum strings and loan response aliases such as `currency_pari` and `change_time`.
   * Added Unified REST contract tests.
     * Added documented Unified fixtures for account info, borrowable/transferable amounts, loans, loan records, interest records, risk units, account mode, leverage, currencies, historical rates, portfolio calculation, collateral settings, and public tier data.
     * Added live public Unified captures for currencies, historical lending rates, currency discount tiers, and loan margin tiers.

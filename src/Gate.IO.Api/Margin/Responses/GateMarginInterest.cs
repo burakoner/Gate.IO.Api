@@ -38,7 +38,7 @@ public record GateMarginInterest
     /// <summary>
     /// Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateMarginLoanType Type { get; set; }
 
     /// <summary>

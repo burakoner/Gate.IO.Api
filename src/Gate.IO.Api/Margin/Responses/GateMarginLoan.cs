@@ -17,6 +17,9 @@ public record GateMarginLoan
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
 
+    [JsonProperty("currency_pari")]
+    internal string SymbolAlias { set => Symbol = value; }
+
     /// <summary>
     /// Amount
     /// </summary>
@@ -26,7 +29,7 @@ public record GateMarginLoan
     /// <summary>
     /// Type
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateMarginLoanType Type { get; set; }
 
     /// <summary>
@@ -42,4 +45,8 @@ public record GateMarginLoan
     [JsonProperty("update_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? UpdateTime { get; set; }
+
+    [JsonProperty("change_time")]
+    [JsonConverter(typeof(DateTimeConverter))]
+    internal DateTime? ChangeTime { set => UpdateTime = value; }
 }

@@ -1,0 +1,11 @@
+[
+  {
+    "currency": "USDT",
+    "currency_pair": "BTC_USDT",
+    "actual_rate": "0.000002",
+    "interest": "0.01",
+    "status": 1,
+    "type": "margin",
+    "create_time": 1673247054000
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "123456",
+    "time": "1547633726",
+    "time_ms": 1547633726123,
+    "currency": "BTC",
+    "currency_pair": "BTC_USDT",
+    "change": "1.03",
+    "balance": "4.59316525194",
+    "type": "margin_in"
+  }
+]

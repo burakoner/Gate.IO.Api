@@ -8,7 +8,7 @@ public record GateMarginLoanRecord
     /// <summary>
     /// Borrow or repay
     /// </summary>
-    [JsonProperty("type")]
+    [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateMarginUniOrderType Type { get; set; }
 
     /// <summary>

@@ -8,6 +8,6 @@ public record GateMarginAutoRepayment
     /// <summary>
     /// Current auto repayment setting
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateMarginAutoRepaymentStatus Status { get; set; }
 }

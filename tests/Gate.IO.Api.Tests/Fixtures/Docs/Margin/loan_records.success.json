@@ -1,0 +1,9 @@
+[
+  {
+    "type": "borrow",
+    "currency_pair": "BTC_USDT",
+    "currency": "BTC",
+    "amount": "0.1",
+    "create_time": 1673247054000
+  }
+]
