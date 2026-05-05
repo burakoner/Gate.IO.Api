@@ -16,6 +16,7 @@
     * Unwrapped P2P `code`/`message` response envelopes for data endpoints while preserving action result metadata for mutation endpoints.
     * Kept semantically numeric P2P order/ad/payment IDs, prices, amounts, rates, counts, and timestamps as numeric or `DateTime` public properties while sending Gate's documented string body values where required.
     * Split P2P request and response models into separate files for easier review and maintenance.
+    * Split P2P enum definitions into separate files to match the request and response model layout.
     * Updated examples and README with P2P request-object overload usage.
   * Added OTC REST API support against the current Gate API v4 OTC documentation.
     * Added `api.Otc` and a new `Otc` module with client, enum, request, and response models.
@@ -34,6 +35,7 @@
     * Covered Fixed-Term Earn product list, product-by-asset list, subscription list/create, early redemption, and history endpoints.
     * Added request-object overloads for high-parameter Earn methods and kept semantically numeric IDs, amounts, rates, prices, quantities, and timestamps typed as numeric or `DateTime` public properties.
     * Split Earn request and response models into separate files for easier review and maintenance.
+    * Split Earn enum definitions into separate files to match the request and response model layout.
     * Updated examples and README with Earn request-object overload usage.
   * Added Multi-Collateral Loan REST API support against the current Gate API v4 Multi-collateral-loan documentation.
     * Added `api.MultiCollateralLoan` and a new `MultiCollateralLoan` module with client, enum, request, and response models.
