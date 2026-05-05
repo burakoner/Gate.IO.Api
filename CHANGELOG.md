@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated Spot WebSocket streams against the current Gate Spot WebSocket API documentation.
+    * Added `spot.obu`, `spot.orders_v2`, `spot.usertrades_v2`, `spot.priceorders`, and deprecated `spot.trades_v2` subscription methods.
+    * Updated Spot stream payload models with newly documented trade, candlestick, order book, balance, order, and price-order fields.
+    * Fixed Spot order-book-difference interval validation to allow the documented `20ms` and `100ms` update speeds.
+    * Fixed authenticated stream unsubscription to send the original channel, payload, and a fresh unsubscribe signature.
   * Cleaned project build warnings.
     * Added missing XML documentation summaries for public API models, request objects, stream payloads, stream clients, and enums.
     * Fixed malformed XML documentation comments so documentation generation succeeds cleanly.

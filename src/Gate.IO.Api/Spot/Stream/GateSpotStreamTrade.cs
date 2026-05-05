@@ -14,6 +14,12 @@ public record GateSpotStreamTrade
     public long Id { get; set; }
 
     /// <summary>
+    /// Trade ID unique within a single market.
+    /// </summary>
+    [JsonProperty("id_market")]
+    public long MarketId { get; set; }
+
+    /// <summary>
     /// Trading time
     /// </summary>
     [JsonProperty("create_time")]
@@ -24,7 +30,7 @@ public record GateSpotStreamTrade
     /// Trading time, with millisecond precision
     /// </summary>
     [JsonProperty("create_time_ms")]
-    public long CreateTimeInMilliseconds { get; set; }
+    public decimal CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Currency pair
@@ -49,4 +55,10 @@ public record GateSpotStreamTrade
     /// </summary>
     [JsonProperty("price")]
     public decimal Price { get; set; }
+
+    /// <summary>
+    /// Market trade range in start-end format.
+    /// </summary>
+    [JsonProperty("range")]
+    public string Range { get; set; }
 }

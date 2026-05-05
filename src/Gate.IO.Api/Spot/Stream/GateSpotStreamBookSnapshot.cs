@@ -25,6 +25,12 @@ public  class GateSpotStreamBookSnapshot
     public string Symbol { get; set; }
 
     /// <summary>
+    /// Gets or sets the depth level.
+    /// </summary>
+    [JsonProperty("l")]
+    public string Level { get; set; }
+
+    /// <summary>
     /// Gets or sets the Bids.
     /// </summary>
     [JsonProperty("bids", NullValueHandling = NullValueHandling.Ignore)]

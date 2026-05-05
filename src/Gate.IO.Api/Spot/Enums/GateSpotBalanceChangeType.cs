@@ -60,8 +60,32 @@ public enum GateSpotBalanceChangeType : byte
     CrossMargin = 9,
 
     /// <summary>
+    /// Cross Margin Transfer
+    /// </summary>
+    [Map("cross-margin-transfer")]
+    CrossMarginTransfer = 10,
+
+    /// <summary>
+    /// Referral Fee
+    /// </summary>
+    [Map("referral-fee")]
+    ReferralFee = 11,
+
+    /// <summary>
+    /// Sub Transfer
+    /// </summary>
+    [Map("sub-transfer")]
+    SubTransfer = 12,
+
+    /// <summary>
+    /// Spot Transfer
+    /// </summary>
+    [Map("spot-transfer")]
+    SpotTransfer = 13,
+
+    /// <summary>
     /// Other
     /// </summary>
     [Map("other")]
-    Other = 10,
+    Other = 14,
 }

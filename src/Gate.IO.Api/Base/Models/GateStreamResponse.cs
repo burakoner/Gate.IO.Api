@@ -12,6 +12,18 @@ public record GateStreamResponse<T>
     public int Id { get; set; }
 
     /// <summary>
+    /// Gets or sets the connection ID.
+    /// </summary>
+    [JsonProperty("conn_id")]
+    public string ConnectionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the trace ID.
+    /// </summary>
+    [JsonProperty("trace_id")]
+    public string TraceId { get; set; }
+
+    /// <summary>
     /// Gets or sets the Timestamp.
     /// </summary>
     [JsonProperty("time")]
@@ -55,6 +67,12 @@ public record GateStreamResponse<T>
 public enum StreamResponseEvent : byte
 {
     /// <summary>
+    /// Represents an empty or unspecified response event.
+    /// </summary>
+    [Map("")]
+    None = 255,
+
+    /// <summary>
     /// Represents the Update value.
     /// </summary>
     [Map("update")]
@@ -70,7 +88,13 @@ public enum StreamResponseEvent : byte
     /// Represents the Unsubscribe value.
     /// </summary>
     [Map("unsubscribe")]
-    Unsubscribe = 2
+    Unsubscribe = 2,
+
+    /// <summary>
+    /// Represents the Api value.
+    /// </summary>
+    [Map("api")]
+    Api = 3
 }
 
 internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>
@@ -83,6 +107,8 @@ internal class StreamResponseEventConverter : BaseConverter<StreamResponseEvent>
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Update, "update"),
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Subscribe, "subscribe"),
         new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Unsubscribe, "unsubscribe"),
+        new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.Api, "api"),
+        new KeyValuePair<StreamResponseEvent, string>(StreamResponseEvent.None, ""),
     };
 }
 

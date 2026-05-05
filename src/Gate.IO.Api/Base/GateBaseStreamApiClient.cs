@@ -139,9 +139,23 @@ public class GateBaseStreamApiClient : WebSocketApiClient
     /// </summary>
     protected override async Task<bool> UnsubscribeAsync(WebSocketConnection connection, WebSocketSubscription subscription)
     {
-        var topics = ((GateStreamRequest)subscription.Request!).Payload;
-        var unsub = new GateStreamRequest { Event = StreamRequestEvent.Unsubscribe, Payload = topics, Id = NextId() };
-        var result = false;
+        var request = (GateStreamRequest)subscription.Request!;
+        var unsub = new GateStreamRequest
+        {
+            Id = NextId(),
+            Channel = request.Channel,
+            Event = StreamRequestEvent.Unsubscribe,
+            Payload = request.Payload
+        };
+        var success = false;
+
+        if (request.Auth != null)
+        {
+            if (AuthenticationProvider == null)
+                throw new ArgumentNullException("ApiCredentials is null");
+
+            ((GateAuthentication)AuthenticationProvider).AuthenticateStreamRequest(unsub);
+        }
 
         if (!connection.Connected)
             return true;
@@ -159,16 +173,20 @@ public class GateBaseStreamApiClient : WebSocketApiClient
                 return false;
 
             var result = data["result"];
-            if (result?.Type == JTokenType.Null)
+            if (result?.Type == JTokenType.Object && result["status"]?.ToString() == "success")
             {
-                result = true;
+                success = true;
                 return true;
             }
 
-            return true;
+            var error = data["error"];
+            if (error != null && error.Type != JTokenType.Null)
+                return true;
+
+            return false;
         }).ConfigureAwait(false);
 
-        return result;
+        return success;
     }
     #endregion
 
@@ -195,13 +213,16 @@ public class GateBaseStreamApiClient : WebSocketApiClient
         => await this.UnsubscribeAsync(connection, subscription).ConfigureAwait(false);
 
     internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, IEnumerable<string> payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
+        => BaseSubscribeAsync(url, channel, (object)payload?.ToList(), authenticated, onData, ct);
+
+    internal Task<CallResult<WebSocketUpdateSubscription>> BaseSubscribeAsync<T>(string url, string channel, object payload, bool authenticated, Action<WebSocketDataEvent<T>> onData, CancellationToken ct)
     {
         var request = new GateStreamRequest
         {
             Id = NextId(),
             Channel = channel,
             Event = StreamRequestEvent.Subscribe,
-            Payload = payload.ToList(),
+            Payload = payload,
         };
 
         if (authenticated)

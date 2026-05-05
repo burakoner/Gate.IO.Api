@@ -6,6 +6,12 @@
 public enum GateSpotSelfTradeAction : byte
 {
     /// <summary>
+    /// No self-trade prevention action.
+    /// </summary>
+    [Map("-")]
+    None = 0,
+
+    /// <summary>
     /// CancelNewest
     /// </summary>
     [Map("cn")]

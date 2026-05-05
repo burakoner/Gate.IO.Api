@@ -47,4 +47,22 @@ public  class GateSpotStreamCrossMarginBalance
     /// </summary>
     [JsonProperty("available")]
     public decimal Available { get; set; }
+
+    /// <summary>
+    /// Gets or sets the frozen balance.
+    /// </summary>
+    [JsonProperty("freeze")]
+    public decimal Freeze { get; set; }
+
+    /// <summary>
+    /// Gets or sets the frozen balance change.
+    /// </summary>
+    [JsonProperty("freeze_change")]
+    public decimal FreezeChange { get; set; }
+
+    /// <summary>
+    /// Gets or sets the balance change type.
+    /// </summary>
+    [JsonProperty("change_type"), JsonConverter(typeof(MapConverter))]
+    public GateSpotBalanceChangeType ChangeType { get; set; }
 }

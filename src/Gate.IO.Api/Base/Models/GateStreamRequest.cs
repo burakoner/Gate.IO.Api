@@ -15,7 +15,7 @@ internal record GateStreamRequest
     public StreamRequestEvent? Event { get; set; }
 
     [JsonProperty("payload", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
-    public List<string> Payload { get; set; } = [];
+    public object Payload { get; set; }
 
     [JsonProperty("auth", NullValueHandling = NullValueHandling.Ignore, DefaultValueHandling = DefaultValueHandling.Ignore)]
     public StreamRequestAuth Auth { get; set; }
@@ -60,7 +60,13 @@ public enum StreamRequestEvent : byte
     /// Represents the Unsubscribe value.
     /// </summary>
     [Map("unsubscribe")]
-    Unsubscribe=2
+    Unsubscribe = 2,
+
+    /// <summary>
+    /// Represents the Api value.
+    /// </summary>
+    [Map("api")]
+    Api = 3
 }
 
 internal class StreamRequestEventConverter : BaseConverter<StreamRequestEvent>
@@ -72,5 +78,6 @@ internal class StreamRequestEventConverter : BaseConverter<StreamRequestEvent>
     [
         new KeyValuePair<StreamRequestEvent, string>(StreamRequestEvent.Subscribe, "subscribe"),
         new KeyValuePair<StreamRequestEvent, string>(StreamRequestEvent.Unsubscribe, "unsubscribe"),
+        new KeyValuePair<StreamRequestEvent, string>(StreamRequestEvent.Api, "api"),
     ];
 }

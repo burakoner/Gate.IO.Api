@@ -53,4 +53,10 @@ public  class GateSpotStreamCandlestick
     /// </summary>
     [JsonProperty("n")]
     public string Subscription { get; set; }
+
+    /// <summary>
+    /// Whether this candlestick window is closed.
+    /// </summary>
+    [JsonProperty("w")]
+    public bool? IsClosed { get; set; }
 }

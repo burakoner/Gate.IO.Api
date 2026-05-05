@@ -12,6 +12,18 @@ public record GateSpotTradeHistory
     public long Id { get; set; }
 
     /// <summary>
+    /// User ID
+    /// </summary>
+    [JsonProperty("user_id")]
+    public long? UserId { get; set; }
+
+    /// <summary>
+    /// Trade ID unique within a single market
+    /// </summary>
+    [JsonProperty("id_market")]
+    public long? MarketId { get; set; }
+
+    /// <summary>
     /// Trading time
     /// </summary>
     [JsonProperty("create_time")]

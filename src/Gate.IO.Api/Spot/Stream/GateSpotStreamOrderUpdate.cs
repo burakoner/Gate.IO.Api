@@ -68,9 +68,15 @@ public  class GateSpotStreamOrderUpdate
     public GateSpotOrderType Type { get; set; }
 
     /// <summary>
+    /// Gets or sets the order status.
+    /// </summary>
+    [JsonProperty("status")]
+    public GateSpotOrderStatus? Status { get; set; }
+
+    /// <summary>
     /// Gets or sets the Account.
     /// </summary>
-    [JsonProperty("account")]
+    [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType Account { get; set; }
 
     /// <summary>
@@ -94,7 +100,7 @@ public  class GateSpotStreamOrderUpdate
     /// <summary>
     /// Gets or sets the Time In Force.
     /// </summary>
-    [JsonProperty("time_in_force")]
+    [JsonProperty("time_in_force"), JsonConverter(typeof(MapConverter))]
     public GateSpotTimeInForce TimeInForce { get; set; }
 
     /// <summary>
@@ -108,6 +114,12 @@ public  class GateSpotStreamOrderUpdate
     /// </summary>
     [JsonProperty("filled_total")]
     public decimal FilledTotal { get; set; }
+
+    /// <summary>
+    /// Gets or sets the filled amount.
+    /// </summary>
+    [JsonProperty("filled_amount")]
+    public decimal? FilledAmount { get; set; }
 
     /// <summary>
     /// Gets or sets the Average Deal Price.
@@ -146,6 +158,18 @@ public  class GateSpotStreamOrderUpdate
     public bool? GtDiscount { get; set; }
 
     /// <summary>
+    /// Gets or sets whether auto borrow was enabled.
+    /// </summary>
+    [JsonProperty("auto_borrow")]
+    public bool? AutoBorrow { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether auto repayment was enabled.
+    /// </summary>
+    [JsonProperty("auto_repay")]
+    public bool? AutoRepay { get; set; }
+
+    /// <summary>
     /// Gets or sets the Rebated Fee.
     /// </summary>
     [JsonProperty("rebated_fee")]
@@ -156,4 +180,40 @@ public  class GateSpotStreamOrderUpdate
     /// </summary>
     [JsonProperty("rebated_fee_currency")]
     public string RebatedFeeCurrency { get; set; }
+
+    /// <summary>
+    /// Gets or sets the self-trade prevention group ID.
+    /// </summary>
+    [JsonProperty("stp_id")]
+    public long? SelfTradePreventionId { get; set; }
+
+    /// <summary>
+    /// Gets or sets the self-trade prevention action.
+    /// </summary>
+    [JsonProperty("stp_act"), JsonConverter(typeof(MapConverter))]
+    public GateSpotSelfTradeAction? SelfTradeAction { get; set; }
+
+    /// <summary>
+    /// Gets or sets the finish reason.
+    /// </summary>
+    [JsonProperty("finish_as"), JsonConverter(typeof(MapConverter))]
+    public GateSpotFinishAs? FinishAs { get; set; }
+
+    /// <summary>
+    /// Gets or sets Gate business information.
+    /// </summary>
+    [JsonProperty("biz_info")]
+    public string BusinessInfo { get; set; }
+
+    /// <summary>
+    /// Gets or sets the amend text.
+    /// </summary>
+    [JsonProperty("amend_text")]
+    public string AmendText { get; set; }
+
+    /// <summary>
+    /// Gets or sets the maximum price deviation for market orders.
+    /// </summary>
+    [JsonProperty("slippage")]
+    public decimal? Slippage { get; set; }
 }

@@ -63,6 +63,6 @@ public  class GateSpotStreamUserBalance
     /// <summary>
     /// Gets or sets the Change Type.
     /// </summary>
-    [JsonProperty("change_type")]
+    [JsonProperty("change_type"), JsonConverter(typeof(MapConverter))]
     public GateSpotBalanceChangeType ChangeType { get; set; }
 }
