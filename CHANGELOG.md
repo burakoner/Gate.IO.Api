@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Alpha REST API support against the current Gate Alpha API documentation.
+    * Added `rest.Alpha` for Alpha account assets, account book history, quotes, order placement, order queries, currencies, tickers, and token information.
+    * Added Alpha request models, response models, and separate enums for order side, gas mode, order status, quote error type, and currency status.
   * Added Announcements WebSocket stream support against the current Gate Announcement WebSocket documentation.
     * Added `stream.Announcements` with ping and subscriptions for listing, delisting, fee, ETF, deposit/withdrawal, rename, precision, and engine upgrade announcement summaries.
     * Added the Announcements WebSocket address, language/type enums, request handling, and announcement summary stream model.

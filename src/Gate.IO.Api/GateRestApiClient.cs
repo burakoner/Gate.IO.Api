@@ -108,6 +108,11 @@ public class GateRestApiClient : RestApiClient
     public GateCrossExRestApiClient CrossEx { get; }
 
     /// <summary>
+    /// Alpha Client
+    /// </summary>
+    public GateAlphaRestApiClient Alpha { get; }
+
+    /// <summary>
     /// Bot Client
     /// </summary>
     public GateBotRestApiClient Bot { get; }
@@ -165,6 +170,7 @@ public class GateRestApiClient : RestApiClient
         Otc = new GateOtcRestApiClient(this);
         P2p = new GateP2pRestApiClient(this);
         CrossEx = new GateCrossExRestApiClient(this);
+        Alpha = new GateAlphaRestApiClient(this);
         Bot = new GateBotRestApiClient(this);
     }
 
