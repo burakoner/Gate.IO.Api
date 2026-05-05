@@ -1,0 +1,11 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "strategy_id": "bot-strategy-001",
+    "strategy_type": "spot_grid",
+    "status": "stopping",
+    "result_message": "stop request accepted"
+  },
+  "trace_id": "bot-trace-005"
+}

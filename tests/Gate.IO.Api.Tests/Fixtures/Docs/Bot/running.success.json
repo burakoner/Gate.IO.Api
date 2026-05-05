@@ -1,0 +1,23 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "items": [
+      {
+        "strategy_id": "bot-strategy-001",
+        "strategy_type": "spot_grid",
+        "strategy_name": "BTC spot grid",
+        "market": "BTC_USDT",
+        "status": "running",
+        "pnl": "12.345",
+        "pnl_rate": "0.1234",
+        "invest_amount": "1000",
+        "created_at": 1739014413
+      }
+    ],
+    "page": 1,
+    "page_size": 20,
+    "total": 1
+  },
+  "trace_id": "bot-trace-003"
+}

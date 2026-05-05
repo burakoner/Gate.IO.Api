@@ -1,0 +1,12 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "strategy_id": "bot-strategy-001",
+    "strategy_type": "spot_grid",
+    "market": "BTC_USDT",
+    "status": "running",
+    "jump_url": "https://www.gate.com/bot/spot_grid/bot-strategy-001"
+  },
+  "trace_id": "bot-trace-002"
+}

@@ -1,0 +1,28 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "scene": "top1",
+    "recommendations": [
+      {
+        "recommendation_id": "spot_grid|BTC_USDT|bt-001",
+        "market": "BTC_USDT",
+        "strategy_type": "spot_grid",
+        "strategy_name": "BTC spot grid",
+        "backtest_apr": "0.216",
+        "max_drawdown": "0.043",
+        "summary": "Balanced grid strategy for a ranging market.",
+        "strategy_params_preview": {
+          "low_price": "58000",
+          "high_price": "65000",
+          "grid_num": 40,
+          "price_type": 0
+        }
+      }
+    ],
+    "unsupported_filters": [
+      "leverage_lte"
+    ]
+  },
+  "trace_id": "bot-trace-001"
+}

@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Bot REST contract tests.
+    * Added documented Bot fixtures for AIHub recommendations, strategy creation, running portfolios, portfolio detail, and portfolio stop responses.
+    * Added signed request construction tests for Bot recommendation, grid creation, martingale creation, portfolio query/detail, and stop endpoints including optional `X-Gate-*` headers.
   * Added CrossEx REST contract tests.
     * Added documented CrossEx fixtures for symbols, risk limits, transfers, orders, convert, account, leverage, fee, position, history, trade, account-book, and coin-discount responses.
     * Added live public CrossEx captures for symbol rules, risk limits, and transfer currencies plus opt-in public integration smoke tests.

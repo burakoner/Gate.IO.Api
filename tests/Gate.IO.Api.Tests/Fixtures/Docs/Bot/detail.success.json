@@ -1,0 +1,43 @@
+{
+  "code": 200,
+  "message": "success",
+  "data": {
+    "strategy_id": "bot-strategy-001",
+    "strategy_type": "spot_grid",
+    "market": "BTC_USDT",
+    "status": "running",
+    "base_info": {
+      "strategy_name": "BTC spot grid",
+      "created_at": 1739014413,
+      "running_duration": "3600",
+      "invest_amount": "1000",
+      "total_profit": "12.345",
+      "profit_rate": "0.1234"
+    },
+    "metrics": {
+      "grid_profit": "8.75",
+      "floating_pnl": "3.595",
+      "arbitrage_count": 12,
+      "price_range": "58000-65000",
+      "grid_count": 40,
+      "estimated_liquidation_price": "0",
+      "price_floor": "58000",
+      "grid_profit_rate": "0.0875",
+      "realized_pnl": "9.1",
+      "finished_rounds": 3,
+      "avg_cost": "60000",
+      "take_profit_price": "68000",
+      "maintenance_margin_ratio": "0.005"
+    },
+    "position": {
+      "amount": "0.015",
+      "entry_price": "60000",
+      "quote_amount": "100",
+      "position_value": "900",
+      "margin": "0",
+      "side": "long"
+    },
+    "stop_supported": true
+  },
+  "trace_id": "bot-trace-004"
+}
