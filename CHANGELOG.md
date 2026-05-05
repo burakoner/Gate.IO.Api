@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Rebate REST contract tests.
+    * Added documented Rebate fixtures for agency, partner, broker, user, partner application, partner eligibility, and aggregated partner data flows.
+    * Added contract tests for Rebate history records, partner subordinate data, broker nested sub-broker info, user relation data, and wrapped partner response payloads.
+    * Added request construction tests for signed Rebate agency, partner, broker, user, eligibility, application, and aggregated data calls.
   * Added Account REST contract tests.
     * Added documented Account fixtures for account detail, main account keys, rate limits, STP groups, STP group users, and GT debit-fee configuration.
     * Added contract tests for Account detail, API key metadata, numeric-string rate limit fields, STP group data, and debit-fee responses.

@@ -1,0 +1,14 @@
+{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "eligible": false,
+    "block_reasons": [
+      "account verification required"
+    ],
+    "block_reason_codes": [
+      "kyc_required"
+    ]
+  },
+  "timestamp": 1746008350
+}

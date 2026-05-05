@@ -1,0 +1,15 @@
+{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "rebate_amount": "123.45",
+    "trade_volume": "10000.12",
+    "net_fee": "345.67",
+    "customer_count": "12",
+    "trading_user_count": "8",
+    "time_range_desc": "2025-01-01 00:00:00 - 2025-01-31 23:59:59",
+    "business_type": 1,
+    "business_type_desc": "Spot"
+  },
+  "timestamp": 1746008350
+}

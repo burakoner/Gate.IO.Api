@@ -1,0 +1,16 @@
+{
+  "total": 15,
+  "list": [
+    {
+      "transaction_time": 1746008350,
+      "user_id": 123456789,
+      "group_name": "test",
+      "fee": "0.020994816",
+      "fee_asset": "USDT",
+      "currency_pair": "GT_USDT",
+      "amount": "29.98688",
+      "amount_asset": "USDT",
+      "source": "spot"
+    }
+  ]
+}

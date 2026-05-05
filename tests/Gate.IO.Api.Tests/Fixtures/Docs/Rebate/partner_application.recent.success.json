@@ -1,0 +1,46 @@
+{
+  "code": 0,
+  "message": "Success",
+  "data": {
+    "id": 100,
+    "uid": 123456,
+    "language": "en",
+    "country_id": 1,
+    "firstname": "Ada",
+    "lastname": "Lovelace",
+    "email": "partner@example.com",
+    "join_uid": 654321,
+    "join_country_id": 1,
+    "identity_comment": "content creator",
+    "promotion_channels": "social",
+    "contact_details": "telegram",
+    "know_details": "gate website",
+    "question_lang": "en",
+    "create_timest": "2025-01-01 00:00:00",
+    "update_timest": "2025-01-02 00:00:00",
+    "apply_type": 1,
+    "audit_status": 2,
+    "edit_counts": 0,
+    "proof_images": "proof.png",
+    "proof_videos": "proof.mp4",
+    "proof_url": "https://example.com/proof",
+    "audit_reason": 0,
+    "channel_type": 1,
+    "region": "EU",
+    "phone": "10000000000",
+    "telegram": "@partner",
+    "other_contact": {
+      "type": 1,
+      "value": "partner_contact"
+    },
+    "proof_images_url_list": [
+      "https://example.com/proof.png"
+    ],
+    "proof_videos_url_list": [
+      "https://example.com/proof.mp4"
+    ],
+    "apply_msg": "submitted",
+    "jump_url": "https://www.gate.com"
+  },
+  "timestamp": 1746008350
+}

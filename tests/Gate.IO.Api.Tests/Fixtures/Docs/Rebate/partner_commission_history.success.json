@@ -1,0 +1,13 @@
+{
+  "total": 52,
+  "list": [
+    {
+      "commission_time": 1746115200,
+      "user_id": 123456789,
+      "group_name": "test",
+      "commission_amount": "0.2216934846",
+      "commission_asset": "USDT",
+      "source": "futures"
+    }
+  ]
+}

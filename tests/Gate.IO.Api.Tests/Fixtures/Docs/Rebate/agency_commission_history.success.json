@@ -1,0 +1,13 @@
+{
+  "total": 100,
+  "list": [
+    {
+      "commission_time": 1689227647,
+      "user_id": 10002,
+      "group_name": "group",
+      "commission_amount": "1000",
+      "commission_asset": "USDT",
+      "source": "spot"
+    }
+  ]
+}

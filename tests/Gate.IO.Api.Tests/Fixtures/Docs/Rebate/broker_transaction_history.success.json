@@ -1,0 +1,22 @@
+{
+  "total": 100,
+  "list": [
+    {
+      "transaction_time": 1689227647,
+      "user_id": 10002,
+      "group_name": "group",
+      "fee": "1",
+      "fee_asset": "GT",
+      "currency_pair": "GT_USDT",
+      "amount": "1000",
+      "source": "spot",
+      "sub_broker_info": {
+        "user_id": 1,
+        "original_commission_rate": "0.1",
+        "relative_commission_rate": "0.2",
+        "commission_rate": "0.3"
+      },
+      "alpha_contract_addr": "0x123"
+    }
+  ]
+}
