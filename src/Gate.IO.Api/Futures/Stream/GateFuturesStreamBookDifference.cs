@@ -12,8 +12,17 @@ public  class GateFuturesStreamBookDifference
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime Time { get; set; }
 
-    //[JsonProperty("e")]
-    //public string Event { get; set; }
+    /// <summary>
+    /// Gets or sets whether this update is a full depth snapshot.
+    /// </summary>
+    [JsonProperty("full")]
+    public bool? IsFullSnapshot { get; set; }
+
+    /// <summary>
+    /// Gets or sets the depth level of the update.
+    /// </summary>
+    [JsonProperty("l")]
+    public int? Level { get; set; }
 
     /// <summary>
     /// Gets or sets the Contract.

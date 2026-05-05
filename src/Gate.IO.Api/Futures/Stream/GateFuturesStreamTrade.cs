@@ -22,7 +22,7 @@ public  class GateFuturesStreamTrade
     /// Gets or sets the Create Time In Milliseconds.
     /// </summary>
     [JsonProperty("create_time_ms")]
-    public long CreateTimeInMilliseconds { get; set; }
+    public decimal CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Gets or sets the Contract.
@@ -34,7 +34,7 @@ public  class GateFuturesStreamTrade
     /// Gets or sets the Size.
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
     
     /// <summary>
     /// Gets or sets the Price.

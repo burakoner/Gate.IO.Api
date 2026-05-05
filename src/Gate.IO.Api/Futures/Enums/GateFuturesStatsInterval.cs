@@ -6,6 +6,12 @@
 public enum GateFuturesStatsInterval
 {
     /// <summary>
+    /// One minute interval.
+    /// </summary>
+    [Map("1m")]
+    OneMinute = 60,
+
+    /// <summary>
     /// FiveMinutes
     /// </summary>
     [Map("5m")]
@@ -36,8 +42,26 @@ public enum GateFuturesStatsInterval
     FourHours = 14400,
 
     /// <summary>
+    /// Eight hour interval.
+    /// </summary>
+    [Map("8h")]
+    EightHours = 28800,
+
+    /// <summary>
     /// OneDay
     /// </summary>
     [Map("1d")]
     OneDay = 86400,
+
+    /// <summary>
+    /// Three day interval.
+    /// </summary>
+    [Map("3d")]
+    ThreeDays = 259200,
+
+    /// <summary>
+    /// Seven day interval.
+    /// </summary>
+    [Map("7d")]
+    OneWeek = 604800,
 }

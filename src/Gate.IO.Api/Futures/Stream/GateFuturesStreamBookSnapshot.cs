@@ -19,6 +19,12 @@ public  class GateFuturesStreamBookSnapshot
     public long LastUpdateId { get; set; }
 
     /// <summary>
+    /// Gets or sets the depth level of the snapshot.
+    /// </summary>
+    [JsonProperty("l")]
+    public int? Level { get; set; }
+
+    /// <summary>
     /// Gets or sets the Symbol.
     /// </summary>
     [JsonProperty("contract")]

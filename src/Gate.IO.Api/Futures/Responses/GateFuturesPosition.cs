@@ -21,7 +21,7 @@ public record GateFuturesPosition
     /// Position size
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Position leverage. 0 means cross margin; positive number means isolated margin
@@ -164,7 +164,7 @@ public record GateFuturesPosition
     /// <summary>
     /// Position mode, including:  - &#x60;single&#x60;: dual mode is not enabled- &#x60;dual_long&#x60;: long position in dual mode- &#x60;dual_short&#x60;: short position in dual mode
     /// </summary>
-    [JsonProperty("mode")]
+    [JsonProperty("mode"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPositionMode Mode { get; set; }
 
     /// <summary>
@@ -190,7 +190,7 @@ public record GateFuturesPosition
     /// Cumulative long size
     /// </summary>
     [JsonProperty("trade_long_size")]
-    public long TradeLongSize { get; set; }
+    public decimal TradeLongSize { get; set; }
 
     /// <summary>
     /// Cumulative long size*price
@@ -202,7 +202,7 @@ public record GateFuturesPosition
     /// Cumulative short size
     /// </summary>
     [JsonProperty("trade_short_size")]
-    public long TradeShortSize { get; set; }
+    public decimal TradeShortSize { get; set; }
 
     /// <summary>
     /// Cumulative short size*price
@@ -262,7 +262,7 @@ public record GateFuturesPosition
     /// <summary>
     /// Position margin mode
     /// </summary>
-    [JsonProperty("pos_margin_mode")]
+    [JsonProperty("pos_margin_mode"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 
     /// <summary>

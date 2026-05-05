@@ -68,6 +68,12 @@ public class GateFuturesStreamApiSettleClient
         => await MainClient.SubscribeToOrderBookDifferencesAsync(this.Settlement, contract, frequency, level, onMessage, ct).ConfigureAwait(false);
 
     /// <summary>
+    /// Executes the Subscribe To Order Book V2 Updates operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookV2UpdatesAsync(string contract, int level, Action<WebSocketDataEvent<GateFuturesStreamOrderBookV2Update>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToOrderBookV2UpdatesAsync(this.Settlement, contract, level, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
     /// Executes the Subscribe To Order Book Snapshots operation.
     /// </summary>
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToOrderBookSnapshotsAsync(string contract, /*int interval,*/ int limit, Action<WebSocketDataEvent<GateFuturesStreamBookSnapshot>> onMessage, CancellationToken ct = default)
@@ -84,6 +90,30 @@ public class GateFuturesStreamApiSettleClient
     /// </summary>
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToIndexPriceCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, Action<WebSocketDataEvent<FuturesStreamCandlestick>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToCandlesticksAsync(this.Settlement, "index_", contract, interval, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Public Liquidations operation for all contracts.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToPublicLiquidationsAsync(Action<WebSocketDataEvent<GateFuturesStreamPublicLiquidation>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToPublicLiquidationsAsync(this.Settlement, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Public Liquidations operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToPublicLiquidationsAsync(string contract, Action<WebSocketDataEvent<GateFuturesStreamPublicLiquidation>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToPublicLiquidationsAsync(this.Settlement, [contract], onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Public Liquidations operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToPublicLiquidationsAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamPublicLiquidation>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToPublicLiquidationsAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To Contract Stats operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToContractStatsAsync(string contract, GateFuturesStatsInterval interval, Action<WebSocketDataEvent<GateFuturesStreamContractStats>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToContractStatsAsync(this.Settlement, contract, interval, onMessage, ct).ConfigureAwait(false);
 
     /// <summary>
     /// Executes the Subscribe To User Orders operation.
@@ -167,6 +197,24 @@ public class GateFuturesStreamApiSettleClient
     /// </summary>
     public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionsAsync(long userId, string contract, Action<WebSocketDataEvent<GateFuturesPosition>> onMessage, CancellationToken ct = default)
         => await MainClient.SubscribeToUserPositionsAsync(this.Settlement, userId, contract, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To User Position ADL Ranks operation for all contracts.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionAdlRanksAsync(Action<WebSocketDataEvent<GateFuturesStreamAdlRank>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToUserPositionAdlRanksAsync(this.Settlement, onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To User Position ADL Ranks operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionAdlRanksAsync(string contract, Action<WebSocketDataEvent<GateFuturesStreamAdlRank>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToUserPositionAdlRanksAsync(this.Settlement, [contract], onMessage, ct).ConfigureAwait(false);
+
+    /// <summary>
+    /// Executes the Subscribe To User Position ADL Ranks operation.
+    /// </summary>
+    public async Task<CallResult<WebSocketUpdateSubscription>> SubscribeToUserPositionAdlRanksAsync(IEnumerable<string> contracts, Action<WebSocketDataEvent<GateFuturesStreamAdlRank>> onMessage, CancellationToken ct = default)
+        => await MainClient.SubscribeToUserPositionAdlRanksAsync(this.Settlement, contracts, onMessage, ct).ConfigureAwait(false);
 
     /// <summary>
     /// Executes the Subscribe To User Auto Orders operation.

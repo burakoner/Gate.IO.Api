@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Updated Futures WebSocket streams against the current Gate Futures WebSocket API documentation.
+    * Added `futures.obu`, `futures.public_liquidates`, `futures.contract_stats`, and `futures.position_adl_rank` subscription methods.
+    * Fixed `futures.order_book_update` validation to allow the documented `20ms` and `100ms` update speeds with the current depth limits.
+    * Added Futures stream payload models for order book V2 updates, public liquidations, contract stats, and position ADL rank updates.
+    * Updated Futures stream order book, candlestick, trade, order, position, liquidation, deleverage, balance, and auto-order models with documented fields, mapped enum converters, and decimal size handling.
   * Updated Spot WebSocket streams against the current Gate Spot WebSocket API documentation.
     * Added `spot.obu`, `spot.orders_v2`, `spot.usertrades_v2`, `spot.priceorders`, and deprecated `spot.trades_v2` subscription methods.
     * Updated Spot stream payload models with newly documented trade, candlestick, order book, balance, order, and price-order fields.

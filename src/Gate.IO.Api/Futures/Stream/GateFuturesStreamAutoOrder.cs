@@ -26,7 +26,7 @@ public record GateFuturesStreamAutoOrder
     /// <summary>
     /// Gets or sets the Status.
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPriceTriggerStatus Status { get; set; }
 
     /// <summary>
@@ -75,7 +75,7 @@ public record GateFuturesStreamAutoOrder
     /// <summary>
     /// Gets or sets the Type.
     /// </summary>
-    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerType? Type { get; set; }
 
     /// <summary>
@@ -93,8 +93,8 @@ public record GateFuturesStreamAutoOrderStopTrigger
     /// <summary>
     /// Gets or sets the Rule.
     /// </summary>
-    [JsonProperty("rule")]
-    public GateSpotTriggerCondition? Rule { get; set; }
+    [JsonProperty("rule"), JsonConverter(typeof(MapConverter))]
+    public GateFuturesTriggerCondition? Rule { get; set; }
 
     /// <summary>
     /// Gets or sets the Trigger Price.
@@ -117,13 +117,13 @@ public record GateFuturesStreamAutoOrderTrigger
     /// <summary>
     /// Gets or sets the Strategy Type.
     /// </summary>
-    [JsonProperty("strategy_type")]
+    [JsonProperty("strategy_type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerStrategy StrategyType { get; set; }
 
     /// <summary>
     /// Gets or sets the Price Type.
     /// </summary>
-    [JsonProperty("price_type")]
+    [JsonProperty("price_type"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerPrice PriceType { get; set; }
 
     /// <summary>
@@ -135,8 +135,8 @@ public record GateFuturesStreamAutoOrderTrigger
     /// <summary>
     /// Gets or sets the Rule.
     /// </summary>
-    [JsonProperty("rule")]
-    public GateSpotTriggerCondition? Rule { get; set; }
+    [JsonProperty("rule"), JsonConverter(typeof(MapConverter))]
+    public GateFuturesTriggerCondition? Rule { get; set; }
 
     /// <summary>
     /// Gets or sets the Expiration.
@@ -160,7 +160,7 @@ public record GateFuturesStreamAutoOrderInitial
     /// Gets or sets the Size.
     /// </summary>
     [JsonProperty("size")]
-    public long? Size { get; set; }
+    public decimal? Size { get; set; }
 
     /// <summary>
     /// Gets or sets the Price.
@@ -171,7 +171,7 @@ public record GateFuturesStreamAutoOrderInitial
     /// <summary>
     /// Gets or sets the Time In Force.
     /// </summary>
-    [JsonProperty("tif")]
+    [JsonProperty("tif"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -184,7 +184,7 @@ public record GateFuturesStreamAutoOrderInitial
     /// Gets or sets the Iceberg.
     /// </summary>
     [JsonProperty("iceberg")]
-    public long? Iceberg { get; set; }
+    public decimal? Iceberg { get; set; }
     
     /// <summary>
     /// Gets or sets the Is Close.
@@ -201,6 +201,6 @@ public record GateFuturesStreamAutoOrderInitial
     /// <summary>
     /// Gets or sets the Auto Size.
     /// </summary>
-    [JsonProperty("auto_size")]
-    public long? AutoSize { get; set; }
+    [JsonProperty("auto_size"), JsonConverter(typeof(MapConverter))]
+    public GateFuturesOrderAutoSize? AutoSize { get; set; }
 }

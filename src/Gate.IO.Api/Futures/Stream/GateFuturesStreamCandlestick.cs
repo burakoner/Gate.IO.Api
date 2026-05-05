@@ -43,6 +43,18 @@ public  class FuturesStreamCandlestick
     public decimal Volume { get; set; }
 
     /// <summary>
+    /// Gets or sets the quote amount.
+    /// </summary>
+    [JsonProperty("a")]
+    public decimal Amount { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether the candlestick window is closed.
+    /// </summary>
+    [JsonProperty("w")]
+    public bool? IsClosed { get; set; }
+
+    /// <summary>
     /// Gets or sets the Subscription.
     /// </summary>
     [JsonProperty("n")]

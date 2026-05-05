@@ -34,7 +34,7 @@ public record GateFuturesUserTrade
     /// Trading size
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Number of closed positions:
@@ -46,7 +46,7 @@ public record GateFuturesUserTrade
     /// close_size&lt;0 &amp;&amp; size&lt;0 &amp;&amp; size &lt; close_size Close long position and open short position
     /// </summary>
     [JsonProperty("close_size")]
-    public long CloseSize { get; set; }
+    public decimal CloseSize { get; set; }
 
     /// <summary>
     /// Trading price
@@ -57,7 +57,7 @@ public record GateFuturesUserTrade
     /// <summary>
     /// Trade role. Available values are taker and maker
     /// </summary>
-    [JsonProperty("role")]
+    [JsonProperty("role"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTradeRole Role { get; set; }
 
     /// <summary>

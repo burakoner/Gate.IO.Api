@@ -41,13 +41,13 @@ public record GateFuturesOrder
     /// <summary>
     /// How the order was finished.  - filled: all filled - cancelled: manually cancelled - liquidated: cancelled because of liquidation - ioc: time in force is &#x60;IOC&#x60;, finish immediately - auto_deleveraged: finished by ADL - reduce_only: cancelled because of increasing position while &#x60;reduce-only&#x60; set- position_closed: cancelled because of position close 
     /// </summary>
-    [JsonProperty("finish_as")]
+    [JsonProperty("finish_as"), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderFinishAs? FinishAs { get; set; }
     
     /// <summary>
     /// Order status - &#x60;open&#x60;: waiting to be traded - &#x60;finished&#x60;: finished
     /// </summary>
-    [JsonProperty("status")]
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderStatus Status { get; set; }
 
     /// <summary>
@@ -60,13 +60,13 @@ public record GateFuturesOrder
     /// Order size. Specify positive number to make a bid, and negative number to ask
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Display size for iceberg order. 0 for non-iceberg. Note that you will have to pay the taker fee for the hidden size
     /// </summary>
     [JsonProperty("iceberg")]
-    public long Iceberg { get; set; }
+    public decimal Iceberg { get; set; }
 
         /// <summary>
     /// Order price. 0 for market order with &#x60;tif&#x60; set as &#x60;ioc&#x60;
@@ -101,14 +101,14 @@ public record GateFuturesOrder
     /// <summary>
     /// Time in force - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
-    [JsonProperty("tif")]
+    [JsonProperty("tif"), JsonConverter(typeof(MapConverter))]
     public GateFuturesTimeInForce TimeInForce { get; set; }
 
     /// <summary>
     /// Size left to be traded
     /// </summary>
     [JsonProperty("left")]
-    public long Left { get; set; }
+    public decimal Left { get; set; }
 
     /// <summary>
     /// Fill price of the order
@@ -146,7 +146,7 @@ public record GateFuturesOrder
     /// <summary>
     /// Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0
     /// </summary>
-    [JsonProperty("auto_size")]
+    [JsonProperty("auto_size"), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
 
     /// <summary>
@@ -168,7 +168,7 @@ public record GateFuturesOrder
     /// - co: Cancel oldest, Cancel old orders and keep new ones
     /// - cb: Cancel both, Both old and new orders will be cancelled
     /// </summary>
-    [JsonProperty("stp_act")]
+    [JsonProperty("stp_act"), JsonConverter(typeof(MapConverter))]
     public GateFuturesSelfTradeAction? SelfTradeAction { get; set; }
 
     /// <summary>
@@ -204,6 +204,6 @@ public record GateFuturesOrder
     /// <summary>
     /// Position margin mode
     /// </summary>
-    [JsonProperty("pos_margin_mode")]
+    [JsonProperty("pos_margin_mode"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 }

@@ -28,7 +28,7 @@ public record GateFuturesUserLiquidation
     /// Position size
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
     
     /// <summary>
     /// Position margin. Not returned in public endpoints.
@@ -73,8 +73,14 @@ public record GateFuturesUserLiquidation
     public decimal FillPrice { get; set; }
 
     /// <summary>
+    /// Liquidation order size.
+    /// </summary>
+    [JsonProperty("order_size")]
+    public decimal? OrderSize { get; set; }
+
+    /// <summary>
     /// Liquidation order maker size
     /// </summary>
     [JsonProperty("left")]
-    public long Left { get; set; }
+    public decimal Left { get; set; }
 }

@@ -21,13 +21,13 @@ public record GateFuturesUserDeleverage
     /// Gets or sets the Position Size.
     /// </summary>
     [JsonProperty("position_size")]
-    public long PositionSize { get; set; }
+    public decimal PositionSize { get; set; }
 
     /// <summary>
     /// Gets or sets the Trade Size.
     /// </summary>
     [JsonProperty("trade_size")]
-    public long TradeSize { get; set; }
+    public decimal TradeSize { get; set; }
 
     /// <summary>
     /// Gets or sets the Time.
