@@ -76,12 +76,12 @@ public record GateFuturesPositionClose
     /// <summary>
     /// When 'side' is 'long,' it indicates the opening average price; when 'side' is 'short,' it indicates the closing average price.
     /// </summary>
-    [JsonProperty("long_price")]
+    [JsonProperty("long_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? LongPrice { get; set; }
 
     /// <summary>
     /// When 'side' is 'long,' it indicates the opening average price; when 'side' is 'short,' it indicates the closing average price
     /// </summary>
-    [JsonProperty("short_price")]
+    [JsonProperty("short_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? ShortPrice { get; set; }
 }

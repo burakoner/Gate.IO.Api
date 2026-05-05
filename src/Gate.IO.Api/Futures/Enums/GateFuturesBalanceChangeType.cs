@@ -58,4 +58,22 @@ public enum GateFuturesBalanceChangeType : byte
     /// </summary>
     [Map("bonus_offset")]
     BonusOffset = 9,
+
+    /// <summary>
+    /// Unified account settlement.
+    /// </summary>
+    [Map("cross_settle")]
+    CrossSettle = 10,
+
+    /// <summary>
+    /// Bonus deposit and withdrawal.
+    /// </summary>
+    [Map("bonus_dnw")]
+    BonusDNW = 11,
+
+    /// <summary>
+    /// Position voucher deposit and withdrawal.
+    /// </summary>
+    [Map("pv_dnw")]
+    PositionVoucherDNW = 12,
 }

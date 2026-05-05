@@ -1,0 +1,10 @@
+{
+  "time": 1545459681,
+  "time_ms": 1545459681123,
+  "id": 1001,
+  "channel": "futures.orders",
+  "event": "subscribe",
+  "result": {
+    "status": "success"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "channel": "futures.public_liquidates",
+  "event": "update",
+  "time": 1541505434,
+  "time_ms": 1541505434123,
+  "result": [
+    {
+      "price": 215.1,
+      "size": "-124",
+      "time_ms": 1541486601123,
+      "contract": "BTC_USD"
+    }
+  ]
+}

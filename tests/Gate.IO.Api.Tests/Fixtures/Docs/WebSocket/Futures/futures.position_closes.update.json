@@ -1,0 +1,23 @@
+{
+  "channel": "futures.position_closes",
+  "event": "update",
+  "time": 1541505434,
+  "time_ms": 1541505434123,
+  "result": [
+    {
+      "time": 1541486601,
+      "contract": "BTC_USD",
+      "side": "long",
+      "pnl": "0.001",
+      "pnl_pnl": "0.002",
+      "pnl_fund": "-0.0005",
+      "pnl_fee": "-0.0005",
+      "text": "t-close",
+      "max_size": "10",
+      "accum_size": "10",
+      "first_open_time": 1541486500,
+      "long_price": "209",
+      "short_price": ""
+    }
+  ]
+}

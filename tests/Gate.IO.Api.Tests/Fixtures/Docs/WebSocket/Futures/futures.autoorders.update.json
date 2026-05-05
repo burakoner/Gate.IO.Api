@@ -1,0 +1,43 @@
+{
+  "channel": "futures.autoorders",
+  "event": "update",
+  "time": 1541505434,
+  "time_ms": 1541505434123,
+  "result": [
+    {
+      "user": "1040",
+      "id": "12345",
+      "trade_id": "98765",
+      "status": "finished",
+      "reason": "succeeded",
+      "create_time": 1541486601,
+      "name": "plan-order",
+      "is_stop_order": true,
+      "stop_trigger": {
+        "rule": 0,
+        "trigger_price": "",
+        "order_price": ""
+      },
+      "trigger": {
+        "strategy_type": 0,
+        "price_type": 0,
+        "price": "40000.4",
+        "rule": 1,
+        "expiration": 86400
+      },
+      "initial": {
+        "contract": "BTC_USD",
+        "size": "1",
+        "price": "40000.4",
+        "tif": "gtc",
+        "text": "t-auto",
+        "iceberg": "0",
+        "is_close": false,
+        "is_reduce_only": true,
+        "auto_size": ""
+      },
+      "order_type": "close-long-position",
+      "me_order_id": "23456"
+    }
+  ]
+}

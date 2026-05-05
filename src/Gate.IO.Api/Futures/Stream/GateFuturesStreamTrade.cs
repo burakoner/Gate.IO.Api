@@ -41,4 +41,10 @@ public  class GateFuturesStreamTrade
     /// </summary>
     [JsonProperty("price")]
     public decimal Price { get; set; }
+
+    /// <summary>
+    /// Whether the trade was internal, such as insurance-fund or ADL takeover activity.
+    /// </summary>
+    [JsonProperty("is_internal")]
+    public bool? IsInternal { get; set; }
 }

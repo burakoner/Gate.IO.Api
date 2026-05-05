@@ -74,5 +74,29 @@ public enum GateFuturesOrderFinishAs : byte
     /// Price-triggered order expired.
     /// </summary>
     [Map("expired")]
-    Expired = 12
+    Expired = 12,
+
+    /// <summary>
+    /// Completed by automatic deleveraging.
+    /// </summary>
+    [Map("auto_deleveraging")]
+    AutoDeleveraging = 13,
+
+    /// <summary>
+    /// Cancelled due to position closing.
+    /// </summary>
+    [Map("position_close")]
+    PositionClose = 14,
+
+    /// <summary>
+    /// Newly created order update.
+    /// </summary>
+    [Map("_new")]
+    New = 15,
+
+    /// <summary>
+    /// Order filled, partially filled, or amended.
+    /// </summary>
+    [Map("_update")]
+    Update = 16
 }

@@ -1,0 +1,19 @@
+{
+  "channel": "futures.reduce_risk_limits",
+  "event": "update",
+  "time": 1541505434,
+  "time_ms": 1541505434123,
+  "result": [
+    {
+      "time": 1541486601,
+      "time_ms": 1541486601123,
+      "user": "1040",
+      "cancel_orders": 2,
+      "contract": "BTC_USD",
+      "leverage_max": "50",
+      "liq_price": "210",
+      "maintenance_rate": "0.005",
+      "risk_limit": "1000000"
+    }
+  ]
+}

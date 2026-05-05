@@ -1,0 +1,24 @@
+{
+  "channel": "futures.liquidates",
+  "event": "update",
+  "time": 1541505434,
+  "time_ms": 1541505434123,
+  "result": [
+    {
+      "time": 1541486601,
+      "time_ms": 1541486601123,
+      "contract": "BTC_USD",
+      "leverage": 10,
+      "size": "124",
+      "margin": 0.0123,
+      "entry_price": 209,
+      "liq_price": 210,
+      "mark_price": 215.1,
+      "order_id": 3914424,
+      "order_price": 215.1,
+      "fill_price": 215.1,
+      "order_size": "124",
+      "left": "0"
+    }
+  ]
+}

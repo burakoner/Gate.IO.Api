@@ -1,0 +1,15 @@
+{
+  "time": 1545459681,
+  "id": 1001,
+  "channel": "futures.orders",
+  "event": "subscribe",
+  "payload": [
+    "20011",
+    "BTC_USD"
+  ],
+  "auth": {
+    "method": "api_key",
+    "KEY": "xxxx",
+    "SIGN": "xxxx"
+  }
+}

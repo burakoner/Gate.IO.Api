@@ -1,6 +1,10 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Futures WebSocket contract tests.
+    * Added documented Futures WebSocket fixtures for subscription envelopes, public market streams, order book streams, liquidation/stat streams, user order/trade/risk streams, balance streams, position streams, ADL ranks, and auto orders.
+    * Added serialization and validation coverage for common Futures WebSocket subscribe/auth request shapes and documented order book limits.
+    * Updated Futures stream/order parsing for `is_internal`, WebSocket order timing and trigger fields, newer `finish_as` values, additional balance change types, and empty close-price values.
   * Added Spot and Margin WebSocket contract tests.
     * Added documented Spot WebSocket fixtures for subscription envelopes, public market streams, order book streams, user order/trade streams, balance streams, cross-margin loan updates, and price-order updates.
     * Added serialization and validation coverage for common Spot WebSocket subscribe/auth request shapes and documented order book limits.

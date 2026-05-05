@@ -6,6 +6,12 @@
 public enum GateFuturesOrderAutoSize : byte
 {
     /// <summary>
+    /// No automatic close side is set.
+    /// </summary>
+    [Map("")]
+    None = 0,
+
+    /// <summary>
     /// Enum Long for value: close_long
     /// </summary>
     [Map("close_long")]

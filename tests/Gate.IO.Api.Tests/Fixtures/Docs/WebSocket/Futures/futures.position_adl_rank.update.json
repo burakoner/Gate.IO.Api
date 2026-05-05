@@ -1,0 +1,15 @@
+{
+  "time": 1588212926,
+  "time_ms": 1588212926123,
+  "channel": "futures.position_adl_rank",
+  "event": "update",
+  "result": [
+    {
+      "contract": "BTC_USDT",
+      "mode": "single",
+      "rank_division": 1,
+      "time_ms": 1588212926119,
+      "user_id": 2124426495
+    }
+  ]
+}

@@ -25,6 +25,12 @@ public record GateFuturesOrder
     public DateTime CreateTime { get; set; }
 
     /// <summary>
+    /// Creation timestamp in milliseconds returned by futures WebSocket order updates.
+    /// </summary>
+    [JsonProperty("create_time_ms")]
+    public long? CreateTimeInMilliseconds { get; set; }
+
+    /// <summary>
     /// Order更新Time
     /// </summary>
     [JsonProperty("update_time")]
@@ -37,6 +43,12 @@ public record GateFuturesOrder
     [JsonProperty("finish_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? FinishTime { get; set; }
+
+    /// <summary>
+    /// Finish timestamp in milliseconds returned by futures WebSocket order updates.
+    /// </summary>
+    [JsonProperty("finish_time_ms")]
+    public long? FinishTimeInMilliseconds { get; set; }
     
     /// <summary>
     /// How the order was finished.  - filled: all filled - cancelled: manually cancelled - liquidated: cancelled because of liquidation - ioc: time in force is &#x60;IOC&#x60;, finish immediately - auto_deleveraged: finished by ADL - reduce_only: cancelled because of increasing position while &#x60;reduce-only&#x60; set- position_closed: cancelled because of position close 
@@ -200,6 +212,24 @@ public record GateFuturesOrder
     /// </summary>
     [JsonProperty("market_order_slip_ratio")]
     public decimal? MarketOrderSlipRatio { get; set; }
+
+    /// <summary>
+    /// Update ID returned by futures WebSocket order notifications.
+    /// </summary>
+    [JsonProperty("update_id")]
+    public long? UpdateId { get; set; }
+
+    /// <summary>
+    /// Stop-profit trigger price returned by futures WebSocket order notifications.
+    /// </summary>
+    [JsonProperty("stop_profit_price"), JsonConverter(typeof(GateDecimalConverter))]
+    public decimal? StopProfitPrice { get; set; }
+
+    /// <summary>
+    /// Stop-loss trigger price returned by futures WebSocket order notifications.
+    /// </summary>
+    [JsonProperty("stop_loss_price"), JsonConverter(typeof(GateDecimalConverter))]
+    public decimal? StopLossPrice { get; set; }
 
     /// <summary>
     /// Position margin mode
