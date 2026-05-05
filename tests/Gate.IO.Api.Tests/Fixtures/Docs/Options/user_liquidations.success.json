@@ -1,0 +1,10 @@
+[
+  {
+    "time": 1636453894,
+    "contract": "BTC_USDT-20211216-5000-P",
+    "side": "short",
+    "pnl": "-0.0001",
+    "text": "liquidation",
+    "settle_size": "1"
+  }
+]

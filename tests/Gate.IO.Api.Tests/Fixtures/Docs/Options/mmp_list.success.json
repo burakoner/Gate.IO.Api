@@ -1,0 +1,11 @@
+[
+  {
+    "underlying": "BTC_USDT",
+    "window": 5000,
+    "frozen_period": 200,
+    "qty_limit": "10",
+    "delta_limit": "10",
+    "trigger_time_ms": 0,
+    "frozen_until_ms": 0
+  }
+]

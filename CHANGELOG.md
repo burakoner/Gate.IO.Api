@@ -1,6 +1,12 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Options REST contract tests.
+    * Added documented Options fixtures for underlyings, expirations, contracts, settlements, market data, account data, positions, liquidations, orders, user trades, countdown cancellation, and MMP flows.
+    * Added live public Options captures for BTC_USDT underlyings, expirations, contracts, market depth, tickers, candlesticks, settlements, and trades.
+    * Added request construction tests for unsigned Options market calls and signed account, position, order, user-trade, countdown, and MMP calls.
+    * Added opt-in public integration smoke tests for Options market endpoints.
+    * Updated Options contract validation to accept documented multi-digit and decimal strike prices.
   * Added TradFi REST contract tests.
     * Added documented TradFi fixtures for market categories, symbols, symbol details, candlesticks, tickers, MT5 account data, user creation, assets, transfers, orders, and positions.
     * Added live public TradFi captures for current categories, symbol list, EURUSD ticker, and EURUSD candlesticks.
