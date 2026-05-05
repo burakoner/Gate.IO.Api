@@ -1,6 +1,14 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added Earn REST API support against the current Gate API v4 Earn documentation.
+    * Added `api.Earn` and a new `Earn` module with client, enum, request, and response models.
+    * Covered Dual Investment product/order/balance/refund/reinvest/recommendation endpoints.
+    * Covered Staking coin, swap, order, award, and asset endpoints.
+    * Covered Auto Invest plan create/update/stop/add-position, coin, minimum-amount, execution-record, order-detail, configuration, detail, and list endpoints.
+    * Covered Fixed-Term Earn product list, product-by-asset list, subscription list/create, early redemption, and history endpoints.
+    * Added request-object overloads for high-parameter Earn methods and kept semantically numeric IDs, amounts, rates, prices, quantities, and timestamps typed as numeric or `DateTime` public properties.
+    * Updated examples and README with Earn request-object overload usage.
   * Added Multi-Collateral Loan REST API support against the current Gate API v4 Multi-collateral-loan documentation.
     * Added `api.MultiCollateralLoan` and a new `MultiCollateralLoan` module with client, enum, request, and response models.
     * Covered order list/create/detail, repayment record/create, collateral record/adjustment, quota, supported currencies, LTV, fixed-rate, and current-rate endpoints.

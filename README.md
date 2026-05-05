@@ -466,6 +466,38 @@ var multiCollateralLoan_10 = await api.MultiCollateralLoan.GetLtvAsync();
 var multiCollateralLoan_11 = await api.MultiCollateralLoan.GetFixedRatesAsync();
 var multiCollateralLoan_12 = await api.MultiCollateralLoan.GetCurrentRatesAsync(new GateMultiCollateralLoanCurrentRateRequest { Currencies = new[] { "BTC", "GT" }, VipLevel = "0" });
 
+// Earn Methods
+var earn_01 = await api.Earn.GetDualInvestmentPlansAsync(new GateEarnDualPlanQueryRequest { Coin = "BTC", Type = GateEarnDualOptionType.Put, QuoteCurrency = "USDT", Sort = GateEarnDualPlanSort.Apy });
+var earn_02 = await api.Earn.GetDualInvestmentOrdersAsync(new GateEarnDualOrderQueryRequest { Coin = "BTC", Status = GateEarnDualOrderQueryStatus.All, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
+var earn_03 = await api.Earn.PlaceDualInvestmentOrderAsync(new GateEarnDualOrderRequest { PlanId = 1_000_000_001, Amount = 1.0m, Text = "t-client-text" });
+var earn_04 = await api.Earn.GetDualInvestmentBalanceAsync();
+var earn_05 = await api.Earn.GetDualInvestmentRefundPreviewAsync(1_000_000_001);
+var earn_06 = await api.Earn.RefundDualInvestmentOrderAsync(new GateEarnDualRefundRequest { OrderId = 1_000_000_001, RequestId = "REQUEST-ID" });
+var earn_07 = await api.Earn.UpdateDualInvestmentReinvestAsync(new GateEarnDualReinvestUpdateRequest { OrderId = 1_000_000_001, Status = 1, EffectiveTimeDuration = 86_400 });
+var earn_08 = await api.Earn.GetDualInvestmentRecommendationsAsync(new GateEarnDualRecommendationRequest { Coin = "BTC", Type = GateEarnDualOptionType.Put, Mode = GateEarnDualRecommendationMode.Normal });
+var earn_09 = await api.Earn.GetStakingCoinsAsync(new GateEarnStakingCoinQueryRequest { CoinType = GateEarnStakingCoinType.Lock });
+var earn_10 = await api.Earn.SwapStakingCoinAsync(new GateEarnStakingSwapRequest { Coin = "GT", Side = GateEarnStakingOperationType.Stake, Amount = 1.0m, ProductId = 1_000_000_001 });
+var earn_11 = await api.Earn.GetStakingOrdersAsync(new GateEarnStakingOrderQueryRequest { Coin = "GT", Type = GateEarnStakingOperationType.Stake, Page = 1 });
+var earn_12 = await api.Earn.GetStakingAwardsAsync(new GateEarnStakingAwardQueryRequest { Coin = "GT", Page = 1 });
+var earn_13 = await api.Earn.GetStakingAssetsAsync(new GateEarnStakingAssetQueryRequest { Coin = "GT" });
+var earn_14 = await api.Earn.CreateAutoInvestPlanAsync(new GateEarnAutoInvestPlanCreateRequest { PlanMoney = "USDT", PlanAmount = 100.0m, PeriodType = GateEarnAutoInvestPeriodType.Weekly, PeriodDay = 1, PeriodHour = 12, Items = new[] { new GateEarnAutoInvestPortfolioItem { Asset = "BTC", Ratio = 100.0m } }, FundSource = GateEarnAutoInvestFundSource.Spot, FundFlow = GateEarnAutoInvestFundFlow.AutoInvest });
+var earn_15 = await api.Earn.UpdateAutoInvestPlanAsync(new GateEarnAutoInvestPlanUpdateRequest { PlanId = 1_000_000_001, FundSource = GateEarnAutoInvestFundSource.Spot });
+var earn_16 = await api.Earn.StopAutoInvestPlanAsync(new GateEarnAutoInvestPlanStopRequest { PlanId = 1_000_000_001 });
+var earn_17 = await api.Earn.AddAutoInvestPositionAsync(new GateEarnAutoInvestAddPositionRequest { PlanId = 1_000_000_001, Amount = 100.0m });
+var earn_18 = await api.Earn.GetAutoInvestCoinsAsync("USDT");
+var earn_19 = await api.Earn.GetAutoInvestMinimumAmountAsync(new GateEarnAutoInvestMinInvestAmountRequest { Money = "USDT", Items = new[] { new GateEarnAutoInvestPortfolioItem { Asset = "BTC", Ratio = 100.0m } } });
+var earn_20 = await api.Earn.GetAutoInvestExecutionRecordsAsync(new GateEarnAutoInvestExecutionRecordsRequest { PlanId = 1_000_000_001, Page = 1, PageSize = 20 });
+var earn_21 = await api.Earn.GetAutoInvestOrderDetailsAsync(new GateEarnAutoInvestOrderDetailsRequest { PlanId = 1_000_000_001, RecordId = 1_000_000_002 });
+var earn_22 = await api.Earn.GetAutoInvestConfigAsync();
+var earn_23 = await api.Earn.GetAutoInvestPlanAsync(1_000_000_001);
+var earn_24 = await api.Earn.GetAutoInvestPlansAsync(new GateEarnAutoInvestPlanListRequest { Status = GateEarnAutoInvestPlanStatus.Active, Page = 1, PageSize = 20 });
+var earn_25 = await api.Earn.GetFixedTermProductsAsync(new GateEarnFixedTermProductQueryRequest { Asset = "USDT", Type = GateEarnFixedTermProductType.All, Page = 1, Limit = 100 });
+var earn_26 = await api.Earn.GetFixedTermProductsByAssetAsync(new GateEarnFixedTermProductByAssetRequest { Asset = "USDT", Type = GateEarnFixedTermProductType.All });
+var earn_27 = await api.Earn.GetFixedTermLendsAsync(new GateEarnFixedTermLendQueryRequest { OrderType = GateEarnFixedTermOrderType.Current, Asset = "USDT", Page = 1, Limit = 100 });
+var earn_28 = await api.Earn.CreateFixedTermLendAsync(new GateEarnFixedTermLendRequest { ProductId = 1_000_000_001, Amount = 100.0m, ReinvestStatus = 1 });
+var earn_29 = await api.Earn.RedeemFixedTermOrderAsync(new GateEarnFixedTermPreRedeemRequest { OrderId = 1_000_000_001 });
+var earn_30 = await api.Earn.GetFixedTermHistoryAsync(new GateEarnFixedTermHistoryRequest { Type = GateEarnFixedTermHistoryType.Subscription, Asset = "USDT", Page = 1, Limit = 100, StartAt = DateTime.UtcNow.AddDays(-7), EndAt = DateTime.UtcNow });
+
 // Account Methods
 var account_01 = await api.Account.GetAccountAsync();
 var account_02 = await api.Account.GetMainKeysAsync();

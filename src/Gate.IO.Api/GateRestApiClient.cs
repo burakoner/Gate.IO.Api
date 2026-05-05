@@ -76,7 +76,10 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     public GateMultiCollateralLoanRestApiClient MultiCollateralLoan { get; } // 4.105.4
 
-    // TODO: Earn
+    /// <summary>
+    /// Earn Client
+    /// </summary>
+    public GateEarnRestApiClient Earn { get; } // 4.105.4
 
     /// <summary>
     /// Account Client
@@ -135,6 +138,7 @@ public class GateRestApiClient : RestApiClient
         Options = new GateOptionsRestApiClient(this);
         EarnUni = new GateEarnUniRestApiClient(this);
         MultiCollateralLoan = new GateMultiCollateralLoanRestApiClient(this);
+        Earn = new GateEarnRestApiClient(this);
         Account = new GateAccountRestApiClient(this);
         Rebate = new GateRebateRestApiClient(this);
     }
