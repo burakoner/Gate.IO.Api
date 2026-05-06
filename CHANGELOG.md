@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added remaining reviewed public REST live captures.
+    * Added full Spot currency and currency-pair live fixtures plus a Unified portfolio-calculator live fixture.
+    * Added optional live-capture filtering through `GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER` for targeted fixture refreshes.
+    * Updated Spot and Unified public integration coverage for the newly captured endpoints.
+    * Updated decimal parsing to tolerate Gate's infinity marker in nullable decimal fields while preserving existing public property types.
   * Added opt-in public REST live capture support.
     * Added capture settings, JSON normalization, fixture writing, and a `LiveCapture` test category driven by `GATEIO_CAPTURE_PUBLIC_FIXTURES`.
     * Updated the public REST endpoint catalog with request bodies and resolved capture URLs for dynamic fixture endpoints.

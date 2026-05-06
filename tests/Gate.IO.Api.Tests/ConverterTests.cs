@@ -22,16 +22,18 @@ public class ConverterTests
     }
 
     [Fact]
-    public void Gate_decimal_converter_accepts_string_number_numeric_token_and_empty_string()
+    public void Gate_decimal_converter_accepts_string_number_numeric_token_empty_string_and_infinity()
     {
         var probe = JsonConvert.DeserializeObject<DecimalProbe>(
-            """{"string_value":"123.456","numeric_value":789.12,"empty_required":"","empty_optional":""}""");
+            """{"string_value":"123.456","numeric_value":789.12,"empty_required":"","empty_optional":"","infinite_required":"∞","infinite_optional":"∞"}""");
 
         Assert.NotNull(probe);
         Assert.Equal(123.456m, probe!.StringValue);
         Assert.Equal(789.12m, probe.NumericValue);
         Assert.Equal(0m, probe.EmptyRequired);
         Assert.Null(probe.EmptyOptional);
+        Assert.Equal(0m, probe.InfiniteRequired);
+        Assert.Null(probe.InfiniteOptional);
     }
 
     [Fact]
@@ -136,5 +138,13 @@ public class ConverterTests
         [JsonProperty("empty_optional")]
         [JsonConverter(typeof(GateDecimalConverter))]
         public decimal? EmptyOptional { get; set; }
+
+        [JsonProperty("infinite_required")]
+        [JsonConverter(typeof(GateDecimalConverter))]
+        public decimal InfiniteRequired { get; set; }
+
+        [JsonProperty("infinite_optional")]
+        [JsonConverter(typeof(GateDecimalConverter))]
+        public decimal? InfiniteOptional { get; set; }
     }
 }

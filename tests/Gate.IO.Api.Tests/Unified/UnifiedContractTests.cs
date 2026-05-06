@@ -121,10 +121,13 @@ public class UnifiedContractTests
         var historicalRates = JsonFixture.Deserialize<GateUnifiedHistoricalLendingRates>("Live/Unified/history_loan_rate.USDT.limit1.json");
         var discountTiers = JsonFixture.Deserialize<List<GateUnifiedCurrencyDiscountTiers>>("Live/Unified/currency_discount_tiers.json");
         var loanMarginTiers = JsonFixture.Deserialize<List<GateUnifiedLoanMarginTiers>>("Live/Unified/loan_margin_tiers.json");
+        var portfolio = JsonFixture.Deserialize<GateUnifiedPortfolioCalculation>("Live/Unified/portfolio_calculator.spot_hedge.json");
 
         Assert.NotEmpty(currencies);
         Assert.NotEmpty(historicalRates.Rates);
         Assert.NotEmpty(discountTiers);
         Assert.NotEmpty(loanMarginTiers);
+        Assert.Equal(0m, portfolio.TotalMaintenanceMargin);
+        Assert.NotEqual(default, portfolio.CalculationTime);
     }
 }

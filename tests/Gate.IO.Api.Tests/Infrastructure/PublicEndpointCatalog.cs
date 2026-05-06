@@ -12,15 +12,15 @@ internal static class PublicEndpointCatalog
         Entry("Unified", "Historical lending rates", "GET", "/unified/history_loan_rate?currency=USDT&limit=1", "unified", "Unified/history_loan_rate.USDT.limit1.json"),
         Entry("Unified", "Currency discount tiers", "GET", "/unified/currency_discount_tiers", "unified", "Unified/currency_discount_tiers.json"),
         Entry("Unified", "Loan margin tiers", "GET", "/unified/loan_margin_tiers", "unified", "Unified/loan_margin_tiers.json"),
-        Entry("Unified", "Portfolio calculator", "POST", "/unified/portfolio_calculator", "unified", null, false),
+        Entry("Unified", "Portfolio calculator", "POST", "/unified/portfolio_calculator", "unified", "Unified/portfolio_calculator.spot_hedge.json", false, requestBodyJson: "{\"spot_hedge\":true}"),
 
         Entry("Margin", "Isolated margin currency pairs", "GET", "/margin/uni/currency_pairs", "isolated-margin", "Margin/currency_pairs.json"),
         Entry("Margin", "Isolated margin currency pair", "GET", "/margin/uni/currency_pairs/BTC_USDT", "isolated-margin", "Margin/currency_pairs.BTC_USDT.json"),
         Entry("Margin", "Isolated margin loan tiers", "GET", "/margin/uni/loan_margin_tiers?currency_pair=BTC_USDT", "isolated-margin", "Margin/loan_margin_tiers.BTC_USDT.json"),
 
-        Entry("Spot", "Currencies", "GET", "/spot/currencies", "spot", null, false),
+        Entry("Spot", "Currencies", "GET", "/spot/currencies", "spot", "Spot/currencies.json", false),
         Entry("Spot", "Currency", "GET", "/spot/currencies/GT", "spot", "Spot/currencies.GT.json"),
-        Entry("Spot", "Currency pairs", "GET", "/spot/currency_pairs", "spot", null, false),
+        Entry("Spot", "Currency pairs", "GET", "/spot/currency_pairs", "spot", "Spot/currency_pairs.json", false),
         Entry("Spot", "Currency pair", "GET", "/spot/currency_pairs/BTC_USDT", "spot", "Spot/currency_pairs.BTC_USDT.json"),
         Entry("Spot", "Tickers", "GET", "/spot/tickers?currency_pair=BTC_USDT", "spot", "Spot/tickers.BTC_USDT.json"),
         Entry("Spot", "Order book", "GET", "/spot/order_book?currency_pair=BTC_USDT&limit=5", "spot", "Spot/order_book.BTC_USDT.limit5.json"),

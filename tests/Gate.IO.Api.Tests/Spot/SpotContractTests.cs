@@ -102,7 +102,9 @@ public class SpotContractTests
     [Fact]
     public void Captured_live_public_spot_responses_deserialize()
     {
+        var currencies = JsonFixture.Deserialize<List<GateSpotCurrency>>("Live/Spot/currencies.json");
         var currency = JsonFixture.Deserialize<GateSpotCurrency>("Live/Spot/currencies.GT.json");
+        var markets = JsonFixture.Deserialize<List<GateSpotMarket>>("Live/Spot/currency_pairs.json");
         var market = JsonFixture.Deserialize<GateSpotMarket>("Live/Spot/currency_pairs.BTC_USDT.json");
         var tickers = JsonFixture.Deserialize<List<GateSpotTicker>>("Live/Spot/tickers.BTC_USDT.json");
         var orderBook = JsonFixture.Deserialize<GateSpotOrderBook>("Live/Spot/order_book.BTC_USDT.limit5.json");
@@ -111,7 +113,9 @@ public class SpotContractTests
         var serverTime = JsonFixture.Deserialize<GateSpotTime>("Live/Spot/time.json");
         var insurance = JsonFixture.Deserialize<List<GateSpotInsurance>>("Live/Spot/insurance_history.BTC.margin.json");
 
+        Assert.NotEmpty(currencies);
         Assert.Equal("GT", currency.Symbol);
+        Assert.NotEmpty(markets);
         Assert.Equal("BTC_USDT", market.Symbol);
         Assert.Equal(GateSpotMarketStatus.Tradable, market.Status);
         Assert.NotEmpty(tickers);

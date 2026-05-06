@@ -3,6 +3,7 @@ namespace Gate.IO.Api.Tests.Infrastructure;
 internal static class LiveCaptureSettings
 {
     private const string CaptureEnabledVariable = "GATEIO_CAPTURE_PUBLIC_FIXTURES";
+    private const string CaptureFilterVariable = "GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER";
     private const string CaptureRootVariable = "GATEIO_CAPTURE_FIXTURE_ROOT";
 
     public static bool Enabled
@@ -19,6 +20,21 @@ internal static class LiveCaptureSettings
 
             return Path.GetFullPath(root);
         }
+    }
+
+    public static bool MatchesFilter(PublicEndpointCatalogEntry entry)
+    {
+        var filter = Environment.GetEnvironmentVariable(CaptureFilterVariable);
+        if (string.IsNullOrWhiteSpace(filter))
+            return true;
+
+        var parts = filter.Split([';', ','], StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        return parts.Any(part =>
+            entry.Module.Contains(part, StringComparison.OrdinalIgnoreCase)
+            || entry.Name.Contains(part, StringComparison.OrdinalIgnoreCase)
+            || entry.PathAndQuery.Contains(part, StringComparison.OrdinalIgnoreCase)
+            || entry.CapturePath.Contains(part, StringComparison.OrdinalIgnoreCase)
+            || (entry.LiveFixturePath?.Contains(part, StringComparison.OrdinalIgnoreCase) ?? false));
     }
 
     public static string GetFixturePath(PublicEndpointCatalogEntry entry)

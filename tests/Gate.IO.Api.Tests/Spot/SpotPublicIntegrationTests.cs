@@ -15,7 +15,9 @@ public class SpotPublicIntegrationTests
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         var client = new GateRestApiClient();
 
+        var currencies = await client.Spot.GetCurrenciesAsync(cts.Token);
         var currency = await client.Spot.GetCurrencyAsync("GT", cts.Token);
+        var markets = await client.Spot.GetMarketsAsync(cts.Token);
         var market = await client.Spot.GetMarketAsync("BTC_USDT", cts.Token);
         var tickers = await client.Spot.GetTickersAsync("BTC_USDT", ct: cts.Token);
         var orderBook = await client.Spot.GetOrderBookAsync("BTC_USDT", limit: 5, ct: cts.Token);
@@ -24,7 +26,9 @@ public class SpotPublicIntegrationTests
         var serverTime = await client.Spot.GetServerTimeAsync(cts.Token);
         var insurance = await client.Spot.GetInsuranceHistoryAsync("margin", "BTC", from: 1727054547, to: 1727054547, limit: 1, ct: cts.Token);
 
+        Assert.True(currencies.Success, currencies.Error?.ToString());
         Assert.True(currency.Success, currency.Error?.ToString());
+        Assert.True(markets.Success, markets.Error?.ToString());
         Assert.True(market.Success, market.Error?.ToString());
         Assert.True(tickers.Success, tickers.Error?.ToString());
         Assert.True(orderBook.Success, orderBook.Error?.ToString());
@@ -32,7 +36,9 @@ public class SpotPublicIntegrationTests
         Assert.True(candles.Success, candles.Error?.ToString());
         Assert.True(serverTime.Success, serverTime.Error?.ToString());
         Assert.True(insurance.Success, insurance.Error?.ToString());
+        Assert.NotEmpty(currencies.Data!);
         Assert.Equal("GT", currency.Data!.Symbol);
+        Assert.NotEmpty(markets.Data!);
         Assert.Equal("BTC_USDT", market.Data!.Symbol);
         Assert.NotEmpty(tickers.Data!);
         Assert.NotEmpty(orderBook.Data!.Asks);

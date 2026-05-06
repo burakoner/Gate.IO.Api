@@ -9,7 +9,10 @@ public class PublicRestLiveCaptureTests
         if (!LiveCaptureSettings.Enabled)
             return;
 
-        var entries = PublicEndpointCatalog.Entries.Where(x => x.CanCapture).ToArray();
+        var entries = PublicEndpointCatalog.Entries
+            .Where(x => x.CanCapture)
+            .Where(LiveCaptureSettings.MatchesFilter)
+            .ToArray();
 
         Assert.NotEmpty(entries);
         using var cts = new CancellationTokenSource(TimeSpan.FromMinutes(5));

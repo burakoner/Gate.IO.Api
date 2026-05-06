@@ -77,13 +77,13 @@ public record GateSpotCurrency
     /// <summary>
     /// Total supply
     /// </summary>
-    [JsonProperty("total_supply")]
+    [JsonProperty("total_supply"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? TotalSupply { get; set; }
 
     /// <summary>
     /// Market cap
     /// </summary>
-    [JsonProperty("market_cap")]
+    [JsonProperty("market_cap"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? MarketCap { get; set; }
 
     /// <summary>

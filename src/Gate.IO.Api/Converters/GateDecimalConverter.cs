@@ -22,7 +22,7 @@ public class GateDecimalConverter : JsonConverter
         if (reader.TokenType == JsonToken.String)
         {
             var value = (string)reader.Value;
-            if (string.IsNullOrWhiteSpace(value))
+            if (IsNullLike(value))
                 return objectType == typeof(decimal?) ? null : 0m;
 
             return decimal.Parse(value, NumberStyles.Any, CultureInfo.InvariantCulture);
@@ -39,4 +39,11 @@ public class GateDecimalConverter : JsonConverter
     /// </summary>
     public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         => writer.WriteValue(value);
+
+    private static bool IsNullLike(string value)
+        => string.IsNullOrWhiteSpace(value)
+        || string.Equals(value, "∞", StringComparison.Ordinal)
+        || string.Equals(value, "+∞", StringComparison.Ordinal)
+        || string.Equals(value, "Infinity", StringComparison.OrdinalIgnoreCase)
+        || string.Equals(value, "+Infinity", StringComparison.OrdinalIgnoreCase);
 }
