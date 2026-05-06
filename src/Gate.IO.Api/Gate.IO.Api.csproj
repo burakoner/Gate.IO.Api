@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>netstandard2.0;netstandard2.1</TargetFrameworks>
@@ -36,10 +36,6 @@
 
 	<ItemGroup>
 		<PackageReference Include="ApiSharp" Version="4.5.1" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="Authentication\" />
 	</ItemGroup>
 
 </Project>
