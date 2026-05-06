@@ -1,11 +1,49 @@
+using System.Text;
+
 namespace Gate.IO.Api.Tests.Infrastructure;
 
 internal static class PublicHttpCapture
 {
     public static async Task<string> GetStringAsync(string url, CancellationToken ct = default)
+        => await GetStringAsync(HttpMethod.Get, url, null, ct).ConfigureAwait(false);
+
+    public static async Task<string> GetStringAsync(
+        HttpMethod method,
+        string url,
+        string? requestBodyJson,
+        CancellationToken ct = default)
     {
         using var client = new HttpClient();
         client.DefaultRequestHeaders.UserAgent.ParseAdd("Gate.IO.Api.Tests/1.0");
-        return await client.GetStringAsync(url, ct).ConfigureAwait(false);
+
+        using var request = new HttpRequestMessage(method, url);
+        if (!string.IsNullOrWhiteSpace(requestBodyJson))
+            request.Content = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
+
+        using var response = await client.SendAsync(request, ct).ConfigureAwait(false);
+        response.EnsureSuccessStatusCode();
+
+        return await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+    }
+
+    public static async Task<string> CaptureStringAsync(PublicEndpointCatalogEntry entry, CancellationToken ct = default)
+    {
+        if (!entry.CanCapture)
+            throw new InvalidOperationException($"{entry.Module} {entry.Name} is not configured for live capture.");
+
+        var method = new HttpMethod(entry.Method);
+        return await GetStringAsync(method, entry.CaptureUrl, entry.RequestBodyJson, ct).ConfigureAwait(false);
+    }
+
+    public static async Task<string> CaptureAndWriteFixtureAsync(PublicEndpointCatalogEntry entry, CancellationToken ct = default)
+    {
+        var rawJson = await CaptureStringAsync(entry, ct).ConfigureAwait(false);
+        var normalizedJson = JToken.Parse(rawJson).ToString(Formatting.Indented) + Environment.NewLine;
+        var fixturePath = LiveCaptureSettings.GetFixturePath(entry);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(fixturePath)!);
+        await File.WriteAllTextAsync(fixturePath, normalizedJson, ct).ConfigureAwait(false);
+
+        return fixturePath;
     }
 }

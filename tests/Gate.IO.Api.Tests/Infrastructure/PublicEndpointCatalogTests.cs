@@ -15,6 +15,8 @@ public class PublicEndpointCatalogTests
             Assert.Contains(entry.Method, ["GET", "POST"]);
             Assert.StartsWith("/", entry.PathAndQuery);
             Assert.StartsWith(PublicEndpointCatalog.RestBaseUrl, entry.Url);
+            Assert.StartsWith(PublicEndpointCatalog.RestBaseUrl, entry.CaptureUrl);
+            Assert.DoesNotContain("{", entry.CapturePath);
             Assert.StartsWith("https://www.gate.com/docs/developers/", entry.DocumentationUrl);
         }
 
@@ -39,6 +41,20 @@ public class PublicEndpointCatalogTests
             var token = JsonFixture.Parse(fixturePath);
 
             Assert.NotEqual(JTokenType.None, token.Type);
+        }
+    }
+
+    [Fact]
+    public void Public_endpoint_catalog_committed_live_fixtures_are_capturable()
+    {
+        var entriesWithFixtures = PublicEndpointCatalog.Entries.Where(x => x.HasCommittedLiveFixture).ToArray();
+
+        Assert.NotEmpty(entriesWithFixtures);
+        foreach (var entry in entriesWithFixtures)
+        {
+            Assert.True(entry.CanCapture, $"{entry.Module} {entry.Name} is missing a capture URL or request body.");
+            if (!string.IsNullOrWhiteSpace(entry.RequestBodyJson))
+                Assert.NotEqual(JTokenType.None, JToken.Parse(entry.RequestBodyJson).Type);
         }
     }
 

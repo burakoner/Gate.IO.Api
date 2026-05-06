@@ -39,7 +39,7 @@ internal static class PublicEndpointCatalog
         Entry("Futures", "Trades", "GET", "/futures/usdt/trades?contract=BTC_USDT&limit=1", "futures", "Futures/trades.BTC_USDT.limit1.json"),
         Entry("Futures", "Candlesticks", "GET", "/futures/usdt/candlesticks?contract=BTC_USDT&interval=1m&limit=1", "futures", "Futures/candlesticks.BTC_USDT.1m.limit1.json"),
         Entry("Futures", "Funding rate history", "GET", "/futures/usdt/funding_rate?contract=BTC_USDT&limit=1", "futures", "Futures/funding_rate.BTC_USDT.limit1.json"),
-        Entry("Futures", "Batch funding rate history", "POST", "/futures/usdt/funding_rates", "futures", "Futures/funding_rates.BTC_USDT.json"),
+        Entry("Futures", "Batch funding rate history", "POST", "/futures/usdt/funding_rates", "futures", "Futures/funding_rates.BTC_USDT.json", requestBodyJson: "{\"contracts\":[\"BTC_USDT\"]}"),
         Entry("Futures", "Insurance history", "GET", "/futures/usdt/insurance?limit=1", "futures", "Futures/insurance.usdt.limit1.json"),
         Entry("Futures", "Contract stats", "GET", "/futures/usdt/contract_stats?contract=BTC_USDT&interval=1h&limit=1", "futures", "Futures/contract_stats.BTC_USDT.1h.limit1.json"),
         Entry("Futures", "Index constituents", "GET", "/futures/usdt/index_constituents/BTC_USDT", "futures", "Futures/index_constituents.BTC_USDT.json"),
@@ -52,22 +52,22 @@ internal static class PublicEndpointCatalog
         Entry("TradFi", "Candlesticks", "GET", "/tradfi/symbols/EURUSD/candlesticks?interval=1m&limit=1", "tradfi", "TradFi/candlesticks.EURUSD.1m.limit1.json"),
 
         Entry("Delivery", "Contracts", "GET", "/delivery/usdt/contracts", "delivery", "Delivery/contracts.usdt.json"),
-        Entry("Delivery", "Contract", "GET", "/delivery/usdt/contracts/{contract}", "delivery", "Delivery/contract.usdt.first.json"),
-        Entry("Delivery", "Tickers", "GET", "/delivery/usdt/tickers?contract={contract}", "delivery", "Delivery/tickers.usdt.first.json"),
-        Entry("Delivery", "Order book", "GET", "/delivery/usdt/order_book?contract={contract}&limit=5", "delivery", "Delivery/order_book.usdt.first.limit5.json"),
-        Entry("Delivery", "Trades", "GET", "/delivery/usdt/trades?contract={contract}&limit=1", "delivery", "Delivery/trades.usdt.first.limit1.json"),
-        Entry("Delivery", "Candlesticks", "GET", "/delivery/usdt/candlesticks?contract={contract}&interval=1m&limit=1", "delivery", "Delivery/candlesticks.usdt.first.1m.limit1.json"),
+        Entry("Delivery", "Contract", "GET", "/delivery/usdt/contracts/{contract}", "delivery", "Delivery/contract.usdt.first.json", capturePathAndQuery: "/delivery/usdt/contracts/AVAX_USDT_20260515"),
+        Entry("Delivery", "Tickers", "GET", "/delivery/usdt/tickers?contract={contract}", "delivery", "Delivery/tickers.usdt.first.json", capturePathAndQuery: "/delivery/usdt/tickers?contract=AVAX_USDT_20260515"),
+        Entry("Delivery", "Order book", "GET", "/delivery/usdt/order_book?contract={contract}&limit=5", "delivery", "Delivery/order_book.usdt.first.limit5.json", capturePathAndQuery: "/delivery/usdt/order_book?contract=AVAX_USDT_20260515&limit=5"),
+        Entry("Delivery", "Trades", "GET", "/delivery/usdt/trades?contract={contract}&limit=1", "delivery", "Delivery/trades.usdt.first.limit1.json", capturePathAndQuery: "/delivery/usdt/trades?contract=AVAX_USDT_20260515&limit=1"),
+        Entry("Delivery", "Candlesticks", "GET", "/delivery/usdt/candlesticks?contract={contract}&interval=1m&limit=1", "delivery", "Delivery/candlesticks.usdt.first.1m.limit1.json", capturePathAndQuery: "/delivery/usdt/candlesticks?contract=AVAX_USDT_20260515&interval=1m&limit=1"),
         Entry("Delivery", "Insurance history", "GET", "/delivery/usdt/insurance?limit=1", "delivery", "Delivery/insurance.usdt.limit1.json"),
-        Entry("Delivery", "Risk limit tiers", "GET", "/delivery/usdt/risk_limit_tiers?contract={contract}&limit=1", "delivery", "Delivery/risk_limit_tiers.usdt.first.limit1.json"),
+        Entry("Delivery", "Risk limit tiers", "GET", "/delivery/usdt/risk_limit_tiers?contract={contract}&limit=1", "delivery", "Delivery/risk_limit_tiers.usdt.first.limit1.json", capturePathAndQuery: "/delivery/usdt/risk_limit_tiers?contract=AVAX_USDT_20260515&limit=1"),
 
         Entry("Options", "Underlyings", "GET", "/options/underlyings", "options", "Options/underlyings.json"),
         Entry("Options", "Expirations", "GET", "/options/expirations?underlying=BTC_USDT", "options", "Options/expirations.BTC_USDT.json"),
-        Entry("Options", "Contracts", "GET", "/options/contracts?underlying=BTC_USDT&expiration={expiration}", "options", "Options/contracts.BTC_USDT.first_expiration.json"),
-        Entry("Options", "Contract", "GET", "/options/contracts/{contract}", "options", "Options/contract.BTC_USDT-20260507-86000-P.json"),
-        Entry("Options", "Order book", "GET", "/options/order_book?contract={contract}&limit=5", "options", "Options/order_book.BTC_USDT-20260507-86000-P.limit5.json"),
+        Entry("Options", "Contracts", "GET", "/options/contracts?underlying=BTC_USDT&expiration={expiration}", "options", "Options/contracts.BTC_USDT.first_expiration.json", capturePathAndQuery: "/options/contracts?underlying=BTC_USDT&expiration=1778140800"),
+        Entry("Options", "Contract", "GET", "/options/contracts/{contract}", "options", "Options/contract.BTC_USDT-20260507-86000-P.json", capturePathAndQuery: "/options/contracts/BTC_USDT-20260507-86000-P"),
+        Entry("Options", "Order book", "GET", "/options/order_book?contract={contract}&limit=5", "options", "Options/order_book.BTC_USDT-20260507-86000-P.limit5.json", capturePathAndQuery: "/options/order_book?contract=BTC_USDT-20260507-86000-P&limit=5"),
         Entry("Options", "Contract tickers", "GET", "/options/tickers?underlying=BTC_USDT", "options", "Options/tickers.BTC_USDT.json"),
         Entry("Options", "Underlying ticker", "GET", "/options/underlying/tickers/BTC_USDT", "options", "Options/underlying_ticker.BTC_USDT.json"),
-        Entry("Options", "Candlesticks", "GET", "/options/candlesticks?contract={contract}&interval=1m&limit=1", "options", "Options/candlesticks.BTC_USDT-20260507-86000-P.1m.limit1.json"),
+        Entry("Options", "Candlesticks", "GET", "/options/candlesticks?contract={contract}&interval=1m&limit=1", "options", "Options/candlesticks.BTC_USDT-20260507-86000-P.1m.limit1.json", capturePathAndQuery: "/options/candlesticks?contract=BTC_USDT-20260507-86000-P&interval=1m&limit=1"),
         Entry("Options", "Underlying candlesticks", "GET", "/options/underlying/candlesticks?underlying=BTC_USDT&interval=1m&limit=1", "options", "Options/underlying_candlesticks.BTC_USDT.1m.limit1.json"),
         Entry("Options", "Trades", "GET", "/options/trades?limit=1", "options", "Options/trades.limit1.json"),
         Entry("Options", "Settlements", "GET", "/options/settlements?underlying=BTC_USDT&limit=1", "options", "Options/settlements.BTC_USDT.limit1.json", false),
@@ -107,7 +107,9 @@ internal static class PublicEndpointCatalog
         string pathAndQuery,
         string documentationSlugOrUrl,
         string? liveFixturePath,
-        bool hasClientSmokeTest = true)
+        bool hasClientSmokeTest = true,
+        string? requestBodyJson = null,
+        string? capturePathAndQuery = null)
     {
         var documentationUrl = documentationSlugOrUrl.StartsWith("https://", StringComparison.OrdinalIgnoreCase)
             ? documentationSlugOrUrl
@@ -120,6 +122,8 @@ internal static class PublicEndpointCatalog
             pathAndQuery,
             documentationUrl,
             liveFixturePath,
-            hasClientSmokeTest);
+            hasClientSmokeTest,
+            requestBodyJson,
+            capturePathAndQuery);
     }
 }

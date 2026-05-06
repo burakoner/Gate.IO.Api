@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added opt-in public REST live capture support.
+    * Added capture settings, JSON normalization, fixture writing, and a `LiveCapture` test category driven by `GATEIO_CAPTURE_PUBLIC_FIXTURES`.
+    * Updated the public REST endpoint catalog with request bodies and resolved capture URLs for dynamic fixture endpoints.
   * Added a public REST endpoint catalog for live capture work.
     * Centralized safe unauthenticated REST endpoints, documentation links, committed live fixture paths, and client smoke-test coverage metadata.
     * Added unit tests that validate catalog uniqueness, committed live fixture availability, and live smoke-test module coverage.
