@@ -1,1 +1,7 @@
-{"currency":"BTC","min_lend_amount":"0.00001","max_lend_amount":"120000000","max_rate":"0.00057","min_rate":"0.00000011"}
+{
+  "currency": "BTC",
+  "min_lend_amount": "0.00001",
+  "max_lend_amount": "120000000",
+  "max_rate": "0.00057",
+  "min_rate": "0.00000011"
+}

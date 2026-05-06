@@ -1,1 +1,10 @@
-[{"name":"BTC","prec":"0.000001","min_borrow_amount":"0.00001","user_max_borrow_amount":"120000000","total_max_borrow_amount":"300000000","loan_status":"enable"}]
+[
+  {
+    "name": "BTC",
+    "prec": "0.000001",
+    "min_borrow_amount": "0.00001",
+    "user_max_borrow_amount": "120000000",
+    "total_max_borrow_amount": "300000000",
+    "loan_status": "enable"
+  }
+]

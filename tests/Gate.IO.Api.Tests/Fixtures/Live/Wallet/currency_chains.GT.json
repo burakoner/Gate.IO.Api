@@ -1,1 +1,46 @@
-[{"chain":"GT","name_cn":"GT","name_en":"GT","is_disabled":0,"is_deposit_disabled":0,"is_withdraw_disabled":0,"contract_address":"","decimal":"8","is_tag":0},{"chain":"ETH","name_cn":"Ethereum（ERC20）","name_en":"Ethereum(ERC20)","is_disabled":0,"is_deposit_disabled":0,"is_withdraw_disabled":0,"contract_address":"0xE66747a101bFF2dBA3697199DCcE5b743b454759","decimal":"8","is_tag":0},{"chain":"GATELAYER","name_cn":"Gate Layer","name_en":"Gate Layer","is_disabled":0,"is_deposit_disabled":0,"is_withdraw_disabled":0,"contract_address":"","decimal":"8","is_tag":0},{"chain":"GTEVM","name_cn":"GateChain","name_en":"GateChain","is_disabled":0,"is_deposit_disabled":0,"is_withdraw_disabled":0,"contract_address":"","decimal":"8","is_tag":0}]
+[
+  {
+    "chain": "GT",
+    "name_cn": "GT",
+    "name_en": "GT",
+    "is_disabled": 0,
+    "is_deposit_disabled": 0,
+    "is_withdraw_disabled": 0,
+    "contract_address": "",
+    "decimal": "8",
+    "is_tag": 0
+  },
+  {
+    "chain": "ETH",
+    "name_cn": "Ethereum（ERC20）",
+    "name_en": "Ethereum(ERC20)",
+    "is_disabled": 0,
+    "is_deposit_disabled": 0,
+    "is_withdraw_disabled": 0,
+    "contract_address": "0xE66747a101bFF2dBA3697199DCcE5b743b454759",
+    "decimal": "8",
+    "is_tag": 0
+  },
+  {
+    "chain": "GATELAYER",
+    "name_cn": "Gate Layer",
+    "name_en": "Gate Layer",
+    "is_disabled": 0,
+    "is_deposit_disabled": 0,
+    "is_withdraw_disabled": 0,
+    "contract_address": "",
+    "decimal": "8",
+    "is_tag": 0
+  },
+  {
+    "chain": "GTEVM",
+    "name_cn": "GateChain",
+    "name_en": "GateChain",
+    "is_disabled": 0,
+    "is_deposit_disabled": 0,
+    "is_withdraw_disabled": 0,
+    "contract_address": "",
+    "decimal": "8",
+    "is_tag": 0
+  }
+]

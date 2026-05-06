@@ -1,1 +1,24 @@
-[{"last":"81344.5","low_24h":"79708.7","high_24h":"81749","volume_24h":"663299443","change_percentage":"1.39","change_price":"1116.9","funding_rate_indicative":"-0.00012","index_price":"81400.2","volume_24h_base":"66329","volume_24h_quote":"5375024729","contract":"BTC_USDT","volume_24h_settle":"5375024729","funding_rate":"-0.00012","mark_price":"81351.6","total_size":"744401464","highest_bid":"81358.8","highest_size":"93891","lowest_ask":"81358.9","lowest_size":"32737","quanto_multiplier":"0.0001"}]
+[
+  {
+    "last": "81122.3",
+    "low_24h": "79812.6",
+    "high_24h": "81749",
+    "volume_24h": "721210488",
+    "change_percentage": "1.55",
+    "change_price": "1238.8",
+    "funding_rate_indicative": "-0.00008",
+    "index_price": "81144.83",
+    "volume_24h_base": "72121",
+    "volume_24h_quote": "5848663832",
+    "contract": "BTC_USDT",
+    "volume_24h_settle": "5848663832",
+    "funding_rate": "-0.00008",
+    "mark_price": "81122.4",
+    "total_size": "730022440",
+    "highest_bid": "81095.1",
+    "highest_size": "193103",
+    "lowest_ask": "81095.2",
+    "lowest_size": "194080",
+    "quanto_multiplier": "0.0001"
+  }
+]

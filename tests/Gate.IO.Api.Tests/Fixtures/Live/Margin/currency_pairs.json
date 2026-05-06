@@ -1,1 +1,4142 @@
-[{"currency_pair":"1INCH_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AAVE_USDT","base_min_borrow_amount":"0.003","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"ACA_USDT","base_min_borrow_amount":"700","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ACH_USDT","base_min_borrow_amount":"22","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ADA_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AGLD_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIOZ_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALCX_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALGO_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALICE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"APE_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"API3_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"APT_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ARPA_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AR_USDT","base_min_borrow_amount":"0.4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ASR_USDT","base_min_borrow_amount":"0.4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ASTR_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ATA_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ATOM_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"AUCTION_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AUDIO_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVAX_USDT","base_min_borrow_amount":"0.02","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVA_USDT","base_min_borrow_amount":"1.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AXS_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BABYDOGE_USDT","base_min_borrow_amount":"500000000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BADGER_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BAND_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BAT_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BCH_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"BEAM_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BENQI_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BICO_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLZ_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BNB_USDT","base_min_borrow_amount":"0.001","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"BONK_USDT","base_min_borrow_amount":"100000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BSV_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"BTC_USDT","base_min_borrow_amount":"0.00001","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"C98_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CAKE_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CELO_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CELR_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CFX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CHR_USDT","base_min_borrow_amount":"38","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CHZ_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CKB_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COMP_USDT","base_min_borrow_amount":"0.025","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COTI_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CRO_USDT","base_min_borrow_amount":"7","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CRV_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CSPR_USDT","base_min_borrow_amount":"250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CTK_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CTSI_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CVC_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DAO_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DATA_USDT","base_min_borrow_amount":"1200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DEGO_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DENT_USDT","base_min_borrow_amount":"15000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DIA_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DODO_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOGE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"DOG_USDT","base_min_borrow_amount":"250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOT_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"DYDX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EDEN_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EGLD_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ENJ_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ENS_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ERG_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ETC_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"ETHW_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ETH_USDT","base_min_borrow_amount":"0.001","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"FARM_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FET_USDT","base_min_borrow_amount":"1.8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FIDA_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FIL_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"FIS_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLOKI_USDT","base_min_borrow_amount":"5000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLOW_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLR_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLUX_USDT","base_min_borrow_amount":"6","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FORTH_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FTT_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GALA_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GAS_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GHST_USDT","base_min_borrow_amount":"7","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GLMR_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GMT_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GNO_USDT","base_min_borrow_amount":"0.006","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GRT_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GT_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HBAR_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HFT_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HIGH_USDT","base_min_borrow_amount":"2.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HNT_USDT","base_min_borrow_amount":"0.8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOOK_USDT","base_min_borrow_amount":"70","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOT_USDT","base_min_borrow_amount":"480","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ICP_USDT","base_min_borrow_amount":"0.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ICX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IMX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"INJ_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IOST_USDT","base_min_borrow_amount":"300","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IOTA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IOTX_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JASMY_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JST_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KAVA_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KNC_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KSM_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"LDO_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LEO_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LINK_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"LIT_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LPT_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LRC_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LTC_USDT","base_min_borrow_amount":"0.02","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"LUNC_USDT","base_min_borrow_amount":"18750","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAGIC_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MANA_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MASK_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MBOX_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"METIS_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MINA_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MLN_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOVR_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MTL_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NEAR_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NEO_USDT","base_min_borrow_amount":"0.05","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NEXO_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NFT_USDT","base_min_borrow_amount":"3000000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NKN_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NMR_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NYM_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OGN_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OKB_USDT","base_min_borrow_amount":"0.02","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"OMI_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ONE_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ONG_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ONT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OP_USDT","base_min_borrow_amount":"7","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OSMO_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OXT_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PEOPLE_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PERP_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PHA_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POLS_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POND_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PUNDIX_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PYR_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QNT_USDT","base_min_borrow_amount":"0.02","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QTUM_USDT","base_min_borrow_amount":"0.4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RACA_USDT","base_min_borrow_amount":"50000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RAD_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RARE_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RAY_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"REQ_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RLC_USDT","base_min_borrow_amount":"0.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ROSE_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RSR_USDT","base_min_borrow_amount":"180","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RSS3_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RUNE_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RVN_USDT","base_min_borrow_amount":"65","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SAND_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SANTOS_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SC_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SHIB_USDT","base_min_borrow_amount":"170000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SKL_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SLP_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SNT_USDT","base_min_borrow_amount":"60","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SNX_USDT","base_min_borrow_amount":"0.6","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SOL_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPELL_USDT","base_min_borrow_amount":"4600","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SSV_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STG_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STORJ_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STX_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUN_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUPER_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUSHI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"SWEAT_USDT","base_min_borrow_amount":"26000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SXP_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SYS_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TFUEL_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"THETA_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TKO_USDT","base_min_borrow_amount":"6","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TLM_USDT","base_min_borrow_amount":"250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TRU_USDT","base_min_borrow_amount":"450","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TRX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"TWT_USDT","base_min_borrow_amount":"1.8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"T_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"UNI_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"USDC_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"USDD_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VELO_USDT","base_min_borrow_amount":"300","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VET_USDT","base_min_borrow_amount":"18","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VOXEL_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VTHO_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WAVES_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WAXP_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WEMIX_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WILD_USDT","base_min_borrow_amount":"60","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WIN_USDT","base_min_borrow_amount":"10000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WOO_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WXT_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XCH_USDT","base_min_borrow_amount":"0.25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XCN_USDT","base_min_borrow_amount":"130","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XEC_USDT","base_min_borrow_amount":"18000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XLM_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XPR_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XRP_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"10"},{"currency_pair":"XTZ_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XVS_USDT","base_min_borrow_amount":"0.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XYO_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"YFI_USDT","base_min_borrow_amount":"0.0001","quote_min_borrow_amount":"1","leverage":"5"},{"currency_pair":"YGG_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZIL_USDT","base_min_borrow_amount":"135","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZRX_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CORE_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RPL_USDT","base_min_borrow_amount":"0.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLUR_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LQTY_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ID_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SYN_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ARB_USDT","base_min_borrow_amount":"1.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JOE_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OG_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIDOGE_USDT","base_min_borrow_amount":"99999999900","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PEPE_USDT","base_min_borrow_amount":"50000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POLYX_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GNS_USDT","base_min_borrow_amount":"0.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TURBO_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ORDI_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CETUS_USDT","base_min_borrow_amount":"12","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EDU_USDT","base_min_borrow_amount":"12","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LADYS_USDT","base_min_borrow_amount":"150000000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XRD_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KAS_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PENDLE_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ARKM_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WLD_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SEI_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CYBER_USDT","base_min_borrow_amount":"0.25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BIGTIME_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ORBS_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TIA_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SATS_USDT","base_min_borrow_amount":"12807351","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RATS_USDT","base_min_borrow_amount":"113680","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PYTH_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLIP_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JTO_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XAI_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MANTA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TRB_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAV_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ONDO_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"UMA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALT_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JUP_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZETA_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DYM_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAVIA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BOBA_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FIO_USDT","base_min_borrow_amount":"250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PIXEL_USDT","base_min_borrow_amount":"23.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STRK_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AGI_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PNG_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PORTAL_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WAXL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MYRO_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WIF_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SCA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FORT_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AEVO_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BOME_USDT","base_min_borrow_amount":"2200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PRIME_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ETHFI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZK_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IQ_USDT","base_min_borrow_amount":"800","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IDEX_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TOKEN_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TON_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GFI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MPLX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VELODROME_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AERO_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MNT_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ROOT_USDT","base_min_borrow_amount":"10000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XDC_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MEW_USDT","base_min_borrow_amount":"2000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ENA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"W_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ELA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DEGEN_USDT","base_min_borrow_amount":"300","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZEUS_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TNSR_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SAGA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TAO_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PRCL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MERL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AKT_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SAFE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WEN_USDT","base_min_borrow_amount":"50000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COQ_USDT","base_min_borrow_amount":"4000000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"REZ_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BB_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NOT_USDT","base_min_borrow_amount":"2000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAPO_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DRIFT_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BRETT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VINU_USDT","base_min_borrow_amount":"400000000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MON_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TAIKO_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALU_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOG_USDT","base_min_borrow_amount":"7241150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PONKE_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IO_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ATH_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LISTA_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPEC_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZRO_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PIRATE_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZKJ_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NRN_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLAST_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POPCAT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KMNO_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TAI_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QUBIC_USDT","base_min_borrow_amount":"500000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"A8_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"APU_USDT","base_min_borrow_amount":"30000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BANANA_USDT","base_min_borrow_amount":"0.2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVAIL_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LRDS_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RENDER_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"L3_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MEME_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POWR_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"G_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUNDOG_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CAT_USDT","base_min_borrow_amount":"100000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOGS_USDT","base_min_borrow_amount":"100000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ORDER_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CLOUD_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FB_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALEO_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CATI_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HMSTR_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EIGEN_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOODENG_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"USTC_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HIPPO_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CARV_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOODENGETH_USDT","base_min_borrow_amount":"100000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DEEP_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PUFFER_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DBR_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GOAT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LUMIA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SCR_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WELL_USDT","base_min_borrow_amount":"120","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PROM_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GRASS_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AURORA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KAIA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COW_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TRUMP_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SWELL_USDT","base_min_borrow_amount":"320","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PNUT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SD_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ACT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BEAMX_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PEAQ_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOGEGOV_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CTC_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BAN_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PAAL_USDT","base_min_borrow_amount":"60","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NS_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"USDE_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SCRT_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LMWR_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OL_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VIRTUAL_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CHILLGUY_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MORPHO_USDT","base_min_borrow_amount":"0.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZRC_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HSK_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"THE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SUPRA_USDT","base_min_borrow_amount":"1250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CHEEMS_USDT","base_min_borrow_amount":"1327845","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZBCN_USDT","base_min_borrow_amount":"800","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CVX_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIXBT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SWFTC_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CPOOL_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AMP_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XION_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ACX_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ORCA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"F_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPX_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BGSC_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOVE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KOMA_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ME_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZEREBRO_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ADX_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLUE_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MOCA_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VANA_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PENGU_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"USUAL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SYRUP_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CGPT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RDNT_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FARTCOIN_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SOON_USDT","base_min_borrow_amount":"3.3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HYPE_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HIVE_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DEXE_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GRIFFAIN_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLOCK_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KEKIUS_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVAAI_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COOKIE_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BIO_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SWARMS_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALCH_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SONIC_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LAVA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"POWER_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"D_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DRV_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GPS_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DUCK_USDT","base_min_borrow_amount":"7000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SOLV_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NC_USDT","base_min_borrow_amount":"400","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ARC_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MELANIA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"S_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OBT_USDT","base_min_borrow_amount":"520","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PLUME_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"J_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QKC_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VINE_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ANIME_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PIPPIN_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SOSO_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TOSHI_USDT","base_min_borrow_amount":"5900","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VVV_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JELLYJELLY_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BERA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FUEL_USDT","base_min_borrow_amount":"600","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ANLOG_USDT","base_min_borrow_amount":"12000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"B3_USDT","base_min_borrow_amount":"1600","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LAYER_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IP_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SHELL_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BROCCOLI_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GLM_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KAITO_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIC_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ROAM_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RED_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VIC_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MUBARAK_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BMT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TUT_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FORM_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BR_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PAXG_USDT","base_min_borrow_amount":"0.001","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SIREN_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NIL_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PARTI_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BID_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WAL_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLUID_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BANANAS31_USDT","base_min_borrow_amount":"180","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GUN_USDT","base_min_borrow_amount":"120","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PUMP_USDT","base_min_borrow_amount":"180","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FDUSD_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STO_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XAUT_USDT","base_min_borrow_amount":"0.001","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BABY_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PROMPT_USDT","base_min_borrow_amount":"6","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FHE_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RFC_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KERNEL_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WCT_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BANK_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EPT_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HYPER_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZORA_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"INIT_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOLO_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SIGN_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GORK_USDT","base_min_borrow_amount":"310","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"B2_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HAEDAL_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OBOL_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SXT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DOOD_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NXPC_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HUMA_USDT","base_min_borrow_amount":"12","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"A_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SOPH_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BDXN_USDT","base_min_borrow_amount":"500","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOME_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RESOLV_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IDOL_USDT","base_min_borrow_amount":"55","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SQD_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPK_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAT_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MGO_USDT","base_min_borrow_amount":"32","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DMC_USDT","base_min_borrow_amount":"1000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NEWT_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"H_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CESS_USDT","base_min_borrow_amount":"132","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SAHARA_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FRAG_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ICNT_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CROSS_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIN_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ES_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ERA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TAKER_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"C_USDT","base_min_borrow_amount":"3","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TA_USDT","base_min_borrow_amount":"8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZKWASM_USDT","base_min_borrow_amount":"150","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XNY_USDT","base_min_borrow_amount":"230","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ASP_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TAG_USDT","base_min_borrow_amount":"1550","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ESPORTS_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NERO_USDT","base_min_borrow_amount":"80","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IKA_USDT","base_min_borrow_amount":"45","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TREE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"A2Z_USDT","base_min_borrow_amount":"1650","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NAORIS_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RHEA_USDT","base_min_borrow_amount":"30","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TOWNS_USDT","base_min_borrow_amount":"250","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PROVE_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IN_USDT","base_min_borrow_amount":"12","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"YALA_USDT","base_min_borrow_amount":"5000","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WAI_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PUBLIC_USDT","base_min_borrow_amount":"18","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TCOM_USDT","base_min_borrow_amount":"28","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIO_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"YZY_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ARIA_USDT","base_min_borrow_amount":"1.8","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XPIN_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CAMP_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BTR_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MITO_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NODE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WLFI_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"Q_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PTB_USDT","base_min_borrow_amount":"300","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OPEN_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MYX_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVNT_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LINEA_USDT","base_min_borrow_amount":"320","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOLO_USDT","base_min_borrow_amount":"20","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"UB_USDT","base_min_borrow_amount":"7","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZKC_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PORTALS_USDT","base_min_borrow_amount":"60","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BARD_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ASTER_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"0G_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HEMI_USDT","base_min_borrow_amount":"120","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XPL_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HANA_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MIRA_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LIGHT_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"XAN_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FF_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"VFY_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AIA_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NOM_USDT","base_min_borrow_amount":"200","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"2Z_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EVAA_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KGEN_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COAI_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EUL_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ENSO_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FLK_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LAB_USDT","base_min_borrow_amount":"1.5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"YB_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SKY_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RECALL_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ZBT_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLUAI_USDT","base_min_borrow_amount":"50","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TURTLE_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CGN_USDT","base_min_borrow_amount":"57.142857","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MET_USDT","base_min_borrow_amount":"1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ON_USDT","base_min_borrow_amount":"3.297065","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COMMON_USDT","base_min_borrow_amount":"3700","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AT_USDT","base_min_borrow_amount":"2.389486","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"KITE_USDT","base_min_borrow_amount":"10","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MMT_USDT","base_min_borrow_amount":"2.575328","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TRUST_USDT","base_min_borrow_amount":"2.300595","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SAPIEN_USDT","base_min_borrow_amount":"4","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GIGGLE_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"UAI_USDT","base_min_borrow_amount":"5.698005","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CC_USDT","base_min_borrow_amount":"6","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALLO_USDT","base_min_borrow_amount":"13.693","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CLANKER_USDT","base_min_borrow_amount":"0.012009","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BEAT_USDT","base_min_borrow_amount":"4.208577","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PIEVERSE_USDT","base_min_borrow_amount":"0.7002801","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BOB_USDT","base_min_borrow_amount":"44.120891","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RLS_USDT","base_min_borrow_amount":"354.60992","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"STABLE_USDT","base_min_borrow_amount":"56","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NIGHT_USDT","base_min_borrow_amount":"11.12347","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"WET_USDT","base_min_borrow_amount":"6.530399","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ALMANAK_USDT","base_min_borrow_amount":"57.924","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"US_USDT","base_min_borrow_amount":"53.050397","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RAVE_USDT","base_min_borrow_amount":"2.022981","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAGMA_USDT","base_min_borrow_amount":"6.451612","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IR_USDT","base_min_borrow_amount":"37.83579","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GUA_USDT","base_min_borrow_amount":"4.408782","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BREV_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"我踏马来了_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"DN_USDT","base_min_borrow_amount":"7.66107","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"老子_USDT","base_min_borrow_amount":"1590.07791","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"小股东_USDT","base_min_borrow_amount":"3058.10397","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"FRAX_USDT","base_min_borrow_amount":"1.118568","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OWL_USDT","base_min_borrow_amount":"169.40538","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ACU_USDT","base_min_borrow_amount":"9.013881","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GWEI_USDT","base_min_borrow_amount":"41.493775","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SKR_USDT","base_min_borrow_amount":"25","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IMU_USDT","base_min_borrow_amount":"101.187946","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CRCLX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GOOGLON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NVDAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SLVON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ACNON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"JPMON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SBUXON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BABAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AMDON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AVGOON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"METAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"LMTON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ABTON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TSLAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CVXON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MSTRON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"TSLAX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AAPLON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IEFAON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AMZNON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PGON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPYON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QQQON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PEPON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"UNHON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PLTRON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COINX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOODON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CRCLON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GOOGLX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"NVDAX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"METAX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MSTRX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AAPLX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AMZNX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"SPYX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"QQQX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"COINON_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"HOODX_USDT","base_min_borrow_amount":"0.01","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PENGUIN_USDT","base_min_borrow_amount":"137.36263","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"INX_USDT","base_min_borrow_amount":"100","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"RNBW_USDT","base_min_borrow_amount":"16.50165","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ESP_USDT","base_min_borrow_amount":"15","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"AZTEC_USDT","base_min_borrow_amount":"47","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MANTRA_USDT","base_min_borrow_amount":"58.962264","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"龙虾_USDT","base_min_borrow_amount":"51.088178","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"IAUON_USDT","base_min_borrow_amount":"0.1","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"CFG_USDT","base_min_borrow_amount":"5","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"ROBO_USDT","base_min_borrow_amount":"40","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"PRL_USDT","base_min_borrow_amount":"8.378016","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"EDGEX_USDT","base_min_borrow_amount":"2","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"GENIUS_USDT","base_min_borrow_amount":"1.490312","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"OPG_USDT","base_min_borrow_amount":"3.580379","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"BLEND_USDT","base_min_borrow_amount":"4.657228","quote_min_borrow_amount":"1","leverage":"3"},{"currency_pair":"MEGA_USDT","base_min_borrow_amount":"5.00726","quote_min_borrow_amount":"1","leverage":"3"}]
+[
+  {
+    "currency_pair": "1INCH_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AAVE_USDT",
+    "base_min_borrow_amount": "0.003",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "ACA_USDT",
+    "base_min_borrow_amount": "700",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ACH_USDT",
+    "base_min_borrow_amount": "22",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ADA_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AGLD_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIOZ_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALCX_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALGO_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALICE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "APE_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "API3_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "APT_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ARPA_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AR_USDT",
+    "base_min_borrow_amount": "0.4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ASR_USDT",
+    "base_min_borrow_amount": "0.4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ASTR_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ATA_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ATOM_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "AUCTION_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AUDIO_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVAX_USDT",
+    "base_min_borrow_amount": "0.02",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVA_USDT",
+    "base_min_borrow_amount": "1.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AXS_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BABYDOGE_USDT",
+    "base_min_borrow_amount": "500000000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BADGER_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BAND_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BAT_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BCH_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "BEAM_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BENQI_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BICO_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLZ_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BNB_USDT",
+    "base_min_borrow_amount": "0.001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "BONK_USDT",
+    "base_min_borrow_amount": "100000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BSV_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "BTC_USDT",
+    "base_min_borrow_amount": "0.00001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "C98_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CAKE_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CELO_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CELR_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CFX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CHR_USDT",
+    "base_min_borrow_amount": "38",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CHZ_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CKB_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COMP_USDT",
+    "base_min_borrow_amount": "0.025",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COTI_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CRO_USDT",
+    "base_min_borrow_amount": "7",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CRV_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CSPR_USDT",
+    "base_min_borrow_amount": "250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CTK_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CTSI_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CVC_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DAO_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DATA_USDT",
+    "base_min_borrow_amount": "1200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DEGO_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DENT_USDT",
+    "base_min_borrow_amount": "15000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DIA_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DODO_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOGE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "DOG_USDT",
+    "base_min_borrow_amount": "250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOT_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "DYDX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EDEN_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EGLD_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ENJ_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ENS_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ERG_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ETC_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "ETHW_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ETH_USDT",
+    "base_min_borrow_amount": "0.001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "FARM_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FET_USDT",
+    "base_min_borrow_amount": "1.8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FIDA_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FIL_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "FIS_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLOKI_USDT",
+    "base_min_borrow_amount": "5000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLOW_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLR_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLUX_USDT",
+    "base_min_borrow_amount": "6",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FORTH_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FTT_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GALA_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GAS_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GHST_USDT",
+    "base_min_borrow_amount": "7",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GLMR_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GMT_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GNO_USDT",
+    "base_min_borrow_amount": "0.006",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GRT_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GT_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HBAR_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HFT_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HIGH_USDT",
+    "base_min_borrow_amount": "2.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HNT_USDT",
+    "base_min_borrow_amount": "0.8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOOK_USDT",
+    "base_min_borrow_amount": "70",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOT_USDT",
+    "base_min_borrow_amount": "480",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ICP_USDT",
+    "base_min_borrow_amount": "0.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ICX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IMX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "INJ_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IOST_USDT",
+    "base_min_borrow_amount": "300",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IOTA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IOTX_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JASMY_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JST_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KAVA_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KNC_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KSM_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "LDO_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LEO_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LINK_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "LIT_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LPT_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LRC_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LTC_USDT",
+    "base_min_borrow_amount": "0.02",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "LUNC_USDT",
+    "base_min_borrow_amount": "18750",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAGIC_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MANA_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MASK_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MBOX_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "METIS_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MINA_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MLN_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOVR_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MTL_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NEAR_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NEO_USDT",
+    "base_min_borrow_amount": "0.05",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NEXO_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NFT_USDT",
+    "base_min_borrow_amount": "3000000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NKN_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NMR_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NYM_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OGN_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OKB_USDT",
+    "base_min_borrow_amount": "0.02",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "OMI_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ONE_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ONG_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ONT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OP_USDT",
+    "base_min_borrow_amount": "7",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OSMO_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OXT_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PEOPLE_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PERP_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PHA_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POLS_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POND_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PUNDIX_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PYR_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QNT_USDT",
+    "base_min_borrow_amount": "0.02",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QTUM_USDT",
+    "base_min_borrow_amount": "0.4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RACA_USDT",
+    "base_min_borrow_amount": "50000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RAD_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RARE_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RAY_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "REQ_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RLC_USDT",
+    "base_min_borrow_amount": "0.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ROSE_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RSR_USDT",
+    "base_min_borrow_amount": "180",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RSS3_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RUNE_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RVN_USDT",
+    "base_min_borrow_amount": "65",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SAND_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SANTOS_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SC_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SHIB_USDT",
+    "base_min_borrow_amount": "170000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SKL_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SLP_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SNT_USDT",
+    "base_min_borrow_amount": "60",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SNX_USDT",
+    "base_min_borrow_amount": "0.6",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SOL_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPELL_USDT",
+    "base_min_borrow_amount": "4600",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SSV_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STG_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STORJ_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STX_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUN_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUPER_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUSHI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "SWEAT_USDT",
+    "base_min_borrow_amount": "26000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SXP_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SYS_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TFUEL_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "THETA_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TKO_USDT",
+    "base_min_borrow_amount": "6",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TLM_USDT",
+    "base_min_borrow_amount": "250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TRU_USDT",
+    "base_min_borrow_amount": "450",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TRX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "TWT_USDT",
+    "base_min_borrow_amount": "1.8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "T_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "UNI_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "USDC_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "USDD_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VELO_USDT",
+    "base_min_borrow_amount": "300",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VET_USDT",
+    "base_min_borrow_amount": "18",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VOXEL_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VTHO_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WAVES_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WAXP_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WEMIX_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WILD_USDT",
+    "base_min_borrow_amount": "60",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WIN_USDT",
+    "base_min_borrow_amount": "10000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WOO_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WXT_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XCH_USDT",
+    "base_min_borrow_amount": "0.25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XCN_USDT",
+    "base_min_borrow_amount": "130",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XEC_USDT",
+    "base_min_borrow_amount": "18000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XLM_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XPR_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XRP_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "10"
+  },
+  {
+    "currency_pair": "XTZ_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XVS_USDT",
+    "base_min_borrow_amount": "0.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XYO_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "YFI_USDT",
+    "base_min_borrow_amount": "0.0001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "5"
+  },
+  {
+    "currency_pair": "YGG_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZIL_USDT",
+    "base_min_borrow_amount": "135",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZRX_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CORE_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RPL_USDT",
+    "base_min_borrow_amount": "0.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLUR_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LQTY_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ID_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SYN_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ARB_USDT",
+    "base_min_borrow_amount": "1.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JOE_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OG_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIDOGE_USDT",
+    "base_min_borrow_amount": "99999999900",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PEPE_USDT",
+    "base_min_borrow_amount": "50000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POLYX_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GNS_USDT",
+    "base_min_borrow_amount": "0.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TURBO_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ORDI_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CETUS_USDT",
+    "base_min_borrow_amount": "12",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EDU_USDT",
+    "base_min_borrow_amount": "12",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LADYS_USDT",
+    "base_min_borrow_amount": "150000000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XRD_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KAS_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PENDLE_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ARKM_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WLD_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SEI_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CYBER_USDT",
+    "base_min_borrow_amount": "0.25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BIGTIME_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ORBS_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TIA_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SATS_USDT",
+    "base_min_borrow_amount": "12807351",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RATS_USDT",
+    "base_min_borrow_amount": "113680",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PYTH_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLIP_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JTO_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XAI_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MANTA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TRB_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAV_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ONDO_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "UMA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALT_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JUP_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZETA_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DYM_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAVIA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BOBA_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FIO_USDT",
+    "base_min_borrow_amount": "250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PIXEL_USDT",
+    "base_min_borrow_amount": "23.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STRK_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AGI_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PNG_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PORTAL_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WAXL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MYRO_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WIF_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SCA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FORT_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AEVO_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BOME_USDT",
+    "base_min_borrow_amount": "2200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PRIME_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ETHFI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZK_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IQ_USDT",
+    "base_min_borrow_amount": "800",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IDEX_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TOKEN_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TON_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GFI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MPLX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VELODROME_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AERO_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MNT_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ROOT_USDT",
+    "base_min_borrow_amount": "10000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XDC_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MEW_USDT",
+    "base_min_borrow_amount": "2000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ENA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "W_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ELA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DEGEN_USDT",
+    "base_min_borrow_amount": "300",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZEUS_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TNSR_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SAGA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TAO_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PRCL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MERL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AKT_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SAFE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WEN_USDT",
+    "base_min_borrow_amount": "50000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COQ_USDT",
+    "base_min_borrow_amount": "4000000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "REZ_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BB_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NOT_USDT",
+    "base_min_borrow_amount": "2000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAPO_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DRIFT_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BRETT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VINU_USDT",
+    "base_min_borrow_amount": "400000000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MON_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TAIKO_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALU_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOG_USDT",
+    "base_min_borrow_amount": "7241150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PONKE_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IO_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ATH_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LISTA_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPEC_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZRO_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PIRATE_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZKJ_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NRN_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLAST_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POPCAT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KMNO_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TAI_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QUBIC_USDT",
+    "base_min_borrow_amount": "500000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "A8_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "APU_USDT",
+    "base_min_borrow_amount": "30000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BANANA_USDT",
+    "base_min_borrow_amount": "0.2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVAIL_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LRDS_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RENDER_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "L3_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MEME_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POWR_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "G_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUNDOG_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CAT_USDT",
+    "base_min_borrow_amount": "100000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOGS_USDT",
+    "base_min_borrow_amount": "100000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ORDER_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CLOUD_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FB_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALEO_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CATI_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HMSTR_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EIGEN_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOODENG_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "USTC_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HIPPO_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CARV_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOODENGETH_USDT",
+    "base_min_borrow_amount": "100000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DEEP_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PUFFER_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DBR_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GOAT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LUMIA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SCR_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WELL_USDT",
+    "base_min_borrow_amount": "120",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PROM_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GRASS_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AURORA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KAIA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COW_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TRUMP_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SWELL_USDT",
+    "base_min_borrow_amount": "320",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PNUT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SD_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ACT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BEAMX_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PEAQ_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOGEGOV_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CTC_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BAN_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PAAL_USDT",
+    "base_min_borrow_amount": "60",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NS_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "USDE_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SCRT_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LMWR_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OL_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VIRTUAL_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CHILLGUY_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MORPHO_USDT",
+    "base_min_borrow_amount": "0.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZRC_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HSK_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "THE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SUPRA_USDT",
+    "base_min_borrow_amount": "1250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CHEEMS_USDT",
+    "base_min_borrow_amount": "1327845",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZBCN_USDT",
+    "base_min_borrow_amount": "800",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CVX_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIXBT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SWFTC_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CPOOL_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AMP_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XION_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ACX_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ORCA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "F_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPX_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BGSC_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOVE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KOMA_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ME_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZEREBRO_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ADX_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLUE_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MOCA_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VANA_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PENGU_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "USUAL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SYRUP_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CGPT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RDNT_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FARTCOIN_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SOON_USDT",
+    "base_min_borrow_amount": "3.3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HYPE_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HIVE_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DEXE_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GRIFFAIN_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLOCK_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KEKIUS_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVAAI_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COOKIE_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BIO_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SWARMS_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALCH_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SONIC_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LAVA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "POWER_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "D_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DRV_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GPS_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DUCK_USDT",
+    "base_min_borrow_amount": "7000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SOLV_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NC_USDT",
+    "base_min_borrow_amount": "400",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ARC_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MELANIA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "S_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OBT_USDT",
+    "base_min_borrow_amount": "520",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PLUME_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "J_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QKC_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VINE_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ANIME_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PIPPIN_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SOSO_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TOSHI_USDT",
+    "base_min_borrow_amount": "5900",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VVV_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JELLYJELLY_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BERA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FUEL_USDT",
+    "base_min_borrow_amount": "600",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ANLOG_USDT",
+    "base_min_borrow_amount": "12000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "B3_USDT",
+    "base_min_borrow_amount": "1600",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LAYER_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IP_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SHELL_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BROCCOLI_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GLM_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KAITO_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIC_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ROAM_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RED_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VIC_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MUBARAK_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BMT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TUT_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FORM_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BR_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PAXG_USDT",
+    "base_min_borrow_amount": "0.001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SIREN_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NIL_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PARTI_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BID_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WAL_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLUID_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BANANAS31_USDT",
+    "base_min_borrow_amount": "180",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GUN_USDT",
+    "base_min_borrow_amount": "120",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PUMP_USDT",
+    "base_min_borrow_amount": "180",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FDUSD_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STO_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XAUT_USDT",
+    "base_min_borrow_amount": "0.001",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BABY_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PROMPT_USDT",
+    "base_min_borrow_amount": "6",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FHE_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RFC_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KERNEL_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WCT_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BANK_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EPT_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HYPER_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZORA_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "INIT_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOLO_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SIGN_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GORK_USDT",
+    "base_min_borrow_amount": "310",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "B2_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HAEDAL_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OBOL_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SXT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DOOD_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NXPC_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HUMA_USDT",
+    "base_min_borrow_amount": "12",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "A_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SOPH_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BDXN_USDT",
+    "base_min_borrow_amount": "500",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOME_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RESOLV_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IDOL_USDT",
+    "base_min_borrow_amount": "55",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SQD_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPK_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAT_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MGO_USDT",
+    "base_min_borrow_amount": "32",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DMC_USDT",
+    "base_min_borrow_amount": "1000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NEWT_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "H_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CESS_USDT",
+    "base_min_borrow_amount": "132",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SAHARA_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FRAG_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ICNT_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CROSS_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIN_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ES_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ERA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TAKER_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "C_USDT",
+    "base_min_borrow_amount": "3",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TA_USDT",
+    "base_min_borrow_amount": "8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZKWASM_USDT",
+    "base_min_borrow_amount": "150",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XNY_USDT",
+    "base_min_borrow_amount": "230",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ASP_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TAG_USDT",
+    "base_min_borrow_amount": "1550",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ESPORTS_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NERO_USDT",
+    "base_min_borrow_amount": "80",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IKA_USDT",
+    "base_min_borrow_amount": "45",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TREE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "A2Z_USDT",
+    "base_min_borrow_amount": "1650",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NAORIS_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RHEA_USDT",
+    "base_min_borrow_amount": "30",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TOWNS_USDT",
+    "base_min_borrow_amount": "250",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PROVE_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IN_USDT",
+    "base_min_borrow_amount": "12",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "YALA_USDT",
+    "base_min_borrow_amount": "5000",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WAI_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PUBLIC_USDT",
+    "base_min_borrow_amount": "18",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TCOM_USDT",
+    "base_min_borrow_amount": "28",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIO_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "YZY_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ARIA_USDT",
+    "base_min_borrow_amount": "1.8",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XPIN_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CAMP_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BTR_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MITO_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NODE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WLFI_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "Q_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PTB_USDT",
+    "base_min_borrow_amount": "300",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OPEN_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MYX_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVNT_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LINEA_USDT",
+    "base_min_borrow_amount": "320",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOLO_USDT",
+    "base_min_borrow_amount": "20",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "UB_USDT",
+    "base_min_borrow_amount": "7",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZKC_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PORTALS_USDT",
+    "base_min_borrow_amount": "60",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BARD_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ASTER_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "0G_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HEMI_USDT",
+    "base_min_borrow_amount": "120",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XPL_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HANA_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MIRA_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LIGHT_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "XAN_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FF_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "VFY_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AIA_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NOM_USDT",
+    "base_min_borrow_amount": "200",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "2Z_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EVAA_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KGEN_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COAI_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EUL_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ENSO_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FLK_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LAB_USDT",
+    "base_min_borrow_amount": "1.5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "YB_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SKY_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RECALL_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ZBT_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLUAI_USDT",
+    "base_min_borrow_amount": "50",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TURTLE_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CGN_USDT",
+    "base_min_borrow_amount": "57.142857",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MET_USDT",
+    "base_min_borrow_amount": "1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ON_USDT",
+    "base_min_borrow_amount": "3.297065",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COMMON_USDT",
+    "base_min_borrow_amount": "3700",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AT_USDT",
+    "base_min_borrow_amount": "2.389486",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "KITE_USDT",
+    "base_min_borrow_amount": "10",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MMT_USDT",
+    "base_min_borrow_amount": "2.575328",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TRUST_USDT",
+    "base_min_borrow_amount": "2.300595",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SAPIEN_USDT",
+    "base_min_borrow_amount": "4",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GIGGLE_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "UAI_USDT",
+    "base_min_borrow_amount": "5.698005",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CC_USDT",
+    "base_min_borrow_amount": "6",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALLO_USDT",
+    "base_min_borrow_amount": "13.693",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CLANKER_USDT",
+    "base_min_borrow_amount": "0.012009",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BEAT_USDT",
+    "base_min_borrow_amount": "4.208577",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PIEVERSE_USDT",
+    "base_min_borrow_amount": "0.7002801",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BOB_USDT",
+    "base_min_borrow_amount": "44.120891",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RLS_USDT",
+    "base_min_borrow_amount": "354.60992",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "STABLE_USDT",
+    "base_min_borrow_amount": "56",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NIGHT_USDT",
+    "base_min_borrow_amount": "11.12347",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "WET_USDT",
+    "base_min_borrow_amount": "6.530399",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ALMANAK_USDT",
+    "base_min_borrow_amount": "57.924",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "US_USDT",
+    "base_min_borrow_amount": "53.050397",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RAVE_USDT",
+    "base_min_borrow_amount": "2.022981",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAGMA_USDT",
+    "base_min_borrow_amount": "6.451612",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IR_USDT",
+    "base_min_borrow_amount": "37.83579",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GUA_USDT",
+    "base_min_borrow_amount": "4.408782",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BREV_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "我踏马来了_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "DN_USDT",
+    "base_min_borrow_amount": "7.66107",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "老子_USDT",
+    "base_min_borrow_amount": "1590.07791",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "小股东_USDT",
+    "base_min_borrow_amount": "3058.10397",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "FRAX_USDT",
+    "base_min_borrow_amount": "1.118568",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OWL_USDT",
+    "base_min_borrow_amount": "169.40538",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ACU_USDT",
+    "base_min_borrow_amount": "9.013881",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GWEI_USDT",
+    "base_min_borrow_amount": "41.493775",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SKR_USDT",
+    "base_min_borrow_amount": "25",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IMU_USDT",
+    "base_min_borrow_amount": "101.187946",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CRCLX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GOOGLON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NVDAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SLVON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ACNON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "JPMON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SBUXON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BABAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AMDON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AVGOON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "METAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "LMTON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ABTON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TSLAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CVXON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MSTRON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "TSLAX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AAPLON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IEFAON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AMZNON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PGON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPYON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QQQON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PEPON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "UNHON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PLTRON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COINX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOODON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CRCLON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GOOGLX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "NVDAX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "METAX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MSTRX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AAPLX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AMZNX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "SPYX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "QQQX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "COINON_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "HOODX_USDT",
+    "base_min_borrow_amount": "0.01",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PENGUIN_USDT",
+    "base_min_borrow_amount": "137.36263",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "INX_USDT",
+    "base_min_borrow_amount": "100",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "RNBW_USDT",
+    "base_min_borrow_amount": "16.50165",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ESP_USDT",
+    "base_min_borrow_amount": "15",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "AZTEC_USDT",
+    "base_min_borrow_amount": "47",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MANTRA_USDT",
+    "base_min_borrow_amount": "58.962264",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "龙虾_USDT",
+    "base_min_borrow_amount": "51.088178",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "IAUON_USDT",
+    "base_min_borrow_amount": "0.1",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "CFG_USDT",
+    "base_min_borrow_amount": "5",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "ROBO_USDT",
+    "base_min_borrow_amount": "40",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "PRL_USDT",
+    "base_min_borrow_amount": "8.378016",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "EDGEX_USDT",
+    "base_min_borrow_amount": "2",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "GENIUS_USDT",
+    "base_min_borrow_amount": "1.490312",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "OPG_USDT",
+    "base_min_borrow_amount": "3.580379",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "BLEND_USDT",
+    "base_min_borrow_amount": "4.657228",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  },
+  {
+    "currency_pair": "MEGA_USDT",
+    "base_min_borrow_amount": "5.00726",
+    "quote_min_borrow_amount": "1",
+    "leverage": "3"
+  }
+]

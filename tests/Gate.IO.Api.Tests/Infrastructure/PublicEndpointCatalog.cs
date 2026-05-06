@@ -16,7 +16,7 @@ internal static class PublicEndpointCatalog
 
         Entry("Margin", "Isolated margin currency pairs", "GET", "/margin/uni/currency_pairs", "isolated-margin", "Margin/currency_pairs.json"),
         Entry("Margin", "Isolated margin currency pair", "GET", "/margin/uni/currency_pairs/BTC_USDT", "isolated-margin", "Margin/currency_pairs.BTC_USDT.json"),
-        Entry("Margin", "Isolated margin loan tiers", "GET", "/margin/uni/loan_margin_tiers?currency_pair=BTC_USDT", "isolated-margin", "Margin/loan_margin_tiers.BTC_USDT.json"),
+        Entry("Margin", "Isolated margin loan tiers", "GET", "/margin/loan_margin_tiers?currency_pair=BTC_USDT", "isolated-margin", "Margin/loan_margin_tiers.BTC_USDT.json"),
 
         Entry("Spot", "Currencies", "GET", "/spot/currencies", "spot", "Spot/currencies.json", false),
         Entry("Spot", "Currency", "GET", "/spot/currencies/GT", "spot", "Spot/currencies.GT.json"),
@@ -49,7 +49,7 @@ internal static class PublicEndpointCatalog
         Entry("TradFi", "Symbol categories", "GET", "/tradfi/symbols/categories", "tradfi", "TradFi/categories.json"),
         Entry("TradFi", "Symbols", "GET", "/tradfi/symbols", "tradfi", "TradFi/symbols.json"),
         Entry("TradFi", "Ticker", "GET", "/tradfi/symbols/EURUSD/tickers", "tradfi", "TradFi/ticker.EURUSD.json"),
-        Entry("TradFi", "Candlesticks", "GET", "/tradfi/symbols/EURUSD/candlesticks?interval=1m&limit=1", "tradfi", "TradFi/candlesticks.EURUSD.1m.limit1.json"),
+        Entry("TradFi", "Candlesticks", "GET", "/tradfi/symbols/EURUSD/klines?kline_type=1m&limit=1", "tradfi", "TradFi/candlesticks.EURUSD.1m.limit1.json"),
 
         Entry("Delivery", "Contracts", "GET", "/delivery/usdt/contracts", "delivery", "Delivery/contracts.usdt.json"),
         Entry("Delivery", "Contract", "GET", "/delivery/usdt/contracts/{contract}", "delivery", "Delivery/contract.usdt.first.json", capturePathAndQuery: "/delivery/usdt/contracts/AVAX_USDT_20260515"),

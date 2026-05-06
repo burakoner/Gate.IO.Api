@@ -21,9 +21,12 @@ internal static class PublicHttpCapture
             request.Content = new StringContent(requestBodyJson, Encoding.UTF8, "application/json");
 
         using var response = await client.SendAsync(request, ct).ConfigureAwait(false);
-        response.EnsureSuccessStatusCode();
+        var content = await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+        if (!response.IsSuccessStatusCode)
+            throw new HttpRequestException(
+                $"Public capture request failed with HTTP {(int)response.StatusCode} {response.ReasonPhrase}: {content}");
 
-        return await response.Content.ReadAsStringAsync(ct).ConfigureAwait(false);
+        return content;
     }
 
     public static async Task<string> CaptureStringAsync(PublicEndpointCatalogEntry entry, CancellationToken ct = default)
@@ -32,7 +35,16 @@ internal static class PublicHttpCapture
             throw new InvalidOperationException($"{entry.Module} {entry.Name} is not configured for live capture.");
 
         var method = new HttpMethod(entry.Method);
-        return await GetStringAsync(method, entry.CaptureUrl, entry.RequestBodyJson, ct).ConfigureAwait(false);
+        try
+        {
+            return await GetStringAsync(method, entry.CaptureUrl, entry.RequestBodyJson, ct).ConfigureAwait(false);
+        }
+        catch (HttpRequestException exception)
+        {
+            throw new HttpRequestException(
+                $"Failed to capture {entry.Module} {entry.Name} from {entry.Method} {entry.CaptureUrl}.",
+                exception);
+        }
     }
 
     public static async Task<string> CaptureAndWriteFixtureAsync(PublicEndpointCatalogEntry entry, CancellationToken ct = default)

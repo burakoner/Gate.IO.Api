@@ -1,1 +1,21 @@
-[{"basis_value":"0.004","total_size":"11","basis_rate":"0.013854","volume_24h_quote":"101657","volume_24h_settle":"101657","high_24h":"9.576","change_percentage":"2.39","mark_price":"9.453","index_price":"9.4487","volume_24h":"10746","highest_bid":"9.425","last":"9.46","settle_price":"0","lowest_ask":"9.489","contract":"AVAX_USDT_20260515","low_24h":"9.13","volume_24h_base":"10746"}]
+[
+  {
+    "basis_value": "0.008",
+    "total_size": "19",
+    "basis_rate": "0.031065",
+    "volume_24h_quote": "104413",
+    "volume_24h_settle": "104413",
+    "high_24h": "9.576",
+    "change_percentage": "2.20",
+    "mark_price": "9.409",
+    "index_price": "9.4008",
+    "volume_24h": "11096",
+    "highest_bid": "9.408",
+    "last": "9.41",
+    "settle_price": "0",
+    "lowest_ask": "9.414",
+    "contract": "AVAX_USDT_20260515",
+    "low_24h": "9.187",
+    "volume_24h_base": "11096"
+  }
+]

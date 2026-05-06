@@ -1,1 +1,11 @@
-[{"currency_pair":"RAD_USDT","sell_currency":"RAD","buy_currency":"USDT","sell_min_amount":"0.01","sell_max_amount":"3500","buy_min_amount":"1","buy_max_amount":"867"}]
+[
+  {
+    "currency_pair": "ASTER_USDT",
+    "sell_currency": "ASTER",
+    "buy_currency": "USDT",
+    "sell_min_amount": "0.1",
+    "sell_max_amount": "16200",
+    "buy_min_amount": "1",
+    "buy_max_amount": "10000"
+  }
+]

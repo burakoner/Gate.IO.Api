@@ -1,1 +1,67 @@
-[{"index_time":1778018464,"name":"BTC_USDT","index_price":"81483.21"},{"index_time":1778018464,"name":"ETH_USDT","index_price":"2377.51"},{"index_time":1778018464,"name":"LTC_USDT","index_price":"56.5"},{"index_time":1778018464,"name":"SOL_USDT","index_price":"86.842"},{"index_time":1778018464,"name":"DOGE_USDT","index_price":"0.115607"},{"index_time":1778018464,"name":"ADA_USDT","index_price":"0.26443"},{"index_time":1778018464,"name":"TON_USDT","index_price":"1.9711"},{"index_time":1778018464,"name":"XRP_USDT","index_price":"1.4176"},{"index_time":1778018464,"name":"BNB_USDT","index_price":"633.9583"},{"index_time":1778018464,"name":"HYPE_USDT","index_price":"44.324"},{"index_time":1778018464,"name":"SUI_USDT","index_price":"0.9768"},{"index_time":1778018464,"name":"XAUT_USDT","index_price":"4550.74"},{"index_time":1778018464,"name":"XTI_USDT","index_price":"102.52"}]
+[
+  {
+    "index_time": 1778026727,
+    "name": "BTC_USDT",
+    "index_price": "81175.79"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "ETH_USDT",
+    "index_price": "2365.14"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "LTC_USDT",
+    "index_price": "56.46"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "SOL_USDT",
+    "index_price": "86.434"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "DOGE_USDT",
+    "index_price": "0.114977"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "ADA_USDT",
+    "index_price": "0.26225"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "TON_USDT",
+    "index_price": "1.9421"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "XRP_USDT",
+    "index_price": "1.4135"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "BNB_USDT",
+    "index_price": "631.245"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "HYPE_USDT",
+    "index_price": "43.905"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "SUI_USDT",
+    "index_price": "0.96885"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "XAUT_USDT",
+    "index_price": "4587.43"
+  },
+  {
+    "index_time": 1778026727,
+    "name": "XTI_USDT",
+    "index_price": "100.95"
+  }
+]

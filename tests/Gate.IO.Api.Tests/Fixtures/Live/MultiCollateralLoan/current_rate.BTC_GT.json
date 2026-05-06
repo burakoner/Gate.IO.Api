@@ -1,1 +1,10 @@
-[{"currency":"BTC","current_rate":"0.00000067"},{"currency":"GT","current_rate":"0.00000079"}]
+[
+  {
+    "currency": "BTC",
+    "current_rate": "0.00000067"
+  },
+  {
+    "currency": "GT",
+    "current_rate": "0.00000079"
+  }
+]

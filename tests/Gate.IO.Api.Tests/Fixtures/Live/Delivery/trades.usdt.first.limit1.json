@@ -1,1 +1,10 @@
-[{"size":1,"id":25157,"create_time_ms":1778017304.537,"create_time":1778017304.537,"contract":"AVAX_USDT_20260515","price":"9.46"}]
+[
+  {
+    "size": 1,
+    "id": 25783,
+    "create_time_ms": 1778026724.895,
+    "create_time": 1778026724.895,
+    "contract": "AVAX_USDT_20260515",
+    "price": "9.414"
+  }
+]

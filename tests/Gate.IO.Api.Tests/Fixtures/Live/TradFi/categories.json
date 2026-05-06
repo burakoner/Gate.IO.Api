@@ -1,1 +1,38 @@
-﻿{"label":"","data":{"list":[{"category_id":0,"is_favorite":true,"category_name":"Favorites"},{"category_id":1,"is_favorite":false,"category_name":"Metals"},{"category_id":2,"is_favorite":false,"category_name":"Stocks"},{"category_id":3,"is_favorite":false,"category_name":"Indices"},{"category_id":4,"is_favorite":false,"category_name":"Forex"},{"category_id":5,"is_favorite":false,"category_name":"Commodities"}]},"timestamp":1778017970677}
+{
+  "label": "",
+  "data": {
+    "list": [
+      {
+        "category_id": 0,
+        "is_favorite": true,
+        "category_name": "Favorites"
+      },
+      {
+        "category_id": 1,
+        "is_favorite": false,
+        "category_name": "Metals"
+      },
+      {
+        "category_id": 2,
+        "is_favorite": false,
+        "category_name": "Stocks"
+      },
+      {
+        "category_id": 3,
+        "is_favorite": false,
+        "category_name": "Indices"
+      },
+      {
+        "category_id": 4,
+        "is_favorite": false,
+        "category_name": "Forex"
+      },
+      {
+        "category_id": 5,
+        "is_favorite": false,
+        "category_name": "Commodities"
+      }
+    ]
+  },
+  "timestamp": 1778026717707
+}

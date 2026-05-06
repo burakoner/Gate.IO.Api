@@ -1,1 +1,11 @@
-[{"currency_pair":"BTC_USDT","sell_currency":"BTC","buy_currency":"USDT","sell_min_amount":"0.000001","sell_max_amount":"240","buy_min_amount":"1","buy_max_amount":"20000000"}]
+[
+  {
+    "currency_pair": "BTC_USDT",
+    "sell_currency": "BTC",
+    "buy_currency": "USDT",
+    "sell_min_amount": "0.000001",
+    "sell_max_amount": "240",
+    "buy_min_amount": "1",
+    "buy_max_amount": "20000000"
+  }
+]

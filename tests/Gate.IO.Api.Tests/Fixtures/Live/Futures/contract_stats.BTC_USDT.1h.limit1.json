@@ -1,1 +1,28 @@
-[{"time":1778014800,"lsr_taker":1.0227215426576646,"lsr_account":0.5170840746316318,"long_liq_size":1986,"short_liq_size":62429,"open_interest":744491856,"short_liq_usd":508207.02024,"mark_price":81405.6,"top_lsr_size":1.9559686912332075,"top_long_size":60915175,"top_short_size":31143226,"short_liq_amount":6.2429,"long_liq_amount":0.1986,"short_liq_usd_new":508207.02024,"long_liq_usd_new":16167.15216,"open_interest_usd":6060580623.27936,"top_lsr_account":0.64,"top_long_account":48,"top_short_account":75,"long_liq_usd":16167.15216,"long_taker_size":5975133,"short_taker_size":5842385,"long_users":11335,"short_users":21921}]
+[
+  {
+    "time": 1778025600,
+    "lsr_taker": 0.9063705028068394,
+    "lsr_account": 0.5380061115355232,
+    "long_liq_size": 0,
+    "short_liq_size": 82,
+    "open_interest": 730123888,
+    "short_liq_usd": 665.003108,
+    "mark_price": 81097.94,
+    "top_lsr_size": 1.9102313582269552,
+    "top_long_size": 57756869,
+    "top_short_size": 30235536,
+    "short_liq_amount": 0.0082,
+    "long_liq_amount": 0,
+    "short_liq_usd_new": 665.003108,
+    "long_liq_usd_new": 0,
+    "open_interest_usd": 5921154326.159072,
+    "top_lsr_account": 0.6578947368421053,
+    "top_long_account": 50,
+    "top_short_account": 76,
+    "long_liq_usd": 0,
+    "long_taker_size": 7776600,
+    "short_taker_size": 8579935,
+    "long_users": 11268,
+    "short_users": 20944
+  }
+]

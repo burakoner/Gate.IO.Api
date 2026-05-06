@@ -1,1 +1,44 @@
-{"currency":"GT","name":"GateToken","delisted":false,"withdraw_disabled":false,"withdraw_delayed":false,"deposit_disabled":false,"trade_disabled":false,"fixed_rate":"","chain":"GT","chains":[{"name":"GT","addr":"","withdraw_disabled":false,"withdraw_delayed":false,"deposit_disabled":false},{"name":"ETH","addr":"0xE66747a101bFF2dBA3697199DCcE5b743b454759","withdraw_disabled":false,"withdraw_delayed":false,"deposit_disabled":false},{"name":"GATELAYER","addr":"","withdraw_disabled":false,"withdraw_delayed":false,"deposit_disabled":false},{"name":"GTEVM","addr":"","withdraw_disabled":false,"withdraw_delayed":false,"deposit_disabled":false}],"category":[],"total_supply":"115180573.04","market_cap":"786865299.0070255"}
+{
+  "currency": "GT",
+  "name": "GateToken",
+  "delisted": false,
+  "withdraw_disabled": false,
+  "withdraw_delayed": false,
+  "deposit_disabled": false,
+  "trade_disabled": false,
+  "fixed_rate": "",
+  "chain": "GT",
+  "chains": [
+    {
+      "name": "GT",
+      "addr": "",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false
+    },
+    {
+      "name": "ETH",
+      "addr": "0xE66747a101bFF2dBA3697199DCcE5b743b454759",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false
+    },
+    {
+      "name": "GATELAYER",
+      "addr": "",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false
+    },
+    {
+      "name": "GTEVM",
+      "addr": "",
+      "withdraw_disabled": false,
+      "withdraw_delayed": false,
+      "deposit_disabled": false
+    }
+  ],
+  "category": [],
+  "total_supply": "115180573.04",
+  "market_cap": "783672362.0762192"
+}

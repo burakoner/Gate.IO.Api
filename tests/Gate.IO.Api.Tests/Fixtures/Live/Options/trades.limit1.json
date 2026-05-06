@@ -1,1 +1,9 @@
-[{"size":-61,"id":9,"create_time":1778018343,"contract":"BTC_USDT-20260506-80500-P","price":"56"}]
+[
+  {
+    "size": -10,
+    "id": 1,
+    "create_time": 1778025261,
+    "contract": "XTI_USDT-20260506-103-P",
+    "price": "2.16"
+  }
+]

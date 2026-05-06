@@ -1,6 +1,11 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Refreshed public REST live fixtures.
+    * Ran the full opt-in public REST live capture suite and refreshed current public JSON fixtures.
+    * Corrected the isolated margin public lending-tier capture path to use `/margin/loan_margin_tiers`.
+    * Corrected the TradFi public candlestick capture path to use `/tradfi/symbols/{symbol}/klines`.
+    * Improved public fixture capture failure messages with endpoint context and response body details.
   * Added test execution documentation.
     * Documented normal CI-friendly test runs, category filters, opt-in public integration tests, and targeted public REST fixture capture commands.
   * Added test category taxonomy checks.

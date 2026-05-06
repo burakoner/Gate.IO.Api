@@ -1,1 +1,25 @@
-{"id":"BTC_USDT","base":"BTC","base_name":"Bitcoin","quote":"USDT","quote_name":"Tether","fee":"0.2","min_base_amount":"0.000001","min_quote_amount":"3","max_base_amount":"100","max_quote_amount":"5000000","amount_precision":6,"precision":1,"trade_status":"tradable","sell_start":0,"buy_start":0,"type":"normal","trade_url":"https://www.gate.com/trade/BTC_USDT","st_tag":false,"slippage":"0.03","market_order_max_stock":"57.94","market_order_max_money":"5000000","up_rate":"0.08","down_rate":"0.08"}
+{
+  "id": "BTC_USDT",
+  "base": "BTC",
+  "base_name": "Bitcoin",
+  "quote": "USDT",
+  "quote_name": "Tether",
+  "fee": "0.2",
+  "min_base_amount": "0.000001",
+  "min_quote_amount": "3",
+  "max_base_amount": "100",
+  "max_quote_amount": "5000000",
+  "amount_precision": 6,
+  "precision": 1,
+  "trade_status": "tradable",
+  "sell_start": 0,
+  "buy_start": 0,
+  "type": "normal",
+  "trade_url": "https://www.gate.com/trade/BTC_USDT",
+  "st_tag": false,
+  "slippage": "0.03",
+  "market_order_max_stock": "57.94",
+  "market_order_max_money": "5000000",
+  "up_rate": "0.08",
+  "down_rate": "0.08"
+}
