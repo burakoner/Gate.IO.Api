@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added test category taxonomy checks.
+    * Centralized supported test category names for contract, unit, public integration, live capture, live WebSocket, and credential-gated tests.
+    * Added meta tests that require every test class to declare a supported `Category` trait.
   * Added remaining reviewed public REST live captures.
     * Added full Spot currency and currency-pair live fixtures plus a Unified portfolio-calculator live fixture.
     * Added optional live-capture filtering through `GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER` for targeted fixture refreshes.
