@@ -1,6 +1,8 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added test execution documentation.
+    * Documented normal CI-friendly test runs, category filters, opt-in public integration tests, and targeted public REST fixture capture commands.
   * Added test category taxonomy checks.
     * Centralized supported test category names for contract, unit, public integration, live capture, live WebSocket, and credential-gated tests.
     * Added meta tests that require every test class to declare a supported `Category` trait.

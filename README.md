@@ -39,6 +39,50 @@ After installing it's time to actually use it. To get started we have to add the
 
 Gate.IO.Api provides two clients to interact with the Gate.IO.Api. The  `GateRestApiClient`  provides all rest API calls. The  `GateWebSocketClientOptions` provides functions to interact with the websocket provided by the Gate.IO.Api. Both clients are disposable and as such can be used in a  `using`statement.
 
+## Running tests
+
+The default test run is CI friendly and does not require Gate.IO credentials or live network access:
+
+```console
+dotnet test "Gate.IO Api Client.sln" -v:minimal
+```
+
+Tests are grouped with xUnit `Category` traits so focused runs can use standard filters:
+
+```console
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=Unit"
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=Contract"
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=PublicIntegration"
+```
+
+`PublicIntegration` tests are opt-in at runtime. Without `GATEIO_RUN_LIVE_TESTS=1` they return immediately and do not call Gate.IO. To run the public, unauthenticated live smoke tests:
+
+```powershell
+$env:GATEIO_RUN_LIVE_TESTS = "1"
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=PublicIntegration"
+Remove-Item Env:\GATEIO_RUN_LIVE_TESTS
+```
+
+Public REST fixture refreshes are separate from normal live smoke tests and are also opt-in. They write normalized JSON under `tests/Gate.IO.Api.Tests/Fixtures/Live`:
+
+```powershell
+$env:GATEIO_CAPTURE_PUBLIC_FIXTURES = "1"
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=LiveCapture"
+Remove-Item Env:\GATEIO_CAPTURE_PUBLIC_FIXTURES
+```
+
+Use `GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER` to refresh only matching catalog entries by module, endpoint name, path, or fixture path:
+
+```powershell
+$env:GATEIO_CAPTURE_PUBLIC_FIXTURES = "1"
+$env:GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER = "Spot/currencies.json;Unified/portfolio_calculator"
+dotnet test "Gate.IO Api Client.sln" -v:minimal --filter "Category=LiveCapture"
+Remove-Item Env:\GATEIO_CAPTURE_PUBLIC_FIXTURES
+Remove-Item Env:\GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER
+```
+
+Authenticated private endpoints are covered by contract tests and request construction/signing tests using fixtures and fake credentials. Do not commit real API keys or private account responses.
+
 ## Rest Api Examples
 
 ```csharp
