@@ -33,8 +33,8 @@ public record GateSpotTradeHistory
     /// <summary>
     /// Trading time, with millisecond precision
     /// </summary>
-    [JsonProperty("create_time_ms")]
-    public decimal CreateTimeInMilliseconds { get; set; }
+    [JsonProperty("create_time_ms"), JsonConverter(typeof(GateLongConverter))]
+    public long CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Currency pair

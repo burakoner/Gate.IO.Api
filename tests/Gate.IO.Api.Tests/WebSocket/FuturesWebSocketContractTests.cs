@@ -47,6 +47,7 @@ public class FuturesWebSocketContractTests
             $"{FixtureRoot}/futures.trades.update.json");
         var trade = Assert.Single(trades.Data);
         Assert.Equal(27753479, trade.Id);
+        Assert.Equal(1545136464123, trade.CreateTimeInMilliseconds);
         Assert.Equal(-108m, trade.Size);
         Assert.True(trade.IsInternal);
 

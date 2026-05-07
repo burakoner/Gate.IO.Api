@@ -39,6 +39,7 @@ public class SpotContractTests
         Assert.Equal(1.52m, orderBook.Asks[0].Price);
         Assert.Single(trades);
         Assert.Equal(GateSpotOrderSide.Sell, trades[0].Side);
+        Assert.Equal(1548000000123, trades[0].CreateTimeInMilliseconds);
         Assert.Single(candles);
         Assert.Equal(4.214m, candles[0].Volume);
         Assert.True(candles[0].WindowClosed);
@@ -90,6 +91,7 @@ public class SpotContractTests
         Assert.Equal(GateSpotTraderRole.Maker, privateTrades[0].Role);
         Assert.Single(tradeHistory);
         Assert.Equal(GateSpotOrderSide.Sell, tradeHistory[0].Side);
+        Assert.Equal(1548000000123, tradeHistory[0].CreateTimeInMilliseconds);
         Assert.Equal(0.001m, fees["BTC_USDT"].MakerFee);
         Assert.NotEqual(default, countdown.Time);
         Assert.Single(priceOrders);

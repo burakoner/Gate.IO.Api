@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Normalized remaining decimal millisecond timestamp fields.
+    * Converted Spot trade-history, Spot stream trade, and Futures stream trade `*_ms` fields from `decimal` to `long`.
+    * Applied `GateLongConverter` to keep decimal-string millisecond timestamps deserializable while exposing integer millisecond values.
   * Added tolerant long parsing for Gate numeric timestamp fields.
     * Added `GateLongConverter` for integer fields returned as integer, decimal, or numeric string values.
     * Updated Spot public trade millisecond timestamps to remain `long` while accepting Gate's decimal-string `create_time_ms` values.

@@ -50,6 +50,7 @@ public class SpotMarginWebSocketContractTests
             $"{FixtureRoot}/spot.trades.update.json");
         Assert.Equal(309143071, trade.Data.Id);
         Assert.Equal(5736713, trade.Data.MarketId);
+        Assert.Equal(1606292218213, trade.Data.CreateTimeInMilliseconds);
         Assert.Equal(GateSpotOrderSide.Sell, trade.Data.Side);
         Assert.Equal(16.4700000000m, trade.Data.Amount);
         Assert.Equal(0.4705000000m, trade.Data.Price);
@@ -114,6 +115,7 @@ public class SpotMarginWebSocketContractTests
         var trade = Assert.Single(trades.Data);
         Assert.Equal(5736713, trade.Id);
         Assert.Equal(1000001, trade.UserId);
+        Assert.Equal(1605176741123, trade.CreateTimeInMilliseconds);
         Assert.Equal(GateSpotOrderSide.Sell, trade.Side);
         Assert.Equal(GateSpotTraderRole.Taker, trade.Role);
         Assert.Equal(10000.00000000m, trade.Price);

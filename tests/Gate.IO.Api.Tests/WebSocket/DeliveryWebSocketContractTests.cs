@@ -51,6 +51,7 @@ public class DeliveryWebSocketContractTests
         var trade = Assert.Single(trades.Data);
         Assert.Equal("BTC_USDT_20230630", trade.Contract);
         Assert.Equal(27753479, trade.Id);
+        Assert.Equal(1545136464123, trade.CreateTimeInMilliseconds);
         Assert.Equal(-108m, trade.Size);
         Assert.Equal(96.4m, trade.Price);
         Assert.Null(trade.IsInternal);
