@@ -1,6 +1,9 @@
 ## Change Log & Release Notes
 
 * Unreleased
+  * Added tolerant long parsing for Gate numeric timestamp fields.
+    * Added `GateLongConverter` for integer fields returned as integer, decimal, or numeric string values.
+    * Updated Spot public trade millisecond timestamps to remain `long` while accepting Gate's decimal-string `create_time_ms` values.
   * Refreshed public REST live fixtures.
     * Ran the full opt-in public REST live capture suite and refreshed current public JSON fixtures.
     * Corrected the isolated margin public lending-tier capture path to use `/margin/loan_margin_tiers`.

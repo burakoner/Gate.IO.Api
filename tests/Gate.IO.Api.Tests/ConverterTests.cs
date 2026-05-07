@@ -37,6 +37,20 @@ public class ConverterTests
     }
 
     [Fact]
+    public void Gate_long_converter_accepts_integer_decimal_token_and_numeric_string()
+    {
+        var probe = JsonConvert.DeserializeObject<LongProbe>(
+            """{"integer_value":1548000000123,"decimal_value":1548000000123.456,"string_value":"1548000000123","decimal_string_value":"1548000000123.456","empty_optional":""}""");
+
+        Assert.NotNull(probe);
+        Assert.Equal(1548000000123L, probe!.IntegerValue);
+        Assert.Equal(1548000000123L, probe.DecimalValue);
+        Assert.Equal(1548000000123L, probe.StringValue);
+        Assert.Equal(1548000000123L, probe.DecimalStringValue);
+        Assert.Null(probe.EmptyOptional);
+    }
+
+    [Fact]
     public void Map_converter_reads_and_writes_mapped_enum_values()
     {
         var order = JsonConvert.DeserializeObject<GateAlphaOrder>(
@@ -146,5 +160,28 @@ public class ConverterTests
         [JsonProperty("infinite_optional")]
         [JsonConverter(typeof(GateDecimalConverter))]
         public decimal? InfiniteOptional { get; set; }
+    }
+
+    private sealed class LongProbe
+    {
+        [JsonProperty("integer_value")]
+        [JsonConverter(typeof(GateLongConverter))]
+        public long IntegerValue { get; set; }
+
+        [JsonProperty("decimal_value")]
+        [JsonConverter(typeof(GateLongConverter))]
+        public long DecimalValue { get; set; }
+
+        [JsonProperty("string_value")]
+        [JsonConverter(typeof(GateLongConverter))]
+        public long StringValue { get; set; }
+
+        [JsonProperty("decimal_string_value")]
+        [JsonConverter(typeof(GateLongConverter))]
+        public long DecimalStringValue { get; set; }
+
+        [JsonProperty("empty_optional")]
+        [JsonConverter(typeof(GateLongConverter))]
+        public long? EmptyOptional { get; set; }
     }
 }
