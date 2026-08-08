@@ -248,6 +248,25 @@ public class GateWalletRestApiClient
     }
 
     /// <summary>
+    /// Get the current user's trading account transfer details using the transaction ID returned by the transfer endpoint
+    /// </summary>
+    /// <param name="transactionId">Transfer transaction ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateWalletTradingAccountTransfer>> GetTradingAccountTransferAsync(string transactionId, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(transactionId))
+            throw new ArgumentException("Transaction ID is required", nameof(transactionId));
+
+        var parameters = new ParameterCollection
+        {
+            { "tx_id", transactionId.Trim() },
+        };
+
+        return _.SendRequestInternal<GateWalletTradingAccountTransfer>(_.GetUrl(api, v4, wallet, "transfers"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
     /// Transfer between trading accounts
     /// </summary>
     /// <param name="currency">Transfer currency. For futures account, currency can be set to POINT or settle currency</param>

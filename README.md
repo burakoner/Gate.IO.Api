@@ -121,6 +121,7 @@ var wallet_08b = await api.Wallet.TransfersBetweenTradingAccountsAsync(new GateW
     Amount = 100.0m,
     Settle = "USDT",
 });
+var wallet_08c = await api.Wallet.GetTradingAccountTransferAsync("59636381286");
 var wallet_09 = await api.Wallet.TransferBetweenMainAndSubAccountsAsync("CURRENCY", 1_000_000_000, GateWalletTransferDirection.From, 100.0m);
 var wallet_10 = await api.Wallet.GetTransfersBetweenMainAndSubAccountsAsync();
 var wallet_11 = await api.Wallet.TransferBetweenSubAccountsAsync("CURRENCY", 1_000_000_000, GateWalletSubAccountType.Spot, 2_000_000_000, GateWalletSubAccountType.Futures, 100.0m);

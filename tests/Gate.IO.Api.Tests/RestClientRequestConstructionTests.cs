@@ -181,6 +181,31 @@ public class RestClientRequestConstructionTests
     }
 
     [Fact]
+    public async Task Signed_wallet_trading_account_transfer_request_uses_required_transaction_id()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Wallet/account_transfer.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Wallet.GetTradingAccountTransferAsync(" 59636381286 ");
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal("59636381286", result.Data!.TransactionId);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/wallet/transfers", request.RequestUri.AbsolutePath);
+        Assert.Equal("59636381286", ParseQuery(request.RequestUri)["tx_id"]);
+        AssertSignedHeaders(request);
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.Wallet.GetTradingAccountTransferAsync(" ");
+        });
+        Assert.Equal("transactionId", exception.ParamName);
+        Assert.Single(handler.Requests);
+    }
+
+    [Fact]
     public async Task Signed_wallet_saved_address_requests_support_current_optional_filters()
     {
         var json = JsonFixture.Read("Docs/Wallet/saved_address.success.json");

@@ -1,3 +1,4 @@
+using ApiSharp.Converters;
 using Gate.IO.Api.Tests.Infrastructure;
 
 namespace Gate.IO.Api.Tests.Wallet;
@@ -85,10 +86,21 @@ public class WalletContractTests
     [Fact]
     public void Documented_wallet_transfer_responses_deserialize()
     {
+        var tradingAccountTransfer = JsonFixture.Deserialize<GateWalletTradingAccountTransfer>("Docs/Wallet/account_transfer.success.json");
         var records = JsonFixture.Deserialize<List<GateWalletTransferRecord>>("Docs/Wallet/sub_account_transfers.success.json");
         var status = JsonFixture.Deserialize<GateWalletTransferStatus>("Docs/Wallet/transfer_status.success.json");
         var history = JsonFixture.Deserialize<List<GateWalletTransfer>>("Docs/Wallet/uid-transfer-history.success.json");
 
+        Assert.Equal("59636381286", tradingAccountTransfer.TransactionId);
+        Assert.Equal(GateWalletTradingAccountTransferStatus.Success, tradingAccountTransfer.Status);
+        Assert.Equal("USDT", tradingAccountTransfer.Currency);
+        Assert.Equal(10m, tradingAccountTransfer.Amount);
+        Assert.Equal(GateWalletTradingAccountType.Spot, tradingAccountTransfer.FromAccount);
+        Assert.Equal(GateWalletTradingAccountType.Futures, tradingAccountTransfer.ToAccount);
+        Assert.Equal("usdt", tradingAccountTransfer.SettlementCurrency);
+        Assert.Null(tradingAccountTransfer.CurrencyPair);
+        Assert.Equal("unknown", MapConverter.GetString(GateWalletTradingAccountType.Unknown));
+        Assert.Equal("fail", MapConverter.GetString(GateWalletTradingAccountTransferStatus.Fail));
         Assert.Single(records);
         Assert.Equal(10001, records[0].UserId);
         Assert.Equal(GateWalletSubAccountType.Spot, records[0].SubAccountType);

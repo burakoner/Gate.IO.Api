@@ -1,0 +1,10 @@
+{
+  "tx_id": "59636381286",
+  "status": "success",
+  "currency": "USDT",
+  "amount": "10",
+  "from_account": "spot",
+  "to_account": "futures",
+  "settle": "usdt",
+  "currency_pair": null
+}

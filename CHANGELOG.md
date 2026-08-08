@@ -1,5 +1,13 @@
 ## Change Log & Release Notes
 
+- Version 4.106.113 - 03 August 2026
+  - Added the signed `GET /wallet/transfers` endpoint identified by v4.106.113 against its complete current official contract retrieved on 08 August 2026.
+    - Added `GetTradingAccountTransferAsync` with the required string `tx_id` query parameter, whitespace normalization, and preflight rejection of missing identifiers.
+    - Added the complete trading-account transfer response with string transaction ID, typed `pending` / `success` / `fail` status, decimal-safe amount, typed source and destination accounts, nullable settlement currency, and nullable margin currency pair.
+    - Kept the response account enum separate from the existing transfer-request enum so the documented read-only `unknown` account type does not become a valid value for a state-changing POST transfer request.
+  - Added the complete official response fixture, field and enum assertions, signed route/query coverage, missing-ID validation, and README/example usage. No authenticated live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/wallet/#get-trading-account-transfer
 - Version 4.106.112 - 03 August 2026
   - Fully synchronized all three CrossEx endpoints identified by v4.106.112 with their complete current official contracts retrieved on 08 August 2026.
     - Updated `POST /crossex/position` documentation to state that automatic full closing applies only when the position is strictly below the minimum notional amount or minimum order size and the account has no open order for the symbol. Added preflight validation for the required symbol, valid position-side values, and the documented requirement that margin positions include `position_side`. The exchange remains authoritative for the live threshold and open-order checks.
