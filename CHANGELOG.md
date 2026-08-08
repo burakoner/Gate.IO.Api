@@ -1,5 +1,18 @@
 ## Change Log & Release Notes
 
+- Version 4.106.82 - 14 May 2026
+  - Added all five Futures Chase Limit Order endpoints and aligned their complete contracts with the current official Futures documentation retrieved on 08 August 2026.
+    - Added create and stop operations, batch stop, filtered listing, and order detail retrieval under `/futures/{settle}/autoorder/v1/chase/*`.
+    - Added the full current create payload, including decimal-string amount and limit fields, price-gap controls, reduce-only and position settings.
+    - Added typed sort, reduce-only, side, price-type, and price-gap filters while preserving string order IDs and every documented `ChaseOrder` response field.
+    - Kept the settlement currency authoritative in the endpoint path; the redundant body `settle` field documented as path-overridden is intentionally not emitted.
+    - Added signed request construction and official response contract coverage for every endpoint.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#create-a-chase-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#stop-a-chase-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#stop-chase-orders-in-batch
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#list-chase-orders
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#get-chase-order-detail
 - Version 4.106.81 - 13 May 2026
   - Aligned `POST /spot/orders`, `POST /spot/batch_orders`, `PATCH /spot/orders/{order_id}`, and `POST /spot/amend_batch_orders` with the current official Spot documentation retrieved on 08 August 2026.
     - Added shared limit-order take-profit and stop-loss payloads with `trigger_price` and `order_price` to create, amend, and response models.

@@ -382,6 +382,11 @@ var perpetual_46e = await api.Futures[settle].UpdateTrailOrderAsync(new GateFutu
 var perpetual_46f = await api.Futures[settle].CancelTrailOrderAsync(1_000_000_001);
 var perpetual_46g = await api.Futures[settle].CancelTrailOrdersAsync(new GateFuturesTrailOrdersCancelRequest { Contract = "CONTRACT" });
 var perpetual_46h = await api.Futures[settle].GetTrailOrderChangeLogAsync(new GateFuturesTrailOrderChangeLogQueryRequest { OrderId = 1_000_000_001 });
+var perpetual_46i = await api.Futures[settle].PlaceChaseOrderAsync(new GateFuturesChaseOrderRequest { Contract = "CONTRACT", Amount = "10", PriceLimit = "0", OffsetLimit = "100", PriceType = GateFuturesChaseOrderPriceType.PriceGap, PriceGapType = GateFuturesChaseOrderPriceGapType.Absolute, PriceGapValue = "10" });
+var perpetual_46j = await api.Futures[settle].CancelChaseOrderAsync("1000000001");
+var perpetual_46k = await api.Futures[settle].CancelChaseOrdersAsync(new GateFuturesChaseOrdersCancelRequest { Contract = "CONTRACT", PositionMarginMode = GateFuturesPositionMarginMode.Isolated });
+var perpetual_46l = await api.Futures[settle].GetChaseOrdersAsync(new GateFuturesChaseOrderQueryRequest { Contract = "CONTRACT", IsFinished = false, SortBy = GateFuturesChaseOrderSort.CreatedAt, PageNumber = 1, PageSize = 100 });
+var perpetual_46m = await api.Futures[settle].GetChaseOrderAsync("1000000001");
 var perpetual_47 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
     GateFuturesTriggerType.CloseShortPosition,
     GateFuturesTriggerPrice.MarkPrice,

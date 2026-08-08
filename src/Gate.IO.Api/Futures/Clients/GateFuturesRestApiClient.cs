@@ -884,6 +884,89 @@ public class GateFuturesRestApiClient
         return result.As(result.Data?.ChangeLog ?? []);
     }
 
+    // Create a chase order
+    internal async Task<RestCallResult<string>> PlaceChaseOrderAsync(GateFuturesSettlement settle, GateFuturesChaseOrderRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "contract", request.Contract },
+            { "amount", request.Amount },
+            { "price_limit", request.PriceLimit },
+        };
+        parameters.AddOptional("offset_limit", request.OffsetLimit);
+        parameters.AddOptional("reduce_only", request.ReduceOnly);
+        parameters.AddOptional("text", request.ClientOrderId);
+        parameters.AddOptional("is_dual_mode", request.IsDualMode);
+        parameters.AddOptional("price_type", request.PriceType.HasValue ? (int?)request.PriceType.Value : null);
+        parameters.AddOptional("price_gap_type", request.PriceGapType.HasValue ? (int?)request.PriceGapType.Value : null);
+        parameters.AddOptional("price_gap_value", request.PriceGapValue);
+        parameters.AddOptionalEnum("pos_margin_mode", request.PositionMarginMode);
+        parameters.AddOptional("position_mode", request.PositionMode);
+
+        var endpoint = "{settle}/autoorder/v1/chase/create".Replace("{settle}", MapConverter.GetString(settle));
+        var result = await _.SendRequestInternal<GateFuturesChaseOrderCreateResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return result.As(result.Data?.OrderId);
+    }
+
+    // Stop a chase order
+    internal async Task<RestCallResult<GateFuturesChaseOrder>> CancelChaseOrderAsync(GateFuturesSettlement settle, GateFuturesChaseOrderCancelRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("id", request.OrderId);
+        parameters.AddOptional("text", request.ClientOrderId);
+
+        var endpoint = "{settle}/autoorder/v1/chase/stop".Replace("{settle}", MapConverter.GetString(settle));
+        var result = await _.SendRequestInternal<GateFuturesChaseOrderDetailResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return result.As(result.Data?.Order);
+    }
+
+    // Stop chase orders in batch
+    internal async Task<RestCallResult<List<GateFuturesChaseOrder>>> CancelChaseOrdersAsync(GateFuturesSettlement settle, GateFuturesChaseOrdersCancelRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("contract", request.Contract);
+        parameters.AddOptionalEnum("pos_margin_mode", request.PositionMarginMode);
+
+        var endpoint = "{settle}/autoorder/v1/chase/stop_all".Replace("{settle}", MapConverter.GetString(settle));
+        var result = await _.SendRequestInternal<GateFuturesChaseOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return result.As(result.Data?.Orders ?? []);
+    }
+
+    // List chase orders
+    internal async Task<RestCallResult<List<GateFuturesChaseOrder>>> GetChaseOrdersAsync(GateFuturesSettlement settle, GateFuturesChaseOrderQueryRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "sort_by", (int)request.SortBy },
+        };
+        parameters.AddOptional("contract", request.Contract);
+        parameters.AddOptional("is_finished", request.IsFinished?.ToString().ToLowerInvariant());
+        parameters.AddOptional("start_at", request.StartAt?.ConvertToSeconds());
+        parameters.AddOptional("end_at", request.EndAt?.ConvertToSeconds());
+        parameters.AddOptional("page_num", request.PageNumber);
+        parameters.AddOptional("page_size", request.PageSize);
+        parameters.AddOptional("hide_cancel", request.HideCancelled?.ToString().ToLowerInvariant());
+        parameters.AddOptional("reduce_only", request.ReduceOnly.HasValue ? (int?)request.ReduceOnly.Value : null);
+        parameters.AddOptional("side", request.Side.HasValue ? (int?)request.Side.Value : null);
+
+        var endpoint = "{settle}/autoorder/v1/chase/list".Replace("{settle}", MapConverter.GetString(settle));
+        var result = await _.SendRequestInternal<GateFuturesChaseOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return result.As(result.Data?.Orders ?? []);
+    }
+
+    // Get chase order detail
+    internal async Task<RestCallResult<GateFuturesChaseOrder>> GetChaseOrderAsync(GateFuturesSettlement settle, string orderId, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "id", orderId },
+        };
+
+        var endpoint = "{settle}/autoorder/v1/chase/detail".Replace("{settle}", MapConverter.GetString(settle));
+        var result = await _.SendRequestInternal<GateFuturesChaseOrderDetailResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return result.As(result.Data?.Order);
+    }
+
     // Create a price-triggered order
     internal Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
         // Settlement

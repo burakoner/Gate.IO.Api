@@ -179,6 +179,182 @@ public class FuturesRequestConstructionTests
         AssertSignedHeaders(request);
     }
 
+    [Fact]
+    public async Task Signed_futures_chase_order_request_serializes_current_documented_body()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_order_id.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.PlaceChaseOrderAsync(new GateFuturesChaseOrderRequest
+        {
+            Contract = "BTC_USDT",
+            Amount = "10.5",
+            PriceLimit = "0",
+            OffsetLimit = "100",
+            ReduceOnly = true,
+            ClientOrderId = "t-chase-1",
+            IsDualMode = true,
+            PriceType = GateFuturesChaseOrderPriceType.PriceGap,
+            PriceGapType = GateFuturesChaseOrderPriceGapType.Percentage,
+            PriceGapValue = "0.1",
+            PositionMarginMode = GateFuturesPositionMarginMode.Cross,
+            PositionMode = "dual_plus",
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal("9007199254740993", result.Data);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/autoorder/v1/chase/create", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal("BTC_USDT", body["contract"]!.Value<string>());
+        Assert.Equal(JTokenType.String, body["amount"]!.Type);
+        Assert.Equal("10.5", body["amount"]!.Value<string>());
+        Assert.Equal(JTokenType.String, body["price_limit"]!.Type);
+        Assert.Equal("0", body["price_limit"]!.Value<string>());
+        Assert.Equal("100", body["offset_limit"]!.Value<string>());
+        Assert.True(body["reduce_only"]!.Value<bool>());
+        Assert.Equal("t-chase-1", body["text"]!.Value<string>());
+        Assert.True(body["is_dual_mode"]!.Value<bool>());
+        Assert.Equal(2, body["price_type"]!.Value<int>());
+        Assert.Equal(2, body["price_gap_type"]!.Value<int>());
+        Assert.Equal("0.1", body["price_gap_value"]!.Value<string>());
+        Assert.Equal("cross", body["pos_margin_mode"]!.Value<string>());
+        Assert.Equal("dual_plus", body["position_mode"]!.Value<string>());
+        Assert.Null(body["settle"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_chase_order_stop_request_serializes_string_order_id()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.CancelChaseOrderAsync("9007199254740993");
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal("9007199254740993", result.Data!.OrderId);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/autoorder/v1/chase/stop", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal(JTokenType.String, body["id"]!.Type);
+        Assert.Equal("9007199254740993", body["id"]!.Value<string>());
+        Assert.Null(body["text"]);
+        Assert.Null(body["settle"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_chase_order_stop_request_accepts_custom_order_tag()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.CancelChaseOrderAsync(new GateFuturesChaseOrderCancelRequest
+        {
+            ClientOrderId = "t-chase-1",
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        var body = JObject.Parse(request.Content);
+        Assert.Null(body["id"]);
+        Assert.Equal("t-chase-1", body["text"]!.Value<string>());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_chase_order_batch_stop_request_serializes_current_documented_body()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_orders.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.CancelChaseOrdersAsync(new GateFuturesChaseOrdersCancelRequest
+        {
+            Contract = "BTC_USDT",
+            PositionMarginMode = GateFuturesPositionMarginMode.Isolated,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Single(result.Data!);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/autoorder/v1/chase/stop_all", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal("BTC_USDT", body["contract"]!.Value<string>());
+        Assert.Equal("isolated", body["pos_margin_mode"]!.Value<string>());
+        Assert.Null(body["settle"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_chase_order_list_request_serializes_all_current_filters()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_orders.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.GetChaseOrdersAsync(new GateFuturesChaseOrderQueryRequest
+        {
+            Contract = "BTC_USDT",
+            IsFinished = true,
+            StartAt = DateTimeOffset.FromUnixTimeSeconds(1778716800).UtcDateTime,
+            EndAt = DateTimeOffset.FromUnixTimeSeconds(1778716860).UtcDateTime,
+            PageNumber = 2,
+            PageSize = 50,
+            SortBy = GateFuturesChaseOrderSort.FinishedAt,
+            HideCancelled = true,
+            ReduceOnly = GateFuturesChaseOrderReduceOnlyFilter.NotReduceOnly,
+            Side = GateFuturesChaseOrderSide.Short,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Single(result.Data!);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/autoorder/v1/chase/list", request.RequestUri.AbsolutePath);
+
+        var query = ParseQuery(request.RequestUri);
+        Assert.Equal("BTC_USDT", query["contract"]);
+        Assert.Equal("true", query["is_finished"]);
+        Assert.Equal("1778716800", query["start_at"]);
+        Assert.Equal("1778716860", query["end_at"]);
+        Assert.Equal("2", query["page_num"]);
+        Assert.Equal("50", query["page_size"]);
+        Assert.Equal("2", query["sort_by"]);
+        Assert.Equal("true", query["hide_cancel"]);
+        Assert.Equal("2", query["reduce_only"]);
+        Assert.Equal("2", query["side"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_chase_order_detail_request_serializes_string_order_id()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/chase_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.GetChaseOrderAsync("9007199254740993");
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal("9007199254740993", result.Data!.OrderId);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/autoorder/v1/chase/detail", request.RequestUri.AbsolutePath);
+        Assert.Equal("9007199254740993", ParseQuery(request.RequestUri)["id"]);
+        AssertSignedHeaders(request);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {

@@ -1058,6 +1058,60 @@ public class GateFuturesRestApiSettleClient
         => _.GetTrailOrderChangeLogAsync(Settlement, request, ct);
 
     /// <summary>
+    /// Create a chase order
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>New chase order ID</returns>
+    public Task<RestCallResult<string>> PlaceChaseOrderAsync(GateFuturesChaseOrderRequest request, CancellationToken ct = default)
+        => _.PlaceChaseOrderAsync(Settlement, request, ct);
+
+    /// <summary>
+    /// Stop a chase order by order ID
+    /// </summary>
+    /// <param name="orderId">Order ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Stopped chase order</returns>
+    public Task<RestCallResult<GateFuturesChaseOrder>> CancelChaseOrderAsync(string orderId, CancellationToken ct = default)
+        => _.CancelChaseOrderAsync(Settlement, new GateFuturesChaseOrderCancelRequest { OrderId = orderId }, ct);
+
+    /// <summary>
+    /// Stop a chase order by order ID or custom order tag
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Stopped chase order</returns>
+    public Task<RestCallResult<GateFuturesChaseOrder>> CancelChaseOrderAsync(GateFuturesChaseOrderCancelRequest request, CancellationToken ct = default)
+        => _.CancelChaseOrderAsync(Settlement, request, ct);
+
+    /// <summary>
+    /// Stop chase orders in batch
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Stopped chase orders</returns>
+    public Task<RestCallResult<List<GateFuturesChaseOrder>>> CancelChaseOrdersAsync(GateFuturesChaseOrdersCancelRequest request, CancellationToken ct = default)
+        => _.CancelChaseOrdersAsync(Settlement, request, ct);
+
+    /// <summary>
+    /// List chase orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Chase orders</returns>
+    public Task<RestCallResult<List<GateFuturesChaseOrder>>> GetChaseOrdersAsync(GateFuturesChaseOrderQueryRequest request, CancellationToken ct = default)
+        => _.GetChaseOrdersAsync(Settlement, request, ct);
+
+    /// <summary>
+    /// Get chase order detail
+    /// </summary>
+    /// <param name="orderId">Order ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Chase order detail</returns>
+    public Task<RestCallResult<GateFuturesChaseOrder>> GetChaseOrderAsync(string orderId, CancellationToken ct = default)
+        => _.GetChaseOrderAsync(Settlement, orderId, ct);
+
+    /// <summary>
     /// Create a price-triggered order
     /// </summary>
     /// <param name="triggerType">Take-profit/stop-loss types, which include:</param>

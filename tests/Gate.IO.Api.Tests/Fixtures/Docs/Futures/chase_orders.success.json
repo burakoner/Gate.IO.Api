@@ -1,0 +1,41 @@
+{
+  "orders": [
+    {
+      "id": "9007199254740993",
+      "user": "100000",
+      "contract": "BTC_USDT",
+      "settle": "usdt",
+      "amount": "10.5",
+      "price_limit": "65000",
+      "reduce_only": false,
+      "text": "t-chase-1",
+      "create_time": 1778716800,
+      "finish_time": 1778716860,
+      "original_status": 3,
+      "status": "finished",
+      "reason": "cancelled",
+      "fill_amount": "2.5",
+      "average_fill_price": "64000.25",
+      "suborder_id": "9007199254740994",
+      "is_dual_mode": true,
+      "side_label": "long",
+      "position_side_output": "long",
+      "chase_price": "64010.5",
+      "interval_sec": 1,
+      "updated_at": 1778716860000,
+      "suborder_price": "64010",
+      "suborder_ongoing": false,
+      "suborder_finish_as": "cancelled",
+      "price_type": 2,
+      "price_gap_type": "1",
+      "price_gap_value": "10",
+      "status_code": "FINISHED",
+      "create_time_precise": "1778716800.123456",
+      "finish_time_precise": "1778716860.654321",
+      "pos_margin_mode": "isolated",
+      "position_mode": "dual",
+      "leverage": "10",
+      "error_label": ""
+    }
+  ]
+}

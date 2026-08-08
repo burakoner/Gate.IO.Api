@@ -62,6 +62,7 @@ public class FuturesContractTests
         var order = JsonFixture.Deserialize<GateFuturesOrder>("Docs/Futures/order.success.json");
         var priceOrders = JsonFixture.Deserialize<List<GateFuturesPriceTriggeredOrder>>("Docs/Futures/price_orders.success.json");
         var priceOrder = JsonFixture.Deserialize<GateFuturesPriceTriggeredOrder>("Docs/Futures/price_order.success.json");
+        var chaseOrder = JsonFixture.Parse("Docs/Futures/chase_order.success.json")["order"]!.ToObject<GateFuturesChaseOrder>();
 
         Assert.Equal("USDT", account.Currency);
         Assert.Equal(10.5m, account.Total);
@@ -74,6 +75,42 @@ public class FuturesContractTests
         Assert.Equal(GateFuturesOrderFinishAs.Cancelled, priceOrders[0].FinishAs);
         Assert.Equal(GateSpotTriggerCondition.GreaterThanOrEqualTo, priceOrder.Trigger.Rule);
         Assert.Equal(GateFuturesTriggerType.CloseLongOrder, priceOrder.Type);
+        Assert.NotNull(chaseOrder);
+        Assert.Equal("9007199254740993", chaseOrder!.OrderId);
+        Assert.Equal("100000", chaseOrder.UserId);
+        Assert.Equal("BTC_USDT", chaseOrder.Contract);
+        Assert.Equal("usdt", chaseOrder.Settlement);
+        Assert.Equal("10.5", chaseOrder.Amount);
+        Assert.Equal("65000", chaseOrder.PriceLimit);
+        Assert.False(chaseOrder.ReduceOnly!.Value);
+        Assert.Equal("t-chase-1", chaseOrder.ClientOrderId);
+        Assert.Equal(1778716800, chaseOrder.CreateTime);
+        Assert.Equal(1778716860, chaseOrder.FinishTime);
+        Assert.Equal(3, chaseOrder.OriginalStatus);
+        Assert.Equal("finished", chaseOrder.Status);
+        Assert.Equal("cancelled", chaseOrder.Reason);
+        Assert.Equal("2.5", chaseOrder.FillAmount);
+        Assert.Equal("64000.25", chaseOrder.AverageFillPrice);
+        Assert.Equal("9007199254740994", chaseOrder.SubOrderId);
+        Assert.True(chaseOrder.IsDualMode!.Value);
+        Assert.Equal("long", chaseOrder.SideLabel);
+        Assert.Equal("long", chaseOrder.PositionSideOutput);
+        Assert.Equal("64010.5", chaseOrder.ChasePrice);
+        Assert.Equal((uint)1, chaseOrder.IntervalSeconds);
+        Assert.Equal(1778716860000, chaseOrder.UpdatedAt);
+        Assert.Equal("64010", chaseOrder.SubOrderPrice);
+        Assert.False(chaseOrder.SubOrderOngoing!.Value);
+        Assert.Equal("cancelled", chaseOrder.SubOrderFinishAs);
+        Assert.Equal(2, chaseOrder.PriceType);
+        Assert.Equal("1", chaseOrder.PriceGapType);
+        Assert.Equal("10", chaseOrder.PriceGapValue);
+        Assert.Equal("FINISHED", chaseOrder.StatusCode);
+        Assert.Equal("1778716800.123456", chaseOrder.CreateTimePrecise);
+        Assert.Equal("1778716860.654321", chaseOrder.FinishTimePrecise);
+        Assert.Equal("isolated", chaseOrder.PositionMarginMode);
+        Assert.Equal("dual", chaseOrder.PositionMode);
+        Assert.Equal("10", chaseOrder.Leverage);
+        Assert.Equal(string.Empty, chaseOrder.ErrorLabel);
     }
 
     [Fact]
