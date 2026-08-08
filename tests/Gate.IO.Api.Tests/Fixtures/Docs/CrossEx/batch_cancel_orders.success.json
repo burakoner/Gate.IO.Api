@@ -1,0 +1,16 @@
+[
+  {
+    "order_id": "123456",
+    "text": "",
+    "accepted": "true",
+    "label": "",
+    "message": ""
+  },
+  {
+    "order_id": "",
+    "text": "crossex-test-1",
+    "accepted": "false",
+    "label": "TRADE_ORDER_NOT_FOUND_ERROR",
+    "message": "The order was not found"
+  }
+]

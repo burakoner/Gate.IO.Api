@@ -307,6 +307,30 @@ public class GateCrossExRestApiClient
         => _.SendRequestInternal<GateCrossExOrderActionResult>(_.GetUrl(api, v4, crossex, $"orders/{orderId}"), HttpMethod.Delete, ct, true);
 
     /// <summary>
+    /// Cancel multiple specified orders. Each item must provide an order ID or custom text; the order ID takes precedence when both are provided.
+    /// Rate limit: 100 requests per 10 seconds.
+    /// </summary>
+    /// <param name="requests">Order cancellation request items</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentNullException"></exception>
+    /// <exception cref="ArgumentException"></exception>
+    public Task<RestCallResult<List<GateCrossExBatchCancelOrderResult>>> CancelOrdersAsync(IEnumerable<GateCrossExBatchCancelOrderRequest> requests, CancellationToken ct = default)
+    {
+        if (requests == null)
+            throw new ArgumentNullException(nameof(requests));
+
+        var requestList = requests.ToList();
+        if (requestList.Any(x => x == null || x.OrderId == null && x.Text == null))
+            throw new ArgumentException("Each batch cancellation item must provide an order ID or custom text", nameof(requests));
+
+        var parameters = new ParameterCollection();
+        parameters.SetBody(requestList);
+
+        return _.SendRequestInternal<List<GateCrossExBatchCancelOrderResult>>(_.GetUrl(api, v4, crossex, "batch_cancel_orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
     /// Flash swap quote
     /// </summary>
     /// <param name="exchangeType">Exchange type</param>
@@ -631,6 +655,11 @@ public class GateCrossExRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossExAdlRank>>> GetAdlRankAsync(GateCrossExAdlRankQueryRequest request, CancellationToken ct = default)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol))
+            throw new ArgumentException("Symbol is required", nameof(request.Symbol));
+
         var parameters = new ParameterCollection
         {
             { "symbol", request.Symbol },

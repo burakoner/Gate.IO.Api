@@ -40,6 +40,7 @@ public class CrossExContractTests
         var transfers = JsonFixture.Deserialize<List<GateCrossExTransferRecord>>("Docs/CrossEx/transfer_history.success.json");
         var transfer = JsonFixture.Deserialize<GateCrossExTransferResult>("Docs/CrossEx/transfer.success.json");
         var action = JsonFixture.Deserialize<GateCrossExOrderActionResult>("Docs/CrossEx/order_action.success.json");
+        var batchCancellation = JsonFixture.Deserialize<List<GateCrossExBatchCancelOrderResult>>("Docs/CrossEx/batch_cancel_orders.success.json");
         var order = JsonFixture.Deserialize<GateCrossExOrder>("Docs/CrossEx/order.success.json");
         var orders = JsonFixture.Deserialize<List<GateCrossExOrder>>("Docs/CrossEx/orders.success.json");
         var quote = JsonFixture.Deserialize<GateCrossExConvertQuote>("Docs/CrossEx/convert_quote.success.json");
@@ -55,6 +56,12 @@ public class CrossExContractTests
         Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750681141933).UtcDateTime, transfers[0].CreateTime);
         Assert.Equal("33829017692939266", transfer.TransactionId);
         Assert.Equal("2072652940337152", action.OrderId);
+        Assert.Equal("123456", batchCancellation[0].OrderId);
+        Assert.Equal("true", batchCancellation[0].Accepted);
+        Assert.Equal("crossex-test-1", batchCancellation[1].Text);
+        Assert.Equal("false", batchCancellation[1].Accepted);
+        Assert.Equal("TRADE_ORDER_NOT_FOUND_ERROR", batchCancellation[1].Label);
+        Assert.Equal("The order was not found", batchCancellation[1].Message);
         Assert.Equal("t-cross-order", order.Text);
         Assert.Equal("2072652940337152", order.OrderId);
         Assert.Equal("900001", order.UserId);
@@ -106,7 +113,11 @@ public class CrossExContractTests
         Assert.Equal(60550m, positions[0].MarkPrice);
         Assert.Equal("BTC", marginPositions[0].AssetCoin);
         Assert.Equal(0.01m, marginPositions[0].Interest);
-        Assert.Equal(2, adlRanks[0].CrossExAdlRank);
+        Assert.Equal("111", adlRanks[0].UserId);
+        Assert.Equal(1, adlRanks[0].CrossExAdlRank);
+        Assert.Equal(1, adlRanks[0].ExchangeAdlRank);
+        Assert.Equal("KRAKEN_FUTURE_ADA_USD", adlRanks[1].Symbol);
+        Assert.Equal(40, adlRanks[1].ExchangeAdlRank);
         Assert.Equal(10m, history[0].ClosedPnl);
         Assert.Equal("MARGIN", marginHistory[0].BusinessType);
         Assert.Equal(567890, marginInterests[0].InterestId);

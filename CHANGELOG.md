@@ -1,5 +1,17 @@
 ## Change Log & Release Notes
 
+- Version 4.106.108 - 16 July 2026
+  - Added signed `POST /crossex/batch_cancel_orders` support against its complete current official contract retrieved on 08 August 2026.
+    - Added direct JSON-array request serialization with typed `order_id` / `text` items and preflight enforcement of the documented any-of requirement. Both identifiers remain serializable together, preserving Gate's documented `order_id` precedence, and no undocumented batch-size restriction was invented.
+    - Added the complete per-item result contract with string `order_id`, `text`, `accepted`, `label`, and `message` fields. `accepted` intentionally remains a string because Gate explicitly publishes and returns `"true"` / `"false"`, rather than a JSON boolean.
+  - Aligned `GET /crossex/adl_rank` with the complete current response contract.
+    - Corrected `user_id` from nullable `long` to string, matching the published identifier type and preventing range or formatting loss; this property-type correction is source/binary-breaking.
+    - Enforced the required `symbol` query before I/O, documented every exchange-specific rank scale, and added Kraken value `40` to the official-style fixture. Rank values remain nullable integers in the public model because they are semantically numeric ordinals; documented JSON strings, including `"40"`, are covered by deserialization tests.
+  - Added signed route/method/body coverage, official-example response fixtures, any-of validation, README/example usage, and contract assertions. No authenticated private or state-changing live call was made.
+  - Completed the scheduled retrospective review of versions 4.106.103 through 4.106.108 across implementation, authentication boundaries, numeric and identifier types, fixtures, examples, release notes, and execution scope; no additional defects or scope corrections were found.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#batch-cancel-orders
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-adl-position-reduction-ranking
 - Version 4.106.107 - 13 July 2026
   - Synchronized every OTC endpoint identified by v4.106.107 with its complete current official contract retrieved on 08 August 2026.
     - Made every `POST /otc/stable_coin/order/create` request field except `promotion_code` non-optional in the public method and request model, added preflight validation for required coin/token values and `side`, and retained the required response timestamp through `GateOtcActionResult`.

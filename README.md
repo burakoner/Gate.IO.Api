@@ -673,6 +673,7 @@ var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest {
 var crossex_07 = await api.CrossEx.GetOrderAsync("ORDER-ID");
 var crossex_08 = await api.CrossEx.UpdateOrderAsync("ORDER-ID", new GateCrossExOrderUpdateRequest { Quantity = 0.001m, Price = 61000.0m });
 var crossex_09 = await api.CrossEx.CancelOrderAsync("ORDER-ID");
+var crossex_09b = await api.CrossEx.CancelOrdersAsync(new[] { new GateCrossExBatchCancelOrderRequest { OrderId = "ORDER-ID" }, new GateCrossExBatchCancelOrderRequest { Text = "CLIENT-ORDER-ID" } });
 var crossex_10 = await api.CrossEx.GetConvertQuoteAsync(new GateCrossExConvertQuoteRequest { ExchangeType = GateCrossExExchangeType.Gate, FromCoin = "USDT", ToCoin = "BTC", FromAmount = 100.0m });
 var crossex_11 = await api.CrossEx.CreateConvertOrderAsync(new GateCrossExConvertOrderRequest { QuoteId = "QUOTE-ID" });
 var crossex_12 = await api.CrossEx.GetAccountAsync(new GateCrossExAccountQueryRequest { ExchangeType = GateCrossExExchangeType.Gate });

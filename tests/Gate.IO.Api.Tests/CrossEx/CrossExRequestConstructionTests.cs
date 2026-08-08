@@ -428,6 +428,61 @@ public class CrossExRequestConstructionTests
     }
 
     [Fact]
+    public async Task Batch_cancel_orders_serializes_documented_array_and_signed_route()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/CrossEx/batch_cancel_orders.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.CrossEx.CancelOrdersAsync([
+            new GateCrossExBatchCancelOrderRequest { OrderId = "123456" },
+            new GateCrossExBatchCancelOrderRequest { Text = "crossex-test-1" },
+            new GateCrossExBatchCancelOrderRequest { OrderId = "234567", Text = "order-id-takes-precedence" },
+        ]);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/crossex/batch_cancel_orders", request.RequestUri.AbsolutePath);
+        var body = JArray.Parse(request.Content);
+        Assert.Equal("123456", body[0]!["order_id"]!.ToString());
+        Assert.Null(body[0]!["text"]);
+        Assert.Equal("crossex-test-1", body[1]!["text"]!.ToString());
+        Assert.Null(body[1]!["order_id"]);
+        Assert.Equal("234567", body[2]!["order_id"]!.ToString());
+        Assert.Equal("order-id-takes-precedence", body[2]!["text"]!.ToString());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public void Batch_cancel_orders_rejects_items_without_an_identifier()
+    {
+        var client = new GateRestApiClient();
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.CrossEx.CancelOrdersAsync([
+                new GateCrossExBatchCancelOrderRequest(),
+            ]);
+        });
+
+        Assert.Equal("requests", exception.ParamName);
+    }
+
+    [Fact]
+    public void Adl_rank_rejects_missing_required_symbol()
+    {
+        var client = new GateRestApiClient();
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.CrossEx.GetAdlRankAsync(new GateCrossExAdlRankQueryRequest());
+        });
+
+        Assert.Equal("Symbol", exception.ParamName);
+    }
+
+    [Fact]
     public void Current_crossex_venue_and_transfer_account_enums_map_to_wire_values()
     {
         Assert.Equal("KRAKEN", MapConverter.GetString(GateCrossExExchangeType.Kraken));
