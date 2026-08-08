@@ -73,13 +73,15 @@ public class SpotRequestConstructionTests
             Side = GateSpotOrderSide.Buy,
             Amount = 0.001m,
             Price = 65000m,
-            TimeInForce = GateSpotTimeInForce.GoodTillCancelled,
+            TimeInForce = GateSpotTimeInForce.ImmediateOrCancel,
             Iceberg = 0m,
             Slippage = 0.05m,
             AutoBorrow = false,
             AutoRepay = false,
             SelfTradeAction = GateSpotSelfTradeAction.CancelNewest,
             ActionMode = GateSpotActionMode.Full,
+            StopProfit = new GateSpotOrderTpsl { TriggerPrice = "67000", OrderPrice = "66900" },
+            StopLoss = new GateSpotOrderTpsl { TriggerPrice = "63000", OrderPrice = "62900" },
         });
 
         Assert.True(result.Success, result.Error?.ToString());
@@ -95,11 +97,123 @@ public class SpotRequestConstructionTests
         Assert.Equal("buy", body["side"]!.ToString());
         Assert.Equal("0.001", body["amount"]!.ToString());
         Assert.Equal("65000", body["price"]!.ToString());
-        Assert.Equal("gtc", body["time_in_force"]!.ToString());
+        Assert.Equal("ioc", body["time_in_force"]!.ToString());
         Assert.Equal("0.05", body["slippage"]!.ToString());
         Assert.Equal("cn", body["stp_act"]!.ToString());
         Assert.Equal("FULL", body["action_mode"]!.ToString());
+        Assert.Equal(JTokenType.String, body["stop_profit"]!["trigger_price"]!.Type);
+        Assert.Equal("67000", body["stop_profit"]!["trigger_price"]!.ToString());
+        Assert.Equal("66900", body["stop_profit"]!["order_price"]!.ToString());
+        Assert.Equal("63000", body["stop_loss"]!["trigger_price"]!.ToString());
+        Assert.Equal("62900", body["stop_loss"]!["order_price"]!.ToString());
         AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_spot_batch_order_request_serializes_tpsl_and_accepts_limit_fok()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/batch_orders.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Spot.PlaceOrdersAsync(
+        [
+            new GateSpotOrderRequest
+            {
+                ClientOrderId = "t-batch",
+                Symbol = "BTC_USDT",
+                Type = GateSpotOrderType.Limit,
+                Account = GateSpotAccountType.Unified,
+                Side = GateSpotOrderSide.Buy,
+                Amount = 0.001m,
+                Price = 65000m,
+                TimeInForce = GateSpotTimeInForce.FillOrKill,
+                Iceberg = 0m,
+                Slippage = 0.05m,
+                StopProfit = new GateSpotOrderTpsl { TriggerPrice = "67000", OrderPrice = "67000" },
+                StopLoss = new GateSpotOrderTpsl { TriggerPrice = "63000", OrderPrice = "63000" },
+            },
+        ]);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/spot/batch_orders", request.RequestUri.AbsolutePath);
+
+        var body = JArray.Parse(request.Content);
+        var order = Assert.IsType<JObject>(Assert.Single(body));
+        Assert.Equal("fok", order["time_in_force"]!.ToString());
+        Assert.Equal(JTokenType.String, order["amount"]!.Type);
+        Assert.Equal(JTokenType.String, order["price"]!.Type);
+        Assert.Equal(JTokenType.String, order["iceberg"]!.Type);
+        Assert.Equal(JTokenType.String, order["slippage"]!.Type);
+        Assert.Equal("67000", order["stop_profit"]!["trigger_price"]!.ToString());
+        Assert.Equal("63000", order["stop_loss"]!["trigger_price"]!.ToString());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_spot_amend_requests_preserve_update_cancel_and_unchanged_tpsl_semantics()
+    {
+        var handler = new RecordingHttpMessageHandler(request => request.RequestUri!.AbsolutePath.EndsWith("amend_batch_orders", StringComparison.Ordinal)
+            ? JsonResponse(JsonFixture.Read("Docs/Spot/batch_orders.success.json"))
+            : JsonResponse(JsonFixture.Read("Docs/Spot/order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var singleResult = await client.Spot.AmendOrderAsync(new GateSpotAmendRequest
+        {
+            Symbol = "BTC_USDT",
+            OrderId = 121212,
+            Amount = "1",
+            StopProfit = new GateSpotOrderTpsl(),
+            StopLoss = null,
+        });
+        var batchResult = await client.Spot.AmendOrdersAsync(
+        [
+            new GateSpotAmendRequest
+            {
+                Symbol = "BTC_USDT",
+                ClientOrderId = "t-batch-amend",
+                Price = "65001",
+                StopProfit = new GateSpotOrderTpsl { TriggerPrice = "67000", OrderPrice = "67000" },
+                StopLoss = new GateSpotOrderTpsl(),
+            },
+            new GateSpotAmendRequest
+            {
+                Symbol = "ETH_USDT",
+                OrderId = 121213,
+                Amount = "2",
+            },
+        ]);
+
+        Assert.True(singleResult.Success, singleResult.Error?.ToString());
+        Assert.True(batchResult.Success, batchResult.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
+
+        var singleRequest = handler.Requests[0];
+        Assert.Equal(HttpMethod.Patch, singleRequest.Method);
+        Assert.Equal("/api/v4/spot/orders/121212", singleRequest.RequestUri.AbsolutePath);
+        var singleBody = JObject.Parse(singleRequest.Content);
+        Assert.Empty(Assert.IsType<JObject>(singleBody["stop_profit"]));
+        Assert.Null(singleBody["stop_loss"]);
+
+        var batchRequest = handler.Requests[1];
+        Assert.Equal(HttpMethod.Post, batchRequest.Method);
+        Assert.Equal("/api/v4/spot/amend_batch_orders", batchRequest.RequestUri.AbsolutePath);
+        var batchBody = JArray.Parse(batchRequest.Content);
+        Assert.Equal(2, batchBody.Count);
+        var batchItem = Assert.IsType<JObject>(batchBody[0]);
+        Assert.Equal(JTokenType.String, batchItem["order_id"]!.Type);
+        Assert.Equal("t-batch-amend", batchItem["order_id"]!.ToString());
+        Assert.Null(batchItem["text"]);
+        Assert.Equal("67000", batchItem["stop_profit"]!["trigger_price"]!.ToString());
+        Assert.Empty(Assert.IsType<JObject>(batchItem["stop_loss"]));
+        var numericBatchItem = Assert.IsType<JObject>(batchBody[1]);
+        Assert.Equal(JTokenType.String, numericBatchItem["order_id"]!.Type);
+        Assert.Equal("121213", numericBatchItem["order_id"]!.ToString());
+        AssertSignedHeaders(singleRequest);
+        AssertSignedHeaders(batchRequest);
     }
 
     [Fact]

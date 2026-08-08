@@ -14,14 +14,17 @@ public record GateSpotAmendRequest
     /// <summary>
     /// Order Id
     /// </summary>
-    [JsonProperty("order_id", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore]
     public long? OrderId { get; set; }
 
     /// <summary>
     /// Client  Order Id
     /// </summary>
-    [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonIgnore]
     public string ClientOrderId { get; set; }
+
+    [JsonProperty("order_id", NullValueHandling = NullValueHandling.Ignore)]
+    private string OrderIdValue => OrderId?.ToString(CultureInfo.InvariantCulture) ?? ClientOrderId;
 
     /// <summary>
     /// Amount
@@ -54,4 +57,16 @@ public record GateSpotAmendRequest
     [JsonConverter(typeof(MapConverter))]
     [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore)]
     public GateSpotActionMode? ActionMode { get; set; }
+
+    /// <summary>
+    /// Take-profit settings for a limit order. For buy orders, the trigger price must be greater than the order price; for sell orders, it must be lower. Use an empty object to cancel take profit; use null to leave it unchanged.
+    /// </summary>
+    [JsonProperty("stop_profit", NullValueHandling = NullValueHandling.Ignore)]
+    public GateSpotOrderTpsl StopProfit { get; set; }
+
+    /// <summary>
+    /// Stop-loss settings for a limit order. For buy orders, the trigger price must be lower than the order price; for sell orders, it must be greater. Use an empty object to cancel stop loss; use null to leave it unchanged.
+    /// </summary>
+    [JsonProperty("stop_loss", NullValueHandling = NullValueHandling.Ignore)]
+    public GateSpotOrderTpsl StopLoss { get; set; }
 }

@@ -1,5 +1,17 @@
 ## Change Log & Release Notes
 
+- Version 4.106.81 - 13 May 2026
+  - Aligned `POST /spot/orders`, `POST /spot/batch_orders`, `PATCH /spot/orders/{order_id}`, and `POST /spot/amend_batch_orders` with the current official Spot documentation retrieved on 08 August 2026.
+    - Added shared limit-order take-profit and stop-loss payloads with `trigger_price` and `order_price` to create, amend, and response models.
+    - Preserved amend semantics: an empty TP/SL object cancels that side, while null omits the field and leaves it unchanged.
+    - Corrected local time-in-force validation so limit IOC/FOK orders are accepted and market orders remain restricted to IOC/FOK.
+    - Preserved the strongly typed decimal API while serializing documented batch-order decimal fields as invariant JSON strings.
+    - Aligned batch amendment targets with the documented string `order_id` field for both numeric and client-defined IDs.
+    - Refreshed Spot request/response contract coverage and usage examples.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#create-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#batch-place-orders
+    - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#amend-single-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#batch-modification-of-orders
 - Version 4.106.80 - 10 May 2026
   - Aligned `GET /crossex/history_orders` with the current official CrossEx documentation retrieved on 08 August 2026.
     - Added typed, comma-separated `attributes` filters for `COMMON`, `LIQ`, `REDUCE`, `ADL`, and `SETTLEMENT` orders.

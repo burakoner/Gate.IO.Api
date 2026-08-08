@@ -69,8 +69,13 @@ public class SpotContractTests
         Assert.Equal(GateSpotTimeInForce.GoodTillCancelled, order.TimeInForce);
         Assert.Equal(GateSpotSelfTradeAction.None, order.SelfTradingPreventionAction);
         Assert.Equal(GateSpotFinishAs.Filled, order.FinishAs);
+        Assert.Equal(0.05m, order.Slippage);
+        Assert.Equal("67000", order.StopProfit.TriggerPrice);
+        Assert.Equal("63000", order.StopLoss.TriggerPrice);
         Assert.Single(batchOrders);
         Assert.True(batchOrders[0].Succeeded);
+        Assert.Equal("67000", batchOrders[0].StopProfit.OrderPrice);
+        Assert.Equal("63000", batchOrders[0].StopLoss.OrderPrice);
         Assert.Single(openOrders);
         Assert.Equal(GateSpotOrderStatus.Open, openOrders[0].Orders[0].Status);
         Assert.Single(cancelOrders);

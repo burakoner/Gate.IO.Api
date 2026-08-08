@@ -358,14 +358,11 @@ public class GateSpotRestApiClient
         {
             ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, false);
 
-            if (request.Type == GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.GoodTillCancelled)
-                throw new ArgumentException("GTC (GoodTillCancelled) is not supported for market orders");
-
-            if (request.Type != GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.ImmediateOrCancel)
-                throw new ArgumentException("IOC (ImmediateOrCancel) is only supported for market orders");
-
-            if (request.Type != GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.FillOrKill)
-                throw new ArgumentException("FOK (FillOrKill) is only supported for market orders");
+            if (request.Type == GateSpotOrderType.Market
+                && request.TimeInForce.HasValue
+                && request.TimeInForce != GateSpotTimeInForce.ImmediateOrCancel
+                && request.TimeInForce != GateSpotTimeInForce.FillOrKill)
+                throw new ArgumentException("Only IOC (ImmediateOrCancel) and FOK (FillOrKill) are supported for market orders");
 
         }
 
@@ -518,14 +515,11 @@ public class GateSpotRestApiClient
     {
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
-        if (request.Type == GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.GoodTillCancelled)
-            throw new ArgumentException("GTC (GoodTillCancelled) is not supported for market orders");
-
-        if (request.Type != GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.ImmediateOrCancel)
-            throw new ArgumentException("IOC (ImmediateOrCancel) is only supported for market orders");
-
-        if (request.Type != GateSpotOrderType.Market && request.TimeInForce == GateSpotTimeInForce.FillOrKill)
-            throw new ArgumentException("FOK (FillOrKill) is only supported for market orders");
+        if (request.Type == GateSpotOrderType.Market
+            && request.TimeInForce.HasValue
+            && request.TimeInForce != GateSpotTimeInForce.ImmediateOrCancel
+            && request.TimeInForce != GateSpotTimeInForce.FillOrKill)
+            throw new ArgumentException("Only IOC (ImmediateOrCancel) and FOK (FillOrKill) are supported for market orders");
 
         var parameters = new ParameterCollection()
         {
@@ -544,6 +538,8 @@ public class GateSpotRestApiClient
         parameters.AddOptional("auto_repay", request.AutoRepay);
         parameters.AddOptionalEnum("stp_act", request.SelfTradeAction);
         parameters.AddOptionalEnum("action_mode", request.ActionMode);
+        parameters.AddOptional("stop_profit", request.StopProfit);
+        parameters.AddOptional("stop_loss", request.StopLoss);
 
         return _.SendRequestInternal<GateSpotOrder>(_.GetUrl(api, v4, spot, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -746,22 +742,18 @@ public class GateSpotRestApiClient
         GateSpotAccountType? account = null,
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection();
-        parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptionalEnum("account", account);
-        parameters.AddOptionalString("amount", amount);
-        parameters.AddOptionalString("price", price);
-        parameters.AddOptional("amend_text", amendText);
-        parameters.AddOptionalEnum("action_mode", actionMode);
-
-        var oid = _.CheckOrderId(orderId, clientOrderId);
-        var uri = _.GetUrl(api, v4, spot, "orders".AppendPath(oid));
-        if (!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
-        if (account != null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
-
-        return _.SendRequestInternal<GateSpotOrder>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters);
-    }
+        => AmendOrderInternalAsync(
+            symbol,
+            orderId,
+            clientOrderId,
+            amount?.ToString(CultureInfo.InvariantCulture),
+            price?.ToString(CultureInfo.InvariantCulture),
+            amendText,
+            account,
+            actionMode,
+            null,
+            null,
+            ct);
 
     /// <summary>
     /// Amend an order
@@ -770,16 +762,49 @@ public class GateSpotRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateSpotOrder>> AmendOrderAsync(GateSpotAmendRequest request, CancellationToken ct = default)
-        => AmendOrderAsync(
+        => AmendOrderInternalAsync(
             request.Symbol,
             request.OrderId,
             request.ClientOrderId,
-            decimal.TryParse(request.Amount, NumberStyles.Any, _.CI, out var amount) ? amount : null,
-            decimal.TryParse(request.Price, NumberStyles.Any, _.CI, out var price) ? price : null,
+            request.Amount,
+            request.Price,
             request.AmendText,
             request.Account,
             request.ActionMode,
+            request.StopProfit,
+            request.StopLoss,
             ct);
+
+    private Task<RestCallResult<GateSpotOrder>> AmendOrderInternalAsync(
+        string symbol,
+        long? orderId,
+        string clientOrderId,
+        string amount,
+        string price,
+        string amendText,
+        GateSpotAccountType? account,
+        GateSpotActionMode? actionMode,
+        GateSpotOrderTpsl stopProfit,
+        GateSpotOrderTpsl stopLoss,
+        CancellationToken ct)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency_pair", symbol);
+        parameters.AddOptionalEnum("account", account);
+        parameters.AddOptional("amount", amount);
+        parameters.AddOptional("price", price);
+        parameters.AddOptional("amend_text", amendText);
+        parameters.AddOptionalEnum("action_mode", actionMode);
+        parameters.AddOptional("stop_profit", stopProfit);
+        parameters.AddOptional("stop_loss", stopLoss);
+
+        var oid = _.CheckOrderId(orderId, clientOrderId);
+        var uri = _.GetUrl(api, v4, spot, "orders".AppendPath(oid));
+        if (!string.IsNullOrEmpty(symbol)) uri = uri.AddQueryParmeter("currency_pair", symbol);
+        if (account != null) uri = uri.AddQueryParmeter("account", MapConverter.GetString(account));
+
+        return _.SendRequestInternal<GateSpotOrder>(uri, HttpMethod.Patch, ct, true, bodyParameters: parameters);
+    }
 #endif
 
     /// <summary>

@@ -30,5 +30,14 @@
   "rebated_fee": "0",
   "rebated_fee_currency": "USDT",
   "stp_act": "-",
-  "finish_as": "filled"
+  "finish_as": "filled",
+  "slippage": "0.05",
+  "stop_profit": {
+    "trigger_price": "67000",
+    "order_price": "67000"
+  },
+  "stop_loss": {
+    "trigger_price": "63000",
+    "order_price": "63000"
+  }
 }

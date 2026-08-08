@@ -193,11 +193,16 @@ var spot_12 = await api.Spot.PlaceOrdersAsync(new List<GateSpotOrderRequest>
 {
     new GateSpotOrderRequest
     {
+        ClientOrderId = "t-batch-order",
         Symbol = "SYMBOL",
+        Account = GateSpotAccountType.Spot,
         Side = GateSpotOrderSide.Buy,
         Type = GateSpotOrderType.Limit,
+        TimeInForce = GateSpotTimeInForce.GoodTillCancelled,
         Amount = 1.0m,
-        Price = 1.0m
+        Price = 1.0m,
+        StopProfit = new GateSpotOrderTpsl { TriggerPrice = "1.10", OrderPrice = "1.09" },
+        StopLoss = new GateSpotOrderTpsl { TriggerPrice = "0.90", OrderPrice = "0.89" }
     }
 }
 );
@@ -208,16 +213,18 @@ var spot_14 = await api.Spot.CloseLiquidatedPositionsAsync(new GateSpotCloseRequ
     Price = 1001.01m,
     ProcessingMode = GateSpotActionMode.Full,
 });
-var spot_15 = await api.Spot.PlaceOrderAsync("SYMBOL", GateSpotAccountType.Spot, GateSpotOrderType.Market, GateSpotOrderSide.Buy, GateSpotTimeInForce.GoodTillCancelled, 100.01m);
+var spot_15 = await api.Spot.PlaceOrderAsync("SYMBOL", GateSpotAccountType.Spot, GateSpotOrderType.Market, GateSpotOrderSide.Buy, GateSpotTimeInForce.ImmediateOrCancel, 100.01m);
 var spot_16 = await api.Spot.PlaceOrderAsync(new GateSpotOrderRequest
 {
     Symbol = "SYMBOL",
     Account = GateSpotAccountType.Spot,
-    Type = GateSpotOrderType.Market,
+    Type = GateSpotOrderType.Limit,
     Side = GateSpotOrderSide.Buy,
     TimeInForce = GateSpotTimeInForce.GoodTillCancelled,
-    Amount = 100.01m,
-    Slippage = 0.03m
+    Amount = 1.0m,
+    Price = 1.0m,
+    StopProfit = new GateSpotOrderTpsl { TriggerPrice = "1.10", OrderPrice = "1.09" },
+    StopLoss = new GateSpotOrderTpsl { TriggerPrice = "0.90", OrderPrice = "0.89" }
 });
 var spot_17 = await api.Spot.GetOrdersAsync(new GateSpotOrderQueryRequest { Symbol = "SYMBOL", Status = GateSpotOrderQueryStatus.Open, Account = GateSpotAccountType.Spot, Limit = 100 });
 var spot_18 = await api.Spot.CancelOrdersAsync("SYMBOL");
@@ -261,6 +268,8 @@ var spot_26 = await api.Spot.GetPriceTriggeredOrdersAsync(new GateSpotPriceTrigg
 var spot_27 = await api.Spot.CancelPriceTriggeredOrdersAsync();
 var spot_28 = await api.Spot.GetPriceTriggeredOrderAsync();
 var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();
+var spot_30 = await api.Spot.AmendOrderAsync(new GateSpotAmendRequest { Symbol = "SYMBOL", OrderId = 1_000_000_000, Price = "1.01", StopProfit = new GateSpotOrderTpsl { TriggerPrice = "1.10", OrderPrice = "1.09" } });
+var spot_31 = await api.Spot.AmendOrdersAsync([new GateSpotAmendRequest { Symbol = "SYMBOL", ClientOrderId = "t-batch-order", Amount = "0.5", StopLoss = new GateSpotOrderTpsl() }]); // Empty object cancels stop loss; null leaves it unchanged.
 
 // Isolated Margin Methods
 var margin_01 = await api.IsolatedMargin.GetBalancesAsync("SYMBOL");
