@@ -16,10 +16,4 @@ public enum GateOtcOrderType : byte
     /// </summary>
     [Map("SELL")]
     Sell = 2,
-
-    /// <summary>
-    /// All orders
-    /// </summary>
-    [Map("ALL")]
-    All = 3,
 }

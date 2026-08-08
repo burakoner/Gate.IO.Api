@@ -163,62 +163,14 @@ public record GateOtcFiatOrderDetail
     public string GateReferenceCode { get; set; }
 
     /// <summary>
-    /// Legacy transfer remark response alias
-    /// </summary>
-    [JsonIgnore]
-    [Obsolete("Use GateTransferRemark.")]
-    public string TransferRemark
-    {
-        get => GateTransferRemark;
-        set => GateTransferRemark = value;
-    }
-
-    [JsonProperty("transfer_remark")]
-    private string LegacyTransferRemark { set => GateTransferRemark = value; }
-
-    [JsonProperty("reference_code")]
-    private string LegacyReferenceCode { set => GateReferenceCode = value; }
-
-    /// <summary>
     /// Status
     /// </summary>
     [JsonProperty("status")]
     public string Status { get; set; }
 
     /// <summary>
-    /// Database status
-    /// </summary>
-    [JsonProperty("db_status")]
-    public string DatabaseStatus { get; set; }
-
-    /// <summary>
     /// Created time
     /// </summary>
     [JsonProperty("create_time")]
-    public DateTime? CreateTime { get; set; }
-
-    /// <summary>
-    /// Cancellation or rejection reason
-    /// </summary>
-    [JsonProperty("memo")]
-    public string Memo { get; set; }
-
-    /// <summary>
-    /// Quote direction
-    /// </summary>
-    [JsonProperty("side")]
-    [JsonConverter(typeof(MapConverter))]
-    public GateOtcOrderKind Side { get; set; }
-
-    /// <summary>
-    /// Promotion code
-    /// </summary>
-    [JsonProperty("promotion_code")]
-    public string PromotionCode { get; set; }
-
-    /// <summary>
-    /// Trade number
-    /// </summary>
-    [JsonProperty("trade_no")]
-    public string TradeNumber { get; set; }
+    public DateTime CreateTime { get; set; }
 }

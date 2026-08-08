@@ -74,8 +74,15 @@ public class GateOtcRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateOtcQuote>> GetQuoteAsync(GateOtcQuoteRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateOtcQuote>> GetQuoteAsync(GateOtcQuoteRequest request, CancellationToken ct = default)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.PayCoin, nameof(request.PayCoin));
+        Require(request.GetCoin, nameof(request.GetCoin));
+        if (!Enum.IsDefined(typeof(GateOtcQuoteSide), request.Side))
+            throw new ArgumentOutOfRangeException(nameof(request.Side));
         if (request.Side == GateOtcQuoteSide.Pay && !request.PayAmount.HasValue)
             throw new ArgumentException("PayAmount is required for PAY quotes", nameof(request.PayAmount));
         if (request.Side == GateOtcQuoteSide.Get && !request.GetAmount.HasValue)
@@ -92,7 +99,18 @@ public class GateOtcRestApiClient
         parameters.AddOptionalString("get_amount", request.GetAmount);
         parameters.AddOptional("promotion_code", request.PromotionCode);
 
-        return SendOtcDataRequestAsync<GateOtcQuote>("quote", HttpMethod.Post, ct, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateOtcResponse<GateOtcQuote>>(
+            _.GetUrl(api, v4, otc, "quote"),
+            HttpMethod.Post,
+            ct,
+            true,
+            bodyParameters: parameters).ConfigureAwait(false);
+
+        var quote = result.Data?.Data;
+        if (quote != null)
+            quote.Timestamp = result.Data.Timestamp ?? default;
+
+        return result.Success ? result.As(quote) : result.As<GateOtcQuote>(default);
     }
 
     /// <summary>
@@ -167,12 +185,12 @@ public class GateOtcRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateOtcActionResult>> CreateStableCoinOrderAsync(
-        string payCoin = null,
-        string getCoin = null,
-        decimal? payAmount = null,
-        decimal? getAmount = null,
-        GateOtcQuoteSide? side = null,
-        string quoteToken = null,
+        string payCoin,
+        string getCoin,
+        decimal payAmount,
+        decimal getAmount,
+        GateOtcQuoteSide side,
+        string quoteToken,
         string promotionCode = null,
         CancellationToken ct = default)
         => CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest
@@ -194,14 +212,25 @@ public class GateOtcRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateOtcActionResult>> CreateStableCoinOrderAsync(GateOtcStableCoinOrderRequest request, CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection();
-        parameters.AddOptional("pay_coin", request.PayCoin);
-        parameters.AddOptional("get_coin", request.GetCoin);
-        parameters.AddOptionalString("pay_amount", request.PayAmount);
-        parameters.AddOptionalString("get_amount", request.GetAmount);
-        parameters.AddOptionalEnum("side", request.Side);
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.PayCoin, nameof(request.PayCoin));
+        Require(request.GetCoin, nameof(request.GetCoin));
+        Require(request.QuoteToken, nameof(request.QuoteToken));
+        if (!Enum.IsDefined(typeof(GateOtcQuoteSide), request.Side))
+            throw new ArgumentOutOfRangeException(nameof(request.Side));
+
+        var parameters = new ParameterCollection
+        {
+            { "pay_coin", request.PayCoin },
+            { "get_coin", request.GetCoin },
+            { "quote_token", request.QuoteToken },
+        };
+        parameters.AddString("pay_amount", request.PayAmount);
+        parameters.AddString("get_amount", request.GetAmount);
+        parameters.AddEnum("side", request.Side);
         parameters.AddOptional("promotion_code", request.PromotionCode);
-        parameters.AddOptional("quote_token", request.QuoteToken);
 
         return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "stable_coin/order/create"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -478,12 +507,12 @@ public class GateOtcRestApiClient
     /// <summary>
     /// Fiat order list
     /// </summary>
-    /// <param name="type">BUY, SELL, or ALL</param>
+    /// <param name="type">BUY or SELL</param>
     /// <param name="fiatCurrency">Fiat currency</param>
     /// <param name="cryptoCurrency">Digital currency</param>
     /// <param name="startTime">Start time</param>
     /// <param name="endTime">End time</param>
-    /// <param name="status">Order status</param>
+    /// <param name="status">Order status: DONE, CANCEL, PROCESSING, or DISBURSED</param>
     /// <param name="pageNumber">Page number</param>
     /// <param name="pageSize">Number of items per page</param>
     /// <param name="ct">Cancellation Token</param>

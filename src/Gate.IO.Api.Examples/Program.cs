@@ -549,7 +549,7 @@ internal class Program
         // OTC Methods
         var otc_01 = await api.Otc.GetQuoteAsync(new GateOtcQuoteRequest { Side = GateOtcQuoteSide.Pay, PayCoin = "USDT", GetCoin = "USD", PayAmount = 30000.0m, CreateQuoteToken = true });
         var otc_02 = await api.Otc.CreateFiatOrderAsync(new GateOtcFiatOrderRequest { Type = GateOtcOrderType.Buy, CryptoCurrency = "USDT", FiatCurrency = "USD", CryptoAmount = 30000.0m, FiatAmount = 30000.0m, QuoteToken = "QUOTE-TOKEN", BankId = 1_000_000_001 });
-        var otc_03 = await api.Otc.CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest { PayCoin = "USDC", GetCoin = "USDT", PayAmount = 30000.0m, GetAmount = 20000.0m, Side = GateOtcQuoteSide.Pay, QuoteToken = "QUOTE-TOKEN" });
+        var otc_03 = await api.Otc.CreateStableCoinOrderAsync("USDC", "USDT", 30000.0m, 20000.0m, GateOtcQuoteSide.Pay, "QUOTE-TOKEN");
         var otc_04 = await api.Otc.GetBankAccountsAsync();
         var otc_05 = await api.Otc.CreateBankCardAsync(new GateOtcBankCreateRequest { BankAccountName = "ACCOUNT-NAME", BankName = "BANK-NAME", BankCountry = "GB", BankAddress = "BANK-ADDRESS", Iban = "IBAN", Swift = "SWIFT", DocumentationFile = "BASE64-ACCOUNT-PROOF" });
         var otc_06 = await api.Otc.DeleteBankCardAsync("BANK-CARD-ID");

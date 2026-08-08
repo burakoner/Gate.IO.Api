@@ -44,12 +44,6 @@ public record GateOtcFiatOrder
     public string Status { get; set; }
 
     /// <summary>
-    /// Database status
-    /// </summary>
-    [JsonProperty("db_status")]
-    public string DatabaseStatus { get; set; }
-
-    /// <summary>
     /// Fiat currency
     /// </summary>
     [JsonProperty("fiat_currency")]
@@ -73,9 +67,6 @@ public record GateOtcFiatOrder
     [JsonProperty("crypto_currency")]
     public string CryptoCurrency { get; set; }
 
-    [JsonProperty("ceypto_currency")]
-    private string CryptoCurrencyTypo { set => CryptoCurrency = value; }
-
     /// <summary>
     /// Cryptocurrency information
     /// </summary>
@@ -93,24 +84,6 @@ public record GateOtcFiatOrder
     /// </summary>
     [JsonProperty("rate")]
     public decimal Rate { get; set; }
-
-    /// <summary>
-    /// Transfer remark. Empty when <see cref="ReferenceCode"/> is set.
-    /// </summary>
-    [JsonProperty("transfer_remark")]
-    public string TransferRemark { get; set; }
-
-    /// <summary>
-    /// Unique bank transfer reference code for deposit buy orders. Mutually exclusive with <see cref="TransferRemark"/>.
-    /// </summary>
-    [JsonProperty("reference_code")]
-    public string ReferenceCode { get; set; }
-
-    /// <summary>
-    /// Bank account
-    /// </summary>
-    [JsonProperty("gate_bank_account_iban")]
-    public string GateBankAccountIban { get; set; }
 
     /// <summary>
     /// Promotion code

@@ -12,7 +12,7 @@
         "timestamp": 1739000013,
         "order_id": "41",
         "trade_no": "20250207043457590939",
-        "type": "BUY",
+        "type": "SELL",
         "status": "PROCESSING",
         "fiat_currency": "USD",
         "fiat_currency_info": {
@@ -27,8 +27,6 @@
         },
         "crypto_amount": "200000",
         "rate": "0.998000",
-        "transfer_remark": "",
-        "reference_code": "OTIK7M39QF42",
         "promotion_code": ""
       }
     ]

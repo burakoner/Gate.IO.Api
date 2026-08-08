@@ -1,5 +1,5 @@
 {
-  "message": "success",
+  "message": "成功",
   "code": 0,
   "data": {
     "order_id": "265",
@@ -18,17 +18,18 @@
     "swift_code": "",
     "intermediate_bank_name": "",
     "intermediary_bank_swift_code": "",
-    "gate_bank_account_name": "Gate Global UAB",
-    "gate_bank_name": "Example Bank",
-    "gate_bank_country": "SG",
-    "gate_bank_address": "1 Example Street",
-    "gate_bank_account_number_iban": "SG1234567890",
-    "gate_swift_code": "EXAMPLESG",
+    "gate_bank_account_name": "",
+    "gate_bank_name": "",
+    "gate_bank_country": "",
+    "gate_bank_address": "",
+    "gate_bank_account_number_iban": "",
+    "gate_swift_code": "",
     "gate_intermediary_bank_name": "",
     "gate_intermediary_bank_swift_code": "",
     "gate_transfer_remark": "",
     "gate_reference_code": "OTIK7M39QF42",
     "status": "PROCESSING",
     "create_time": "2025-03-07 07:51:52"
-  }
+  },
+  "timestamp": 1752051076
 }

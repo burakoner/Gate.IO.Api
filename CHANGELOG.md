@@ -1,5 +1,16 @@
 ## Change Log & Release Notes
 
+- Version 4.106.107 - 13 July 2026
+  - Synchronized every OTC endpoint identified by v4.106.107 with its complete current official contract retrieved on 08 August 2026.
+    - Made every `POST /otc/stable_coin/order/create` request field except `promotion_code` non-optional in the public method and request model, added preflight validation for required coin/token values and `side`, and retained the required response timestamp through `GateOtcActionResult`.
+    - Aligned `POST /otc/quote` with the current PAY/GET rules, added validation for required currencies and the conditional amount, retained `validity_period`, `refresh_limit`, and `refresh_limit_msg`, removed undocumented legacy quote fields, and now projects the required envelope timestamp onto `GateOtcQuote.Timestamp` instead of discarding it.
+    - Reduced fiat order-list items to the current published schema and covered `DISBURSED`; removed the undocumented `ALL` order type plus `db_status`, misspelled `ceypto_currency`, transfer/reference, and Gate-bank fields that the current order-list contract no longer publishes. This intentionally follows the current endpoint contract even though v4.106.95 had previously exposed list-level `reference_code`.
+    - Reverified the complete current stablecoin order-list and fiat order-detail models, including `pay_icon` / `get_icon` and all user/Gate beneficiary/intermediary-bank transfer fields. Removed obsolete detail aliases and internal fields absent from the current schema.
+    - Reverified that the current bank-list model contains only the consolidated `id` and published bank fields, and that checklist items contain only the required `description`; those corrections were already present from the earlier current-contract synchronization and were not duplicated.
+    - Confirmed the current 10 MB limit for `POST /otc/order/paid` payment receipts and `POST /otc/bank/create` account-opening proofs. The wrapper documents the limit but does not pretend to enforce byte size: the paid endpoint accepts an opaque server file key, while bank creation accepts gateway-dependent binary/Base64 string content.
+  - Refreshed official-example fixtures and added contract, request-body, required-field, legacy-field-removal, icon, bank-detail, `DISBURSED`, and response-timestamp coverage. All affected operations are authenticated or state-changing, so no live request was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/otc/
 - Version 4.106.106 - 08 July 2026
   - Added the complete current Stock REST API module identified by v4.106.106, exposing all 16 documented operations through `api.Stock`.
     - Added signed user assets; active, create, cancel-all, historical, amend, and single-cancel order operations; current positions and position close; transaction history and fund transfer; and the supported-exchange operation.

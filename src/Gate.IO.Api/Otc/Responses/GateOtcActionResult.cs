@@ -22,5 +22,5 @@ public record GateOtcActionResult
     /// </summary>
     [JsonProperty("timestamp")]
     [JsonConverter(typeof(DateTimeConverter))]
-    public DateTime? Timestamp { get; set; }
+    public DateTime Timestamp { get; set; }
 }

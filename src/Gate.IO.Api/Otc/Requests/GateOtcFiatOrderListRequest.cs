@@ -6,7 +6,7 @@ namespace Gate.IO.Api.Otc;
 public record GateOtcFiatOrderListRequest
 {
     /// <summary>
-    /// BUY, SELL, or ALL
+    /// BUY or SELL
     /// </summary>
     public GateOtcOrderType? Type { get; set; }
 
@@ -31,7 +31,7 @@ public record GateOtcFiatOrderListRequest
     public DateTime? EndTime { get; set; }
 
     /// <summary>
-    /// Order status
+    /// Order status: DONE, CANCEL, PROCESSING, or DISBURSED
     /// </summary>
     public string Status { get; set; }
 

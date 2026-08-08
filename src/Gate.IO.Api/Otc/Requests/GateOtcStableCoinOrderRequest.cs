@@ -18,17 +18,17 @@ public record GateOtcStableCoinOrderRequest
     /// <summary>
     /// User payment currency amount
     /// </summary>
-    public decimal? PayAmount { get; set; }
+    public decimal PayAmount { get; set; }
 
     /// <summary>
     /// Amount of currency received by the user
     /// </summary>
-    public decimal? GetAmount { get; set; }
+    public decimal GetAmount { get; set; }
 
     /// <summary>
     /// Quote direction returned by the quote API
     /// </summary>
-    public GateOtcQuoteSide? Side { get; set; }
+    public GateOtcQuoteSide Side { get; set; }
 
     /// <summary>
     /// Promotion code

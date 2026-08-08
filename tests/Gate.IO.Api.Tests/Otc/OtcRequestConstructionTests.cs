@@ -148,6 +148,8 @@ public class OtcRequestConstructionTests
         Assert.True(fiatOrders.Success, fiatOrders.Error?.ToString());
         Assert.True(stableOrders.Success, stableOrders.Error?.ToString());
         Assert.True(detail.Success, detail.Error?.ToString());
+        Assert.NotEqual(default, quote.Data!.Timestamp);
+        Assert.NotEqual(default, stableOrder.Data!.Timestamp);
         Assert.Equal("[multipart/form-data content omitted]", createdBank.Request!.Body);
         Assert.Equal("[multipart/form-data content omitted]", personalSupplement.Request!.Body);
         Assert.Equal("[multipart/form-data content omitted]", enterpriseSupplement.Request!.Body);
@@ -290,6 +292,48 @@ public class OtcRequestConstructionTests
 
         Assert.Equal("PayAmount", payException.ParamName);
         Assert.Equal("GetAmount", getException.ParamName);
+    }
+
+    [Fact]
+    public async Task Quote_and_stablecoin_order_requests_validate_current_required_fields()
+    {
+        var client = new GateRestApiClient();
+
+        var quoteCoinException = await Assert.ThrowsAsync<ArgumentException>(() => client.Otc.GetQuoteAsync(new GateOtcQuoteRequest
+        {
+            Side = GateOtcQuoteSide.Pay,
+            GetCoin = "USDT",
+            PayAmount = 1m,
+        }));
+        var stableCoinException = await Assert.ThrowsAsync<ArgumentException>(() => client.Otc.CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest
+        {
+            GetCoin = "USDT",
+            PayAmount = 1m,
+            GetAmount = 1m,
+            Side = GateOtcQuoteSide.Pay,
+            QuoteToken = "quote-token",
+        }));
+        var stableTokenException = await Assert.ThrowsAsync<ArgumentException>(() => client.Otc.CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest
+        {
+            PayCoin = "USDC",
+            GetCoin = "USDT",
+            PayAmount = 1m,
+            GetAmount = 1m,
+            Side = GateOtcQuoteSide.Pay,
+        }));
+        var stableSideException = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Otc.CreateStableCoinOrderAsync(new GateOtcStableCoinOrderRequest
+        {
+            PayCoin = "USDC",
+            GetCoin = "USDT",
+            PayAmount = 1m,
+            GetAmount = 1m,
+            QuoteToken = "quote-token",
+        }));
+
+        Assert.Equal("PayCoin", quoteCoinException.ParamName);
+        Assert.Equal("PayCoin", stableCoinException.ParamName);
+        Assert.Equal("QuoteToken", stableTokenException.ParamName);
+        Assert.Equal("Side", stableSideException.ParamName);
     }
 
     [Fact]

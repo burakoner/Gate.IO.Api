@@ -9,7 +9,7 @@ public record GateOtcStableCoinOrder
     /// Order ID
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     /// <summary>
     /// Transaction reference number
@@ -33,7 +33,7 @@ public record GateOtcStableCoinOrder
     /// Payment amount
     /// </summary>
     [JsonProperty("pay_amount")]
-    public decimal PayAmount { get; set; }
+    public decimal? PayAmount { get; set; }
 
     /// <summary>
     /// Received currency
@@ -51,19 +51,19 @@ public record GateOtcStableCoinOrder
     /// Received amount
     /// </summary>
     [JsonProperty("get_amount")]
-    public decimal GetAmount { get; set; }
+    public decimal? GetAmount { get; set; }
 
     /// <summary>
     /// Exchange rate
     /// </summary>
     [JsonProperty("rate")]
-    public decimal Rate { get; set; }
+    public decimal? Rate { get; set; }
 
     /// <summary>
     /// Reciprocal of the exchange rate
     /// </summary>
     [JsonProperty("rate_reci")]
-    public decimal RateReciprocal { get; set; }
+    public decimal? RateReciprocal { get; set; }
 
     /// <summary>
     /// Status
