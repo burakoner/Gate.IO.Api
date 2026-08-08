@@ -76,6 +76,8 @@ public class FuturesContractTests
         Assert.Equal(GateFuturesActionMode.Full, order.ActionMode);
         Assert.Equal(3800m, order.TakeProfitTriggerPrice);
         Assert.Equal(3700m, order.StopLossTriggerPrice);
+        Assert.Equal("string", order.TakeProfitBboType);
+        Assert.Equal("string", order.StopLossBboType);
         Assert.Equal(GateFuturesPriceTriggerStatus.Finished, priceOrders[0].Status);
         Assert.Equal(GateFuturesOrderFinishAs.Cancelled, priceOrders[0].FinishAs);
         Assert.Equal("100.5", priceOrders[0].Order.Amount);

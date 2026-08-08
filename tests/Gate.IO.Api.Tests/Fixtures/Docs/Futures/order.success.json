@@ -29,5 +29,7 @@
   "pos_margin_mode": "isolated",
   "action_mode": "FULL",
   "tpsl_tp_trigger_price": "3800",
-  "tpsl_sl_trigger_price": "3700"
+  "tpsl_sl_trigger_price": "3700",
+  "tpsl_tp_bbo_type": "string",
+  "tpsl_sl_bbo_type": "string"
 }

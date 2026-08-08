@@ -519,6 +519,8 @@ public class GateFuturesRestApiClient
         parameters.AddOptionalEnum("action_mode", request.ActionMode);
         parameters.AddOptionalString("tpsl_tp_trigger_price", request.TakeProfitTriggerPrice);
         parameters.AddOptionalString("tpsl_sl_trigger_price", request.StopLossTriggerPrice);
+        parameters.AddOptional("tpsl_tp_bbo_type", request.TakeProfitBboType);
+        parameters.AddOptional("tpsl_sl_bbo_type", request.StopLossBboType);
 
         var endpoint = "{settle}/orders".Replace("{settle}", MapConverter.GetString(settle));
         return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);

@@ -107,4 +107,16 @@ public record GateFuturesOrderRequest
     /// </summary>
     [JsonProperty("tpsl_sl_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
     public decimal? StopLossTriggerPrice { get; set; }
+
+    /// <summary>
+    /// Take-profit BBO price type.
+    /// </summary>
+    [JsonProperty("tpsl_tp_bbo_type", NullValueHandling = NullValueHandling.Ignore)]
+    public string TakeProfitBboType { get; set; }
+
+    /// <summary>
+    /// Stop-loss BBO price type.
+    /// </summary>
+    [JsonProperty("tpsl_sl_bbo_type", NullValueHandling = NullValueHandling.Ignore)]
+    public string StopLossBboType { get; set; }
 }

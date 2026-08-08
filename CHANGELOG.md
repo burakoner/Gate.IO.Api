@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.86 - 19 May 2026
+  - Verified the optional `tpsl_tp_trigger_price` and `tpsl_sl_trigger_price` fields announced for `FuturesOrder`; they were already present from the complete current-contract synchronization in version 4.106.85.
+  - Completed the touched `FuturesOrder` contract against the current official documentation retrieved on 08 August 2026.
+    - Added optional `tpsl_tp_bbo_type` and `tpsl_sl_bbo_type` fields to the shared create-order request, single and batch request serialization, and order response model.
+    - Kept both BBO types as nullable strings because the official contract does not publish an allowed-value set.
+    - Covered request and response wire names with documented-contract fixtures. The English schema example exposes the fields while its generated property tables omit them; the official changelog and Chinese endpoint tables corroborate both fields.
+    - No state-changing live private order calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#place-futures-order
+    - Source: https://www.gate.com/docs/developers/apiv4/zh_CN/futures/#place-futures-order
 - Version 4.106.85 - 19 May 2026
   - Aligned `GET /tradfi/positions/history` with the current official CFD documentation retrieved on 08 August 2026.
     - Added optional `page` and `page_size` query parameters, including the documented maximum page size of 100.

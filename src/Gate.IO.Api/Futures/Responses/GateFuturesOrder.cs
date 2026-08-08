@@ -254,4 +254,16 @@ public record GateFuturesOrder
     /// </summary>
     [JsonProperty("tpsl_sl_trigger_price"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? StopLossTriggerPrice { get; set; }
+
+    /// <summary>
+    /// Take-profit BBO price type.
+    /// </summary>
+    [JsonProperty("tpsl_tp_bbo_type")]
+    public string TakeProfitBboType { get; set; }
+
+    /// <summary>
+    /// Stop-loss BBO price type.
+    /// </summary>
+    [JsonProperty("tpsl_sl_bbo_type")]
+    public string StopLossBboType { get; set; }
 }

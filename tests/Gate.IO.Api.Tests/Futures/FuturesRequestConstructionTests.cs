@@ -119,12 +119,16 @@ public class FuturesRequestConstructionTests
             ActionMode = GateFuturesActionMode.Full,
             TakeProfitTriggerPrice = 68000m,
             StopLossTriggerPrice = 62000m,
+            TakeProfitBboType = "string",
+            StopLossBboType = "string",
         });
 
         Assert.True(result.Success, result.Error?.ToString());
         Assert.Equal(GateFuturesActionMode.Full, result.Data!.ActionMode);
         Assert.Equal(3800m, result.Data.TakeProfitTriggerPrice);
         Assert.Equal(3700m, result.Data.StopLossTriggerPrice);
+        Assert.Equal("string", result.Data.TakeProfitBboType);
+        Assert.Equal("string", result.Data.StopLossBboType);
         var request = Assert.Single(handler.Requests);
         Assert.Equal(HttpMethod.Post, request.Method);
         Assert.Equal("/api/v4/futures/usdt/orders", request.RequestUri.AbsolutePath);
@@ -146,6 +150,8 @@ public class FuturesRequestConstructionTests
         Assert.Equal("FULL", body["action_mode"]!.ToString());
         Assert.Equal("68000", body["tpsl_tp_trigger_price"]!.ToString());
         Assert.Equal("62000", body["tpsl_sl_trigger_price"]!.ToString());
+        Assert.Equal("string", body["tpsl_tp_bbo_type"]!.ToString());
+        Assert.Equal("string", body["tpsl_sl_bbo_type"]!.ToString());
         AssertSignedHeaders(request);
     }
 
@@ -165,6 +171,8 @@ public class FuturesRequestConstructionTests
                 Price = 65000.5m,
                 MarketOrderSlipRatio = 0.01m,
                 ActionMode = GateFuturesActionMode.Acknowledge,
+                TakeProfitBboType = "string",
+                StopLossBboType = "string",
             },
         ]);
 
@@ -182,6 +190,8 @@ public class FuturesRequestConstructionTests
         Assert.Equal(JTokenType.String, order["price"]!.Type);
         Assert.Equal("65000.5", order["price"]!.Value<string>());
         Assert.Equal("ACK", order["action_mode"]!.Value<string>());
+        Assert.Equal("string", order["tpsl_tp_bbo_type"]!.Value<string>());
+        Assert.Equal("string", order["tpsl_sl_bbo_type"]!.Value<string>());
         AssertSignedHeaders(request);
     }
 
