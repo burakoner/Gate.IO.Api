@@ -92,17 +92,27 @@ public class FuturesRequestConstructionTests
 
         Assert.True(allPositions.Success, allPositions.Error?.ToString());
         Assert.True(pagedPositions.Success, pagedPositions.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
 
-        var unpagedQuery = ParseQuery(handler.Requests[0].RequestUri);
+        var unpagedRequest = handler.Requests[0];
+        Assert.Equal(HttpMethod.Get, unpagedRequest.Method);
+        Assert.Equal("/api/v4/futures/usdt/positions", unpagedRequest.RequestUri.AbsolutePath);
+        AssertSignedHeaders(unpagedRequest);
+        var unpagedQuery = ParseQuery(unpagedRequest.RequestUri);
         Assert.False(unpagedQuery.ContainsKey("holding"));
         Assert.False(unpagedQuery.ContainsKey("limit"));
         Assert.False(unpagedQuery.ContainsKey("offset"));
 
-        var pagedQuery = ParseQuery(handler.Requests[1].RequestUri);
+        var pagedRequest = handler.Requests[1];
+        Assert.Equal(HttpMethod.Get, pagedRequest.Method);
+        Assert.Equal("/api/v4/futures/usdt/positions", pagedRequest.RequestUri.AbsolutePath);
+        AssertSignedHeaders(pagedRequest);
+        var pagedQuery = ParseQuery(pagedRequest.RequestUri);
         Assert.Equal("True", pagedQuery["holding"]);
         Assert.Equal("25", pagedQuery["limit"]);
         Assert.Equal("5", pagedQuery["offset"]);
 
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Futures.USDT.GetPositionsAsync(limit: 0));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Futures.USDT.GetPositionsAsync(limit: 101));
         await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Futures.USDT.GetPositionsAsync(offset: -1));
     }

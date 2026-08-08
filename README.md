@@ -346,7 +346,7 @@ var perpetual_13 = await api.Futures[settle].GetLiquidationsAsync(new GateFuture
 var perpetual_14 = await api.Futures[settle].GetRiskLimitTiersAsync("CONTRACT");
 var perpetual_15 = await api.Futures[settle].GetBalancesAsync();
 var perpetual_16 = await api.Futures[settle].GetBalanceHistoryAsync(new GateFuturesBalanceHistoryQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
-var perpetual_17 = await api.Futures[settle].GetPositionsAsync(new GateFuturesPositionQueryRequest { Holding = true, Limit = 100 });
+var perpetual_17 = await api.Futures[settle].GetPositionsAsync(new GateFuturesPositionQueryRequest { Holding = true }); // Omit Limit to return all current positions; explicit values must be 1-100.
 var perpetual_17b = await api.Futures[settle].GetHistoricalPositionsAsync(new GateFuturesHistoricalPositionQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
 var perpetual_18 = await api.Futures[settle].GetPositionAsync("CONTRACT");
 var perpetual_19 = await api.Futures[settle].SetPositionMarginAsync("CONTRACT", 100.0M);

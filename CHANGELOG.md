@@ -1,5 +1,14 @@
 ## Change Log & Release Notes
 
+- Version 4.106.104 - 02 July 2026
+  - Verified `GET /futures/{settle}/positions` against its complete current official endpoint and `Position` model contracts retrieved on 08 August 2026.
+    - The changelog describes the internal schema definition as `positions_limit`; the published wire parameter remains `limit`. The current endpoint contract confirms that omitting it returns all current positions and that explicit values are restricted to `1`-`100`.
+    - The correct nullable `limit` / `offset` behavior and range validation already entered the wrapper in v4.106.102 while closing the preceding documentation-backed review finding. No duplicate runtime implementation was added for v4.106.104.
+    - Rechecked every currently documented `Position` response field, including Delta-neutral hedge data, initial and maintenance margins, the nullable close-order object, timestamps, risk-limit metadata, sub-account position ID, margin mode, and current leverage. The wrapper already models the complete published response; previously supported undocumented server fields remain for backward compatibility.
+  - Strengthened signed request coverage with method, route, authentication, omission, explicit paging, and both sides of the valid limit range. Expanded the official-style response fixture assertions to cover every currently documented field, and changed usage examples to demonstrate the all-positions omission behavior. No authenticated private live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#get-user-position-list
+  - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#position
 - Version 4.106.103 - 30 June 2026
   - Verified every v4.106.103 change against the complete current official contracts retrieved on 08 August 2026.
     - The new P2P Merchant "Query spot balance" entry is explicitly a guide-only reference to the existing signed Spot `GET /spot/accounts` operation and defines no separate P2P request or response. It maps to the existing `api.Spot.GetBalancesAsync(...)` surface, so no duplicate `api.P2p` method was added.
