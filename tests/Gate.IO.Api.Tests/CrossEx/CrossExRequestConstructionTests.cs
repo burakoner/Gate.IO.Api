@@ -207,6 +207,14 @@ public class CrossExRequestConstructionTests
             To = millisTo,
             Page = 3,
             Limit = 100,
+            Attributes =
+            [
+                GateCrossExOrderAttribute.Common,
+                GateCrossExOrderAttribute.LiquidationTakeover,
+                GateCrossExOrderAttribute.LiquidationReduction,
+                GateCrossExOrderAttribute.AutoDeleverage,
+                GateCrossExOrderAttribute.Settlement,
+            ],
         });
         var historyPositions = await client.CrossEx.GetHistoricalPositionsAsync(new GateCrossExHistoryQueryRequest
         {
@@ -385,6 +393,7 @@ public class CrossExRequestConstructionTests
         Assert.Equal("1739086400456", historicalOrdersQuery["to"]);
         Assert.Equal("3", historicalOrdersQuery["page"]);
         Assert.Equal("100", historicalOrdersQuery["limit"]);
+        Assert.Equal("COMMON,LIQ,REDUCE,ADL,SETTLEMENT", historicalOrdersQuery["attributes"]);
         Assert.Equal("/api/v4/crossex/history_positions", handler.Requests[22].RequestUri.AbsolutePath);
         Assert.Equal("/api/v4/crossex/history_margin_positions", handler.Requests[23].RequestUri.AbsolutePath);
         Assert.Equal("/api/v4/crossex/history_margin_interests", handler.Requests[24].RequestUri.AbsolutePath);

@@ -6,19 +6,19 @@ namespace Gate.IO.Api.CrossEx;
 public record GateCrossExOrder
 {
     /// <summary>
-    /// Gets or sets the User ID.
+    /// User ID.
     /// </summary>
     [JsonProperty("user_id")]
     public long? UserId { get; set; }
 
     /// <summary>
-    /// Gets or sets the Order ID.
+    /// Order ID.
     /// </summary>
     [JsonProperty("order_id")]
     public long? OrderId { get; set; }
 
     /// <summary>
-    /// Gets or sets the Text.
+    /// Client-defined order ID.
     /// </summary>
     [JsonProperty("text")]
     public string Text { get; set; }
@@ -27,67 +27,67 @@ public record GateCrossExOrder
     private string ClientOrderId { set => Text = value; }
 
     /// <summary>
-    /// Gets or sets the State.
+    /// Order state: NEW, OPEN, PARTIALLY_FILLED, FILLED, FAIL, or REJECT.
     /// </summary>
     [JsonProperty("state")]
     public string State { get; set; }
 
     /// <summary>
-    /// Gets or sets the Symbol.
+    /// Unique trading pair identifier, for example BINANCE_SPOT_BTC_USDT.
     /// </summary>
     [JsonProperty("symbol")]
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Gets or sets the Side.
+    /// Order side: BUY or SELL.
     /// </summary>
     [JsonProperty("side")]
     public string Side { get; set; }
 
     /// <summary>
-    /// Gets or sets the Type.
+    /// Order type: LIMIT or MARKET.
     /// </summary>
     [JsonProperty("type")]
     public string Type { get; set; }
 
     /// <summary>
-    /// Gets or sets the Attribute.
+    /// Order attribute: COMMON, LIQ, REDUCE, ADL, or SETTLEMENT.
     /// </summary>
     [JsonProperty("attribute")]
     public string Attribute { get; set; }
 
     /// <summary>
-    /// Gets or sets the Exchange Type.
+    /// Venue: BINANCE, OKX, GATE, BYBIT, KRAKEN, HYPERLIQUID, or DERIBIT.
     /// </summary>
     [JsonProperty("exchange_type")]
     public string ExchangeType { get; set; }
 
     /// <summary>
-    /// Gets or sets the Business Type.
+    /// Business type: SPOT, FUTURE, or MARGIN.
     /// </summary>
     [JsonProperty("business_type")]
     public string BusinessType { get; set; }
 
     /// <summary>
-    /// Gets or sets the Quantity.
+    /// Order quantity in the base currency.
     /// </summary>
     [JsonProperty("qty")]
     public decimal? Quantity { get; set; }
 
     /// <summary>
-    /// Gets or sets the Quote Quantity.
+    /// Order quantity in the quote currency.
     /// </summary>
     [JsonProperty("quote_qty")]
     public decimal? QuoteQuantity { get; set; }
 
     /// <summary>
-    /// Gets or sets the Price.
+    /// Order price.
     /// </summary>
     [JsonProperty("price")]
     public decimal? Price { get; set; }
 
     /// <summary>
-    /// Gets or sets the Time In Force.
+    /// Time-in-force policy: GTC, IOC, FOK, POC, or RPI.
     /// </summary>
     [JsonProperty("time_in_force")]
     public string TimeInForce { get; set; }
@@ -96,25 +96,25 @@ public record GateCrossExOrder
     private string TimeInForceAlias { set => TimeInForce = value; }
 
     /// <summary>
-    /// Gets or sets the Executed Quantity.
+    /// Filled base amount.
     /// </summary>
     [JsonProperty("executed_qty")]
     public decimal? ExecutedQuantity { get; set; }
 
     /// <summary>
-    /// Gets or sets the Executed Amount.
+    /// Filled quote amount.
     /// </summary>
     [JsonProperty("executed_amount")]
     public decimal? ExecutedAmount { get; set; }
 
     /// <summary>
-    /// Gets or sets the Executed Average Price.
+    /// Average filled price.
     /// </summary>
     [JsonProperty("executed_avg_price")]
     public decimal? ExecutedAveragePrice { get; set; }
 
     /// <summary>
-    /// Gets or sets the Fee Coin.
+    /// Fee currency.
     /// </summary>
     [JsonProperty("fee_coin")]
     public string FeeCoin { get; set; }
@@ -123,62 +123,62 @@ public record GateCrossExOrder
     private string FeeCurrency { set => FeeCoin = value; }
 
     /// <summary>
-    /// Gets or sets the Fee.
+    /// Fee amount.
     /// </summary>
     [JsonProperty("fee")]
     public decimal? Fee { get; set; }
 
     /// <summary>
-    /// Gets or sets the Reduce Only.
+    /// Whether this is a reduce-only order.
     /// </summary>
     [JsonProperty("reduce_only")]
     public bool? ReduceOnly { get; set; }
 
     /// <summary>
-    /// Gets or sets the Leverage.
+    /// Order leverage multiplier.
     /// </summary>
     [JsonProperty("leverage")]
     public decimal? Leverage { get; set; }
 
     /// <summary>
-    /// Gets or sets the Reason.
+    /// Failure reason description.
     /// </summary>
     [JsonProperty("reason")]
     public string Reason { get; set; }
 
     /// <summary>
-    /// Gets or sets the Last Executed Quantity.
+    /// Base quantity of the latest fill.
     /// </summary>
     [JsonProperty("last_executed_qty")]
     public decimal? LastExecutedQuantity { get; set; }
 
     /// <summary>
-    /// Gets or sets the Last Executed Price.
+    /// Price of the latest fill.
     /// </summary>
     [JsonProperty("last_executed_price")]
     public decimal? LastExecutedPrice { get; set; }
 
     /// <summary>
-    /// Gets or sets the Last Executed Amount.
+    /// Quote amount of the latest fill.
     /// </summary>
     [JsonProperty("last_executed_amount")]
     public decimal? LastExecutedAmount { get; set; }
 
     /// <summary>
-    /// Gets or sets the Position Side.
+    /// Position side: NONE, LONG, or SHORT.
     /// </summary>
     [JsonProperty("position_side")]
     public string PositionSide { get; set; }
 
     /// <summary>
-    /// Gets or sets the Create Time.
+    /// Created time.
     /// </summary>
     [JsonProperty("create_time")]
     [JsonConverter(typeof(DateTimeConverter))]
     public DateTime? CreateTime { get; set; }
 
     /// <summary>
-    /// Gets or sets the Update Time.
+    /// Updated time.
     /// </summary>
     [JsonProperty("update_time")]
     [JsonConverter(typeof(DateTimeConverter))]

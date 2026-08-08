@@ -48,9 +48,16 @@ public class CrossExContractTests
         Assert.Equal(123456, transfer.TransactionId);
         Assert.Equal(234567, action.OrderId);
         Assert.Equal("t-cross-order", order.Text);
-        Assert.Equal("t-cross-order", orders[0].Text);
+        Assert.Equal("2048522992198912", orders[0].Text);
         Assert.Equal(60000m, order.ExecutedAveragePrice);
         Assert.Equal("USDT", order.FeeCoin);
+        Assert.Equal("COMMON", orders[0].Attribute);
+        Assert.Equal("BINANCE", orders[0].ExchangeType);
+        Assert.Equal("SPOT", orders[0].BusinessType);
+        Assert.Equal(12.9m, orders[0].ExecutedQuantity);
+        Assert.False(orders[0].ReduceOnly);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750681141933).UtcDateTime, orders[0].CreateTime);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750681142379).UtcDateTime, orders[0].UpdateTime);
         Assert.Equal("cross-quote-001", quote.QuoteId);
         Assert.Equal(100m, quote.FromAmount);
         Assert.Equal(345678, convertOrder.OrderId);

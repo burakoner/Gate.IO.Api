@@ -1,5 +1,11 @@
 ## Change Log & Release Notes
 
+- Version 4.106.80 - 10 May 2026
+  - Aligned `GET /crossex/history_orders` with the current official CrossEx documentation retrieved on 08 August 2026.
+    - Added typed, comma-separated `attributes` filters for `COMMON`, `LIQ`, `REDUCE`, `ADL`, and `SETTLEMENT` orders.
+    - Refreshed the documented order-history fixture and contract assertions for the current response field names, millisecond timestamps, string booleans, and current order metadata.
+    - Updated CrossEx order model documentation for current states, venues, order attributes, business types, position sides, and time-in-force values.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-order-history
 - Version 4.106.79 - 07 May 2026
   - Normalized remaining decimal millisecond timestamp fields.
     - Converted Spot trade-history, Spot stream trade, and Futures stream trade `*_ms` fields from `decimal` to `long`.

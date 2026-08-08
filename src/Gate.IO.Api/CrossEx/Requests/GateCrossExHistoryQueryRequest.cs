@@ -11,7 +11,7 @@ public record GateCrossExHistoryQueryRequest
     public int? Page { get; set; }
 
     /// <summary>
-    /// Maximum records, max 1000
+    /// Maximum number of records returned in a single list
     /// </summary>
     public int? Limit { get; set; }
 
@@ -21,12 +21,17 @@ public record GateCrossExHistoryQueryRequest
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Start time
+    /// Start time, serialized as a Unix timestamp in milliseconds
     /// </summary>
     public DateTime? From { get; set; }
 
     /// <summary>
-    /// End time
+    /// End time, serialized as a Unix timestamp in milliseconds
     /// </summary>
     public DateTime? To { get; set; }
+
+    /// <summary>
+    /// Order attributes used to filter historical orders. This property is ignored by other history endpoints.
+    /// </summary>
+    public IEnumerable<GateCrossExOrderAttribute> Attributes { get; set; }
 }

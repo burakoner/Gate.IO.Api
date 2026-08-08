@@ -676,6 +676,9 @@ public class GateCrossExRestApiClient
     {
         var parameters = new ParameterCollection();
         AddHistoryParameters(parameters, request);
+        parameters.AddOptional("attributes", request.Attributes == null
+            ? null
+            : string.Join(",", request.Attributes.Select(MapConverter.GetString)));
 
         return _.SendRequestInternal<List<GateCrossExOrder>>(_.GetUrl(api, v4, crossex, "history_orders"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
