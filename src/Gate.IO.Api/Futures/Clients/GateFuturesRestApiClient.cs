@@ -210,15 +210,15 @@ public class GateFuturesRestApiClient
     => GetStatsAsync(settle, contract, interval, from.ConvertToSeconds(), limit, ct);
 
     // Futures stats
-    internal Task<RestCallResult<List<GateFuturesStats>>> GetStatsAsync(GateFuturesSettlement settle, string contract, GateFuturesStatsInterval? interval = null, long? from = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesStats>>> GetStatsAsync(GateFuturesSettlement settle, string contract, GateFuturesStatsInterval? interval = null, long? from = null, int? limit = 100, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection
         {
             { "contract", contract },
-            { "limit", limit },
         };
         parameters.AddOptionalEnum("interval", interval);
         parameters.AddOptionalParameter("from", from);
+        parameters.AddOptionalParameter("limit", limit);
 
         var endpoint = "{settle}/contract_stats".Replace("{settle}", MapConverter.GetString(settle));
         return _.SendRequestInternal<List<GateFuturesStats>>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, false, queryParameters: parameters);

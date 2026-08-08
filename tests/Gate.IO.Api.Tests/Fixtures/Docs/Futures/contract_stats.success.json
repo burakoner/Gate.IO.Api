@@ -1,18 +1,28 @@
 [
   {
     "time": 1605175500,
-    "lsr_taker": "0.95",
-    "lsr_account": "1.05",
+    "lsr_taker": 0.95,
+    "lsr_account": 1.05,
     "long_liq_size": "12",
-    "long_liq_amount": "0.12",
-    "long_liq_usd": "4560",
+    "long_liq_amount": 0.12,
+    "long_liq_usd": 4560,
+    "long_liq_usd_new": 4560.25,
     "short_liq_size": "8",
-    "short_liq_amount": "0.08",
-    "short_liq_usd": "3040",
+    "short_liq_amount": 0.08,
+    "short_liq_usd": 3040,
+    "short_liq_usd_new": 3040.125,
     "open_interest": "100000",
-    "open_interest_usd": "3802600000",
-    "top_lsr_account": "1.2",
+    "open_interest_usd": 3802600000,
+    "top_lsr_account": 1.2,
     "top_lsr_size": "1.1",
-    "mark_price": "38026"
+    "mark_price": 38026,
+    "top_long_size": "57756869.5",
+    "top_short_size": "30235536.25",
+    "long_taker_size": "7776600.75",
+    "short_taker_size": "8579935.125",
+    "top_long_account": 50,
+    "top_short_account": 76,
+    "long_users": 11268,
+    "short_users": 20944
   }
 ]

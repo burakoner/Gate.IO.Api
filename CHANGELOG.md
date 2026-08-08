@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.99 - 25 June 2026
+  - Aligned `GET /futures/{settle}/contract_stats` with the complete current official Futures statistics contract retrieved on 08 August 2026, using v4.106.99 only as the endpoint locator.
+    - Added the documented `top_long_account` and `top_short_account` counts as nullable `long` values, matching the changelog's `string`-to-`int64` correction without conflating an omitted count with zero. The current contract also declares `long_users` and `short_users` as `int64`, so those counts are aligned in the same pass.
+    - Added every other response field missing from the wrapper: `long_liq_usd_new`, `short_liq_usd_new`, `top_long_size`, `top_short_size`, `long_taker_size`, and `short_taker_size`. Decimal-backed C# properties preserve the precision of contract-size strings and accept the documented numeric liquidation values.
+    - Corrected the reversed meanings of the existing `lsr_taker` and `lsr_account` C# property names. `LongShortTakerRatio` and `LongShortPositionUserRatio` are now the canonical properties; the old names remain as obsolete, JSON-ignored forwarding aliases to avoid an unnecessary source break.
+    - The request-object overload now omits `from`, `interval`, and `limit` when callers leave those documented optional filters unset, instead of silently forcing `limit=100`.
+    - The changelog also names `GET /defi/futures/{settle}/contract_stats`, but the current official documentation has no endpoint section for that path and the official production base URL returns `404`. No speculative DeFi client surface was added. A public read-only response cross-check exposed an undocumented `last_funding_rate` field; it is intentionally not modeled until it enters the official endpoint contract.
+    - Added full current-schema fixture assertions and request-construction coverage. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#futures-statistics
 - Version 4.106.98 - 25 June 2026
   - Aligned the three staking status contracts identified by v4.106.98 with the complete current official Earn endpoint documentation retrieved on 08 August 2026.
     - `GateEarnStakingOrder.Status` exposes all documented values: success (`1`), delayed redemption in progress (`3`), and redemption cancellation order (`6`).

@@ -301,7 +301,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesStats>>> GetStatsAsync(GateFuturesStatsQueryRequest request, CancellationToken ct = default)
-        => _.GetStatsAsync(Settlement, request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.Limit ?? 100, ct);
+        => _.GetStatsAsync(Settlement, request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.Limit, ct);
 
     /// <summary>
     /// Get index constituents

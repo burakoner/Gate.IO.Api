@@ -51,6 +51,31 @@ public class FuturesRequestConstructionTests
     }
 
     [Fact]
+    public async Task Public_futures_stats_request_can_omit_every_optional_filter()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/contract_stats.success.json")));
+        var client = CreateClient(handler);
+
+        var result = await client.Futures.USDT.GetStatsAsync(new GateFuturesStatsQueryRequest
+        {
+            Contract = "BTC_USDT",
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/contract_stats", request.RequestUri.AbsolutePath);
+
+        var query = ParseQuery(request.RequestUri);
+        Assert.Equal("BTC_USDT", query["contract"]);
+        Assert.False(query.ContainsKey("from"));
+        Assert.False(query.ContainsKey("interval"));
+        Assert.False(query.ContainsKey("limit"));
+        Assert.DoesNotContain("KEY", request.Headers.Keys);
+        Assert.DoesNotContain("SIGN", request.Headers.Keys);
+    }
+
+    [Fact]
     public async Task Public_futures_batch_funding_rate_request_accepts_documented_nested_response()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/funding_rates.success.json")));
