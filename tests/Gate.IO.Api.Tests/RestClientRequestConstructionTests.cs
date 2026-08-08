@@ -7,6 +7,14 @@ namespace Gate.IO.Api.Tests;
 public class RestClientRequestConstructionTests
 {
     [Fact]
+    public void Null_options_use_default_rest_client_configuration()
+    {
+        var client = new GateRestApiClient(null, null);
+
+        Assert.NotNull(client.Otc);
+    }
+
+    [Fact]
     public async Task Public_alpha_get_request_serializes_path_and_query_without_authentication_headers()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));

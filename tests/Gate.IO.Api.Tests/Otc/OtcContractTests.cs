@@ -32,21 +32,21 @@ public class OtcContractTests
     [Fact]
     public void Documented_bank_responses_deserialize()
     {
-        var unavailable = JsonFixture.Parse("Docs/Otc/default_bank.unavailable.json")["data"]!.ToObject<GateOtcBankAccount>()!;
-        var defaultBank = JsonFixture.Parse("Docs/Otc/default_bank.success.json")["data"]!.ToObject<GateOtcBankAccount>()!;
         var bankList = JsonFixture.Parse("Docs/Otc/bank_list.success.json")["data"]!["lists"]!.ToObject<List<GateOtcBankAccount>>()!;
+        var created = JsonFixture.Parse("Docs/Otc/bank_create.success.json")["data"]!.ToObject<GateOtcBankCreateResult>()!;
+        var checklist = JsonFixture.Parse("Docs/Otc/bank_supplement_checklist.success.json")["data"]!.ToObject<GateOtcBankSupplementChecklist>()!;
 
-        Assert.Equal(1, unavailable.Show);
-        Assert.Equal("test", unavailable.Message);
-        Assert.Equal("/otc/apply_person", unavailable.Url);
-        Assert.Equal(762, defaultBank.Id);
-        Assert.Equal("Anguilla", defaultBank.BankCountry);
         Assert.Single(bankList);
-        Assert.Equal(762, bankList[0].BankId);
+        Assert.Equal("762", bankList[0].Id);
         Assert.Equal("1554 **** 8756", bankList[0].Iban);
         Assert.Equal("455876663", bankList[0].Swift);
         Assert.Equal(1, bankList[0].IsDefault);
-        Assert.NotEqual(default, bankList[0].SubmitTime);
+        Assert.Equal("2026-01-21 05:56:49", bankList[0].SubmitTime);
+        Assert.Equal(762, created.BankId);
+        Assert.Equal(0, created.Status);
+        Assert.Equal(GateOtcBankUserType.Personal, checklist.UserType);
+        Assert.Single(checklist.Items);
+        Assert.Contains("identity document", checklist.Items[0].Description);
     }
 
     [Fact]

@@ -19,6 +19,12 @@ public class GateOtcRestApiClient
     private static string FormatTime(DateTime? time)
         => time?.ToUniversalTime().ToString("yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture);
 
+    private static void Require(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException($"{parameterName} is required", parameterName);
+    }
+
     private async Task<RestCallResult<T>> SendOtcDataRequestAsync<T>(
         string endpoint,
         HttpMethod method,
@@ -201,32 +207,212 @@ public class GateOtcRestApiClient
     }
 
     /// <summary>
-    /// Get user's default bank account information
-    /// </summary>
-    /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public Task<RestCallResult<GateOtcBankAccount>> GetDefaultBankAccountAsync(CancellationToken ct = default)
-        => SendOtcDataRequestAsync<GateOtcBankAccount>("get_user_def_bank", HttpMethod.Get, ct);
-
-    /// <summary>
     /// Get user bank card list
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public async Task<RestCallResult<List<GateOtcBankAccount>>> GetBankAccountsAsync(CancellationToken ct = default)
     {
-        var result = await SendOtcDataRequestAsync<GateOtcBankList>("bank_list", HttpMethod.Get, ct).ConfigureAwait(false);
+        var result = await SendOtcDataRequestAsync<GateOtcBankList>("bank/list", HttpMethod.Get, ct).ConfigureAwait(false);
         return result.Success ? result.As(result.Data?.Lists ?? []) : result.As<List<GateOtcBankAccount>>(default);
+    }
+
+    /// <summary>
+    /// Create bank card
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcBankCreateResult>> CreateBankCardAsync(GateOtcBankCreateRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.BankAccountName, nameof(request.BankAccountName));
+        Require(request.BankName, nameof(request.BankName));
+        Require(request.BankCountry, nameof(request.BankCountry));
+        Require(request.BankAddress, nameof(request.BankAddress));
+        Require(request.Iban, nameof(request.Iban));
+        Require(request.Swift, nameof(request.Swift));
+        Require(request.DocumentationFile, nameof(request.DocumentationFile));
+
+        var form = new ParameterCollection
+        {
+            { "bank_account_name", request.BankAccountName },
+            { "bank_name", request.BankName },
+            { "bank_country", request.BankCountry },
+            { "bank_address", request.BankAddress },
+            { "iban", request.Iban },
+            { "swift", request.Swift },
+            { "documentation_file", request.DocumentationFile },
+        };
+        form.AddOptional("remittance_line_number", request.RemittanceLineNumber);
+        form.AddOptional("agent_bank_name", request.AgentBankName);
+        form.AddOptional("agent_bank_swift", request.AgentBankSwift);
+
+        return SendOtcDataRequestAsync<GateOtcBankCreateResult>(
+            "bank/create",
+            HttpMethod.Post,
+            ct,
+            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
+    }
+
+    /// <summary>
+    /// Delete bank card
+    /// </summary>
+    /// <param name="bankId">Bank card ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> DeleteBankCardAsync(string bankId, CancellationToken ct = default)
+        => DeleteBankCardAsync(new GateOtcBankIdRequest { BankId = bankId }, ct);
+
+    /// <summary>
+    /// Delete bank card
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> DeleteBankCardAsync(GateOtcBankIdRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        Require(request.BankId, nameof(request.BankId));
+
+        var parameters = new ParameterCollection
+        {
+            { "bank_id", request.BankId },
+        };
+
+        return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "bank/delete"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Set default bank card
+    /// </summary>
+    /// <param name="bankId">Bank card ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> SetDefaultBankCardAsync(string bankId, CancellationToken ct = default)
+        => SetDefaultBankCardAsync(new GateOtcBankIdRequest { BankId = bankId }, ct);
+
+    /// <summary>
+    /// Set default bank card
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> SetDefaultBankCardAsync(GateOtcBankIdRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        Require(request.BankId, nameof(request.BankId));
+
+        var parameters = new ParameterCollection
+        {
+            { "bank_id", request.BankId },
+        };
+
+        return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "bank/set_default"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Get the bank card supplement checklist
+    /// </summary>
+    /// <param name="bankId">Bank card ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcBankSupplementChecklist>> GetBankSupplementChecklistAsync(string bankId, CancellationToken ct = default)
+    {
+        Require(bankId, nameof(bankId));
+
+        var parameters = new ParameterCollection
+        {
+            { "bank_id", bankId },
+        };
+
+        return SendOtcDataRequestAsync<GateOtcBankSupplementChecklist>("bank/bank_supplement_checklist", HttpMethod.Get, ct, parameters);
+    }
+
+    /// <summary>
+    /// Submit personal bank card supplementary materials
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> SubmitPersonalBankSupplementAsync(GateOtcBankPersonalSupplementRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.BankId, nameof(request.BankId));
+        Require(request.IdDocumentFront, nameof(request.IdDocumentFront));
+        Require(request.IdDocumentBack, nameof(request.IdDocumentBack));
+        Require(request.AddressProof, nameof(request.AddressProof));
+
+        var form = new ParameterCollection
+        {
+            { "bank_id", request.BankId },
+            { "id_document_front", request.IdDocumentFront },
+            { "id_document_back", request.IdDocumentBack },
+            { "address_proof", request.AddressProof },
+        };
+        form.AddOptional("relationship_proof", request.RelationshipProof);
+
+        return _.SendRequestInternal<GateOtcActionResult>(
+            _.GetUrl(api, v4, otc, "bank/personal/bank_supplement"),
+            HttpMethod.Post,
+            ct,
+            true,
+            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
+    }
+
+    /// <summary>
+    /// Submit enterprise bank card supplementary materials
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> SubmitEnterpriseBankSupplementAsync(GateOtcBankEnterpriseSupplementRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.BankId, nameof(request.BankId));
+        Require(request.Certificate, nameof(request.Certificate));
+        Require(request.ShareHolders, nameof(request.ShareHolders));
+        Require(request.Passport, nameof(request.Passport));
+        Require(request.ShareHoldingStructure, nameof(request.ShareHoldingStructure));
+
+        var form = new ParameterCollection
+        {
+            { "bank_id", request.BankId },
+            { "certificate", request.Certificate },
+            { "share_holders", request.ShareHolders },
+            { "passport", request.Passport },
+            { "share_holding_structure", request.ShareHoldingStructure },
+        };
+        form.AddOptional("uid", request.UserId);
+        form.AddOptional("funds_statement", request.FundsStatement);
+        form.AddOptional("additional", request.Additional);
+        form.AddOptional("relationship_proof", request.RelationshipProof);
+
+        return _.SendRequestInternal<GateOtcActionResult>(
+            _.GetUrl(api, v4, otc, "bank/enterprise/bank_supplement"),
+            HttpMethod.Post,
+            ct,
+            true,
+            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
     }
 
     /// <summary>
     /// Mark fiat order as paid
     /// </summary>
     /// <param name="orderId">Order ID</param>
+    /// <param name="paymentReceiptFileKey">Required payment receipt file key</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateOtcActionResult>> MarkFiatOrderAsPaidAsync(long orderId, CancellationToken ct = default)
-        => MarkFiatOrderAsPaidAsync(new GateOtcOrderIdRequest { OrderId = orderId }, ct);
+    public Task<RestCallResult<GateOtcActionResult>> MarkFiatOrderAsPaidAsync(string orderId, string paymentReceiptFileKey, CancellationToken ct = default)
+        => MarkFiatOrderAsPaidAsync(new GateOtcMarkOrderPaidRequest { OrderId = orderId, PaymentReceiptFileKey = paymentReceiptFileKey }, ct);
 
     /// <summary>
     /// Mark fiat order as paid
@@ -234,12 +420,21 @@ public class GateOtcRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateOtcActionResult>> MarkFiatOrderAsPaidAsync(GateOtcOrderIdRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateOtcActionResult>> MarkFiatOrderAsPaidAsync(GateOtcMarkOrderPaidRequest request, CancellationToken ct = default)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        Require(request.OrderId, nameof(request.OrderId));
+        Require(request.PaymentReceiptFileKey, nameof(request.PaymentReceiptFileKey));
+
         var parameters = new ParameterCollection
         {
-            { "order_id", request.OrderId.ToString(CultureInfo.InvariantCulture) },
+            { "order_id", request.OrderId },
+            { "payment_receipt_file_key", request.PaymentReceiptFileKey },
         };
+        parameters.AddOptional("client_order_id", request.ClientOrderId);
+        parameters.AddOptional("payment_receipt", request.PaymentReceipt);
 
         return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "order/paid"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }

@@ -1,5 +1,17 @@
 ## Change Log & Release Notes
 
+- Version 4.106.89 - 28 May 2026
+  - Aligned the complete OTC bank-card management and fiat payment-confirmation contracts with the current official documentation retrieved on 08 August 2026.
+    - Removed the deprecated `GET /otc/get_user_def_bank` wrapper and changed bank-card listing from the legacy `/otc/bank_list` path to the only path present in the current contract, `GET /otc/bank/list`; callers must derive the default card from `is_default`.
+    - Added signed bank-card create, delete, set-default, supplement-checklist, personal-supplement, and enterprise-supplement operations, including the optional `relationship_proof` JSON form field described by the supplement models. The create and supplement uploads use actual `multipart/form-data`, and the exact boundary-bearing body sent on the wire is also used for API v4 signing.
+    - Aligned the bank-list response to its current schema by preserving card identifiers and documented timestamps as strings and removing obsolete fields. These property removals, the `Id` / timestamp type changes, and removal of `GetDefaultBankAccountAsync` are source/binary-breaking.
+    - Implemented the current simplified supplement checklist item with its required `description` field and typed `personal` / `enterprise` verification values.
+    - Updated `POST /otc/order/paid` to require `payment_receipt_file_key` and support the optional `client_order_id` and `payment_receipt` compatibility fields. The old receipt-free overload was removed because it can no longer produce a valid request.
+    - Documented the current 10 MB account-opening-proof and payment-receipt limits, added required-field validation, and redacted sensitive multipart document bodies from trace logs and request-result metadata while preserving the real wire payload.
+    - Refreshed fixtures and examples and verified multipart signatures without making authenticated private or state-changing live calls.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/otc/
+    - Cross-check: https://github.com/gate/gateapi-csharp/blob/master/docs/OTCApi.md
 - Version 4.106.88 - 26 May 2026
   - Implemented the Unified Account quick-repayment API against the current official endpoint contracts retrieved on 08 August 2026; the wrapper previously had neither endpoint nor any of the models referenced by the changelog's required-field correction.
     - Added signed `GET /unified/estimated_quick_repayment` support with the complete liability and available-currency estimate models.

@@ -1,0 +1,13 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "user_type": "personal",
+    "items": [
+      {
+        "description": "Submit the front and back of the identity document and proof of address."
+      }
+    ]
+  },
+  "timestamp": 1769998217
+}

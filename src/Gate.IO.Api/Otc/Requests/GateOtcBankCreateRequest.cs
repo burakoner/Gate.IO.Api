@@ -1,92 +1,57 @@
 namespace Gate.IO.Api.Otc;
 
 /// <summary>
-/// OTC bank account
+/// OTC bank card creation request
 /// </summary>
-public record GateOtcBankAccount
+public record GateOtcBankCreateRequest
 {
-    /// <summary>
-    /// Bank ID
-    /// </summary>
-    [JsonProperty("id")]
-    public string Id { get; set; }
-
     /// <summary>
     /// Bank account name
     /// </summary>
-    [JsonProperty("bank_account_name")]
     public string BankAccountName { get; set; }
 
     /// <summary>
     /// Bank name
     /// </summary>
-    [JsonProperty("bank_name")]
     public string BankName { get; set; }
 
     /// <summary>
     /// Bank country
     /// </summary>
-    [JsonProperty("bank_country")]
     public string BankCountry { get; set; }
 
     /// <summary>
     /// Bank address
     /// </summary>
-    [JsonProperty("bank_address")]
     public string BankAddress { get; set; }
 
     /// <summary>
     /// IBAN number
     /// </summary>
-    [JsonProperty("iban")]
     public string Iban { get; set; }
 
     /// <summary>
     /// SWIFT code
     /// </summary>
-    [JsonProperty("swift")]
     public string Swift { get; set; }
 
     /// <summary>
     /// Remittance routing number
     /// </summary>
-    [JsonProperty("remittance_line_number")]
     public string RemittanceLineNumber { get; set; }
 
     /// <summary>
     /// Correspondent bank name
     /// </summary>
-    [JsonProperty("agent_bank_name")]
     public string AgentBankName { get; set; }
 
     /// <summary>
     /// Correspondent bank SWIFT code
     /// </summary>
-    [JsonProperty("agent_bank_swift")]
     public string AgentBankSwift { get; set; }
 
     /// <summary>
-    /// Submission time
+    /// Base64 account-opening proof content. Supported formats are jpg, jpeg, png, and pdf; maximum file size is 10 MB.
     /// </summary>
-    [JsonProperty("submit_time")]
-    public string SubmitTime { get; set; }
-
-    /// <summary>
-    /// Update time
-    /// </summary>
-    [JsonProperty("update_time")]
-    public string UpdateTime { get; set; }
-
-    /// <summary>
-    /// Status
-    /// </summary>
-    [JsonProperty("status")]
-    public string Status { get; set; }
-
-    /// <summary>
-    /// Whether it is the default bank card
-    /// </summary>
-    [JsonProperty("is_default")]
-    public int? IsDefault { get; set; }
-
+    public string DocumentationFile { get; set; }
 }

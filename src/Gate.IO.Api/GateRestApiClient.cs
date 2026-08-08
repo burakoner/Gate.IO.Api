@@ -145,9 +145,11 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     /// <param name="logger">ILogger Instance</param>
     /// <param name="options">GateRestApiClientOptions Instance</param>
-    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options) : base(logger, options)
+    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options) : base(logger, options ??= new GateRestApiClientOptions())
     {
         Logger = logger;
+        RequestFactory = new GateRequestFactory();
+        RequestFactory.Configure(options.HttpOptions, options.Proxy, options.HttpClient);
         RequestBodyFormat = RestRequestBodyFormat.Json;
         ArraySerialization = ArraySerialization.MultipleValues;
 
@@ -175,6 +177,33 @@ public class GateRestApiClient : RestApiClient
     }
 
     #region Override Methods
+    /// <inheritdoc />
+    protected override string PrepareBodyContent(SortedDictionary<string, object> parameters, RestRequestBodyFormat format)
+    {
+        var multipart = GateMultipartFormData.Find(parameters);
+        return multipart?.Body ?? base.PrepareBodyContent(parameters, format);
+    }
+
+    /// <inheritdoc />
+    protected override ApiSharp.Interfaces.IRequest ConstructRequest(
+        Uri uri,
+        HttpMethod method,
+        bool signed,
+        Dictionary<string, object> queryParameters,
+        Dictionary<string, object> bodyParameters,
+        Dictionary<string, string> headerParameters,
+        ArraySerialization serialization,
+        int requestId)
+    {
+        var multipart = GateMultipartFormData.Find(bodyParameters);
+        var request = base.ConstructRequest(uri, method, signed, queryParameters, bodyParameters, headerParameters, serialization, requestId);
+
+        if (multipart != null)
+            request.SetContent(multipart.Body, multipart.ContentType);
+
+        return request;
+    }
+
     /// <inheritdoc />
     protected override AuthenticationProvider CreateAuthenticationProvider(ApiCredentials credentials) => new GateAuthentication(credentials);
 
