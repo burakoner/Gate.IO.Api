@@ -125,4 +125,40 @@ public class CrossExContractTests
         Assert.Equal(-0.3m, accountBook[0].Change);
         Assert.Equal(1m, discountRates[0].DiscountRate);
     }
+
+    [Fact]
+    public void Market_ticker_and_funding_info_responses_deserialize_complete_current_contracts()
+    {
+        var tickers = JsonFixture.Deserialize<List<GateCrossExMarketTicker>>("Docs/CrossEx/market_tickers.success.json");
+        var fundingInfo = JsonFixture.Deserialize<List<GateCrossExMarketFundingInfo>>("Docs/CrossEx/market_funding_info.success.json");
+
+        Assert.Equal(2, tickers.Count);
+        Assert.Equal("GATE_FUTURE_BTC_USDT", tickers[0].Symbol);
+        Assert.Equal(64052.4m, tickers[0].LastPrice);
+        Assert.Equal(65144.7m, tickers[0].Open24h);
+        Assert.Equal(64375m, tickers[0].Low24h);
+        Assert.Equal(65734.8m, tickers[0].High24h);
+        Assert.Equal(31705m, tickers[0].Volume24hBase);
+        Assert.Equal(2063128626m, tickers[0].Volume24hQuote);
+        Assert.Equal(65148.9m, tickers[0].MarkPrice);
+        Assert.Equal(65174.38m, tickers[0].IndexPrice);
+        Assert.Equal(65568.2144m, tickers[0].OpenInterest);
+        Assert.Equal(4271697043.12416m, tickers[0].OpenInterestQuote);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1785168000000).UtcDateTime, tickers[0].Timestamp);
+        Assert.Null(tickers[1].Open24h);
+        Assert.Null(tickers[1].MarkPrice);
+        Assert.Null(tickers[1].IndexPrice);
+        Assert.Null(tickers[1].OpenInterest);
+        Assert.Null(tickers[1].OpenInterestQuote);
+
+        Assert.Equal(5, fundingInfo.Count);
+        Assert.Equal("BINANCE_FUTURE_BTC_USDT", fundingInfo[0].Symbol);
+        Assert.Equal(0.00006537m, fundingInfo[0].FundingRate);
+        Assert.Equal(28800, fundingInfo[0].FundingInterval);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1785168000000).UtcDateTime, fundingInfo[0].FundingTime);
+        Assert.Equal("KRAKEN_FUTURE_BTC_USD", fundingInfo[2].Symbol);
+        Assert.Equal(0.000011898754310345m, fundingInfo[2].FundingRate);
+        Assert.Equal(3600, fundingInfo[2].FundingInterval);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1785139200000).UtcDateTime, fundingInfo[2].FundingTime);
+    }
 }

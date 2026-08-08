@@ -1,0 +1,32 @@
+[
+  {
+    "symbol": "BINANCE_FUTURE_BTC_USDT",
+    "funding_rate": "0.00006537",
+    "funding_time": "1785168000000",
+    "funding_interval": "28800"
+  },
+  {
+    "symbol": "OKX_FUTURE_BTC_USDT",
+    "funding_rate": "0.0000543885374247",
+    "funding_time": "1785168000000",
+    "funding_interval": "28800"
+  },
+  {
+    "symbol": "KRAKEN_FUTURE_BTC_USD",
+    "funding_rate": "0.000011898754310345",
+    "funding_time": "1785139200000",
+    "funding_interval": "3600"
+  },
+  {
+    "symbol": "GATE_FUTURE_BTC_USDT",
+    "funding_rate": "0.0001",
+    "funding_time": "1785168000000",
+    "funding_interval": "28800"
+  },
+  {
+    "symbol": "BYBIT_FUTURE_BTC_USDT",
+    "funding_rate": "0.00008708",
+    "funding_time": "1785168000000",
+    "funding_interval": "28800"
+  }
+]

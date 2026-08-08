@@ -428,6 +428,65 @@ public class CrossExRequestConstructionTests
     }
 
     [Fact]
+    public async Task Signed_market_data_requests_preserve_optional_comma_separated_symbol_filters()
+    {
+        var responses = new Queue<string>([
+            JsonFixture.Read("Docs/CrossEx/market_tickers.success.json"),
+            JsonFixture.Read("Docs/CrossEx/market_tickers.success.json"),
+            JsonFixture.Read("Docs/CrossEx/market_funding_info.success.json"),
+            JsonFixture.Read("Docs/CrossEx/market_funding_info.success.json"),
+        ]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var allTickers = await client.CrossEx.GetMarketTickersAsync();
+        var filteredTickers = await client.CrossEx.GetMarketTickersAsync([
+            "GATE_FUTURE_BTC_USDT",
+            "GATE_SPOT_BTC_USDT",
+        ]);
+        var allFundingInfo = await client.CrossEx.GetMarketFundingInfoAsync();
+        var filteredFundingInfo = await client.CrossEx.GetMarketFundingInfoAsync(new GateCrossExSymbolsQueryRequest
+        {
+            Symbols = ["BINANCE_FUTURE_BTC_USDT", "KRAKEN_FUTURE_BTC_USD"],
+        });
+
+        Assert.True(allTickers.Success, allTickers.Error?.ToString());
+        Assert.True(filteredTickers.Success, filteredTickers.Error?.ToString());
+        Assert.True(allFundingInfo.Success, allFundingInfo.Error?.ToString());
+        Assert.True(filteredFundingInfo.Success, filteredFundingInfo.Error?.ToString());
+        Assert.Equal(4, handler.Requests.Count);
+
+        Assert.Equal(HttpMethod.Get, handler.Requests[0].Method);
+        Assert.Equal("/api/v4/crossex/market/tickers", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Empty(handler.Requests[0].RequestUri.Query);
+        Assert.Equal(
+            "GATE_FUTURE_BTC_USDT,GATE_SPOT_BTC_USDT",
+            ParseQuery(handler.Requests[1].RequestUri)["symbols"]);
+
+        Assert.Equal(HttpMethod.Get, handler.Requests[2].Method);
+        Assert.Equal("/api/v4/crossex/market/funding_info", handler.Requests[2].RequestUri.AbsolutePath);
+        Assert.Empty(handler.Requests[2].RequestUri.Query);
+        Assert.Equal(
+            "BINANCE_FUTURE_BTC_USDT,KRAKEN_FUTURE_BTC_USD",
+            ParseQuery(handler.Requests[3].RequestUri)["symbols"]);
+        Assert.All(handler.Requests, AssertSignedHeaders);
+    }
+
+    [Fact]
+    public void Market_ticker_request_rejects_documented_invalid_margin_symbol_filter()
+    {
+        var client = new GateRestApiClient();
+
+        var exception = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.CrossEx.GetMarketTickersAsync(["GATE_MARGIN_BTC_USDT"]);
+        });
+
+        Assert.Equal("Symbols", exception.ParamName);
+    }
+
+    [Fact]
     public async Task Batch_cancel_orders_serializes_documented_array_and_signed_route()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/CrossEx/batch_cancel_orders.success.json")));

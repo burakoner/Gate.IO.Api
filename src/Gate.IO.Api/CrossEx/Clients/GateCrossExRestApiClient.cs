@@ -809,4 +809,72 @@ public class GateCrossExRestApiClient
 
         return _.SendRequestInternal<List<GateCrossExCoinDiscountRate>>(_.GetUrl(api, v4, crossex, "coin_discount_rate"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
+
+    /// <summary>
+    /// Get exchange market tickers. Margin trading pairs cannot be used as direct filters.
+    /// Rate limit: 1 request per second.
+    /// </summary>
+    /// <param name="symbols">Optional trading pair list</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateCrossExMarketTicker>>> GetMarketTickersAsync(IEnumerable<string> symbols = null, CancellationToken ct = default)
+        => GetMarketTickersAsync(new GateCrossExSymbolsQueryRequest { Symbols = symbols }, ct);
+
+    /// <summary>
+    /// Get exchange market tickers. Margin trading pairs cannot be used as direct filters.
+    /// Rate limit: 1 request per second.
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateCrossExMarketTicker>>> GetMarketTickersAsync(GateCrossExSymbolsQueryRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var symbols = request.Symbols?.Where(x => !string.IsNullOrWhiteSpace(x)).ToList();
+        if (symbols?.Any(IsMarginSymbol) == true)
+            throw new ArgumentException("Margin trading pairs cannot be used as ticker filters", nameof(request.Symbols));
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("symbols", JoinValues(symbols));
+
+        return _.SendRequestInternal<List<GateCrossExMarketTicker>>(_.GetUrl(api, v4, crossex, "market/tickers"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Get exchange futures funding rate information.
+    /// For Deribit, the funding rate is the current real-time rate calculated over an 8-hour period.
+    /// Rate limit: 1 request per second.
+    /// </summary>
+    /// <param name="symbols">Optional trading pair list</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateCrossExMarketFundingInfo>>> GetMarketFundingInfoAsync(IEnumerable<string> symbols = null, CancellationToken ct = default)
+        => GetMarketFundingInfoAsync(new GateCrossExSymbolsQueryRequest { Symbols = symbols }, ct);
+
+    /// <summary>
+    /// Get exchange futures funding rate information.
+    /// For Deribit, the funding rate is the current real-time rate calculated over an 8-hour period.
+    /// Rate limit: 1 request per second.
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateCrossExMarketFundingInfo>>> GetMarketFundingInfoAsync(GateCrossExSymbolsQueryRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("symbols", JoinValues(request.Symbols));
+
+        return _.SendRequestInternal<List<GateCrossExMarketFundingInfo>>(_.GetUrl(api, v4, crossex, "market/funding_info"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    private static bool IsMarginSymbol(string symbol)
+    {
+        var parts = symbol.Split('_');
+        return parts.Length > 1 && string.Equals(parts[1], "MARGIN", StringComparison.OrdinalIgnoreCase);
+    }
 }

@@ -1,0 +1,30 @@
+[
+  {
+    "symbol": "GATE_FUTURE_BTC_USDT",
+    "last_price": "64052.4",
+    "open_24h": "65144.7",
+    "low_24h": "64375",
+    "high_24h": "65734.8",
+    "volume_24h_base": "31705",
+    "volume_24h_quote": "2063128626",
+    "mark_price": "65148.9",
+    "index_price": "65174.38",
+    "open_interest": "65568.2144",
+    "open_interest_quote": "4271697043.12416",
+    "timestamp": "1785168000000"
+  },
+  {
+    "symbol": "GATE_SPOT_BTC_USDT",
+    "last_price": "65179.4",
+    "open_24h": "",
+    "low_24h": "65744",
+    "high_24h": "64410.9",
+    "volume_24h_base": "3480.769758",
+    "volume_24h_quote": "226794942.82361",
+    "mark_price": "",
+    "index_price": "",
+    "open_interest": "",
+    "open_interest_quote": "",
+    "timestamp": "1785168000000"
+  }
+]

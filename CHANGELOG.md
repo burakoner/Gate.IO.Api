@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.110 - 28 July 2026
+  - Added both signed CrossEx market-data endpoints identified by v4.106.110 against their complete current official contracts retrieved on 08 August 2026.
+    - Added `GET /crossex/market/tickers` with optional comma-separated symbol filters and the complete ticker response: last/open/low/high prices, base and quote volumes, mark and index prices, base and quote open interest, and update timestamp.
+    - Added `GET /crossex/market/funding_info` with optional comma-separated symbol filters and the complete futures funding response: funding rate, interval in seconds, and next funding time. The model incorporates the description corrections published later in v4.106.114 because touched endpoints are synchronized to today's documentation rather than frozen at the historical release boundary.
+    - Exposed semantically numeric strings as nullable decimals, funding intervals as nullable integers, and millisecond timestamps as nullable UTC `DateTime` values. Empty numeric strings in the official Spot ticker example deserialize to `null` instead of failing or becoming fabricated zeroes.
+    - Enforced the documented rule that margin trading pairs cannot be passed directly to the ticker endpoint. Empty filters remain omitted so callers can request the complete list.
+  - Added signed route/query/authentication coverage for filtered and unfiltered requests, invalid margin-filter validation, complete official-example fixtures, response-field assertions, and README/example usage. Both endpoints require credentials despite being market-data operations, so no authenticated live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#get-exchange-tickers
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#get-exchange-futures-funding-rate-information
 - Version 4.106.109 - 22 July 2026
   - Added signed `POST /unified/leverage/user_setting` support against its complete current official contract retrieved on 08 August 2026.
     - Added decimal-safe leverage input serialized as the documented JSON string and the complete per-currency failure response with `currency` and `reason`.

@@ -697,6 +697,8 @@ var crossex_28 = await api.CrossEx.GetMarginInterestHistoryAsync(new GateCrossEx
 var crossex_29 = await api.CrossEx.GetTradeHistoryAsync(new GateCrossExHistoryQueryRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Page = 1, Limit = 100 });
 var crossex_30 = await api.CrossEx.GetAccountBookAsync(new GateCrossExAccountBookQueryRequest { Coin = "USDT", StatementType = "TRANSFER_IN", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Page = 1, Limit = 100 });
 var crossex_31 = await api.CrossEx.GetCoinDiscountRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
+var crossex_32 = await api.CrossEx.GetMarketTickersAsync(new[] { "GATE_FUTURE_BTC_USDT", "GATE_SPOT_BTC_USDT" });
+var crossex_33 = await api.CrossEx.GetMarketFundingInfoAsync(new[] { "BINANCE_FUTURE_BTC_USDT", "KRAKEN_FUTURE_BTC_USD" });
 ```
 
 ## WebSocket Api Examples
