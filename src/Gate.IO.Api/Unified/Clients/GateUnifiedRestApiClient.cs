@@ -569,4 +569,52 @@ public class GateUnifiedRestApiClient
 
         return _.SendRequestInternal<GateUnifiedIsSuccess>(_.GetUrl(api, v4, unified, "collateral_currencies"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
+
+    /// <summary>
+    /// Get estimated quick repayment details. Available for cross-currency margin and portfolio margin unified accounts.
+    /// <para><a href="https://www.gate.com/docs/developers/apiv4/en/unified/#estimated-quick-repayment-details" /></para>
+    /// </summary>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedQuickRepaymentEstimate>> GetEstimatedQuickRepaymentAsync(CancellationToken ct = default)
+    {
+        return _.SendRequestInternal<GateUnifiedQuickRepaymentEstimate>(_.GetUrl(api, v4, unified, "estimated_quick_repayment"), HttpMethod.Get, ct, true);
+    }
+
+    /// <summary>
+    /// Perform a quick repayment. Available for cross-currency margin and portfolio margin unified accounts.
+    /// <para><a href="https://www.gate.com/docs/developers/apiv4/en/unified/#quick-repayment" /></para>
+    /// </summary>
+    /// <param name="debtCurrencies">Liability currencies to repay</param>
+    /// <param name="availableCurrencies">Currencies to use for repayment</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedQuickRepaymentResult>> CreateQuickRepaymentAsync(IEnumerable<string> debtCurrencies, IEnumerable<string> availableCurrencies, CancellationToken ct = default)
+        => CreateQuickRepaymentAsync(new GateUnifiedQuickRepaymentRequest
+        {
+            DebtCurrencies = debtCurrencies,
+            AvailableCurrencies = availableCurrencies,
+        }, ct);
+
+    /// <summary>
+    /// Perform a quick repayment. Available for cross-currency margin and portfolio margin unified accounts.
+    /// </summary>
+    /// <param name="request">Quick repayment request</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedQuickRepaymentResult>> CreateQuickRepaymentAsync(GateUnifiedQuickRepaymentRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (request.DebtCurrencies == null)
+            throw new ArgumentException("DebtCurrencies is required for quick repayment.", nameof(request));
+        if (request.AvailableCurrencies == null)
+            throw new ArgumentException("AvailableCurrencies is required for quick repayment.", nameof(request));
+
+        var parameters = new ParameterCollection();
+        parameters.Add("debt_currencies", request.DebtCurrencies);
+        parameters.Add("available_currencies", request.AvailableCurrencies);
+
+        return _.SendRequestInternal<GateUnifiedQuickRepaymentResult>(_.GetUrl(api, v4, unified, "quick_repayment"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
 }

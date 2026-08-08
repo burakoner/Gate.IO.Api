@@ -137,6 +137,64 @@ public class UnifiedRequestConstructionTests
         AssertSignedHeaders(request);
     }
 
+    [Fact]
+    public async Task Signed_quick_repayment_estimate_request_uses_current_route()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Unified/quick_repayment_estimate.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Unified.GetEstimatedQuickRepaymentAsync();
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/unified/estimated_quick_repayment", request.RequestUri.AbsolutePath);
+        Assert.Empty(request.RequestUri.Query);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_quick_repayment_request_serializes_required_lists()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Unified/quick_repayment.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Unified.CreateQuickRepaymentAsync(new GateUnifiedQuickRepaymentRequest
+        {
+            DebtCurrencies = ["BTC", "ETH"],
+            AvailableCurrencies = ["USDT", "USDC"],
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/unified/quick_repayment", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal(["BTC", "ETH"], body["debt_currencies"]!.Values<string>());
+        Assert.Equal(["USDT", "USDC"], body["available_currencies"]!.Values<string>());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Quick_repayment_rejects_missing_required_currency_lists()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("{}"));
+        var client = CreateClient(handler);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Unified.CreateQuickRepaymentAsync(new GateUnifiedQuickRepaymentRequest
+        {
+            AvailableCurrencies = ["USDT"],
+        }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Unified.CreateQuickRepaymentAsync(new GateUnifiedQuickRepaymentRequest
+        {
+            DebtCurrencies = ["BTC"],
+        }));
+        Assert.Empty(handler.Requests);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {

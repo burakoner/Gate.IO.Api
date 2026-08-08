@@ -1,0 +1,18 @@
+{
+  "debt_currencies": [
+    {
+      "currency": "BTC",
+      "debt_amount": "0.0025",
+      "estimated_usd": "250.00",
+      "borrowed": "0.002",
+      "neg_balance": "0.0005"
+    }
+  ],
+  "available_currencies": [
+    {
+      "currency": "USDT",
+      "available": "300.00",
+      "estimated_usd": "300.00"
+    }
+  ]
+}

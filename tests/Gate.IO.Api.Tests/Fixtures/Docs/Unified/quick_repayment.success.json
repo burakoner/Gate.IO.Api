@@ -1,0 +1,16 @@
+{
+  "order_id": "12345678901234567890",
+  "repaid_infos": [
+    {
+      "currency": "BTC",
+      "repaid": "0.0025",
+      "left": "0"
+    }
+  ],
+  "used_infos": [
+    {
+      "currency": "USDT",
+      "used": "250.00"
+    }
+  ]
+}

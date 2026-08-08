@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.88 - 26 May 2026
+  - Implemented the Unified Account quick-repayment API against the current official endpoint contracts retrieved on 08 August 2026; the wrapper previously had neither endpoint nor any of the models referenced by the changelog's required-field correction.
+    - Added signed `GET /unified/estimated_quick_repayment` support with the complete liability and available-currency estimate models.
+    - Added signed `POST /unified/quick_repayment` support with required `debt_currencies` and `available_currencies` arrays, explicit client-side null validation, and the complete repayment result model.
+    - Preserved documented monetary quantities and the order identifier as strings to avoid precision, formatting, or identifier overflow loss. All required response fields and optional estimate fields are represented.
+    - Added documented contract fixtures, signing/request-construction coverage, and usage examples. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/unified/#estimated-quick-repayment-details
+    - Source: https://www.gate.com/docs/developers/apiv4/en/unified/#quick-repayment
+    - Cross-check: https://github.com/gate/gateapi-csharp/tree/master/src/Io.Gate.GateApi/Model
 - Version 4.106.87 - 21 May 2026
   - Aligned the CrossEx venue, transfer, trading-pair, fee, and order contracts with the current official documentation and live public responses retrieved on 08 August 2026.
     - Added `KRAKEN`, `HYPERLIQUID`, and `DERIBIT` exchange values plus their `CROSSEX_*` transfer-account values; retained the documented Kraken/Hyperliquid transfer restrictions in the public XML documentation.

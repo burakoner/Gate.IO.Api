@@ -115,6 +115,29 @@ public class UnifiedContractTests
     }
 
     [Fact]
+    public void Documented_unified_quick_repayment_responses_deserialize()
+    {
+        var estimate = JsonFixture.Deserialize<GateUnifiedQuickRepaymentEstimate>("Docs/Unified/quick_repayment_estimate.success.json");
+        var result = JsonFixture.Deserialize<GateUnifiedQuickRepaymentResult>("Docs/Unified/quick_repayment.success.json");
+
+        Assert.Single(estimate.DebtCurrencies);
+        Assert.Equal("BTC", estimate.DebtCurrencies[0].Currency);
+        Assert.Equal("0.0025", estimate.DebtCurrencies[0].DebtAmount);
+        Assert.Equal("250.00", estimate.DebtCurrencies[0].EstimatedUsd);
+        Assert.Equal("0.002", estimate.DebtCurrencies[0].Borrowed);
+        Assert.Equal("0.0005", estimate.DebtCurrencies[0].NegativeBalance);
+        Assert.Single(estimate.AvailableCurrencies);
+        Assert.Equal("300.00", estimate.AvailableCurrencies[0].Available);
+
+        Assert.Equal("12345678901234567890", result.OrderId);
+        Assert.Single(result.RepaidInfos);
+        Assert.Equal("0.0025", result.RepaidInfos[0].Repaid);
+        Assert.Equal("0", result.RepaidInfos[0].Left);
+        Assert.Single(result.UsedInfos);
+        Assert.Equal("250.00", result.UsedInfos[0].Used);
+    }
+
+    [Fact]
     public void Captured_live_public_unified_responses_deserialize()
     {
         var currencies = JsonFixture.Deserialize<List<GateUnifiedCurrency>>("Live/Unified/currencies.BTC.json");
