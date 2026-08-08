@@ -1,5 +1,17 @@
 ## Change Log & Release Notes
 
+- Version 4.106.103 - 30 June 2026
+  - Verified every v4.106.103 change against the complete current official contracts retrieved on 08 August 2026.
+    - The new P2P Merchant "Query spot balance" entry is explicitly a guide-only reference to the existing signed Spot `GET /spot/accounts` operation and defines no separate P2P request or response. It maps to the existing `api.Spot.GetBalancesAsync(...)` surface, so no duplicate `api.P2p` method was added.
+    - Revalidated the existing Spot balance route, optional `currency` filter, authentication, and complete `currency` / `available` / `locked` / `update_id` response model. The current P2P guide delegates its response to the Spot definition, while the current generated Spot page omits that endpoint's detailed section; the response field cross-check therefore also used Gate's official generated `SpotAccount` model rather than inventing a schema.
+    - Revalidated the complete current `POST /p2p/merchant/books/ads_list` response. `surplus_amount`, fiat limits, typed limit basis and label, and the full `trade_methods` item are already present from the v4.106.102 complete-endpoint synchronization, with official-style fixture assertions.
+    - Revalidated `ContractStat.long_users` and `short_users` as nullable `long` (`int64`) values. They already entered the wrapper during the v4.106.99 complete current-contract synchronization and remain covered by fixture assertions.
+  - Added signed Spot balance request coverage, completed response-field assertions, and documented the P2P-to-Spot usage mapping in both usage examples. No authenticated private or state-changing live calls were made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#query-spot-balance
+  - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#get-advertisement-list
+  - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#futures-statistics
+  - Source: https://github.com/gateio/gateapi-csharp/blob/master/src/Io.Gate.GateApi/Model/SpotAccount.cs
 - Version 4.106.102 - 26 June 2026
   - Aligned the P2P advertisement publication, detail, and market-list endpoints identified by v4.106.102 with their complete current official contracts retrieved on 08 August 2026.
     - Revalidated every `POST /p2p/merchant/books/place_biz_push_order` request field. The v4.106.102 limit-unit, fiat-limit, and Polymarket fields were already present from the complete endpoint synchronization in v4.106.96, so no duplicate surface was added. Public examples now use a fiat maximum that does not exceed the fixed-price advertisement total; the official example currently contradicts its own stated bound, so no speculative client-side total-value rejection was introduced.

@@ -611,6 +611,8 @@ var otc_14 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderLi
 var otc_15 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
 
 // P2P Methods
+// Gate's P2P "Query spot balance" guide reuses GET /spot/accounts; it does not define a separate P2P endpoint.
+var p2p_spot_balance = await api.Spot.GetBalancesAsync();
 var p2p_01 = await api.P2p.GetUserInfoAsync();
 var p2p_02 = await api.P2p.GetCounterpartyUserInfoAsync(new GateP2pCounterpartyUserInfoRequest { BusinessUserId = "BIZ-UID" });
 var p2p_03 = await api.P2p.GetPaymentMethodsAsync(new GateP2pPaymentMethodsRequest { Fiat = "USD" });

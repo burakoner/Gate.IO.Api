@@ -58,6 +58,34 @@ public class SpotRequestConstructionTests
     }
 
     [Fact]
+    public async Task Signed_spot_balance_requests_use_documented_endpoint_and_optional_currency()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/accounts.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var unfilteredResult = await client.Spot.GetBalancesAsync();
+        var filteredResult = await client.Spot.GetBalancesAsync("ETH");
+
+        Assert.True(unfilteredResult.Success, unfilteredResult.Error?.ToString());
+        Assert.True(filteredResult.Success, filteredResult.Error?.ToString());
+        Assert.Equal("ETH", Assert.Single(filteredResult.Data).Currency);
+        Assert.Equal(2, handler.Requests.Count);
+
+        var unfilteredRequest = handler.Requests[0];
+        Assert.Equal(HttpMethod.Get, unfilteredRequest.Method);
+        Assert.Equal("/api/v4/spot/accounts", unfilteredRequest.RequestUri.AbsolutePath);
+        Assert.Empty(ParseQuery(unfilteredRequest.RequestUri));
+        AssertSignedHeaders(unfilteredRequest);
+
+        var filteredRequest = handler.Requests[1];
+        Assert.Equal(HttpMethod.Get, filteredRequest.Method);
+        Assert.Equal("/api/v4/spot/accounts", filteredRequest.RequestUri.AbsolutePath);
+        Assert.Equal("ETH", ParseQuery(filteredRequest.RequestUri)["currency"]);
+        AssertSignedHeaders(filteredRequest);
+    }
+
+    [Fact]
     public async Task Signed_spot_order_request_serializes_mapped_body()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/order.success.json")));

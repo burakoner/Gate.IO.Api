@@ -269,7 +269,8 @@ public class GateSpotRestApiClient
     }
 
     /// <summary>
-    /// List spot accounts
+    /// List spot accounts.
+    /// The P2P Merchant "Query spot balance" guide entry reuses this Spot endpoint and does not define a separate P2P contract.
     /// </summary>
     /// <param name="currency">Currency name</param>
     /// <param name="ct">Cancellation Token</param>

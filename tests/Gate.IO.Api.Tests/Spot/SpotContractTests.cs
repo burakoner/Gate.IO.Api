@@ -58,7 +58,10 @@ public class SpotContractTests
         var cancelOrders = JsonFixture.Deserialize<List<GateSpotCancelOrder>>("Docs/Spot/cancel_orders.success.json");
 
         Assert.Single(balances);
+        Assert.Equal("ETH", balances[0].Currency);
         Assert.Equal(968.8m, balances[0].Available);
+        Assert.Equal(0m, balances[0].Locked);
+        Assert.Equal(1, balances[0].UpdateId);
         Assert.Single(accountBook);
         Assert.Equal(123456, accountBook[0].Id);
         Assert.Equal(1.03m, accountBook[0].Change);
