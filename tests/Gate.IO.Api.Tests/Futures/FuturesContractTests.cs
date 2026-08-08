@@ -71,6 +71,11 @@ public class FuturesContractTests
         Assert.Equal(GateFuturesOrderFinishAs.Filled, order.FinishAs);
         Assert.Equal(GateFuturesTimeInForce.GoodTillCancelled, order.TimeInForce);
         Assert.Equal(GateFuturesSelfTradeAction.CancelNewest, order.SelfTradeAction);
+        Assert.Equal(10.5m, order.Size);
+        Assert.Equal(0.5m, order.Iceberg);
+        Assert.Equal(GateFuturesActionMode.Full, order.ActionMode);
+        Assert.Equal(3800m, order.TakeProfitTriggerPrice);
+        Assert.Equal(3700m, order.StopLossTriggerPrice);
         Assert.Equal(GateFuturesPriceTriggerStatus.Finished, priceOrders[0].Status);
         Assert.Equal(GateFuturesOrderFinishAs.Cancelled, priceOrders[0].FinishAs);
         Assert.Equal("100.5", priceOrders[0].Order.Amount);

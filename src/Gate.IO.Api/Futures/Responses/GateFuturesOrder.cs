@@ -236,4 +236,22 @@ public record GateFuturesOrder
     /// </summary>
     [JsonProperty("pos_margin_mode"), JsonConverter(typeof(MapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
+
+    /// <summary>
+    /// Mode used to control how much order data is returned.
+    /// </summary>
+    [JsonProperty("action_mode"), JsonConverter(typeof(MapConverter))]
+    public GateFuturesActionMode? ActionMode { get; set; }
+
+    /// <summary>
+    /// Take-profit trigger price.
+    /// </summary>
+    [JsonProperty("tpsl_tp_trigger_price"), JsonConverter(typeof(GateDecimalConverter))]
+    public decimal? TakeProfitTriggerPrice { get; set; }
+
+    /// <summary>
+    /// Stop-loss trigger price.
+    /// </summary>
+    [JsonProperty("tpsl_sl_trigger_price"), JsonConverter(typeof(GateDecimalConverter))]
+    public decimal? StopLossTriggerPrice { get; set; }
 }

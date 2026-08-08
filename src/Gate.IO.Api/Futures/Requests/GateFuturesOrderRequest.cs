@@ -15,19 +15,22 @@ public record GateFuturesOrderRequest
     /// Order size. Specify positive number to make a bid, and negative number to ask
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    [JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Display size for iceberg order. 0 for non-iceberg. Note that you will have to pay the taker fee for the hidden size
     /// </summary>
     [JsonProperty("iceberg", NullValueHandling = NullValueHandling.Ignore)]
-    public long? Iceberg { get; set; }
+    [JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal? Iceberg { get; set; }
 
     /// <summary>
     /// Order price. 0 for market order with &#x60;tif&#x60; set as &#x60;ioc&#x60;
     /// </summary>
-    [JsonProperty("price", NullValueHandling = NullValueHandling.Ignore)]
-    public decimal? Price { get; set; }
+    [JsonProperty("price")]
+    [JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal Price { get; set; }
 
     /// <summary>
     /// Set as &#x60;true&#x60; to close the position, with &#x60;size&#x60; set to 0
@@ -69,8 +72,39 @@ public record GateFuturesOrderRequest
     public GateFuturesSelfTradeAction? SelfTradeAction { get; set; }
 
     /// <summary>
+    /// Position ID. This field is write-only.
+    /// </summary>
+    [JsonProperty("pid", NullValueHandling = NullValueHandling.Ignore)]
+    public long? PositionId { get; set; }
+
+    /// <summary>
     /// The maximum slippage allowed for market orders, based on the latest market price
     /// </summary>
     [JsonProperty("market_order_slip_ratio", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonConverter(typeof(GateDecimalStringConverter))]
     public decimal? MarketOrderSlipRatio { get; set; }
+
+    /// <summary>
+    /// Position margin mode.
+    /// </summary>
+    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
+
+    /// <summary>
+    /// Controls how much order data is returned.
+    /// </summary>
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    public GateFuturesActionMode? ActionMode { get; set; }
+
+    /// <summary>
+    /// Take-profit trigger price.
+    /// </summary>
+    [JsonProperty("tpsl_tp_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal? TakeProfitTriggerPrice { get; set; }
+
+    /// <summary>
+    /// Stop-loss trigger price.
+    /// </summary>
+    [JsonProperty("tpsl_sl_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal? StopLossTriggerPrice { get; set; }
 }

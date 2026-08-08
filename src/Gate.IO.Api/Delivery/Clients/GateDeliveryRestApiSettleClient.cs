@@ -293,7 +293,7 @@ public class GateDeliveryRestApiSettleClient
         string contract,
         long size,
         long? iceberg = null,
-        decimal? price = null,
+        decimal price = 0,
         bool? close = null,
         bool? reduceOnly = null,
         string clientOrderId = null,
@@ -316,7 +316,7 @@ public class GateDeliveryRestApiSettleClient
     /// <param name="request">Order Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateFuturesOrderRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateDeliveryOrderRequest request, CancellationToken ct = default)
         => MainClient.PlaceOrderAsync(Settlement, request, ct);
     
     /// <summary>

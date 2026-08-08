@@ -220,7 +220,7 @@ public class GateDeliveryRestApiClient
         string contract, 
         long size, 
         long? iceberg = null, 
-        decimal? price = null, 
+        decimal price = 0,
         bool? close = null, 
         bool? reduceOnly = null, 
         string clientOrderId = null, 
@@ -228,7 +228,7 @@ public class GateDeliveryRestApiClient
         GateFuturesOrderAutoSize? autoSize = null, 
         GateFuturesSelfTradeAction? selfTradeAction = null, 
         CancellationToken ct = default)
-        => PlaceOrderAsync(settle, new GateFuturesOrderRequest
+        => PlaceOrderAsync(settle, new GateDeliveryOrderRequest
         {
             Contract = contract,
             Size = size,
@@ -243,16 +243,16 @@ public class GateDeliveryRestApiClient
         }, ct);
 
     // Create a futures order
-    internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateDeliverySettlement settle, GateFuturesOrderRequest request, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateDeliverySettlement settle, GateDeliveryOrderRequest request, CancellationToken ct = default)
     {
         DeliveryHelpers.ValidateContractSymbol(request.Contract);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
 
         var parameters = new ParameterCollection();
         parameters.Add("contract", request.Contract);
-        parameters.AddString("size", request.Size);
-        parameters.AddOptionalString("iceberg", request.Iceberg);
-        parameters.AddOptionalString("price", request.Price);
+        parameters.Add("size", request.Size);
+        parameters.AddOptional("iceberg", request.Iceberg);
+        parameters.AddString("price", request.Price);
         parameters.AddOptional("close", request.Close);
         parameters.AddOptional("reduce_only", request.ReduceOnly);
         parameters.AddOptionalEnum("tif", request.TimeInForce);

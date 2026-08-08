@@ -59,7 +59,7 @@ public class TradFiContractTests
         var orderUpdate = Data<GateTradFiOrderUpdateResult>("Docs/TradFi/order_update.success.json");
         var orderHistory = DataList<GateTradFiOrderHistory>("Docs/TradFi/order_history.success.json");
         var positions = DataList<GateTradFiPosition>("Docs/TradFi/positions.success.json");
-        var positionHistory = DataList<GateTradFiPositionHistory>("Docs/TradFi/position_history.success.json");
+        var positionHistory = Data<GateTradFiPositionHistoryList>("Docs/TradFi/position_history.success.json");
 
         Assert.Single(orders);
         Assert.Equal(GateTradFiOrderPriceType.Trigger, orders[0].PriceType);
@@ -75,11 +75,13 @@ public class TradFiContractTests
         Assert.Single(positions);
         Assert.Equal(GateTradFiPositionDirection.Long, positions[0].Direction);
         Assert.Equal(0.01m, positions[0].Volume);
-        Assert.Single(positionHistory);
-        Assert.Equal(GateTradFiPositionDirection.Long, positionHistory[0].Direction);
-        Assert.Equal(1, positionHistory[0].PositionStatus);
-        Assert.Equal(-2.4m, positionHistory[0].RealizedPnlDetail.Fee);
-        Assert.Null(positionHistory[0].CloseDetail);
+        Assert.Equal(1, positionHistory.Total);
+        Assert.Equal(1, positionHistory.TotalPage);
+        Assert.Single(positionHistory.List);
+        Assert.Equal(GateTradFiPositionDirection.Long, positionHistory.List[0].Direction);
+        Assert.Equal(1, positionHistory.List[0].PositionStatus);
+        Assert.Equal(-2.4m, positionHistory.List[0].RealizedPnlDetail.Fee);
+        Assert.Null(positionHistory.List[0].CloseDetail);
     }
 
     [Fact]

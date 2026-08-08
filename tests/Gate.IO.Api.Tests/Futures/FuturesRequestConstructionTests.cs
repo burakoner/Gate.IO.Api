@@ -105,30 +105,163 @@ public class FuturesRequestConstructionTests
         var result = await client.Futures.USDT.PlaceOrderAsync(new GateFuturesOrderRequest
         {
             Contract = "BTC_USDT",
-            Size = 1,
+            Size = 1.5m,
+            Iceberg = 0.25m,
             Price = 65000m,
             TimeInForce = GateFuturesTimeInForce.GoodTillCancelled,
             ClientOrderId = "t-test",
             ReduceOnly = false,
             Close = false,
             SelfTradeAction = GateFuturesSelfTradeAction.CancelNewest,
+            PositionId = 42,
             MarketOrderSlipRatio = 0.01m,
+            PositionMarginMode = GateFuturesPositionMarginMode.Cross,
+            ActionMode = GateFuturesActionMode.Full,
+            TakeProfitTriggerPrice = 68000m,
+            StopLossTriggerPrice = 62000m,
         });
 
         Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(GateFuturesActionMode.Full, result.Data!.ActionMode);
+        Assert.Equal(3800m, result.Data.TakeProfitTriggerPrice);
+        Assert.Equal(3700m, result.Data.StopLossTriggerPrice);
         var request = Assert.Single(handler.Requests);
         Assert.Equal(HttpMethod.Post, request.Method);
         Assert.Equal("/api/v4/futures/usdt/orders", request.RequestUri.AbsolutePath);
 
         var body = JObject.Parse(request.Content);
         Assert.Equal("BTC_USDT", body["contract"]!.ToString());
-        Assert.Equal("1", body["size"]!.ToString());
+        Assert.Equal(JTokenType.String, body["size"]!.Type);
+        Assert.Equal("1.5", body["size"]!.ToString());
+        Assert.Equal(JTokenType.String, body["iceberg"]!.Type);
+        Assert.Equal("0.25", body["iceberg"]!.ToString());
+        Assert.Equal(JTokenType.String, body["price"]!.Type);
         Assert.Equal("65000", body["price"]!.ToString());
         Assert.Equal("gtc", body["tif"]!.ToString());
         Assert.Equal("t-test", body["text"]!.ToString());
         Assert.Equal("cn", body["stp_act"]!.ToString());
+        Assert.Equal(42, body["pid"]!.Value<long>());
         Assert.Equal("0.01", body["market_order_slip_ratio"]!.ToString());
+        Assert.Equal("cross", body["pos_margin_mode"]!.ToString());
+        Assert.Equal("FULL", body["action_mode"]!.ToString());
+        Assert.Equal("68000", body["tpsl_tp_trigger_price"]!.ToString());
+        Assert.Equal("62000", body["tpsl_sl_trigger_price"]!.ToString());
         AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_batch_order_request_serializes_decimal_fields_as_strings()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse($"[{JsonFixture.Read("Docs/Futures/order.success.json")}]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.PlaceOrdersAsync([
+            new GateFuturesOrderRequest
+            {
+                Contract = "BTC_USDT",
+                Size = 1.5m,
+                Iceberg = 0.25m,
+                Price = 65000.5m,
+                MarketOrderSlipRatio = 0.01m,
+                ActionMode = GateFuturesActionMode.Acknowledge,
+            },
+        ]);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/batch_orders", request.RequestUri.AbsolutePath);
+
+        var body = JArray.Parse(request.Content);
+        var order = Assert.IsType<JObject>(Assert.Single(body));
+        Assert.Equal(JTokenType.String, order["size"]!.Type);
+        Assert.Equal("1.5", order["size"]!.Value<string>());
+        Assert.Equal(JTokenType.String, order["iceberg"]!.Type);
+        Assert.Equal("0.25", order["iceberg"]!.Value<string>());
+        Assert.Equal(JTokenType.String, order["price"]!.Type);
+        Assert.Equal("65000.5", order["price"]!.Value<string>());
+        Assert.Equal("ACK", order["action_mode"]!.Value<string>());
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_order_mutations_serialize_current_action_mode_contracts()
+    {
+        var orderJson = JsonFixture.Read("Docs/Futures/order.success.json");
+        var responses = new Queue<string>([$"[{orderJson}]", orderJson, orderJson, $"[{orderJson}]"]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var cancelAll = await client.Futures.USDT.CancelOrdersAsync(new GateFuturesOrderCancelAllRequest
+        {
+            ActionMode = GateFuturesActionMode.Acknowledge,
+            Side = GateFuturesOrderSide.Ask,
+            ExcludeReduceOnly = true,
+            Text = "t-cancel-all",
+        });
+        var cancelOne = await client.Futures.USDT.CancelOrderAsync(
+            orderId: 15675394,
+            actionMode: GateFuturesActionMode.Result);
+        var amendOne = await client.Futures.USDT.AmendOrderAsync(
+            orderId: 15675394,
+            size: 10.25m,
+            price: 5.1m,
+            amendText: "t-amend-2",
+            text: "t-new-id",
+            actionMode: GateFuturesActionMode.Full);
+        var amendBatch = await client.Futures.USDT.AmendOrdersAsync([
+            new GateFuturesOrderAmendRequest
+            {
+                OrderId = 15675394,
+                Size = 10.25m,
+                Price = 5.1m,
+                AmendText = "t-amend-3",
+                ActionMode = GateFuturesActionMode.Result,
+            },
+        ]);
+
+        Assert.True(cancelAll.Success, cancelAll.Error?.ToString());
+        Assert.True(cancelOne.Success, cancelOne.Error?.ToString());
+        Assert.True(amendOne.Success, amendOne.Error?.ToString());
+        Assert.True(amendBatch.Success, amendBatch.Error?.ToString());
+        Assert.Equal(4, handler.Requests.Count);
+
+        var cancelAllQuery = ParseQuery(handler.Requests[0].RequestUri);
+        Assert.Equal(HttpMethod.Delete, handler.Requests[0].Method);
+        Assert.Equal("/api/v4/futures/usdt/orders", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.False(cancelAllQuery.ContainsKey("contract"));
+        Assert.Equal("ACK", cancelAllQuery["action_mode"]);
+        Assert.Equal("ask", cancelAllQuery["side"]);
+        Assert.Equal("true", cancelAllQuery["exclude_reduce_only"]);
+        Assert.Equal("t-cancel-all", cancelAllQuery["text"]);
+
+        var cancelOneQuery = ParseQuery(handler.Requests[1].RequestUri);
+        Assert.Equal(HttpMethod.Delete, handler.Requests[1].Method);
+        Assert.Equal("/api/v4/futures/usdt/orders/15675394", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.Equal("RESULT", cancelOneQuery["action_mode"]);
+
+        Assert.Equal(HttpMethod.Put, handler.Requests[2].Method);
+        var amendOneBody = JObject.Parse(handler.Requests[2].Content);
+        Assert.Equal("10.25", amendOneBody["size"]!.Value<string>());
+        Assert.Equal("5.1", amendOneBody["price"]!.Value<string>());
+        Assert.Equal("t-amend-2", amendOneBody["amend_text"]!.Value<string>());
+        Assert.Equal("t-new-id", amendOneBody["text"]!.Value<string>());
+        Assert.Equal("FULL", amendOneBody["action_mode"]!.Value<string>());
+        Assert.Null(amendOneBody["biz_info"]);
+        Assert.Null(amendOneBody["bbo"]);
+
+        Assert.Equal(HttpMethod.Post, handler.Requests[3].Method);
+        Assert.Equal("/api/v4/futures/usdt/batch_amend_orders", handler.Requests[3].RequestUri.AbsolutePath);
+        var amendBatchBody = Assert.IsType<JObject>(Assert.Single(JArray.Parse(handler.Requests[3].Content)));
+        Assert.Equal(JTokenType.String, amendBatchBody["size"]!.Type);
+        Assert.Equal("10.25", amendBatchBody["size"]!.Value<string>());
+        Assert.Equal(JTokenType.String, amendBatchBody["price"]!.Type);
+        Assert.Equal("RESULT", amendBatchBody["action_mode"]!.Value<string>());
+
+        foreach (var request in handler.Requests)
+            AssertSignedHeaders(request);
     }
 
     [Fact]

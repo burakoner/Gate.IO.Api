@@ -356,12 +356,13 @@ var perpetual_25 = await api.Futures[settle].GetDualModePositionsAsync("CONTRACT
 var perpetual_26 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
 var perpetual_27 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
 var perpetual_28 = await api.Futures[settle].SetDualModeRiskLimitAsync("CONTRACT", 25);
-var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("CONTRACT", 25);
-var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "CONTRACT", Size = 25, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m });
+var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("CONTRACT", 25.5m, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
+var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "CONTRACT", Size = 25.5m, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m, PositionMarginMode = GateFuturesPositionMarginMode.Isolated, ActionMode = GateFuturesActionMode.Full, TakeProfitTriggerPrice = 110.0m, StopLossTriggerPrice = 90.0m });
 var perpetual_30b = await api.Futures[settle].GetOrdersAsync(new GateFuturesOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
 var perpetual_31 = await api.Futures[settle].GetOrderAsync();
-var perpetual_32 = await api.Futures[settle].CancelOrderAsync();
-var perpetual_33 = await api.Futures[settle].AmendOrderAsync();
+var perpetual_32 = await api.Futures[settle].CancelOrderAsync(orderId: 1_000_000_001, actionMode: GateFuturesActionMode.Result);
+var perpetual_33 = await api.Futures[settle].AmendOrderAsync(orderId: 1_000_000_001, size: 20.5m, price: 101.0m, actionMode: GateFuturesActionMode.Full);
+var perpetual_33b = await api.Futures[settle].CancelOrdersAsync(new GateFuturesOrderCancelAllRequest { Contract = "CONTRACT", ExcludeReduceOnly = true, ActionMode = GateFuturesActionMode.Acknowledge });
 var perpetual_34 = await api.Futures[settle].GetUserTradesAsync("CONTRACT", orderId: 1_000_000_001);
 var perpetual_35 = await api.Futures[settle].GetUserTradesAsync(new GateFuturesUserTradeQueryRequest { Contract = "CONTRACT", OrderId = 1_000_000_001, Limit = 100 });
 var perpetual_36 = await api.Futures[settle].GetUserTradesAsync(new GateFuturesUserTradeTimeRangeQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Role = GateFuturesTradeRole.Maker });
@@ -427,7 +428,7 @@ var tradfi_15 = await api.TradFi.GetOrderHistoryAsync(new GateTradFiOrderHistory
 var tradfi_16 = await api.TradFi.GetPositionsAsync();
 var tradfi_17 = await api.TradFi.UpdatePositionAsync(1_000_000_001, new GateTradFiPositionUpdateRequest { TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
 var tradfi_18 = await api.TradFi.ClosePositionAsync(1_000_000_001, new GateTradFiClosePositionRequest { CloseType = 1, CloseVolume = 0.01m });
-var tradfi_19 = await api.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest { Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
+var tradfi_19 = await api.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest { Page = 1, PageSize = 50, Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
 
 // Delivery Futures Methods
 var delivery_01 = await api.Delivery.USDT.GetContractsAsync();
@@ -445,8 +446,8 @@ var delivery_12 = await api.Delivery.USDT.GetPositionAsync("CONTRACT");
 var delivery_13 = await api.Delivery.USDT.SetPositionMarginAsync("CONTRACT", 100.0m);
 var delivery_14 = await api.Delivery.USDT.SetLeverageAsync("CONTRACT", 10);
 var delivery_15 = await api.Delivery.USDT.SetRiskLimitAsync("CONTRACT", 25);
-var delivery_16 = await api.Delivery.USDT.PlaceOrderAsync("CONTRACT", 25);
-var delivery_17 = await api.Delivery.USDT.PlaceOrderAsync(new GateFuturesOrderRequest { });
+var delivery_16 = await api.Delivery.USDT.PlaceOrderAsync("CONTRACT", 25, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
+var delivery_17 = await api.Delivery.USDT.PlaceOrderAsync(new GateDeliveryOrderRequest { Contract = "CONTRACT", Size = 25, Price = 100.0m });
 var delivery_18 = await api.Delivery.USDT.GetOrdersAsync(new GateDeliveryOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
 var delivery_19 = await api.Delivery.USDT.CancelOrdersAsync(new GateDeliveryCancelOrdersRequest { Contract = "CONTRACT", Side = GateFuturesOrderSide.Bid });
 var delivery_20 = await api.Delivery.USDT.GetOrderAsync();

@@ -1,5 +1,24 @@
 ## Change Log & Release Notes
 
+- Version 4.106.85 - 19 May 2026
+  - Aligned `GET /tradfi/positions/history` with the current official CFD documentation retrieved on 08 August 2026.
+    - Added optional `page` and `page_size` query parameters, including the documented maximum page size of 100.
+    - Added the `total` and `total_page` response metadata and changed the method result from a bare list to `GateTradFiPositionHistoryList`; this return-type correction is source-breaking.
+  - Aligned the complete shared order contract used by `POST /futures/{settle}/orders`, `POST /futures/{settle}/batch_orders`, `PUT /futures/{settle}/orders/{order_id}`, `POST /futures/{settle}/batch_amend_orders`, and the single/all-order cancellation endpoints with the current official Futures documentation retrieved on 08 August 2026.
+    - Added typed `ACK`, `RESULT`, and `FULL` action modes to create, amend, cancel, and response contracts.
+    - Added create-order `pid`, `pos_margin_mode`, take-profit trigger price, and stop-loss trigger price fields.
+    - Corrected required Futures `size`, `iceberg`, price, slippage, and amendment numeric fields to serialize as invariant decimal JSON strings, including batch operations; the request property and convenience-method type corrections are source/binary-breaking.
+    - Added the current optional cancel-all filters `contract`, `side`, `exclude_reduce_only`, and `text`; cancel-all no longer requires a contract when using `GateFuturesOrderCancelAllRequest`.
+    - Replaced undocumented single-amend `biz_info` and `bbo` inputs with the current documented `text` and `action_mode` fields. Adding `action_mode` to single cancellation and correcting the amend inputs changes the public convenience signatures and is source-breaking for positional callers.
+    - Split the Delivery create-order request into `GateDeliveryOrderRequest` and corrected its `size` and `iceberg` wire values to remain JSON integers, preventing the current Futures decimal-string contract from corrupting Delivery requests. The Delivery request-type change is source-breaking.
+    - Refreshed signed request construction, response contract fixtures, and usage examples. No state-changing live private order calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/cfd/#query-historical-position-list
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#place-futures-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#cancel-all-orders-with-open-status
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#amend-single-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#cancel-single-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/delivery/#place-futures-order
 - Version 4.106.84 - 18 May 2026
   - Aligned `GET /earn/dual/investment_plan` with the current official Earn documentation and live public response retrieved on 08 August 2026.
     - Added `min_amount`, documented as a decimal JSON string, and exposed it as the wrapper's strongly typed `decimal` minimum investment amount.

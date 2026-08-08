@@ -449,11 +449,15 @@ public class GateTradFiRestApiClient
     /// <param name="endTime">End time</param>
     /// <param name="symbol">Trading symbol</param>
     /// <param name="direction">Position direction</param>
+    /// <param name="page">Page number, starting from one</param>
+    /// <param name="pageSize">Number of records per page, up to 100</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateTradFiPositionHistory>>> GetPositionHistoryAsync(DateTime? beginTime = null, DateTime? endTime = null, string symbol = null, GateTradFiPositionDirection? direction = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateTradFiPositionHistoryList>> GetPositionHistoryAsync(DateTime? beginTime = null, DateTime? endTime = null, string symbol = null, GateTradFiPositionDirection? direction = null, int? page = null, int? pageSize = null, CancellationToken ct = default)
         => GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest
         {
+            Page = page,
+            PageSize = pageSize,
             BeginTime = beginTime,
             EndTime = endTime,
             Symbol = symbol,
@@ -466,14 +470,18 @@ public class GateTradFiRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateTradFiPositionHistory>>> GetPositionHistoryAsync(GateTradFiPositionHistoryQueryRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateTradFiPositionHistoryList>> GetPositionHistoryAsync(GateTradFiPositionHistoryQueryRequest request, CancellationToken ct = default)
     {
+        request.PageSize?.ValidateIntBetween(nameof(request.PageSize), 1, 100);
+
         var parameters = new ParameterCollection();
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("page_size", request.PageSize);
         parameters.AddOptionalSeconds("begin_time", request.BeginTime);
         parameters.AddOptionalSeconds("end_time", request.EndTime);
         parameters.AddOptional("symbol", request.Symbol);
         parameters.AddOptionalEnum("position_dir", request.Direction);
 
-        return SendTradFiListRequestAsync<GateTradFiPositionHistory>("positions/history", HttpMethod.Get, ct, true, parameters);
+        return SendTradFiDataRequestAsync<GateTradFiPositionHistoryList>("positions/history", HttpMethod.Get, ct, true, parameters);
     }
 }

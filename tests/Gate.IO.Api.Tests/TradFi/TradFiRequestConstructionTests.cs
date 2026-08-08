@@ -264,6 +264,8 @@ public class TradFiRequestConstructionTests
 
         var history = await client.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest
         {
+            Page = 2,
+            PageSize = 50,
             BeginTime = DateTimeOffset.FromUnixTimeSeconds(1769223566).UtcDateTime,
             EndTime = DateTimeOffset.FromUnixTimeSeconds(1769223573).UtcDateTime,
             Symbol = "EURUSD",
@@ -281,11 +283,16 @@ public class TradFiRequestConstructionTests
         });
 
         Assert.True(history.Success, history.Error?.ToString());
+        Assert.Equal(1, history.Data!.Total);
+        Assert.Equal(1, history.Data.TotalPage);
+        Assert.Single(history.Data.List);
         Assert.True(update.Success, update.Error?.ToString());
         Assert.True(close.Success, close.Error?.ToString());
         Assert.Equal(3, handler.Requests.Count);
 
         var historyQuery = ParseQuery(handler.Requests[0].RequestUri);
+        Assert.Equal("2", historyQuery["page"]);
+        Assert.Equal("50", historyQuery["page_size"]);
         Assert.Equal("Long", historyQuery["position_dir"]);
         Assert.Equal("EURUSD", historyQuery["symbol"]);
         Assert.Equal("/api/v4/tradfi/positions/2648854", handler.Requests[1].RequestUri.AbsolutePath);

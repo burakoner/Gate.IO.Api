@@ -616,7 +616,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="selfTradeAction">Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(string contract, long size, long iceberg = 0, decimal? price = null, bool? close = null, bool? reduceOnly = null, string clientOrderId = null, GateFuturesTimeInForce? timeInForce = null, GateFuturesOrderAutoSize? autoSize = null, GateFuturesSelfTradeAction? selfTradeAction = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(string contract, decimal size, decimal? iceberg = null, decimal price = 0, bool? close = null, bool? reduceOnly = null, string clientOrderId = null, GateFuturesTimeInForce? timeInForce = null, GateFuturesOrderAutoSize? autoSize = null, GateFuturesSelfTradeAction? selfTradeAction = null, CancellationToken ct = default)
         => _.PlaceOrderAsync(Settlement, contract, size, iceberg, price, close, reduceOnly, clientOrderId, timeInForce, autoSize, selfTradeAction, null, ct);
 
     /// <summary>
@@ -669,6 +669,15 @@ public class GateFuturesRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesOrder>>> CancelOrdersAsync(string contract, GateFuturesOrderSide? side = null, CancellationToken ct = default)
         => _.CancelOrdersAsync(Settlement, contract, side, ct);
+
+    /// <summary>
+    /// Cancel all matching open orders.
+    /// </summary>
+    /// <param name="request">Cancellation filters</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateFuturesOrder>>> CancelOrdersAsync(GateFuturesOrderCancelAllRequest request, CancellationToken ct = default)
+        => _.CancelOrdersAsync(Settlement, request, ct);
 
     /// <summary>
     /// Query futures order list by time range
@@ -740,10 +749,11 @@ public class GateFuturesRestApiSettleClient
     /// </summary>
     /// <param name="orderId">Order ID returned, or user custom ID(i.e., text field).</param>
     /// <param name="clientOrderId">Order ID returned, or user custom ID(i.e., text field).</param>
+    /// <param name="actionMode">Controls how much order data is returned</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateFuturesOrder>> CancelOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
-        => _.CancelOrderAsync(Settlement, orderId, clientOrderId, ct);
+    public Task<RestCallResult<GateFuturesOrder>> CancelOrderAsync(long? orderId = null, string clientOrderId = null, GateFuturesActionMode? actionMode = null, CancellationToken ct = default)
+        => _.CancelOrderAsync(Settlement, orderId, clientOrderId, actionMode, ct);
 
     /// <summary>
     /// Amend an order
@@ -753,12 +763,12 @@ public class GateFuturesRestApiSettleClient
     /// <param name="size">New order size, including filled part.</param>
     /// <param name="price">New order price.</param>
     /// <param name="amendText">Custom info during amending order</param>
-    /// <param name="businessInfo">Users can annotate this modification with information.</param>
-    /// <param name="bbo">Users are able to modify the offer price manually.</param>
+    /// <param name="text">New user-defined order identifier. This field is available to internal users.</param>
+    /// <param name="actionMode">Controls how much order data is returned</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateFuturesOrder>> AmendOrderAsync(long? orderId = null, string clientOrderId = null, long? size = null, decimal? price = null, string amendText = null, string businessInfo = null, string bbo = null, CancellationToken ct = default)
-        => _.AmendOrderAsync(Settlement, orderId, clientOrderId, size, price, amendText, businessInfo, bbo, ct);
+    public Task<RestCallResult<GateFuturesOrder>> AmendOrderAsync(long? orderId = null, string clientOrderId = null, decimal? size = null, decimal? price = null, string amendText = null, string text = null, GateFuturesActionMode? actionMode = null, CancellationToken ct = default)
+        => _.AmendOrderAsync(Settlement, orderId, clientOrderId, size, price, amendText, text, actionMode, ct);
 
     /// <summary>
     /// List personal trading history

@@ -80,7 +80,7 @@ public class DeliveryRequestConstructionTests
         var client = CreateClient(handler);
         client.SetApiCredentials("key", "secret");
 
-        var result = await client.Delivery.USDT.PlaceOrderAsync(new GateFuturesOrderRequest
+        var result = await client.Delivery.USDT.PlaceOrderAsync(new GateDeliveryOrderRequest
         {
             Contract = "BTC_USDT_20200814",
             Size = 6024,
@@ -98,8 +98,11 @@ public class DeliveryRequestConstructionTests
 
         var body = JObject.Parse(request.Content);
         Assert.Equal("BTC_USDT_20200814", body["contract"]!.ToString());
+        Assert.Equal(JTokenType.Integer, body["size"]!.Type);
         Assert.Equal("6024", body["size"]!.ToString());
+        Assert.Equal(JTokenType.Integer, body["iceberg"]!.Type);
         Assert.Equal("0", body["iceberg"]!.ToString());
+        Assert.Equal(JTokenType.String, body["price"]!.Type);
         Assert.Equal("3765", body["price"]!.ToString());
         Assert.Equal("gtc", body["tif"]!.ToString());
         Assert.Equal("t-my-custom-id", body["text"]!.ToString());

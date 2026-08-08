@@ -6,6 +6,14 @@ namespace Gate.IO.Api.TradFi;
 public record GateTradFiPositionHistoryQueryRequest
 {
     /// <summary>
+    /// Page number, starting from one.
+    /// </summary>
+    public int? Page { get; set; }
+    /// <summary>
+    /// Number of records per page. The maximum is 100.
+    /// </summary>
+    public int? PageSize { get; set; }
+    /// <summary>
     /// Gets or sets the Begin Time.
     /// </summary>
     public DateTime? BeginTime { get; set; }
