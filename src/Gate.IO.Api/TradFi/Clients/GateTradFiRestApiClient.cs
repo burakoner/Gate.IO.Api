@@ -65,6 +65,42 @@ public class GateTradFiRestApiClient
         => SendTradFiListRequestAsync<GateTradFiCategory>("symbols/categories", HttpMethod.Get, ct);
 
     /// <summary>
+    /// Query symbol commission rates
+    /// </summary>
+    /// <param name="symbols">Trading symbol code list</param>
+    /// <param name="categoryCodes">Category code list</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    /// <remarks>Gate production currently requires API v4 authentication for this operation.</remarks>
+    public Task<RestCallResult<List<GateTradFiSymbolCommission>>> GetSymbolCommissionsAsync(IEnumerable<string> symbols, IEnumerable<string> categoryCodes = null, CancellationToken ct = default)
+        => GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest
+        {
+            Symbols = symbols,
+            CategoryCodes = categoryCodes,
+        }, ct);
+
+    /// <summary>
+    /// Query symbol commission rates
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    /// <remarks>Gate production currently requires API v4 authentication for this operation.</remarks>
+    public Task<RestCallResult<List<GateTradFiSymbolCommission>>> GetSymbolCommissionsAsync(GateTradFiSymbolCommissionQueryRequest request, CancellationToken ct = default)
+    {
+        var symbols = request.Symbols?.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList() ?? [];
+        var categoryCodes = request.CategoryCodes?.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList() ?? [];
+        if (symbols.Count == 0 && categoryCodes.Count == 0)
+            throw new ArgumentException("At least one symbol or category code must be provided.", nameof(request));
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("symbols", symbols.Count == 0 ? null : string.Join(",", symbols));
+        parameters.AddOptional("category_code", categoryCodes.Count == 0 ? null : string.Join(",", categoryCodes));
+
+        return SendTradFiListRequestAsync<GateTradFiSymbolCommission>("symbols/commissions", HttpMethod.Get, ct, true, parameters);
+    }
+
+    /// <summary>
     /// Query trading symbol list
     /// </summary>
     /// <param name="ct">Cancellation Token</param>

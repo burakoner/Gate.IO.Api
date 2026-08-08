@@ -10,6 +10,7 @@ public class TradFiContractTests
     public void Documented_tradfi_public_market_responses_deserialize()
     {
         var categories = DataList<GateTradFiCategory>("Docs/TradFi/categories.success.json");
+        var symbolCommissions = DataList<GateTradFiSymbolCommission>("Docs/TradFi/symbol_commissions.success.json");
         var symbols = DataList<GateTradFiSymbol>("Docs/TradFi/symbols.success.json");
         var symbolDetails = DataList<GateTradFiSymbolDetails>("Docs/TradFi/symbol_details.success.json");
         var candlesticks = DataList<GateTradFiCandlestick>("Docs/TradFi/candlesticks.success.json");
@@ -17,6 +18,13 @@ public class TradFiContractTests
 
         Assert.Single(categories);
         Assert.Equal(1, categories[0].CategoryId);
+        Assert.Equal(2, symbolCommissions.Count);
+        Assert.Equal("forex", symbolCommissions[0].CategoryCode);
+        Assert.Equal("AUDUSD", symbolCommissions[0].Symbol);
+        Assert.Equal(6m, symbolCommissions[0].FeePerLot);
+        Assert.Equal("metal", symbolCommissions[1].CategoryCode);
+        Assert.Equal("XAUUSD", symbolCommissions[1].Symbol);
+        Assert.Equal(6m, symbolCommissions[1].FeePerLot);
         Assert.Single(symbols);
         Assert.Equal("EURUSD", symbols[0].Symbol);
         Assert.Equal(GateTradFiTradingStatus.Open, symbols[0].Status);

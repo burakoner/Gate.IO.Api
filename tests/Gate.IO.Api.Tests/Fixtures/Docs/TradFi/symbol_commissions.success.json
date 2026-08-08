@@ -1,0 +1,17 @@
+{
+  "data": {
+    "list": [
+      {
+        "category_code": "forex",
+        "symbol": "AUDUSD",
+        "fee_per_lot": "6"
+      },
+      {
+        "category_code": "metal",
+        "symbol": "XAUUSD",
+        "fee_per_lot": "6"
+      }
+    ]
+  },
+  "timestamp": 1769426795464
+}

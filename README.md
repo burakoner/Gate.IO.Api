@@ -416,23 +416,24 @@ var perpetual_52 = await api.Futures[settle].CancelPriceTriggeredOrderAsync(1_00
 // TradFi Methods
 var tradfi_01 = await api.TradFi.GetMt5AccountAsync();
 var tradfi_02 = await api.TradFi.GetSymbolCategoriesAsync();
-var tradfi_03 = await api.TradFi.GetSymbolsAsync();
-var tradfi_04 = await api.TradFi.GetSymbolDetailsAsync(new GateTradFiSymbolDetailsRequest { Symbols = ["XAUUSD"] });
-var tradfi_05 = await api.TradFi.GetCandlesticksAsync(new GateTradFiCandlestickQueryRequest { Symbol = "XAUUSD", Interval = GateTradFiKlineInterval.OneHour, Limit = 100 });
-var tradfi_06 = await api.TradFi.GetTickerAsync("XAUUSD");
-var tradfi_07 = await api.TradFi.CreateUserAsync();
-var tradfi_08 = await api.TradFi.GetAccountAssetsAsync();
-var tradfi_09 = await api.TradFi.GetTransactionsAsync(new GateTradFiTransactionQueryRequest { BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
-var tradfi_10 = await api.TradFi.CreateTransactionAsync(new GateTradFiTransactionRequest { Asset = "USDT", Change = 100.0m, Type = GateTradFiTransactionType.Deposit });
-var tradfi_11 = await api.TradFi.GetOrdersAsync();
-var tradfi_12 = await api.TradFi.PlaceOrderAsync(new GateTradFiOrderRequest { Symbol = "XAUUSD", Side = GateTradFiOrderSide.Buy, PriceType = GateTradFiOrderPriceType.Market, Price = 0m, Volume = 0.01m });
-var tradfi_13 = await api.TradFi.UpdateOrderAsync(1_000_000_001, new GateTradFiOrderUpdateRequest { Price = 100.0m, TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
-var tradfi_14 = await api.TradFi.CancelOrderAsync(1_000_000_001);
-var tradfi_15 = await api.TradFi.GetOrderHistoryAsync(new GateTradFiOrderHistoryQueryRequest { Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
-var tradfi_16 = await api.TradFi.GetPositionsAsync();
-var tradfi_17 = await api.TradFi.UpdatePositionAsync(1_000_000_001, new GateTradFiPositionUpdateRequest { TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
-var tradfi_18 = await api.TradFi.ClosePositionAsync(1_000_000_001, new GateTradFiClosePositionRequest { CloseType = 1, CloseVolume = 0.01m });
-var tradfi_19 = await api.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest { Page = 1, PageSize = 50, Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
+var tradfi_03 = await api.TradFi.GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest { Symbols = ["XAUUSD"], CategoryCodes = ["metal"] });
+var tradfi_04 = await api.TradFi.GetSymbolsAsync();
+var tradfi_05 = await api.TradFi.GetSymbolDetailsAsync(new GateTradFiSymbolDetailsRequest { Symbols = ["XAUUSD"] });
+var tradfi_06 = await api.TradFi.GetCandlesticksAsync(new GateTradFiCandlestickQueryRequest { Symbol = "XAUUSD", Interval = GateTradFiKlineInterval.OneHour, Limit = 100 });
+var tradfi_07 = await api.TradFi.GetTickerAsync("XAUUSD");
+var tradfi_08 = await api.TradFi.CreateUserAsync();
+var tradfi_09 = await api.TradFi.GetAccountAssetsAsync();
+var tradfi_10 = await api.TradFi.GetTransactionsAsync(new GateTradFiTransactionQueryRequest { BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
+var tradfi_11 = await api.TradFi.CreateTransactionAsync(new GateTradFiTransactionRequest { Asset = "USDT", Change = 100.0m, Type = GateTradFiTransactionType.Deposit });
+var tradfi_12 = await api.TradFi.GetOrdersAsync();
+var tradfi_13 = await api.TradFi.PlaceOrderAsync(new GateTradFiOrderRequest { Symbol = "XAUUSD", Side = GateTradFiOrderSide.Buy, PriceType = GateTradFiOrderPriceType.Market, Price = 0m, Volume = 0.01m });
+var tradfi_14 = await api.TradFi.UpdateOrderAsync(1_000_000_001, new GateTradFiOrderUpdateRequest { Price = 100.0m, TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
+var tradfi_15 = await api.TradFi.CancelOrderAsync(1_000_000_001);
+var tradfi_16 = await api.TradFi.GetOrderHistoryAsync(new GateTradFiOrderHistoryQueryRequest { Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
+var tradfi_17 = await api.TradFi.GetPositionsAsync();
+var tradfi_18 = await api.TradFi.UpdatePositionAsync(1_000_000_001, new GateTradFiPositionUpdateRequest { TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
+var tradfi_19 = await api.TradFi.ClosePositionAsync(1_000_000_001, new GateTradFiClosePositionRequest { CloseType = 1, CloseVolume = 0.01m });
+var tradfi_20 = await api.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest { Page = 1, PageSize = 50, Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
 
 // Delivery Futures Methods
 var delivery_01 = await api.Delivery.USDT.GetContractsAsync();

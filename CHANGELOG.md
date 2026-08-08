@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.105 - 06 July 2026
+  - Added `GET /tradfi/symbols/commissions` against its complete current official CFD endpoint contract retrieved on 08 August 2026.
+    - Added symbol and category-code list filters with comma-separated wire serialization. Although each filter is individually optional, the endpoint requires at least one; the wrapper rejects an empty request before sending it and supports their documented combined filtering behavior.
+    - Added the complete `category_code`, `symbol`, and `fee_per_lot` response model. The documented decimal string commission is exposed as `decimal`, consistent with the wrapper's lossless treatment of semantically numeric TradFi values.
+    - The current English and Chinese generated pages incorrectly mark the operation as unauthenticated and show unsigned samples. Production rejected an unsigned request first for missing `Timestamp`, then for `KEY`, then for `SIGN`; the wrapper therefore signs the operation so the new method is usable against the actual API.
+    - Added official-example fixture coverage, signed request construction and filter validation tests, and usage examples. No authenticated or state-changing live call was made; production checking was limited to header-rejection probes with no real credential.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/cfd/#query-symbol-commission-rates
+  - Corroboration: https://www.gate.com/docs/developers/apiv4/zh_CN/cfd/#查询交易对手续费率
+  - Production contract check: https://api.gateio.ws/api/v4/tradfi/symbols/commissions
 - Version 4.106.104 - 02 July 2026
   - Verified `GET /futures/{settle}/positions` against its complete current official endpoint and `Position` model contracts retrieved on 08 August 2026.
     - The changelog describes the internal schema definition as `positions_limit`; the published wire parameter remains `limit`. The current endpoint contract confirms that omitting it returns all current positions and that explicit values are restricted to `1`-`100`.

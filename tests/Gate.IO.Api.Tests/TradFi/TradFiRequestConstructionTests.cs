@@ -40,6 +40,60 @@ public class TradFiRequestConstructionTests
     }
 
     [Fact]
+    public async Task Signed_tradfi_symbol_commission_request_serializes_both_comma_separated_filters()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/TradFi/symbol_commissions.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.TradFi.GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest
+        {
+            Symbols = [" AUDUSD ", "XAUUSD"],
+            CategoryCodes = ["forex", "metal"],
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(2, result.Data!.Count);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal("/api/v4/tradfi/symbols/commissions", request.RequestUri.AbsolutePath);
+        var query = ParseQuery(request.RequestUri);
+        Assert.Equal("AUDUSD,XAUUSD", query["symbols"]);
+        Assert.Equal("forex,metal", query["category_code"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_tradfi_symbol_commission_request_supports_category_only_filter()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/TradFi/symbol_commissions.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.TradFi.GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest
+        {
+            CategoryCodes = ["metal"],
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        var query = ParseQuery(request.RequestUri);
+        Assert.False(query.ContainsKey("symbols"));
+        Assert.Equal("metal", query["category_code"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Tradfi_symbol_commission_request_rejects_missing_filters()
+    {
+        var client = new GateRestApiClient();
+
+        var exception = await Assert.ThrowsAsync<ArgumentException>(() => client.TradFi.GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest()));
+
+        Assert.Equal("request", exception.ParamName);
+    }
+
+    [Fact]
     public async Task Signed_tradfi_symbol_details_request_serializes_comma_separated_symbols()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/TradFi/symbol_details.success.json")));
