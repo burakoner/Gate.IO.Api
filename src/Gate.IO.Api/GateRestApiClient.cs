@@ -61,6 +61,11 @@ public class GateRestApiClient : RestApiClient
     public GateTradFiRestApiClient TradFi { get; }
 
     /// <summary>
+    /// Stock Client
+    /// </summary>
+    public GateStockRestApiClient Stock { get; }
+
+    /// <summary>
     /// Options Client
     /// </summary>
     public GateOptionsRestApiClient Options { get; }
@@ -162,6 +167,7 @@ public class GateRestApiClient : RestApiClient
         Futures = new GateFuturesRestApiClient(this);
         Delivery = new GateDeliveryRestApiClient(this);
         TradFi = new GateTradFiRestApiClient(this);
+        Stock = new GateStockRestApiClient(this);
 
         Options = new GateOptionsRestApiClient(this);
         EarnUni = new GateEarnUniRestApiClient(this);

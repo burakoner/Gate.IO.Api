@@ -1,0 +1,38 @@
+{
+  "data": {
+    "list": [{
+      "symbol": "AAPL",
+      "exchange": "us",
+      "quote_currency": "USD",
+      "quote_currency_precision": 2,
+      "fx_rate": "1",
+      "trade_status": "open",
+      "symbol_desc": "Apple Inc.",
+      "position_pnl": "12.5",
+      "today_pnl": "3.2",
+      "pnl_rate": "0.012",
+      "today_sell_amount": "0",
+      "today_buy_amount": "2001.2",
+      "today_sell_volume": "0",
+      "today_buy_volume": "10",
+      "yesterday_volume": "8",
+      "volume": "10",
+      "available": "8",
+      "transfer_out_pending_qty": "0",
+      "avg_cost_price": "198.11",
+      "diluted_cost_price": "198.11",
+      "last_price": "200.12",
+      "extended_last_price": "200.2",
+      "max_order_volume": "10000",
+      "step_order_volume": "1",
+      "min_order_volume": "1",
+      "price_precision": 2,
+      "price_protection": "0.1",
+      "sell_price_protection": "0.1",
+      "buy_price_protection": "0.1",
+      "commission_rate": "0.001",
+      "slippage_rate": "0.001"
+    }]
+  },
+  "timestamp": 1783411200000
+}

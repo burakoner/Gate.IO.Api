@@ -4,7 +4,15 @@ internal class GateAuthentication(ApiCredentials credentials) : AuthenticationPr
 {
     public override void AuthenticateRestApi(RestApiClient apiClient, Uri uri, HttpMethod method, bool signed, ArraySerialization serialization, SortedDictionary<string, object> query, SortedDictionary<string, object> body, string bodyContent, SortedDictionary<string, string> headers)
     {
-        if (!signed) return;
+        if (!signed)
+        {
+            // Stock market-data endpoints are documented as public, but the production
+            // gateway currently rejects them unless a Timestamp header is present.
+            if (uri.AbsolutePath.StartsWith("/api/v4/stock/", StringComparison.Ordinal))
+                headers.Add("Timestamp", GetTimestamp(apiClient).ConvertToSeconds().ToString());
+
+            return;
+        }
 
         // Check Point
         if (Credentials is null || Credentials.Key is null || Credentials.Secret is null || string.IsNullOrEmpty(Credentials.Key.GetString()))

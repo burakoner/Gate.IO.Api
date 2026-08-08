@@ -1,0 +1,29 @@
+{
+  "data": {
+    "total": 1,
+    "total_page": 1,
+    "list": [{
+      "order_id": "123456",
+      "symbol": "AAPL",
+      "exchange": "us",
+      "quote_currency": "USD",
+      "fx_rate": "1",
+      "symbol_desc": "Apple Inc.",
+      "price_type": "limit",
+      "status": 3,
+      "status_desc": "filled",
+      "status_detail": { "title": "Filled", "message": "Order filled" },
+      "finish_as": 0,
+      "side": 2,
+      "time_in_force": "day",
+      "volume": "10",
+      "fill_volume": "10",
+      "price": "200.12",
+      "avg_fill_price": "200.10",
+      "commission": "2.001",
+      "time_setup": 1769378400,
+      "time_done": 1769378500
+    }]
+  },
+  "timestamp": 1783411200000
+}

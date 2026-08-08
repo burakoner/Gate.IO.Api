@@ -435,6 +435,24 @@ var tradfi_18 = await api.TradFi.UpdatePositionAsync(1_000_000_001, new GateTrad
 var tradfi_19 = await api.TradFi.ClosePositionAsync(1_000_000_001, new GateTradFiClosePositionRequest { CloseType = 1, CloseVolume = 0.01m });
 var tradfi_20 = await api.TradFi.GetPositionHistoryAsync(new GateTradFiPositionHistoryQueryRequest { Page = 1, PageSize = 50, Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });
 
+// Stock Methods
+var stock_01 = await api.Stock.GetAssetsAsync(GateStockPnlCalculationType.AverageCost, GateStockPnlPriceType.Intraday);
+var stock_02 = await api.Stock.GetSymbolsAsync(new GateStockSymbolQueryRequest { Exchange = GateStockExchange.UnitedStates, IncludeLocalizedDescriptions = true, Page = 1, PageSize = 50 });
+var stock_03 = await api.Stock.GetSymbolDetailsAsync(new GateStockSymbolDetailsQueryRequest { Symbols = ["AAPL"], Page = 1, PageSize = 50 });
+var stock_04 = await api.Stock.GetOrderBookAsync("AAPL");
+var stock_05 = await api.Stock.GetOrdersAsync("AAPL");
+var stock_06 = await api.Stock.PlaceOrderAsync(new GateStockOrderRequest { Symbol = "AAPL", Side = GateStockOrderSide.Buy, Volume = 1m, PriceType = GateStockOrderPriceType.Limit, TradingSession = GateStockTradingSession.Regular, TimeInForce = GateStockTimeInForce.Day, Price = 200m, ClientOrderId = "CLIENT-STOCK-ORDER-ID" });
+var stock_07 = await api.Stock.CancelAllOrdersAsync();
+var stock_08 = await api.Stock.GetOrderHistoryAsync(new GateStockOrderHistoryQueryRequest { Symbol = "AAPL", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
+var stock_09 = await api.Stock.UpdateOrderAsync(1_000_000_001, new GateStockOrderUpdateRequest { Volume = 1m, Price = 201m });
+var stock_10 = await api.Stock.CancelOrderAsync(1_000_000_001);
+var stock_11 = await api.Stock.GetPositionsAsync(new GateStockPositionQueryRequest { Symbol = "AAPL", Exchange = GateStockExchange.UnitedStates });
+var stock_12 = await api.Stock.ClosePositionAsync(new GateStockClosePositionRequest { Symbol = "AAPL", CloseType = GateStockPositionCloseType.Partial, CloseVolume = 1m });
+var stock_13 = await api.Stock.GetTransactionsAsync(new GateStockTransactionQueryRequest { BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
+var stock_14 = await api.Stock.CreateTransactionAsync(new GateStockTransferRequest { Asset = "USDT", Change = 100m, Type = GateStockTransferType.Deposit, ReferenceId = "CLIENT-STOCK-TRANSFER-ID" });
+var stock_15 = await api.Stock.GetExchangesAsync();
+var stock_16 = await api.Stock.GetFeeRatesAsync();
+
 // Delivery Futures Methods
 var delivery_01 = await api.Delivery.USDT.GetContractsAsync();
 var delivery_02 = await api.Delivery.USDT.GetContractAsync("CONTRACT");

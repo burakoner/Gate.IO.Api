@@ -74,6 +74,7 @@ public class PublicEndpointCatalogTests
             "MultiCollateralLoan",
             "Options",
             "Spot",
+            "Stock",
             "TradFi",
             "Unified",
             "Wallet",

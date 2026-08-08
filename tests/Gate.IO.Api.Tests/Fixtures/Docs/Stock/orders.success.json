@@ -1,0 +1,32 @@
+{
+  "data": {
+    "list": [{
+      "order_id": "123456",
+      "symbol": "AAPL",
+      "exchange": "us",
+      "quote_currency": "USD",
+      "fx_rate": "1",
+      "symbol_desc": "Apple Inc.",
+      "trade_status": "open",
+      "trade_mode": 4,
+      "price_type": "limit",
+      "side": 2,
+      "status": 1,
+      "volume": "10",
+      "fill_volume": "2",
+      "price": "200.12",
+      "time_setup": 1769378400,
+      "time_update": 1769378500,
+      "max_order_volume": "10000",
+      "step_order_volume": "1",
+      "min_order_volume": "1",
+      "price_precision": 2,
+      "price_protection": "0.1",
+      "sell_price_protection": "0.1",
+      "buy_price_protection": "0.1",
+      "commission_rate": "0.001",
+      "slippage_rate": "0.001"
+    }]
+  },
+  "timestamp": 1783411200000
+}

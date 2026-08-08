@@ -25,6 +25,7 @@ global using Gate.IO.Api.Otc;
 global using Gate.IO.Api.P2p;
 global using Gate.IO.Api.Rebate;
 global using Gate.IO.Api.Spot;
+global using Gate.IO.Api.Stock;
 global using Gate.IO.Api.SubAccount;
 global using Gate.IO.Api.Swap;
 global using Gate.IO.Api.TradFi;

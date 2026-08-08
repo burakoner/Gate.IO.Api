@@ -1,0 +1,20 @@
+{
+  "data": {
+    "total": 1,
+    "total_page": 1,
+    "list": [{
+      "asset": "USDT",
+      "symbol": "AAPL",
+      "symbol_display": "Apple Inc.",
+      "type": "deposit",
+      "type_desc": "Deposit",
+      "change": "100",
+      "balance": "1000",
+      "ref_id": "transfer-202607070001",
+      "time": 1769378400,
+      "unit_text": "USDT",
+      "detail": { "source": "api" }
+    }]
+  },
+  "timestamp": 1783411200000
+}

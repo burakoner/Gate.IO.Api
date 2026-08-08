@@ -1,0 +1,11 @@
+{
+  "data": {
+    "list": [{
+      "exchange": "us",
+      "exchange_desc": "United States",
+      "icon_link": "https://static.gate.com/us.png",
+      "support_transfer": true
+    }]
+  },
+  "timestamp": 1783411200000
+}

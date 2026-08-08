@@ -51,6 +51,13 @@ internal static class PublicEndpointCatalog
         Entry("TradFi", "Ticker", "GET", "/tradfi/symbols/EURUSD/tickers", "tradfi", "TradFi/ticker.EURUSD.json"),
         Entry("TradFi", "Candlesticks", "GET", "/tradfi/symbols/EURUSD/klines?kline_type=1m&limit=1", "tradfi", "TradFi/candlesticks.EURUSD.1m.limit1.json"),
 
+        // Stock's production gateway currently requires a Timestamp header even for these public operations.
+        // They have dedicated client smoke coverage; generic raw capture is intentionally not configured.
+        Entry("Stock", "Symbols", "GET", "/stock/symbols?page=1&page_size=1&with_desc_i18n=true", "stock", null),
+        Entry("Stock", "Symbol details", "GET", "/stock/symbols/detail?page=1&page_size=1", "stock", null),
+        Entry("Stock", "Order book", "GET", "/stock/market/00001/orderbook", "stock", null),
+        Entry("Stock", "Fee rates", "GET", "/stock/fee-rate", "stock", null),
+
         Entry("Delivery", "Contracts", "GET", "/delivery/usdt/contracts", "delivery", "Delivery/contracts.usdt.json"),
         Entry("Delivery", "Contract", "GET", "/delivery/usdt/contracts/{contract}", "delivery", "Delivery/contract.usdt.first.json", capturePathAndQuery: "/delivery/usdt/contracts/AVAX_USDT_20260515"),
         Entry("Delivery", "Tickers", "GET", "/delivery/usdt/tickers?contract={contract}", "delivery", "Delivery/tickers.usdt.first.json", capturePathAndQuery: "/delivery/usdt/tickers?contract=AVAX_USDT_20260515"),

@@ -18,6 +18,7 @@ public class RestClientSurfaceTests
         Assert.NotNull(client.Futures);
         Assert.NotNull(client.Delivery);
         Assert.NotNull(client.TradFi);
+        Assert.NotNull(client.Stock);
         Assert.NotNull(client.Options);
         Assert.NotNull(client.EarnUni);
         Assert.NotNull(client.MultiCollateralLoan);

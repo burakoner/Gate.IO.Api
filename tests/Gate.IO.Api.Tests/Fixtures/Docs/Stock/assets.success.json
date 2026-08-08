@@ -1,0 +1,12 @@
+{
+  "data": {
+    "equity": "10000.12",
+    "balance": "8000",
+    "available": "6500.5",
+    "position_market_value": "1500.25",
+    "position_pnl": "12.5",
+    "today_pnl": "3.2",
+    "user_exists": true
+  },
+  "timestamp": 1783411200000
+}

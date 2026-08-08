@@ -1,0 +1,8 @@
+{
+  "data": {
+    "symbol": "AAPL",
+    "bids": [{ "p": "200.11", "user_order": false }],
+    "asks": [{ "p": "200.12", "user_order": false }]
+  },
+  "timestamp": 1783411200000
+}

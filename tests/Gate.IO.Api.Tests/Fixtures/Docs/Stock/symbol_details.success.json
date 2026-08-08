@@ -1,0 +1,35 @@
+{
+  "data": {
+    "total": 1,
+    "total_page": 1,
+    "list": [{
+      "symbol": "AAPL",
+      "exchange": "us",
+      "exchange_desc": "United States",
+      "quote_currency": "USD",
+      "quote_currency_precision": 2,
+      "fx_rate": "1",
+      "symbol_desc": "Apple Inc.",
+      "category": "stock",
+      "settlement_currency": "USD",
+      "max_order_volume": "10000",
+      "step_order_volume": "1",
+      "min_order_volume": "1",
+      "price_precision": 2,
+      "volume_precision": 4,
+      "is_ipo": false,
+      "price_protection": "0.1",
+      "sell_price_protection": "0.1",
+      "buy_price_protection": "0.1",
+      "slippage_rate": "0.001",
+      "commission_rate": "0.001",
+      "trade_status": "open",
+      "status": "open",
+      "trade_mode": 4,
+      "order_fill_timing": 1,
+      "symbol_descs": [{ "lang": "en", "value": "Apple Inc." }],
+      "icon_link": "https://static.gate.com/aapl.png"
+    }]
+  },
+  "timestamp": 1783411200000
+}
