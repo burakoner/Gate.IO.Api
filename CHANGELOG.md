@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.114 - 03 August 2026
+  - Reverified the complete current signed `GET /crossex/market/tickers` and `GET /crossex/market/funding_info` contracts identified by v4.106.114 against the official documentation retrieved on 08 August 2026.
+    - Confirmed every documented response field, optional comma-separated symbol filter, authentication boundary, numeric-string conversion, empty Spot numeric handling, funding interval in seconds, and millisecond timestamp conversion.
+    - Clarified that `funding_time` is the next funding time and that Deribit's `funding_rate` is its current real-time rate calculated over an 8-hour period.
+    - The current generated funding schema incorrectly labels `symbol` as "Currency" and `funding_interval` as "Tier" while the endpoint purpose, query description, and examples show a trading pair and an interval in seconds. The wrapper retains those semantically correct meanings instead of copying the documentation defects.
+    - The endpoint implementations, complete response models, official fixtures, and request/contract tests had already entered the wrapper during the complete current-contract synchronization in v4.106.110; no duplicate runtime surface was added.
+  - Completed the scheduled documentation-backed retrospective review of versions 4.106.111 through 4.106.114 across endpoint completeness, authentication, wire types, enums, nullable values, timestamp units, validation, fixtures, examples, release notes, and execution scope. No additional runtime or API-contract defect was found. No authenticated or state-changing live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#get-exchange-tickers
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#get-exchange-futures-funding-rate-information
 - Version 4.106.113 - 03 August 2026
   - Added the signed `GET /wallet/transfers` endpoint identified by v4.106.113 against its complete current official contract retrieved on 08 August 2026.
     - Added `GetTradingAccountTransferAsync` with the required string `tx_id` query parameter, whitespace normalization, and preflight rejection of missing identifiers.

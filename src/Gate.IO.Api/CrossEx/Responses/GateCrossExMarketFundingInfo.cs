@@ -12,7 +12,7 @@ public record GateCrossExMarketFundingInfo
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Funding rate
+    /// Funding rate. For Deribit, this is the current real-time rate calculated over an 8-hour period.
     /// </summary>
     [JsonProperty("funding_rate"), JsonConverter(typeof(GateDecimalConverter))]
     public decimal? FundingRate { get; set; }
@@ -24,7 +24,7 @@ public record GateCrossExMarketFundingInfo
     public int? FundingInterval { get; set; }
 
     /// <summary>
-    /// Next funding time
+    /// Next funding time, returned by the API as a Unix timestamp in milliseconds
     /// </summary>
     [JsonProperty("funding_time")]
     [JsonConverter(typeof(DateTimeConverter))]
