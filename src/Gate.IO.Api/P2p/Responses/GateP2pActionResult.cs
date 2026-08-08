@@ -31,6 +31,12 @@ public record GateP2pActionResult
     public string Message { get; set; }
 
     /// <summary>
+    /// Action response data. Advertisement submissions return risk-control details here when rejected.
+    /// </summary>
+    [JsonProperty("data")]
+    public GateP2pActionData Data { get; set; }
+
+    /// <summary>
     /// API version
     /// </summary>
     [JsonProperty("version")]

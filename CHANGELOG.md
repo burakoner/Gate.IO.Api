@@ -1,5 +1,18 @@
 ## Change Log & Release Notes
 
+- Version 4.106.96 - 12 June 2026
+  - Aligned the P2P Merchant working-hours, advertisement submission, chat send, and chat-history contracts with the complete current official documentation retrieved on 08 August 2026.
+    - Added signed `POST /p2p/merchant/account/set_merchant_work_hours` support with typed normal/custom work modes, daily/weekly cycles, conditional-field validation, timezone range validation, and `HH:mm` ordering checks. The response distinguishes normal resting/working from custom resting/working states.
+    - Preserved advertisement risk-control failures instead of discarding `data`: `GateP2pActionResult.Data` now exposes `risk_code` and the complete `risk_event`, including prompt actions and field-specific messages. Code `70305102` therefore remains inspectable even though the HTTP request succeeds.
+    - Fully aligned advertisement submission with the current limit contract by adding `limitBasis`, `fiatMinAmount`, `fiatMaxAmount`, and `polymarket_limit`, making crypto quantity limits conditional, and preserving documented string identifiers/restrictions without numeric coercion. The nullable limit corrections and string conversions for `OrderId`, `UserCountryLimit`, and `TeamPaymentUserId` are source/binary-breaking.
+    - Changed `SendChatMessageAsync` to return `GateP2pSendChatMessageResult`, exposing server time, transaction/conversation identifiers, message type, `risk_type`, and `toast_msg`; this return-type correction is source/binary-breaking.
+    - Completed the chat-history response with history/order metadata, explicit file and risk fields, and the documented structured status/payment message object. Changing `GateP2pChatMessage.MessageObject` from `JToken` to the typed model is source/binary-breaking.
+    - Added official-style fixtures, signed request-construction tests, conditional validation tests, and refreshed usage examples. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#set-merchant-working-status-and-custom-working-hours
+    - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#publish-ad-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#get-chat-history
+    - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#send-text-message
 - Version 4.106.95 - 11 June 2026
   - Aligned `GET /wallet/deposits`, `GET /otc/order/list`, and `GET /otc/order/detail` with the v4.106.95 change record and their complete current official endpoint contracts retrieved on 08 August 2026.
     - Added the optional typed `refund_status` contract with all four documented values. Split deposit records into `GateWalletDeposit` with the complete deposit-specific status enum because the previous shared withdrawal model could not deserialize valid deposit-only statuses such as `BLOCKED`; the `GetDepositsAsync` response-type correction is source/binary-breaking.

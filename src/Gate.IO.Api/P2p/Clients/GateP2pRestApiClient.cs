@@ -22,7 +22,13 @@ public class GateP2pRestApiClient
     private static string ToStringInvariant<T>(T value)
         => Convert.ToString(value, CultureInfo.InvariantCulture);
 
-    private static GateP2pActionResult ToActionResult(GateP2pResponse<object> response)
+    private static void Require(string value, string parameterName)
+    {
+        if (string.IsNullOrWhiteSpace(value))
+            throw new ArgumentException($"{parameterName} is required", parameterName);
+    }
+
+    private static GateP2pActionResult ToActionResult(GateP2pResponse<GateP2pActionData> response)
         => new()
         {
             Code = response.Code,
@@ -30,6 +36,7 @@ public class GateP2pRestApiClient
             Method = response.Method,
             Timestamp = response.Timestamp,
             Version = response.Version,
+            Data = response.Data,
         };
 
     private static void AddTransactionParameters(ParameterCollection parameters, GateP2pPendingTransactionsRequest request)
@@ -74,29 +81,33 @@ public class GateP2pRestApiClient
             { "unitPrice", ToStringInvariant(request.UnitPrice) },
             { "number", ToStringInvariant(request.Number) },
             { "payType", request.PayType },
-            { "minAmount", ToStringInvariant(request.MinAmount) },
-            { "maxAmount", ToStringInvariant(request.MaxAmount) },
         };
         parameters.AddEnum("type", request.Type);
         parameters.AddOptional("pay_type_json", request.PayTypeJson);
         parameters.AddOptional("rateFixed", request.RateFixed.HasValue ? ToStringInvariant(request.RateFixed.Value) : null);
-        parameters.AddOptional("oid", request.OrderId.HasValue ? ToStringInvariant(request.OrderId.Value) : null);
+        parameters.AddOptional("oid", request.OrderId);
+        parameters.AddOptional("minAmount", request.MinAmount.HasValue ? ToStringInvariant(request.MinAmount.Value) : null);
+        parameters.AddOptional("maxAmount", request.MaxAmount.HasValue ? ToStringInvariant(request.MaxAmount.Value) : null);
+        parameters.AddOptional("limitBasis", request.LimitBasis.HasValue ? (int)request.LimitBasis.Value : null);
+        parameters.AddOptional("fiatMinAmount", request.FiatMinAmount.HasValue ? ToStringInvariant(request.FiatMinAmount.Value) : null);
+        parameters.AddOptional("fiatMaxAmount", request.FiatMaxAmount.HasValue ? ToStringInvariant(request.FiatMaxAmount.Value) : null);
         parameters.AddOptional("tierLimit", request.TierLimit.HasValue ? ToStringInvariant(request.TierLimit.Value) : null);
         parameters.AddOptional("verifiedLimit", request.VerifiedLimit.HasValue ? ToStringInvariant(request.VerifiedLimit.Value) : null);
         parameters.AddOptional("regTimeLimit", request.RegistrationTimeLimit.HasValue ? ToStringInvariant(request.RegistrationTimeLimit.Value) : null);
         parameters.AddOptional("advertisersLimit", request.AdvertisersLimit.HasValue ? ToStringInvariant(request.AdvertisersLimit.Value) : null);
+        parameters.AddOptional("polymarket_limit", request.PolymarketRestricted.HasValue ? (request.PolymarketRestricted.Value ? 1 : 0) : null);
         parameters.AddOptional("expire_min", request.ExpireMinutes.HasValue ? ToStringInvariant(request.ExpireMinutes.Value) : null);
         parameters.AddOptional("trade_tips", request.TradeTips);
         parameters.AddOptional("auto_reply", request.AutoReply);
         parameters.AddOptional("min_completed_limit", request.MinCompletedLimit.HasValue ? ToStringInvariant(request.MinCompletedLimit.Value) : null);
         parameters.AddOptional("max_completed_limit", request.MaxCompletedLimit.HasValue ? ToStringInvariant(request.MaxCompletedLimit.Value) : null);
         parameters.AddOptional("completed_rate_limit", request.CompletedRateLimit.HasValue ? ToStringInvariant(request.CompletedRateLimit.Value) : null);
-        parameters.AddOptional("user_country_limit", request.UserCountryLimit.HasValue ? ToStringInvariant(request.UserCountryLimit.Value) : null);
+        parameters.AddOptional("user_country_limit", request.UserCountryLimit);
         parameters.AddOptional("user_order_limit", request.UserOrderLimit.HasValue ? ToStringInvariant(request.UserOrderLimit.Value) : null);
         parameters.AddOptional("rateReferenceId", request.RateReferenceId.HasValue ? ToStringInvariant(request.RateReferenceId.Value) : null);
         parameters.AddOptional("rateOffset", request.RateOffset.HasValue ? ToStringInvariant(request.RateOffset.Value) : null);
         parameters.AddOptional("float_trend", request.FloatTrend.HasValue ? ToStringInvariant(request.FloatTrend.Value) : null);
-        parameters.AddOptional("team_payment_uid", request.TeamPaymentUserId.HasValue ? ToStringInvariant(request.TeamPaymentUserId.Value) : null);
+        parameters.AddOptional("team_payment_uid", request.TeamPaymentUserId);
 
         return parameters;
     }
@@ -117,7 +128,7 @@ public class GateP2pRestApiClient
         CancellationToken ct,
         ParameterCollection bodyParameters = null)
     {
-        var result = await _.SendRequestInternal<GateP2pResponse<object>>(_.GetUrl(api, v4, p2p, endpoint), method, ct, true, bodyParameters: bodyParameters).ConfigureAwait(false);
+        var result = await _.SendRequestInternal<GateP2pResponse<GateP2pActionData>>(_.GetUrl(api, v4, p2p, endpoint), method, ct, true, bodyParameters: bodyParameters).ConfigureAwait(false);
         return result.Success ? result.As(ToActionResult(result.Data)) : result.As<GateP2pActionResult>(default);
     }
 
@@ -175,6 +186,84 @@ public class GateP2pRestApiClient
         parameters.AddOptional("fiat", request.Fiat);
 
         return SendP2pDataRequestAsync<List<GateP2pPaymentMethodGroup>>("merchant/account/get_myself_payment", HttpMethod.Post, ct, parameters);
+    }
+
+    /// <summary>
+    /// Set P2P merchant work mode and custom working hours
+    /// </summary>
+    /// <param name="workStatus">Work mode</param>
+    /// <param name="cycleType">Custom working cycle</param>
+    /// <param name="dayOfWeek">Weekly working days from 1 (Monday) through 7 (Sunday)</param>
+    /// <param name="timeZone">UTC timezone offset from -12 through +14</param>
+    /// <param name="startTime">Custom working start time in HH:mm format</param>
+    /// <param name="endTime">Custom working end time in HH:mm format</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateP2pMerchantWorkHours>> SetMerchantWorkHoursAsync(
+        GateP2pMerchantWorkMode workStatus,
+        GateP2pMerchantWorkCycle? cycleType = null,
+        string dayOfWeek = null,
+        string timeZone = null,
+        string startTime = null,
+        string endTime = null,
+        CancellationToken ct = default)
+        => SetMerchantWorkHoursAsync(new GateP2pMerchantWorkHoursRequest
+        {
+            WorkStatus = workStatus,
+            CycleType = cycleType,
+            DayOfWeek = dayOfWeek,
+            TimeZone = timeZone,
+            StartTime = startTime,
+            EndTime = endTime,
+        }, ct);
+
+    /// <summary>
+    /// Set P2P merchant work mode and custom working hours
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateP2pMerchantWorkHours>> SetMerchantWorkHoursAsync(GateP2pMerchantWorkHoursRequest request, CancellationToken ct = default)
+    {
+        if (request.WorkStatus == GateP2pMerchantWorkMode.CustomHours)
+        {
+            if (!request.CycleType.HasValue)
+                throw new ArgumentException("CycleType is required for custom working hours", nameof(request.CycleType));
+
+            Require(request.TimeZone, nameof(request.TimeZone));
+            Require(request.StartTime, nameof(request.StartTime));
+            Require(request.EndTime, nameof(request.EndTime));
+
+            if (request.CycleType == GateP2pMerchantWorkCycle.Weekly)
+            {
+                Require(request.DayOfWeek, nameof(request.DayOfWeek));
+                var days = request.DayOfWeek.Split(',');
+                if (days.Any(x => !int.TryParse(x, NumberStyles.None, CultureInfo.InvariantCulture, out var day) || day < 1 || day > 7))
+                    throw new ArgumentOutOfRangeException(nameof(request.DayOfWeek), "DayOfWeek must contain comma-separated values from 1 through 7");
+            }
+
+            if (!decimal.TryParse(request.TimeZone, NumberStyles.AllowLeadingSign | NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out var offset) || offset < -12 || offset > 14)
+                throw new ArgumentOutOfRangeException(nameof(request.TimeZone), "TimeZone must be a numeric UTC offset from -12 through +14");
+
+            if (!DateTime.TryParseExact(request.StartTime, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var start))
+                throw new ArgumentException("StartTime must use HH:mm format", nameof(request.StartTime));
+            if (!DateTime.TryParseExact(request.EndTime, "HH:mm", CultureInfo.InvariantCulture, DateTimeStyles.None, out var end))
+                throw new ArgumentException("EndTime must use HH:mm format", nameof(request.EndTime));
+            if (start.TimeOfDay > end.TimeOfDay)
+                throw new ArgumentException("StartTime must not be later than EndTime", nameof(request.StartTime));
+        }
+
+        var parameters = new ParameterCollection
+        {
+            { "work_status", (int)request.WorkStatus },
+        };
+        parameters.AddOptionalEnum("cycle_type", request.CycleType);
+        parameters.AddOptional("day_of_week", request.DayOfWeek);
+        parameters.AddOptional("time_zone", request.TimeZone);
+        parameters.AddOptional("start_time", request.StartTime);
+        parameters.AddOptional("end_time", request.EndTime);
+
+        return SendP2pDataRequestAsync<GateP2pMerchantWorkHours>("merchant/account/set_merchant_work_hours", HttpMethod.Post, ct, parameters);
     }
 
     /// <summary>
@@ -434,7 +523,28 @@ public class GateP2pRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateP2pActionResult>> SubmitAdvertisementAsync(GateP2pAdRequest request, CancellationToken ct = default)
-        => SendP2pActionRequestAsync("merchant/books/place_biz_push_order", HttpMethod.Post, ct, CreateAdvertisementParameters(request));
+    {
+        if (request.LimitBasis == GateP2pAdLimitBasis.Fiat)
+        {
+            if (!request.FiatMinAmount.HasValue)
+                throw new ArgumentException("FiatMinAmount is required for fiat limits", nameof(request.FiatMinAmount));
+            if (!request.FiatMaxAmount.HasValue)
+                throw new ArgumentException("FiatMaxAmount is required for fiat limits", nameof(request.FiatMaxAmount));
+            if (request.FiatMinAmount > request.FiatMaxAmount)
+                throw new ArgumentException("FiatMinAmount must not exceed FiatMaxAmount", nameof(request.FiatMinAmount));
+        }
+        else
+        {
+            if (!request.MinAmount.HasValue)
+                throw new ArgumentException("MinAmount is required for cryptocurrency quantity limits", nameof(request.MinAmount));
+            if (!request.MaxAmount.HasValue)
+                throw new ArgumentException("MaxAmount is required for cryptocurrency quantity limits", nameof(request.MaxAmount));
+            if (request.MinAmount > request.MaxAmount)
+                throw new ArgumentException("MinAmount must not exceed MaxAmount", nameof(request.MinAmount));
+        }
+
+        return SendP2pActionRequestAsync("merchant/books/place_biz_push_order", HttpMethod.Post, ct, CreateAdvertisementParameters(request));
+    }
 
     /// <summary>
     /// Update P2P advertisement status
@@ -574,7 +684,7 @@ public class GateP2pRestApiClient
     /// <param name="type">Message type</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateP2pActionResult>> SendChatMessageAsync(long transactionId, string message, GateP2pChatMessageType? type = null, CancellationToken ct = default)
+    public Task<RestCallResult<GateP2pSendChatMessageResult>> SendChatMessageAsync(long transactionId, string message, GateP2pChatMessageType? type = null, CancellationToken ct = default)
         => SendChatMessageAsync(new GateP2pSendChatMessageRequest { TransactionId = transactionId, Message = message, Type = type }, ct);
 
     /// <summary>
@@ -583,8 +693,12 @@ public class GateP2pRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateP2pActionResult>> SendChatMessageAsync(GateP2pSendChatMessageRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<GateP2pSendChatMessageResult>> SendChatMessageAsync(GateP2pSendChatMessageRequest request, CancellationToken ct = default)
     {
+        Require(request.Message, nameof(request.Message));
+        if ((!request.Type.HasValue || request.Type == GateP2pChatMessageType.Text) && request.Message.Length > 500)
+            throw new ArgumentOutOfRangeException(nameof(request.Message), "Text messages cannot exceed 500 characters");
+
         var parameters = new ParameterCollection
         {
             { "txid", request.TransactionId },
@@ -592,7 +706,7 @@ public class GateP2pRestApiClient
         };
         parameters.AddOptional("type", request.Type.HasValue ? (int)request.Type.Value : null);
 
-        return SendP2pActionRequestAsync("merchant/chat/send_chat_message", HttpMethod.Post, ct, parameters);
+        return SendP2pDataRequestAsync<GateP2pSendChatMessageResult>("merchant/chat/send_chat_message", HttpMethod.Post, ct, parameters);
     }
 
     /// <summary>

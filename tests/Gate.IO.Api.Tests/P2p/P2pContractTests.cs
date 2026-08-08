@@ -12,6 +12,7 @@ public class P2pContractTests
         var user = JsonFixture.Parse("Docs/P2p/user_info.success.json")["data"]!.ToObject<GateP2pUserInfo>()!;
         var counterparty = JsonFixture.Parse("Docs/P2p/counterparty_user_info.success.json")["data"]!.ToObject<GateP2pUserInfo>()!;
         var paymentMethods = JsonFixture.Parse("Docs/P2p/payment_methods.success.json")["data"]!.ToObject<List<GateP2pPaymentMethodGroup>>()!;
+        var workHours = JsonFixture.Parse("Docs/P2p/work_hours.success.json")["data"]!.ToObject<GateP2pMerchantWorkHours>()!;
 
         Assert.True(user.IsSelf);
         Assert.Equal("merchant_demo", user.UserName);
@@ -25,6 +26,7 @@ public class P2pContractTests
         Assert.Equal("bank", paymentMethods[0].PayType);
         Assert.Equal(10001, Assert.Single(paymentMethods[0].Ids));
         Assert.Equal("155400008756", paymentMethods[0].List[0].Account);
+        Assert.Equal(GateP2pMerchantWorkStatus.CustomWorking, workHours.WorkStatus);
     }
 
     [Fact]
@@ -64,6 +66,8 @@ public class P2pContractTests
         var myAdvertisements = JsonFixture.Parse("Docs/P2p/my_ads.success.json")["data"]!["lists"]!.ToObject<List<GateP2pAdvertisement>>()!;
         var marketAdvertisements = JsonFixture.Parse("Docs/P2p/market_ads.success.json")["data"]!.ToObject<List<GateP2pMarketAdvertisement>>()!;
         var chat = JsonFixture.Parse("Docs/P2p/chat_history.success.json")["data"]!.ToObject<GateP2pChatHistory>()!;
+        var submitted = JsonFixture.Deserialize<GateP2pActionResult>("Docs/P2p/ad_risk.success.json");
+        var sent = JsonFixture.Parse("Docs/P2p/send_chat.success.json")["data"]!.ToObject<GateP2pSendChatMessageResult>()!;
         var file = JsonFixture.Parse("Docs/P2p/chat_file.success.json")["data"]!.ToObject<GateP2pChatFile>()!;
 
         Assert.Equal(GateP2pAdStatusUpdate.Listed, status.Status);
@@ -79,7 +83,20 @@ public class P2pContractTests
         Assert.Equal(1.270m, marketAdvertisements[0].Price);
         Assert.Equal(2, chat.Messages.Count);
         Assert.Equal("Payment sent", chat.Messages[0].Message);
-        Assert.Equal("c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments", chat.Messages[1].MessageObject!["file_key"]!.ToString());
+        Assert.Equal(1, chat.Messages[0].RiskType);
+        Assert.Equal("This message may contain security risks.", chat.Messages[0].ToastMessage);
+        Assert.Equal("c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments", chat.Messages[1].MessageObject.FileKey);
+        Assert.Equal("image", chat.Messages[1].FileType);
+        Assert.Equal(40000001, chat.TransactionId);
+        Assert.Equal("PAID", chat.OrderStatus);
+        Assert.Equal(70305102, submitted.Code);
+        Assert.Equal(0, submitted.Data.RiskCode);
+        Assert.Equal("trade_tips_auto_reply", submitted.Data.RiskEvent.ContentRiskType);
+        Assert.Equal("close", Assert.Single(submitted.Data.RiskEvent.Actions).ActionType);
+        Assert.Equal(40000001, sent.TransactionId);
+        Assert.Equal(GateP2pChatMessageType.Text, sent.MessageType);
+        Assert.Equal(1, sent.RiskType);
+        Assert.Equal("This message may contain security risks.", sent.ToastMessage);
         Assert.Equal("c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments", file.FileKey);
     }
 }

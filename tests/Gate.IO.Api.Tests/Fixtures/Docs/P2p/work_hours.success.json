@@ -1,0 +1,10 @@
+{
+  "timestamp": 1767152800.123456,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "work_status": 3
+  },
+  "version": "1.0.0"
+}

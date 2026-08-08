@@ -13,7 +13,9 @@
         "username": "counterparty_demo",
         "msg_obj": null,
         "uid": "biz_uid_demo_b84d21",
-        "timest": 1739015013
+        "timest": 1739015013,
+        "risk_type": 1,
+        "toast_msg": "This message may contain security risks."
       },
       {
         "is_sell": 0,
@@ -22,12 +24,22 @@
         "msg": "receipt.png",
         "username": "merchant_demo",
         "msg_obj": {
+          "id": "10002",
+          "pay_type": "swift",
           "file_key": "c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments"
         },
         "uid": "biz_uid_demo_9f3a7c",
-        "timest": 1739015113
+        "timest": 1739015113,
+        "pic": "https://example.com/p2p/chat/receipt.png",
+        "file_key": "c2cchat_image/c2ctrade-demo-receipt|s3-gateio-payments",
+        "file_type": "image"
       }
-    ]
+    ],
+    "memo": "",
+    "has_history": false,
+    "txid": 40000001,
+    "SRVTM": 1739015113,
+    "order_status": "PAID"
   },
   "version": "1.0.0"
 }

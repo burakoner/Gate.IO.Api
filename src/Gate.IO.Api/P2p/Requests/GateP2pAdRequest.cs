@@ -48,17 +48,32 @@ public record GateP2pAdRequest
     /// <summary>
     /// Advertisement ID when editing
     /// </summary>
-    public long? OrderId { get; set; }
+    public string OrderId { get; set; }
 
     /// <summary>
-    /// Minimum trade amount in ExchangeType
+    /// Minimum cryptocurrency quantity per order. Required for cryptocurrency quantity limits.
     /// </summary>
-    public decimal MinAmount { get; set; }
+    public decimal? MinAmount { get; set; }
 
     /// <summary>
-    /// Maximum amount per trade in ExchangeType
+    /// Maximum cryptocurrency quantity per order. Required for cryptocurrency quantity limits.
     /// </summary>
-    public decimal MaxAmount { get; set; }
+    public decimal? MaxAmount { get; set; }
+
+    /// <summary>
+    /// Trading-limit unit. Defaults to cryptocurrency quantity for a new advertisement.
+    /// </summary>
+    public GateP2pAdLimitBasis? LimitBasis { get; set; }
+
+    /// <summary>
+    /// Minimum fiat amount per order. Required when <see cref="LimitBasis"/> is <see cref="GateP2pAdLimitBasis.Fiat"/>.
+    /// </summary>
+    public decimal? FiatMinAmount { get; set; }
+
+    /// <summary>
+    /// Maximum fiat amount per order. Required when <see cref="LimitBasis"/> is <see cref="GateP2pAdLimitBasis.Fiat"/>.
+    /// </summary>
+    public decimal? FiatMaxAmount { get; set; }
 
     /// <summary>
     /// Minimum counterparty VIP level
@@ -79,6 +94,11 @@ public record GateP2pAdRequest
     /// Whether trading with the advertiser is restricted
     /// </summary>
     public int? AdvertisersLimit { get; set; }
+
+    /// <summary>
+    /// Whether trading with Polymarket users is restricted
+    /// </summary>
+    public bool? PolymarketRestricted { get; set; }
 
     /// <summary>
     /// Payment timeout in minutes
@@ -113,7 +133,7 @@ public record GateP2pAdRequest
     /// <summary>
     /// KYC nationality restriction
     /// </summary>
-    public int? UserCountryLimit { get; set; }
+    public string UserCountryLimit { get; set; }
 
     /// <summary>
     /// Maximum concurrent orders allowed for the counterparty
@@ -138,5 +158,5 @@ public record GateP2pAdRequest
     /// <summary>
     /// Team payee UID
     /// </summary>
-    public long? TeamPaymentUserId { get; set; }
+    public string TeamPaymentUserId { get; set; }
 }

@@ -1,0 +1,15 @@
+{
+  "timestamp": 1767009886.638032,
+  "method": "--",
+  "code": 0,
+  "message": "success",
+  "data": {
+    "SRVTM": 1767009886638,
+    "txid": 40000001,
+    "conversation_id": "1000001_1000002",
+    "msg_type": 0,
+    "risk_type": 1,
+    "toast_msg": "This message may contain security risks."
+  },
+  "version": "1.0.0"
+}

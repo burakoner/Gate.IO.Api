@@ -1,0 +1,26 @@
+{
+  "timestamp": 1767009886.638032,
+  "method": "--",
+  "code": 70305102,
+  "message": "Advertisement content triggered risk control",
+  "data": {
+    "risk_code": 0,
+    "risk_event": {
+      "type": "modal",
+      "title": "Security reminder",
+      "msg": "Remove off-platform contact details.",
+      "action": [
+        {
+          "action_type": "close",
+          "title": "Close",
+          "mainly": 0,
+          "action_data": {}
+        }
+      ],
+      "content_risk_type": "trade_tips_auto_reply",
+      "trade_tips": "Trade terms contain off-platform contact details.",
+      "auto_reply": "Automatic reply contains off-platform contact details."
+    }
+  },
+  "version": "1.0.0"
+}
