@@ -76,6 +76,63 @@ public class FuturesRequestConstructionTests
     }
 
     [Fact]
+    public async Task Public_futures_liquidation_request_preserves_optional_filters_and_time_range()
+    {
+        var responses = new Queue<string>([
+            JsonFixture.Read("Docs/Futures/liq_orders.success.json"),
+            JsonFixture.Read("Docs/Futures/liq_orders.success.json"),
+            JsonFixture.Read("Docs/Futures/liq_orders.success.json"),
+        ]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var client = CreateClient(handler);
+        var from = DateTimeOffset.FromUnixTimeSeconds(1786214700).UtcDateTime;
+        var to = DateTimeOffset.FromUnixTimeSeconds(1786218300).UtcDateTime;
+
+        var unfiltered = await client.Futures.USDT.GetLiquidationsAsync(new GateFuturesLiquidationQueryRequest());
+        var unfilteredConvenienceOverload = await client.Futures.USDT.GetLiquidationsAsync();
+        var filtered = await client.Futures.USDT.GetLiquidationsAsync(new GateFuturesLiquidationQueryRequest
+        {
+            Contract = "AEON_USDT",
+            From = from,
+            To = to,
+            Limit = 25,
+        });
+
+        Assert.True(unfiltered.Success, unfiltered.Error?.ToString());
+        Assert.True(unfilteredConvenienceOverload.Success, unfilteredConvenienceOverload.Error?.ToString());
+        Assert.True(filtered.Success, filtered.Error?.ToString());
+        Assert.Equal(3, handler.Requests.Count);
+
+        Assert.Equal(HttpMethod.Get, handler.Requests[0].Method);
+        Assert.Equal("/api/v4/futures/usdt/liq_orders", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Empty(handler.Requests[0].RequestUri.Query);
+        Assert.Empty(handler.Requests[1].RequestUri.Query);
+
+        var query = ParseQuery(handler.Requests[2].RequestUri);
+        Assert.Equal("AEON_USDT", query["contract"]);
+        Assert.Equal("1786214700", query["from"]);
+        Assert.Equal("1786218300", query["to"]);
+        Assert.Equal("25", query["limit"]);
+        Assert.All(handler.Requests, recordedRequest =>
+        {
+            Assert.DoesNotContain("KEY", recordedRequest.Headers.Keys);
+            Assert.DoesNotContain("SIGN", recordedRequest.Headers.Keys);
+        });
+
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Futures.USDT.GetLiquidationsAsync(new GateFuturesLiquidationQueryRequest
+        {
+            From = from,
+            To = to.AddSeconds(1),
+        }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Futures.USDT.GetLiquidationsAsync(new GateFuturesLiquidationQueryRequest
+        {
+            From = to,
+            To = from,
+        }));
+        Assert.Equal(3, handler.Requests.Count);
+    }
+
+    [Fact]
     public async Task Signed_futures_positions_request_preserves_optional_paging_contract()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/positions.success.json")));

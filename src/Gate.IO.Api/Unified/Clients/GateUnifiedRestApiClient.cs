@@ -507,6 +507,22 @@ public class GateUnifiedRestApiClient
     }
 
     /// <summary>
+    /// Set leverage for all borrowed currencies.
+    /// Currencies with outstanding loans are not changed, values above a currency's leverage threshold are capped,
+    /// and failures do not roll back successful currency updates.
+    /// </summary>
+    /// <param name="leverage">Leverage applied to all eligible borrowed currencies</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns>Currencies that could not be updated and their failure reasons</returns>
+    public Task<RestCallResult<List<GateUnifiedLeverageFailure>>> SetAllLeverageSettingsAsync(decimal leverage, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddString("leverage", leverage);
+
+        return _.SendRequestInternal<List<GateUnifiedLeverageFailure>>(_.GetUrl(api, v4, unified, "leverage/user_setting"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
     /// List of loan currencies supported by unified account
     /// </summary>
     /// <param name="currency">Currency</param>

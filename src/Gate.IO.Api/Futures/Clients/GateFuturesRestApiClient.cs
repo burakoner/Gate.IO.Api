@@ -234,16 +234,22 @@ public class GateFuturesRestApiClient
     }
 
     // Retrieve liquidation history
-    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int? limit = null, CancellationToken ct = default)
     => GetLiquidationsAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
 
     // Retrieve liquidation history
-    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int? limit = null, CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection
+        if (from.HasValue && to.HasValue)
         {
-            { "contract", contract },
-        };
+            if (to.Value < from.Value)
+                throw new ArgumentException("End time cannot be earlier than start time", nameof(to));
+            if (to.Value - from.Value > 3600)
+                throw new ArgumentException("The liquidation history time range cannot exceed 3600 seconds", nameof(to));
+        }
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptionalParameter("contract", contract);
         parameters.AddOptionalParameter("limit", limit);
         parameters.AddOptionalParameter("from", from);
         parameters.AddOptionalParameter("to", to);

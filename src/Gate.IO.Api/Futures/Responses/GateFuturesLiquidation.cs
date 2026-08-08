@@ -19,10 +19,16 @@ public record GateFuturesLiquidation
     public string Contract { get; set; }
 
     /// <summary>
-    /// Position size
+    /// User position size
     /// </summary>
     [JsonProperty("size")]
-    public long Size { get; set; }
+    public decimal Size { get; set; }
+
+    /// <summary>
+    /// Number of forced liquidation orders
+    /// </summary>
+    [JsonProperty("order_size")]
+    public decimal OrderSize { get; set; }
 
     /// <summary>
     /// Liquidation order price
@@ -37,8 +43,8 @@ public record GateFuturesLiquidation
     public decimal FillPrice { get; set; }
 
     /// <summary>
-    /// Liquidation order maker size
+    /// Reserved field with no current business significance
     /// </summary>
     [JsonProperty("left")]
-    public long Left { get; set; }
+    public string Left { get; set; }
 }

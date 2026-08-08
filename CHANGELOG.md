@@ -1,5 +1,21 @@
 ## Change Log & Release Notes
 
+- Version 4.106.109 - 22 July 2026
+  - Added signed `POST /unified/leverage/user_setting` support against its complete current official contract retrieved on 08 August 2026.
+    - Added decimal-safe leverage input serialized as the documented JSON string and the complete per-currency failure response with `currency` and `reason`.
+    - Documented the endpoint's non-atomic behavior: currencies with outstanding loans fail independently, values above each currency's threshold are capped, and successful updates are not rolled back when another currency fails.
+    - The generated parameter table marks `leverage` optional even though the request body is required, it is the operation's only input, and every official request example supplies it. The wrapper therefore requires a leverage value instead of exposing a meaningless empty state-changing request; no undocumented numeric range was invented.
+  - Fully aligned public `GET /futures/{settle}/liq_orders` with the current endpoint and `FuturesLiqOrder` contracts.
+    - Added the missing `order_size` response field, corrected the semantically numeric string `size` from `long` to `decimal`, and corrected reserved `left` from `long` to its published string representation. These public property-type corrections are source/binary-breaking.
+    - Preserved omission of every optional query filter, including `contract` and `limit`, through both the request object and convenience overload. Added preflight validation for reversed ranges and the documented maximum 3600-second interval.
+    - Refreshed the official fixture and captured a read-only public production response confirming `size`, `order_size`, and `left` are returned as strings. No authenticated private or state-changing live call was made.
+  - Reverified the v4.106.109 CrossEx RPI changes against today's complete fee, symbol-rule, create-order, and order-response contracts. `spot_rpi_maker_fee`, `future_rpi_maker_fee`, `special_fee_list[].rpi_fee_rate`, `support_rpi`, and `RPI` time-in-force were already implemented and covered when CrossEx was synchronized to the current contract in v4.106.87, so no duplicate runtime surface was added.
+  - Added signed/unsigned request-construction coverage, official-example response fixtures, current-model assertions, live-fixture assertions, and README/example usage.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/zh_CN/unified/#设置用户所有借贷币种杠杆倍数
+  - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#query-liquidation-order-history
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/
+  - Production contract check: https://api.gateio.ws/api/v4/futures/usdt/liq_orders?limit=1
 - Version 4.106.108 - 16 July 2026
   - Added signed `POST /crossex/batch_cancel_orders` support against its complete current official contract retrieved on 08 August 2026.
     - Added direct JSON-array request serialization with typed `order_id` / `text` items and preflight enforcement of the documented any-of requirement. Both identifiers remain serializable together, preserving Gate's documented `order_id` precedence, and no undocumented batch-size restriction was invented.

@@ -225,6 +225,24 @@ public class UnifiedRequestConstructionTests
         Assert.All(handler.Requests, AssertSignedHeaders);
     }
 
+    [Fact]
+    public async Task Signed_all_currency_leverage_request_uses_current_contract()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Unified/leverage_failures.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Unified.SetAllLeverageSettingsAsync(10m);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Single(result.Data!);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/unified/leverage/user_setting", request.RequestUri.AbsolutePath);
+        Assert.Equal("10", JObject.Parse(request.Content)["leverage"]!.ToString());
+        AssertSignedHeaders(request);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {

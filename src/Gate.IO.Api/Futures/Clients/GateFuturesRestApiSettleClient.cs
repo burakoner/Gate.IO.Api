@@ -322,7 +322,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(string contract, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(string contract, DateTime from, DateTime to, int? limit = null, CancellationToken ct = default)
         => _.GetLiquidationsAsync(Settlement, contract, from, to, limit, ct);
 
     /// <summary>
@@ -335,7 +335,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="limit">Maximum number of records to be returned in a single list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(string contract, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(string contract = null, long? from = null, long? to = null, int? limit = null, CancellationToken ct = default)
         => _.GetLiquidationsAsync(Settlement, contract, from, to, limit, ct);
 
     /// <summary>
@@ -345,7 +345,12 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesLiquidationQueryRequest request, CancellationToken ct = default)
-        => _.GetLiquidationsAsync(Settlement, request.Contract, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        return _.GetLiquidationsAsync(Settlement, request.Contract, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit, ct);
+    }
 
     /// <summary>
     /// When the 'contract' parameter is not passed, the default is to query the risk limits for the top 100 markets.'Limit' and 'offset' correspond to pagination queries at the market level, not to the length of the returned array. This only takes effect when the 'contract' parameter is empty.

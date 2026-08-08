@@ -66,6 +66,7 @@ public class UnifiedContractTests
         var mode = JsonFixture.Deserialize<GateUnifiedAccountModeInfo>("Docs/Unified/unified_mode.success.json");
         var leverageConfig = JsonFixture.Deserialize<GateUnifiedLeverageConfig>("Docs/Unified/leverage_config.success.json");
         var leverageSettings = JsonFixture.Deserialize<List<GateUnifiedLeverageSetting>>("Docs/Unified/leverage_settings.success.json");
+        var leverageFailures = JsonFixture.Deserialize<List<GateUnifiedLeverageFailure>>("Docs/Unified/leverage_failures.success.json");
 
         Assert.True(riskUnits.SpotHedge);
         Assert.Single(riskUnits.RiskUnits);
@@ -75,6 +76,9 @@ public class UnifiedContractTests
         Assert.Equal(10m, leverageConfig.MaxLeverage);
         Assert.Single(leverageSettings);
         Assert.Equal(3m, leverageSettings[0].Leverage);
+        Assert.Single(leverageFailures);
+        Assert.Equal("string", leverageFailures[0].Currency);
+        Assert.Equal("string", leverageFailures[0].Reason);
     }
 
     [Fact]

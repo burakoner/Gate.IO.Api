@@ -50,7 +50,11 @@ public class FuturesContractTests
         Assert.Equal(11268, stats[0].LongUsers);
         Assert.Equal(20944, stats[0].ShortUsers);
         Assert.Equal("BTC_USDT", constituents.Index);
-        Assert.Equal(-100, liquidations[0].Size);
+        Assert.Equal(600m, liquidations[0].Size);
+        Assert.Equal(-600m, liquidations[0].OrderSize);
+        Assert.Equal(3405m, liquidations[0].OrderPrice);
+        Assert.Equal(3424m, liquidations[0].FillPrice);
+        Assert.Equal("0", liquidations[0].Left);
         Assert.Equal(20000m, riskLimitTiers[0].RiskLimit);
     }
 
@@ -195,7 +199,7 @@ public class FuturesContractTests
         var insurance = JsonFixture.Deserialize<List<GateFuturesInsuranceBalance>>("Live/Futures/insurance.usdt.limit1.json");
         var stats = JsonFixture.Deserialize<List<GateFuturesStats>>("Live/Futures/contract_stats.BTC_USDT.1h.limit1.json");
         var constituents = JsonFixture.Deserialize<GateFuturesIndexConstituents>("Live/Futures/index_constituents.BTC_USDT.json");
-        var liquidations = JsonFixture.Deserialize<List<GateFuturesLiquidation>>("Live/Futures/liq_orders.BTC_USDT.limit1.json");
+        var liquidations = JsonFixture.Deserialize<List<GateFuturesLiquidation>>("Live/Futures/liq_orders.limit1.json");
         var riskLimitTiers = JsonFixture.Deserialize<List<GateFuturesRiskLimitTier>>("Live/Futures/risk_limit_tiers.BTC_USDT.limit1.json");
 
         Assert.NotEmpty(contracts);
@@ -218,6 +222,9 @@ public class FuturesContractTests
         Assert.Equal(20944, stats[0].ShortUsers);
         Assert.Equal("BTC_USDT", constituents.Index);
         Assert.NotNull(liquidations);
+        Assert.Equal(120m, liquidations[0].Size);
+        Assert.Equal(-120m, liquidations[0].OrderSize);
+        Assert.Equal("0", liquidations[0].Left);
         Assert.NotEmpty(riskLimitTiers);
     }
 }

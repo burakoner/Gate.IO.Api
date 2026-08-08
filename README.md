@@ -173,6 +173,7 @@ var unified_17 = await api.Unified.CalculatePortfolioAsync(new GateUnifiedPortfo
 var unified_18 = await api.Unified.GetLeverageConfigsAsync("CURRENCY");
 var unified_19 = await api.Unified.GetLeverageSettingsAsync();
 var unified_20 = await api.Unified.SetLeverageSettingsAsync(new GateUnifiedLeverageSettingRequest { Currency = "CURRENCY", Leverage = 10 });
+var unified_20b = await api.Unified.SetAllLeverageSettingsAsync(10);
 var unified_21 = await api.Unified.GetCurrenciesAsync();
 var unified_22 = await api.Unified.GetHistoricalLendingRatesAsync(new GateUnifiedHistoricalLendingRatesQueryRequest { Currency = "CURRENCY", Tier = "1" });
 var unified_23 = await api.Unified.SetCollateralCurrenciesAsync(new GateUnifiedCollateralCurrenciesRequest { Type = GateUnifiedCollateralType.Custom, EnableList = new List<string> { "BTC" }, DisableList = new List<string> { "ETH" } });

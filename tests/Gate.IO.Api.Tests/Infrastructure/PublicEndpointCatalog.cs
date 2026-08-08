@@ -43,7 +43,7 @@ internal static class PublicEndpointCatalog
         Entry("Futures", "Insurance history", "GET", "/futures/usdt/insurance?limit=1", "futures", "Futures/insurance.usdt.limit1.json"),
         Entry("Futures", "Contract stats", "GET", "/futures/usdt/contract_stats?contract=BTC_USDT&interval=1h&limit=1", "futures", "Futures/contract_stats.BTC_USDT.1h.limit1.json"),
         Entry("Futures", "Index constituents", "GET", "/futures/usdt/index_constituents/BTC_USDT", "futures", "Futures/index_constituents.BTC_USDT.json"),
-        Entry("Futures", "Liquidations", "GET", "/futures/usdt/liq_orders?contract=BTC_USDT&limit=1", "futures", "Futures/liq_orders.BTC_USDT.limit1.json"),
+        Entry("Futures", "Liquidations", "GET", "/futures/usdt/liq_orders?limit=1", "futures", "Futures/liq_orders.limit1.json"),
         Entry("Futures", "Risk limit tiers", "GET", "/futures/usdt/risk_limit_tiers?contract=BTC_USDT&limit=1", "futures", "Futures/risk_limit_tiers.BTC_USDT.limit1.json"),
 
         Entry("TradFi", "Symbol categories", "GET", "/tradfi/symbols/categories", "tradfi", "TradFi/categories.json"),
