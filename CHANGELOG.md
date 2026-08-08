@@ -1,5 +1,14 @@
 ## Change Log & Release Notes
 
+- Version 4.106.111 - 03 August 2026
+  - Reverified the complete current signed `POST /stock/orders` and `GET /stock/orders/history` contracts identified by v4.106.111 against the official documentation retrieved on 08 August 2026.
+    - Confirmed that `time_in_force` supports `day` only in both `TradFiSpotOrderRequest` and `OrderHistoryList`; the formerly documented `gtc` value is absent from the public enum and unsupported values are rejected before network I/O.
+    - Rechecked every documented create-order request field, order-history query filter and response field, authentication requirement, enum mapping, numeric representation, nullable average fill price, and Unix timestamp conversion. No additional runtime-model change was required.
+    - The `day`-only correction had already entered the wrapper during the complete current-contract synchronization in v4.106.106. This release records and regression-locks the v4.106.111 boundary instead of duplicating the implementation.
+  - Added explicit regression coverage proving that the public Stock time-in-force contract exposes only `Day` and rejects an invalid legacy value before I/O. Existing signed request construction and documented history-response fixtures continue to cover `"day"` on the wire. No authenticated or state-changing live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#place-stock-order
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#query-historical-stock-orders
 - Version 4.106.110 - 28 July 2026
   - Added both signed CrossEx market-data endpoints identified by v4.106.110 against their complete current official contracts retrieved on 08 August 2026.
     - Added `GET /crossex/market/tickers` with optional comma-separated symbol filters and the complete ticker response: last/open/low/high prices, base and quote volumes, mark and index prices, base and quote open interest, and update timestamp.

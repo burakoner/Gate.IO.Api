@@ -270,6 +270,15 @@ public class StockRequestConstructionTests
             PriceType = GateStockOrderPriceType.Market,
             TradingSession = GateStockTradingSession.All,
         }));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Stock.PlaceOrderAsync(new GateStockOrderRequest
+        {
+            Symbol = "AAPL",
+            Volume = 1,
+            Side = GateStockOrderSide.Buy,
+            PriceType = GateStockOrderPriceType.Market,
+            TradingSession = GateStockTradingSession.Regular,
+            TimeInForce = (GateStockTimeInForce)int.MaxValue,
+        }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Stock.ClosePositionAsync(new GateStockClosePositionRequest
         {
             Symbol = "AAPL",

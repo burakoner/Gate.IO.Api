@@ -89,6 +89,7 @@ public class StockContractTests
     public void Current_stock_enum_contract_matches_schema_and_production_values()
     {
         Assert.Equal("4", MapConverter.GetString(GateStockTradeMode.BuyAndSell));
+        Assert.Equal(new[] { GateStockTimeInForce.Day }, Enum.GetValues<GateStockTimeInForce>());
         Assert.Equal("day", MapConverter.GetString(GateStockTimeInForce.Day));
         Assert.Equal("stock_transfer_out", MapConverter.GetString(GateStockTransactionType.StockTransferOut));
         Assert.Equal("kr", MapConverter.GetString(GateStockExchange.SouthKorea));
