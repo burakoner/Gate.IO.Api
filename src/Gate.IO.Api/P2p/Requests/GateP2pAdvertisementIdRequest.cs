@@ -8,5 +8,5 @@ public record GateP2pAdvertisementIdRequest
     /// <summary>
     /// Advertisement ID
     /// </summary>
-    public long AdvertisementId { get; set; }
+    public string AdvertisementId { get; set; }
 }

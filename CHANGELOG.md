@@ -1,5 +1,18 @@
 ## Change Log & Release Notes
 
+- Version 4.106.102 - 26 June 2026
+  - Aligned the P2P advertisement publication, detail, and market-list endpoints identified by v4.106.102 with their complete current official contracts retrieved on 08 August 2026.
+    - Revalidated every `POST /p2p/merchant/books/place_biz_push_order` request field. The v4.106.102 limit-unit, fiat-limit, and Polymarket fields were already present from the complete endpoint synchronization in v4.106.96, so no duplicate surface was added. Public examples now use a fiat maximum that does not exceed the fixed-price advertisement total; the official example currently contradicts its own stated bound, so no speculative client-side total-value rejection was introduced.
+    - Completed `POST /p2p/merchant/books/ads_detail` with fiat minimum/maximum amounts, typed limit basis and its label, and the Polymarket restriction flag. Corrected the documented string `adv_no` request contract while retaining the numeric convenience overload; changing `GateP2pAdvertisementIdRequest.AdvertisementId` from `long` to `string` is source/binary-breaking.
+    - Completed `POST /p2p/merchant/books/ads_list` with fiat limits, typed limit basis, remaining tradable quantity, and the full supported-payment-method list. The latter two fields come from the current v4.106.103 contract because touched endpoints are synchronized to today's documentation rather than frozen at their historical release.
+    - Split the required market-list request into `GateP2pMarketAdListRequest` instead of incorrectly sharing the optional `my_ads_list` request. The old overload remains as an obsolete forwarding compatibility path and now enforces all three required filters.
+  - Closed the preceding retrospective review's P1 finding for `GET /futures/{settle}/positions`: omitted `limit` and `offset` values now remain omitted, so the API can return the full current position list, while explicit limits are validated to `1`-`100`. Changing the convenience overload paging parameters to nullable values is binary-breaking; request-construction tests cover omitted, explicit, and invalid paging.
+  - Corrected the v4.106.98 release-note provenance below to record the duplicate entries in the official changelog itself. Added current-schema fixtures and signed request coverage; no authenticated private or state-changing live calls were made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#publish-ad-order
+  - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#query-ad-details
+  - Source: https://www.gate.com/docs/developers/apiv4/en/p2p/#get-advertisement-list
+  - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#get-user-position-list
 - Version 4.106.99 - 25 June 2026
   - Aligned `GET /futures/{settle}/contract_stats` with the complete current official Futures statistics contract retrieved on 08 August 2026, using v4.106.99 only as the endpoint locator.
     - Added the documented `top_long_account` and `top_short_account` counts as nullable `long` values, matching the changelog's `string`-to-`int64` correction without conflating an omitted count with zero. The current contract also declares `long_users` and `short_users` as `int64`, so those counts are aligned in the same pass.
@@ -15,7 +28,7 @@
     - `GateEarnStakingOrder.Status` exposes all documented values: success (`1`), delayed redemption in progress (`3`), and redemption cancellation order (`6`).
     - `GateEarnStakingAward.Status` exposes success (`4`), while `GateEarnStakingAsset.Status` distinguishes listed (`1`) and delisted (`2`) currency projects. The endpoints' already documented operation and asset type values remain strongly typed as well.
     - Rechecked every current response field for `order_list`, `award_list`, and `assets` against the wrapper models; no missing wire field remains. Fixtures and contract assertions cover every published status value.
-    - Correction: these enum implementations entered the repository in the immediately preceding v4.106.97 commit because an aggregated documentation search result incorrectly grouped the v4.106.98 lines under v4.106.97. The changelog boundaries were revalidated against the exact official source here; no duplicate runtime implementation was added. The `int`-to-enum response property changes remain source/binary-breaking for consumers upgrading across this boundary.
+    - Correction: the official changelog itself repeats these three Earn status entries under both v4.106.97 and v4.106.98. Their implementations therefore entered the repository in the immediately preceding v4.106.97 commit; no duplicate runtime implementation was added for v4.106.98. The `int`-to-enum response property changes remain source/binary-breaking for consumers upgrading across this boundary.
     - No authenticated private or state-changing live calls were made.
     - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
     - Source: https://www.gate.com/docs/developers/apiv4/en/earn/#list-of-on-chain-coin-earning-orders

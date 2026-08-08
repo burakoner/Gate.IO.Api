@@ -409,11 +409,11 @@ public class GateFuturesRestApiSettleClient
     /// List all positions of a user
     /// </summary>
     /// <param name="holding">Return only real positions - true, return all - false.</param>
-    /// <param name="limit">Maximum number of records to be returned in a single list</param>
-    /// <param name="offset">List offset, starting from 0</param>
+    /// <param name="limit">Maximum number of positions to return, from 1 to 100. Omit to return all current positions.</param>
+    /// <param name="offset">List offset, starting from 0. Omit to use the API default.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(bool? holding = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(bool? holding = null, int? limit = null, int? offset = null, CancellationToken ct = default)
         => _.GetPositionsAsync(Settlement, holding, limit, offset, ct);
 
     /// <summary>
@@ -423,7 +423,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(GateFuturesPositionQueryRequest request, CancellationToken ct = default)
-        => _.GetPositionsAsync(Settlement, request.Holding, request.Limit ?? 100, request.Offset ?? 0, ct);
+        => _.GetPositionsAsync(Settlement, request.Holding, request.Limit, request.Offset, ct);
 
     /// <summary>
     /// Get user's historical position information list by time

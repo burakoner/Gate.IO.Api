@@ -113,7 +113,7 @@ public class P2pRequestConstructionTests
             OrderId = "2124000001",
             LimitBasis = GateP2pAdLimitBasis.Fiat,
             FiatMinAmount = 100m,
-            FiatMaxAmount = 1000m,
+            FiatMaxAmount = 110m,
             TierLimit = 0,
             VerifiedLimit = 0,
             RegistrationTimeLimit = 0,
@@ -139,7 +139,7 @@ public class P2pRequestConstructionTests
         });
         var advertisement = await client.P2p.GetAdvertisementAsync(new GateP2pAdvertisementIdRequest
         {
-            AdvertisementId = 2124000001,
+            AdvertisementId = "2124000001",
         });
         var myAdvertisements = await client.P2p.GetMyAdvertisementsAsync(new GateP2pAdListRequest
         {
@@ -147,7 +147,7 @@ public class P2pRequestConstructionTests
             FiatUnit = "USD",
             TradeType = GateP2pOrderSide.Sell,
         });
-        var marketAdvertisements = await client.P2p.GetAdvertisementsAsync(new GateP2pAdListRequest
+        var marketAdvertisements = await client.P2p.GetAdvertisementsAsync(new GateP2pMarketAdListRequest
         {
             Asset = "USDT",
             FiatUnit = "USD",
@@ -268,7 +268,7 @@ public class P2pRequestConstructionTests
         Assert.Equal("2124000001", adBody["oid"]!.ToString());
         Assert.Equal("1", adBody["limitBasis"]!.ToString());
         Assert.Equal("100", adBody["fiatMinAmount"]!.ToString());
-        Assert.Equal("1000", adBody["fiatMaxAmount"]!.ToString());
+        Assert.Equal("110", adBody["fiatMaxAmount"]!.ToString());
         Assert.Equal("0", adBody["polymarket_limit"]!.ToString());
         Assert.Equal("20", adBody["expire_min"]!.ToString());
         Assert.Equal("90", adBody["completed_rate_limit"]!.ToString());
@@ -331,13 +331,18 @@ public class P2pRequestConstructionTests
         }));
         var fiatLimitException = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(new GateP2pAdRequest
         {
+            CurrencyType = "USDT",
+            ExchangeType = "USD",
+            PayType = "bank",
             LimitBasis = GateP2pAdLimitBasis.Fiat,
         }));
+        var marketListException = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.GetAdvertisementsAsync(new GateP2pMarketAdListRequest()));
         var chatException = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.P2p.SendChatMessageAsync(40000001, new string('x', 501)));
 
         Assert.Equal("CycleType", cycleException.ParamName);
         Assert.Equal("DayOfWeek", dayException.ParamName);
         Assert.Equal("FiatMinAmount", fiatLimitException.ParamName);
+        Assert.Equal("Asset", marketListException.ParamName);
         Assert.Equal("Message", chatException.ParamName);
     }
 

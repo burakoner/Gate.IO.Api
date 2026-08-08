@@ -10,11 +10,11 @@ public record GateFuturesPositionQueryRequest
     /// </summary>
     public bool? Holding { get; set; }
     /// <summary>
-    /// Gets or sets the Limit.
+    /// Maximum number of positions to return, from 1 to 100. Omit to return all current positions.
     /// </summary>
     public int? Limit { get; set; }
     /// <summary>
-    /// Gets or sets the Offset.
+    /// List offset, starting from 0. Omit to use the API default.
     /// </summary>
     public int? Offset { get; set; }
 }

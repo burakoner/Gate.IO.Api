@@ -61,16 +61,40 @@ public record GateP2pAdvertisement
     public string LimitFiat { get; set; }
 
     /// <summary>
-    /// Minimum trade amount
+    /// Minimum cryptocurrency quantity per order
     /// </summary>
     [JsonProperty("min_amount")]
     public decimal? MinimumAmount { get; set; }
 
     /// <summary>
-    /// Maximum trade amount
+    /// Maximum cryptocurrency quantity per order
     /// </summary>
     [JsonProperty("max_amount")]
     public decimal? MaximumAmount { get; set; }
+
+    /// <summary>
+    /// Minimum fiat amount per order
+    /// </summary>
+    [JsonProperty("fiat_min_amount")]
+    public decimal? MinimumFiatAmount { get; set; }
+
+    /// <summary>
+    /// Maximum fiat amount per order
+    /// </summary>
+    [JsonProperty("fiat_max_amount")]
+    public decimal? MaximumFiatAmount { get; set; }
+
+    /// <summary>
+    /// Trading-limit unit
+    /// </summary>
+    [JsonProperty("limit_basis")]
+    public GateP2pAdLimitBasis? LimitBasis { get; set; }
+
+    /// <summary>
+    /// Trading-limit unit label
+    /// </summary>
+    [JsonProperty("limit_basis_text")]
+    public string LimitBasisText { get; set; }
 
     /// <summary>
     /// Alipay flag
@@ -203,6 +227,12 @@ public record GateP2pAdvertisement
     /// </summary>
     [JsonProperty("advertisers_limit")]
     public int? AdvertisersLimit { get; set; }
+
+    /// <summary>
+    /// Whether trading with Polymarket users is restricted
+    /// </summary>
+    [JsonProperty("polymarket_limit")]
+    public int? PolymarketLimit { get; set; }
 
     /// <summary>
     /// Verification limit

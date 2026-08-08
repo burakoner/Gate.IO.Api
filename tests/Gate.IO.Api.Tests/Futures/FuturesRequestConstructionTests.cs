@@ -76,6 +76,38 @@ public class FuturesRequestConstructionTests
     }
 
     [Fact]
+    public async Task Signed_futures_positions_request_preserves_optional_paging_contract()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/positions.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var allPositions = await client.Futures.USDT.GetPositionsAsync();
+        var pagedPositions = await client.Futures.USDT.GetPositionsAsync(new GateFuturesPositionQueryRequest
+        {
+            Holding = true,
+            Limit = 25,
+            Offset = 5,
+        });
+
+        Assert.True(allPositions.Success, allPositions.Error?.ToString());
+        Assert.True(pagedPositions.Success, pagedPositions.Error?.ToString());
+
+        var unpagedQuery = ParseQuery(handler.Requests[0].RequestUri);
+        Assert.False(unpagedQuery.ContainsKey("holding"));
+        Assert.False(unpagedQuery.ContainsKey("limit"));
+        Assert.False(unpagedQuery.ContainsKey("offset"));
+
+        var pagedQuery = ParseQuery(handler.Requests[1].RequestUri);
+        Assert.Equal("True", pagedQuery["holding"]);
+        Assert.Equal("25", pagedQuery["limit"]);
+        Assert.Equal("5", pagedQuery["offset"]);
+
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Futures.USDT.GetPositionsAsync(limit: 101));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Futures.USDT.GetPositionsAsync(offset: -1));
+    }
+
+    [Fact]
     public async Task Public_futures_batch_funding_rate_request_accepts_documented_nested_response()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/funding_rates.success.json")));

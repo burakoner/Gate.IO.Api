@@ -8,11 +8,25 @@
       "index": 1,
       "asset": "USDT",
       "fiat_unit": "USD",
-      "adv_no": "2124000001",
-      "price": "1.270",
-      "max_single_trans_amount": "500",
-      "min_single_trans_amount": "10",
-      "nick_name": "merchant_demo"
+      "adv_no": 2124000001,
+      "price": "0.800",
+      "surplus_amount": "4975.5",
+      "max_single_trans_amount": "4975.5",
+      "min_single_trans_amount": "1",
+      "fiat_min_amount": "0.80",
+      "fiat_max_amount": "3980.40",
+      "limit_basis": 0,
+      "limit_basis_text": "crypto",
+      "trade_methods": [
+        {
+          "icon_url_color": "https://www.gate.com/images/payment/bank.png",
+          "identifier": "bank",
+          "pay_id": "10001",
+          "pay_type": "bank",
+          "trade_method_name": "Bank Transfer"
+        }
+      ],
+      "nick_name": "merchant_demo_01"
     }
   ],
   "version": "1.0.0"

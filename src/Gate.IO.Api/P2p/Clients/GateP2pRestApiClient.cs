@@ -72,6 +72,20 @@ public class GateP2pRestApiClient
         parameters.AddOptionalEnum("trade_type", request.TradeType);
     }
 
+    private static void AddMarketAdvertisementListParameters(ParameterCollection parameters, GateP2pMarketAdListRequest request)
+    {
+        if (request is null)
+            throw new ArgumentNullException(nameof(request));
+        Require(request.Asset, nameof(request.Asset));
+        Require(request.FiatUnit, nameof(request.FiatUnit));
+        if (!request.TradeType.HasValue)
+            throw new ArgumentException("TradeType is required", nameof(request.TradeType));
+
+        parameters.Add("asset", request.Asset);
+        parameters.Add("fiat_unit", request.FiatUnit);
+        parameters.AddEnum("trade_type", request.TradeType.Value);
+    }
+
     private static ParameterCollection CreateAdvertisementParameters(GateP2pAdRequest request)
     {
         var parameters = new ParameterCollection
@@ -524,6 +538,12 @@ public class GateP2pRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateP2pActionResult>> SubmitAdvertisementAsync(GateP2pAdRequest request, CancellationToken ct = default)
     {
+        if (request is null)
+            throw new ArgumentNullException(nameof(request));
+        Require(request.CurrencyType, nameof(request.CurrencyType));
+        Require(request.ExchangeType, nameof(request.ExchangeType));
+        Require(request.PayType, nameof(request.PayType));
+
         if (request.LimitBasis == GateP2pAdLimitBasis.Fiat)
         {
             if (!request.FiatMinAmount.HasValue)
@@ -580,6 +600,15 @@ public class GateP2pRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateP2pAdvertisement>> GetAdvertisementAsync(long advertisementId, CancellationToken ct = default)
+        => GetAdvertisementAsync(ToStringInvariant(advertisementId), ct);
+
+    /// <summary>
+    /// Get P2P advertisement details
+    /// </summary>
+    /// <param name="advertisementId">Advertisement ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateP2pAdvertisement>> GetAdvertisementAsync(string advertisementId, CancellationToken ct = default)
         => GetAdvertisementAsync(new GateP2pAdvertisementIdRequest { AdvertisementId = advertisementId }, ct);
 
     /// <summary>
@@ -590,9 +619,13 @@ public class GateP2pRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateP2pAdvertisement>> GetAdvertisementAsync(GateP2pAdvertisementIdRequest request, CancellationToken ct = default)
     {
+        if (request is null)
+            throw new ArgumentNullException(nameof(request));
+        Require(request.AdvertisementId, nameof(request.AdvertisementId));
+
         var parameters = new ParameterCollection
         {
-            { "adv_no", ToStringInvariant(request.AdvertisementId) },
+            { "adv_no", request.AdvertisementId },
         };
 
         return SendP2pDataRequestAsync<GateP2pAdvertisement>("merchant/books/ads_detail", HttpMethod.Post, ct, parameters);
@@ -633,7 +666,7 @@ public class GateP2pRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateP2pMarketAdvertisement>>> GetAdvertisementsAsync(string asset, string fiatUnit, GateP2pOrderSide tradeType, CancellationToken ct = default)
-        => GetAdvertisementsAsync(new GateP2pAdListRequest { Asset = asset, FiatUnit = fiatUnit, TradeType = tradeType }, ct);
+        => GetAdvertisementsAsync(new GateP2pMarketAdListRequest { Asset = asset, FiatUnit = fiatUnit, TradeType = tradeType }, ct);
 
     /// <summary>
     /// Get P2P market advertisement list
@@ -641,12 +674,31 @@ public class GateP2pRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateP2pMarketAdvertisement>>> GetAdvertisementsAsync(GateP2pAdListRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateP2pMarketAdvertisement>>> GetAdvertisementsAsync(GateP2pMarketAdListRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
-        AddAdvertisementListParameters(parameters, request);
+        AddMarketAdvertisementListParameters(parameters, request);
 
         return SendP2pDataRequestAsync<List<GateP2pMarketAdvertisement>>("merchant/books/ads_list", HttpMethod.Post, ct, parameters);
+    }
+
+    /// <summary>
+    /// Get P2P market advertisement list
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    [Obsolete("Use GateP2pMarketAdListRequest because all market advertisement filters are required")]
+    public Task<RestCallResult<List<GateP2pMarketAdvertisement>>> GetAdvertisementsAsync(GateP2pAdListRequest request, CancellationToken ct = default)
+    {
+        if (request is null)
+            throw new ArgumentNullException(nameof(request));
+        return GetAdvertisementsAsync(new GateP2pMarketAdListRequest
+        {
+            Asset = request.Asset,
+            FiatUnit = request.FiatUnit,
+            TradeType = request.TradeType,
+        }, ct);
     }
 
     /// <summary>

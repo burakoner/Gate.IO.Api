@@ -293,8 +293,13 @@ public class GateFuturesRestApiClient
     }
 
     // List all positions of a user
-    internal Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(GateFuturesSettlement settle, bool? holding = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    internal Task<RestCallResult<List<GateFuturesPosition>>> GetPositionsAsync(GateFuturesSettlement settle, bool? holding = null, int? limit = null, int? offset = null, CancellationToken ct = default)
     {
+        if (limit.HasValue && (limit.Value < 1 || limit.Value > 100))
+            throw new ArgumentOutOfRangeException(nameof(limit), "Limit must be between 1 and 100");
+        if (offset.HasValue && offset.Value < 0)
+            throw new ArgumentOutOfRangeException(nameof(offset), "Offset must be greater than or equal to 0");
+
         var parameters = new ParameterCollection();
         parameters.AddOptional("holding", holding);
         parameters.AddOptional("limit", limit);

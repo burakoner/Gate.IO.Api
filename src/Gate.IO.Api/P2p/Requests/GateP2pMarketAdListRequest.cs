@@ -1,9 +1,9 @@
 namespace Gate.IO.Api.P2p;
 
 /// <summary>
-/// User advertisement list request. All filters are optional.
+/// Market advertisement list request
 /// </summary>
-public record GateP2pAdListRequest
+public record GateP2pMarketAdListRequest
 {
     /// <summary>
     /// Cryptocurrency symbol
