@@ -31,5 +31,19 @@
         "reward_delay_days": 15
       }
     ]
+  },
+  {
+    "pid": 65,
+    "mortgage_coin": "USTB",
+    "mortgage_amount": "2.0000000000",
+    "createStamp": 1750764157,
+    "extra_income": "0",
+    "freeze_amount": "0.0000000000",
+    "move_income": "0.0000000000",
+    "type": 2,
+    "status": 2,
+    "income_total": "0",
+    "yesterday_income_multi": [],
+    "reward_coins": []
   }
 ]

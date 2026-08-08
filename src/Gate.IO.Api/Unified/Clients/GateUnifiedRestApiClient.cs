@@ -352,6 +352,34 @@ public class GateUnifiedRestApiClient
     }
 
     /// <summary>
+    /// Query the account Delta-neutral strategy mode setting
+    /// <para><a href="https://www.gate.com/docs/developers/apiv4/en/unified/#query-the-account-delta-neutral-strategy-mode-setting" /></para>
+    /// </summary>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedDeltaNeutralStatus>> GetDeltaNeutralAsync(CancellationToken ct = default)
+    {
+        return _.SendRequestInternal<GateUnifiedDeltaNeutralStatus>(_.GetUrl(api, v4, unified, "delta_neutral"), HttpMethod.Get, ct, true);
+    }
+
+    /// <summary>
+    /// Enable or disable the account Delta-neutral strategy mode. Enabling requires VIP level 4 or higher and cross-currency margin mode
+    /// <para><a href="https://www.gate.com/docs/developers/apiv4/en/unified/#set-the-account-delta-neutral-strategy-mode" /></para>
+    /// </summary>
+    /// <param name="enabled">Whether to enable Delta-neutral strategy mode</param>
+    /// <param name="ct">Cancellation token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateUnifiedDeltaNeutralStatus>> SetDeltaNeutralAsync(bool enabled, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection
+        {
+            { "enabled", enabled },
+        };
+
+        return _.SendRequestInternal<GateUnifiedDeltaNeutralStatus>(_.GetUrl(api, v4, unified, "delta_neutral"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
     /// Get estimated lending rates
     /// <para><a href="https://www.gate.io/docs/developers/apiv4/#get-unified-estimate-rate" /></para>
     /// </summary>

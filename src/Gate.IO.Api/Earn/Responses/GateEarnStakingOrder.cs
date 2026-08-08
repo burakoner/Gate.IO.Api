@@ -27,13 +27,13 @@ public record GateEarnStakingOrder
     /// Operation type
     /// </summary>
     [JsonProperty("type")]
-    public int Type { get; set; }
+    public GateEarnStakingOperationType Type { get; set; }
 
     /// <summary>
-    /// Status
+    /// Status: success, delayed redemption in progress, or redemption cancellation
     /// </summary>
     [JsonProperty("status")]
-    public int Status { get; set; }
+    public GateEarnStakingOrderStatus Status { get; set; }
 
     /// <summary>
     /// Redemption credit time

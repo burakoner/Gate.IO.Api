@@ -24,6 +24,24 @@ public record GateFuturesPosition
     public decimal Size { get; set; }
 
     /// <summary>
+    /// Hedging status under the Delta-neutral strategy
+    /// </summary>
+    [JsonProperty("hedge_status"), JsonConverter(typeof(MapConverter))]
+    public GateFuturesHedgeStatus? HedgeStatus { get; set; }
+
+    /// <summary>
+    /// Hedged position size under the Delta-neutral strategy
+    /// </summary>
+    [JsonProperty("hedged_size")]
+    public decimal? HedgedSize { get; set; }
+
+    /// <summary>
+    /// Unhedged position size under the Delta-neutral strategy
+    /// </summary>
+    [JsonProperty("unhedged_size")]
+    public decimal? UnhedgedSize { get; set; }
+
+    /// <summary>
     /// Position leverage. 0 means cross margin; positive number means isolated margin
     /// </summary>
     [JsonProperty("leverage")]

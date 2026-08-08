@@ -138,6 +138,14 @@ public class UnifiedContractTests
     }
 
     [Fact]
+    public void Documented_unified_delta_neutral_response_deserializes()
+    {
+        var setting = JsonFixture.Deserialize<GateUnifiedDeltaNeutralStatus>("Docs/Unified/delta_neutral.success.json");
+
+        Assert.True(setting.Enabled);
+    }
+
+    [Fact]
     public void Captured_live_public_unified_responses_deserialize()
     {
         var currencies = JsonFixture.Deserialize<List<GateUnifiedCurrency>>("Live/Unified/currencies.BTC.json");

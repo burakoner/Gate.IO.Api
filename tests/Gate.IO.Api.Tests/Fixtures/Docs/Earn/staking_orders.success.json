@@ -14,6 +14,28 @@
       "createStamp": 1756105456,
       "exchange_amount": "1.00000000",
       "fee": "0.0000000000"
+    },
+    {
+      "pid": 2,
+      "coin": "SOL",
+      "amount": "0.50000000",
+      "type": 1,
+      "status": 3,
+      "redeem_stamp": 1756191856,
+      "createStamp": 1756105457,
+      "exchange_amount": "0.50000000",
+      "fee": "0.0000000000"
+    },
+    {
+      "pid": 2,
+      "coin": "SOL",
+      "amount": "0.25000000",
+      "type": 1,
+      "status": 6,
+      "redeem_stamp": 1756191857,
+      "createStamp": 1756105458,
+      "exchange_amount": "0.25000000",
+      "fee": "0.0000000000"
     }
   ]
 }

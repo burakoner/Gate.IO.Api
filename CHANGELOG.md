@@ -1,5 +1,18 @@
 ## Change Log & Release Notes
 
+- Version 4.106.97 - 17 June 2026
+  - Aligned the complete current Delta-neutral, Futures position hedge, and affected staking response contracts with the official documentation retrieved on 08 August 2026.
+    - Added signed `GET /unified/delta_neutral` and `POST /unified/delta_neutral` support. Both operations return the typed effective `enabled` state; the setter sends the required boolean body. Enabling still depends on Gate enforcing VIP level 4 or higher and cross-currency margin mode.
+    - Added the optional typed `hedge_status`, `hedged_size`, and `unhedged_size` fields to `GateFuturesPosition`. Nullable properties preserve the distinction between a zero hedge and fields omitted for accounts where the Delta-neutral strategy does not apply.
+    - Replaced the affected staking response `int` properties with the complete documented status enums: order success/delayed redemption/cancellation, award success, and asset listed/delisted. The already documented order operation and asset type values are now typed as well. These response property type corrections are source/binary-breaking.
+    - Added current official-style fixtures and contract/signing tests, and refreshed unified usage examples. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/unified/#query-the-account-delta-neutral-strategy-mode-setting
+    - Source: https://www.gate.com/docs/developers/apiv4/en/unified/#set-the-account-delta-neutral-strategy-mode
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#get-user-position-list
+    - Source: https://www.gate.com/docs/developers/apiv4/en/earn/#list-of-on-chain-coin-earning-orders
+    - Source: https://www.gate.com/docs/developers/apiv4/en/earn/#on-chain-coin-earning-dividend-records
+    - Source: https://www.gate.com/docs/developers/apiv4/en/earn/#on-chain-coin-earning-assets
 - Version 4.106.96 - 12 June 2026
   - Aligned the P2P Merchant working-hours, advertisement submission, chat send, and chat-history contracts with the complete current official documentation retrieved on 08 August 2026.
     - Added signed `POST /p2p/merchant/account/set_merchant_work_hours` support with typed normal/custom work modes, daily/weekly cycles, conditional-field validation, timezone range validation, and `HH:mm` ordering checks. The response distinguishes normal resting/working from custom resting/working states.

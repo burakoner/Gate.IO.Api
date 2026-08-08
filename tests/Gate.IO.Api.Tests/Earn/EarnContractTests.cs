@@ -51,11 +51,20 @@ public class EarnContractTests
         Assert.Equal(10m, swap.ExchangeAmount);
         Assert.Equal(90, orders.TotalCount);
         Assert.Equal(1m, orders.List[0].ExchangeAmount);
+        Assert.Equal(GateEarnStakingOperationType.Stake, orders.List[0].Type);
+        Assert.Equal(GateEarnStakingOrderStatus.Success, orders.List[0].Status);
+        Assert.Equal(GateEarnStakingOrderStatus.DelayedRedemptionInProgress, orders.List[1].Status);
+        Assert.Equal(GateEarnStakingOrderStatus.RedemptionCancellation, orders.List[2].Status);
         Assert.Equal(33, awards.TotalCount);
         Assert.Equal(0.00000191m, awards.List[0].Interest);
-        Assert.Single(assets);
+        Assert.Equal(GateEarnStakingAwardStatus.Success, awards.List[0].Status);
+        Assert.Equal(2, assets.Count);
+        Assert.Equal(GateEarnStakingAssetType.LockedPosition, assets[0].Type);
+        Assert.Equal(GateEarnStakingAssetStatus.Listed, assets[0].Status);
         Assert.Equal(0.00000762m, assets[0].DefiIncome.Total[0].Amount);
         Assert.Equal("COMP", assets[0].RewardCoins[1].RewardCoin);
+        Assert.Equal(GateEarnStakingAssetType.UsTreasuryBond, assets[1].Type);
+        Assert.Equal(GateEarnStakingAssetStatus.Delisted, assets[1].Status);
     }
 
     [Fact]

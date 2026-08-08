@@ -42,10 +42,10 @@ public record GateEarnStakingAward
     public decimal Fee { get; set; }
 
     /// <summary>
-    /// Status
+    /// Distribution status
     /// </summary>
     [JsonProperty("status")]
-    public int Status { get; set; }
+    public GateEarnStakingAwardStatus Status { get; set; }
 
     /// <summary>
     /// Date

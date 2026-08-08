@@ -49,16 +49,16 @@ public record GateEarnStakingAsset
     public decimal MoveIncome { get; set; }
 
     /// <summary>
-    /// Type
+    /// Asset type
     /// </summary>
     [JsonProperty("type")]
-    public int Type { get; set; }
+    public GateEarnStakingAssetType Type { get; set; }
 
     /// <summary>
-    /// Status
+    /// Currency project listing status
     /// </summary>
     [JsonProperty("status")]
-    public int Status { get; set; }
+    public GateEarnStakingAssetStatus Status { get; set; }
 
     /// <summary>
     /// Total earnings by currency

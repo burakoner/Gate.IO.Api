@@ -62,6 +62,7 @@ public class FuturesContractTests
         var order = JsonFixture.Deserialize<GateFuturesOrder>("Docs/Futures/order.success.json");
         var priceOrders = JsonFixture.Deserialize<List<GateFuturesPriceTriggeredOrder>>("Docs/Futures/price_orders.success.json");
         var priceOrder = JsonFixture.Deserialize<GateFuturesPriceTriggeredOrder>("Docs/Futures/price_order.success.json");
+        var positions = JsonFixture.Deserialize<List<GateFuturesPosition>>("Docs/Futures/positions.success.json");
         var chaseOrder = JsonFixture.Parse("Docs/Futures/chase_order.success.json")["order"]!.ToObject<GateFuturesChaseOrder>();
 
         Assert.Equal("USDT", account.Currency);
@@ -87,6 +88,12 @@ public class FuturesContractTests
         Assert.Equal(GateSpotTriggerCondition.GreaterThanOrEqualTo, priceOrder.Trigger.Rule);
         Assert.Equal(GateFuturesTriggerType.CloseLongOrder, priceOrder.Type);
         Assert.Equal("1283293", priceOrder.OrderIdString);
+        Assert.Single(positions);
+        Assert.Equal(GateFuturesHedgeStatus.PartiallyHedged, positions[0].HedgeStatus);
+        Assert.Equal(12m, positions[0].HedgedSize);
+        Assert.Equal(9428m, positions[0].UnhedgedSize);
+        Assert.Equal(17.8431m, positions[0].InitialMargin);
+        Assert.Equal(GateFuturesPositionMarginMode.Isolated, positions[0].PositionMarginMode);
         Assert.NotNull(chaseOrder);
         Assert.Equal("9007199254740993", chaseOrder!.OrderId);
         Assert.Equal("100000", chaseOrder.UserId);

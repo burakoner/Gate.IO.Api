@@ -116,6 +116,8 @@ internal class Program
         var unified_23 = await api.Unified.SetCollateralCurrenciesAsync(new GateUnifiedCollateralCurrenciesRequest { Type = GateUnifiedCollateralType.Custom, EnableList = new List<string> { "BTC" }, DisableList = new List<string> { "ETH" } });
         var unified_24 = await api.Unified.GetEstimatedQuickRepaymentAsync();
         var unified_25 = await api.Unified.CreateQuickRepaymentAsync(new GateUnifiedQuickRepaymentRequest { DebtCurrencies = new List<string> { "BTC" }, AvailableCurrencies = new List<string> { "USDT" } });
+        var unified_26 = await api.Unified.GetDeltaNeutralAsync();
+        var unified_27 = await api.Unified.SetDeltaNeutralAsync(true);
 
         // Spot Methods
         var spot_01 = await api.Spot.GetCurrenciesAsync();

@@ -195,6 +195,36 @@ public class UnifiedRequestConstructionTests
         Assert.Empty(handler.Requests);
     }
 
+    [Fact]
+    public async Task Signed_delta_neutral_requests_use_current_contract()
+    {
+        var responses = new Queue<string>([
+            JsonFixture.Read("Docs/Unified/delta_neutral.success.json"),
+            """{"enabled":false}""",
+        ]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var queried = await client.Unified.GetDeltaNeutralAsync();
+        var updated = await client.Unified.SetDeltaNeutralAsync(false);
+
+        Assert.True(queried.Success, queried.Error?.ToString());
+        Assert.True(queried.Data.Enabled);
+        Assert.True(updated.Success, updated.Error?.ToString());
+        Assert.False(updated.Data.Enabled);
+        Assert.Equal(2, handler.Requests.Count);
+
+        Assert.Equal(HttpMethod.Get, handler.Requests[0].Method);
+        Assert.Equal("/api/v4/unified/delta_neutral", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Empty(handler.Requests[0].RequestUri.Query);
+
+        Assert.Equal(HttpMethod.Post, handler.Requests[1].Method);
+        Assert.Equal("/api/v4/unified/delta_neutral", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.False(JObject.Parse(handler.Requests[1].Content)["enabled"]!.Value<bool>());
+        Assert.All(handler.Requests, AssertSignedHeaders);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {
