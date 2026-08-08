@@ -1,5 +1,13 @@
 ## Change Log & Release Notes
 
+- Version 4.106.93 - 03 June 2026
+  - Verified the `FuturesOrder` additions announced by the official changelog against the complete current Futures order contract retrieved on 08 August 2026.
+    - Confirmed that optional `tpsl_tp_bbo_type` and `tpsl_sl_bbo_type` request, response, single-order, and batch-order support was already implemented by the complete current-contract synchronization in version 4.106.86; no duplicate model change was required.
+    - Kept both BBO price types as nullable strings because the official schema still publishes no allowed-value set.
+    - Added the official `X-Gate-Size-Decimal: 1` default request header required for SDK decimal-size handling, closing the transport-level omission found while reviewing the decimal Futures order work from version 4.106.85. An explicitly configured value on a caller-provided `HttpClient` is preserved.
+    - Extended signed Futures request coverage to verify the decimal-size header together with the existing BBO request/response contract assertions. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#place-futures-order
 - Version 4.106.89 - 28 May 2026
   - Aligned the complete OTC bank-card management and fiat payment-confirmation contracts with the current official documentation retrieved on 08 August 2026.
     - Removed the deprecated `GET /otc/get_user_def_bank` wrapper and changed bank-card listing from the legacy `/otc/bank_list` path to the only path present in the current contract, `GET /otc/bank/list`; callers must derive the default card from `is_default`.
@@ -29,7 +37,7 @@
     - Made symbol maximum market size nullable because the live Kraken contract returns `max_market_size: null` despite the generated property table marking the field as required; this property-type correction is source/binary-breaking.
     - Preserved transfer and order identifiers as strings as declared by the official contracts, avoiding numeric overflow or formatting loss. Changing `GateCrossExTransferRecord.Id`, `GateCrossExTransferResult.TransactionId`, `GateCrossExOrderActionResult.OrderId`, and the user/order IDs on `GateCrossExOrder` is source-breaking.
     - Updated Kraken symbol/venue examples, documented venue-specific symbol restrictions, and refreshed REST, WebSocket, fixture, and live public coverage. No state-changing private CrossEx calls were made.
-  - Completed the scheduled retrospective review of versions 4.106.83 through 4.106.86 across code, fixtures, examples, release notes, and execution scope; no additional corrective changes were required.
+  - Completed the scheduled retrospective review of versions 4.106.83 through 4.106.86 across code, fixtures, examples, release notes, and execution scope; no additional endpoint-model corrections were required. The later version 4.106.93 verification identified and corrected the cross-cutting `X-Gate-Size-Decimal` transport-header omission associated with version 4.106.85 decimal Futures sizes.
     - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
     - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-trading-pair-information
     - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#fund-transfer

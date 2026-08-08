@@ -9,24 +9,28 @@ internal sealed class GateRequestFactory : ApiSharp.Interfaces.IRequestFactory
         if (client != null)
         {
             httpClient = client;
-            return;
+        }
+        else
+        {
+            var handler = new HttpClientHandler
+            {
+                Proxy = proxy == null ? null : new System.Net.WebProxy
+                {
+                    Address = new Uri($"{proxy.Host}:{proxy.Port}"),
+                    Credentials = proxy.Password == null ? null : new System.Net.NetworkCredential(proxy.Username.GetString(), proxy.Password.GetString()),
+                },
+            };
+
+            httpClient = new HttpClient(handler)
+            {
+                Timeout = options.RequestTimeout,
+            };
+            httpClient.DefaultRequestHeaders.Add("User-Agent", options.UserAgent);
+            httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        var handler = new HttpClientHandler
-        {
-            Proxy = proxy == null ? null : new System.Net.WebProxy
-            {
-                Address = new Uri($"{proxy.Host}:{proxy.Port}"),
-                Credentials = proxy.Password == null ? null : new System.Net.NetworkCredential(proxy.Username.GetString(), proxy.Password.GetString()),
-            },
-        };
-
-        httpClient = new HttpClient(handler)
-        {
-            Timeout = options.RequestTimeout,
-        };
-        httpClient.DefaultRequestHeaders.Add("User-Agent", options.UserAgent);
-        httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+        if (!httpClient.DefaultRequestHeaders.Contains("X-Gate-Size-Decimal"))
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Gate-Size-Decimal", "1");
     }
 
     public ApiSharp.Interfaces.IRequest Create(HttpMethod method, Uri uri, int requestId)

@@ -571,5 +571,6 @@ public class FuturesRequestConstructionTests
         Assert.NotEmpty(Assert.Single(request.Headers["Timestamp"]));
         Assert.NotEmpty(Assert.Single(request.Headers["SIGN"]));
         Assert.True(request.Headers.ContainsKey("X-Gate-Channel-Id"));
+        Assert.Equal("1", Assert.Single(request.Headers["X-Gate-Size-Decimal"]));
     }
 }
