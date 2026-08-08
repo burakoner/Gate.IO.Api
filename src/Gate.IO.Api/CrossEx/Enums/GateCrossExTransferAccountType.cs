@@ -40,4 +40,22 @@ public enum GateCrossExTransferAccountType
     /// </summary>
     [Map("SPOT")]
     Spot = 6,
+
+    /// <summary>
+    /// Represents the Cross Ex Kraken value. Kraken transfers currently support USDT only.
+    /// </summary>
+    [Map("CROSSEX_KRAKEN")]
+    CrossExKraken = 7,
+
+    /// <summary>
+    /// Represents the Cross Ex Hyperliquid value. Hyperliquid currently supports USDC transfers with the spot account only.
+    /// </summary>
+    [Map("CROSSEX_HYPERLIQUID")]
+    CrossExHyperliquid = 8,
+
+    /// <summary>
+    /// Represents the Cross Ex Deribit value.
+    /// </summary>
+    [Map("CROSSEX_DERIBIT")]
+    CrossExDeribit = 9,
 }

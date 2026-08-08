@@ -633,12 +633,12 @@ var bot_09 = await api.Bot.GetPortfolioDetailAsync(new GateBotPortfolioDetailReq
 var bot_10 = await api.Bot.StopPortfolioAsync(new GateBotPortfolioStopRequest { StrategyId = "STRATEGY-ID", StrategyType = GateBotStrategyType.SpotGrid });
 
 // CrossEx Methods
-var crossex_01 = await api.CrossEx.GetSymbolsAsync(new GateCrossExSymbolsQueryRequest { Symbols = new[] { "BINANCE_FUTURE_BTC_USDT" } });
+var crossex_01 = await api.CrossEx.GetSymbolsAsync(new GateCrossExSymbolsQueryRequest { Symbols = new[] { "KRAKEN_FUTURE_ADA_USD" } });
 var crossex_02 = await api.CrossEx.GetRiskLimitsAsync(new GateCrossExRiskLimitQueryRequest { Symbols = new[] { "BINANCE_FUTURE_BTC_USDT" } });
 var crossex_03 = await api.CrossEx.GetTransferCoinsAsync(new GateCrossExTransferCoinQueryRequest { Coin = "USDT" });
 var crossex_04 = await api.CrossEx.GetTransferHistoryAsync(new GateCrossExTransferHistoryQueryRequest { Coin = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Page = 1, Limit = 100 });
-var crossex_05 = await api.CrossEx.TransferAsync(new GateCrossExTransferRequest { Coin = "USDT", Amount = 100.0m, From = GateCrossExTransferAccountType.Spot, To = GateCrossExTransferAccountType.CrossExGate, Text = "CLIENT-TRANSFER-ID" });
-var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest { Symbol = "BINANCE_SPOT_BTC_USDT", Side = GateCrossExOrderSide.Buy, Type = GateCrossExOrderType.Limit, TimeInForce = GateCrossExTimeInForce.GoodTillCancelled, Quantity = 0.001m, Price = 60000.0m, Text = "CLIENT-ORDER-ID" });
+var crossex_05 = await api.CrossEx.TransferAsync(new GateCrossExTransferRequest { Coin = "USDT", Amount = 100.0m, From = GateCrossExTransferAccountType.Spot, To = GateCrossExTransferAccountType.CrossExKraken, Text = "CLIENT-TRANSFER-ID" });
+var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", Side = GateCrossExOrderSide.Buy, Type = GateCrossExOrderType.Limit, TimeInForce = GateCrossExTimeInForce.GoodTillCancelled, Quantity = 1m, Price = 0.5m, Text = "CLIENT-ORDER-ID" });
 var crossex_07 = await api.CrossEx.GetOrderAsync("ORDER-ID");
 var crossex_08 = await api.CrossEx.UpdateOrderAsync("ORDER-ID", new GateCrossExOrderUpdateRequest { Quantity = 0.001m, Price = 61000.0m });
 var crossex_09 = await api.CrossEx.CancelOrderAsync("ORDER-ID");
@@ -653,7 +653,7 @@ var crossex_17 = await api.CrossEx.UpdateMarginLeverageAsync(new GateCrossExLeve
 var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long });
 var crossex_19 = await api.CrossEx.GetInterestRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
 var crossex_20 = await api.CrossEx.GetFeesAsync();
-var crossex_21 = await api.CrossEx.GetPositionsAsync(new GateCrossExPositionQueryRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", ExchangeType = GateCrossExExchangeType.Binance });
+var crossex_21 = await api.CrossEx.GetPositionsAsync(new GateCrossExPositionQueryRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", ExchangeType = GateCrossExExchangeType.Kraken });
 var crossex_22 = await api.CrossEx.GetMarginPositionsAsync(new GateCrossExPositionQueryRequest { Symbol = "GATE_MARGIN_BTC_USDT", ExchangeType = GateCrossExExchangeType.Gate });
 var crossex_23 = await api.CrossEx.GetAdlRankAsync(new GateCrossExAdlRankQueryRequest { Symbol = "BINANCE_FUTURE_BTC_USDT" });
 var crossex_24 = await api.CrossEx.GetOpenOrdersAsync(new GateCrossExOpenOrdersQueryRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", ExchangeType = GateCrossExExchangeType.Binance, BusinessType = GateCrossExBusinessType.Future });

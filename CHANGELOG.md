@@ -1,5 +1,19 @@
 ## Change Log & Release Notes
 
+- Version 4.106.87 - 21 May 2026
+  - Aligned the CrossEx venue, transfer, trading-pair, fee, and order contracts with the current official documentation and live public responses retrieved on 08 August 2026.
+    - Added `KRAKEN`, `HYPERLIQUID`, and `DERIBIT` exchange values plus their `CROSSEX_*` transfer-account values; retained the documented Kraken/Hyperliquid transfer restrictions in the public XML documentation.
+    - Added the `RPI` order time-in-force, the per-symbol `support_rpi` capability flag, and the current spot/futures/special RPI maker-fee response fields.
+    - Made symbol maximum market size nullable because the live Kraken contract returns `max_market_size: null` despite the generated property table marking the field as required; this property-type correction is source/binary-breaking.
+    - Preserved transfer and order identifiers as strings as declared by the official contracts, avoiding numeric overflow or formatting loss. Changing `GateCrossExTransferRecord.Id`, `GateCrossExTransferResult.TransactionId`, `GateCrossExOrderActionResult.OrderId`, and the user/order IDs on `GateCrossExOrder` is source-breaking.
+    - Updated Kraken symbol/venue examples, documented venue-specific symbol restrictions, and refreshed REST, WebSocket, fixture, and live public coverage. No state-changing private CrossEx calls were made.
+  - Completed the scheduled retrospective review of versions 4.106.83 through 4.106.86 across code, fixtures, examples, release notes, and execution scope; no additional corrective changes were required.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-trading-pair-information
+    - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#fund-transfer
+    - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-user-fee-rates
+    - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#create-an-order
+    - Source: https://www.gate.com/zh/crossex
 - Version 4.106.86 - 19 May 2026
   - Verified the optional `tpsl_tp_trigger_price` and `tpsl_sl_trigger_price` fields announced for `FuturesOrder`; they were already present from the complete current-contract synchronization in version 4.106.85.
   - Completed the touched `FuturesOrder` contract against the current official documentation retrieved on 08 August 2026.

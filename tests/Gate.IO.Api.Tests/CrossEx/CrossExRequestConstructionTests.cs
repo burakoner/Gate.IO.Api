@@ -1,5 +1,6 @@
 using Gate.IO.Api.CrossEx;
 using Gate.IO.Api.Tests.Infrastructure;
+using ApiSharp.Converters;
 using System.Text;
 
 namespace Gate.IO.Api.Tests.CrossEx;
@@ -106,16 +107,16 @@ public class CrossExRequestConstructionTests
         {
             Coin = "USDT",
             Amount = 100.5m,
-            From = GateCrossExTransferAccountType.Spot,
-            To = GateCrossExTransferAccountType.CrossEx,
+            From = GateCrossExTransferAccountType.CrossExKraken,
+            To = GateCrossExTransferAccountType.Spot,
             Text = "t-cross-transfer",
         });
         var placed = await client.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest
         {
-            Symbol = "BINANCE_FUTURE_BTC_USDT",
+            Symbol = "GATE_FUTURE_AAVE_USDT",
             Side = GateCrossExOrderSide.Buy,
             Type = GateCrossExOrderType.Limit,
-            TimeInForce = GateCrossExTimeInForce.GoodTillCancelled,
+            TimeInForce = GateCrossExTimeInForce.RetailPriceImprovement,
             Quantity = 0.01m,
             Price = 60000m,
             QuoteQuantity = 600m,
@@ -143,13 +144,13 @@ public class CrossExRequestConstructionTests
         });
         var account = await client.CrossEx.GetAccountAsync(new GateCrossExAccountQueryRequest
         {
-            ExchangeType = GateCrossExExchangeType.Binance,
+            ExchangeType = GateCrossExExchangeType.Hyperliquid,
         });
         var updatedAccount = await client.CrossEx.UpdateAccountAsync(new GateCrossExAccountUpdateRequest
         {
             PositionMode = GateCrossExPositionMode.Dual,
             AccountMode = GateCrossExAccountMode.CrossExchange,
-            ExchangeType = GateCrossExExchangeType.Binance,
+            ExchangeType = GateCrossExExchangeType.Deribit,
         });
         var contractLeverages = await client.CrossEx.GetContractLeveragesAsync(new GateCrossExLeverageQueryRequest
         {
@@ -308,16 +309,16 @@ public class CrossExRequestConstructionTests
         Assert.Equal("/api/v4/crossex/transfers", handler.Requests[1].RequestUri.AbsolutePath);
         Assert.Equal("USDT", transferBody["coin"]!.ToString());
         Assert.Equal("100.5", transferBody["amount"]!.ToString());
-        Assert.Equal("SPOT", transferBody["from"]!.ToString());
-        Assert.Equal("CROSSEX", transferBody["to"]!.ToString());
+        Assert.Equal("CROSSEX_KRAKEN", transferBody["from"]!.ToString());
+        Assert.Equal("SPOT", transferBody["to"]!.ToString());
         Assert.Equal("t-cross-transfer", transferBody["text"]!.ToString());
 
         var orderBody = ParseBody(handler.Requests[2]);
         Assert.Equal("/api/v4/crossex/orders", handler.Requests[2].RequestUri.AbsolutePath);
-        Assert.Equal("BINANCE_FUTURE_BTC_USDT", orderBody["symbol"]!.ToString());
+        Assert.Equal("GATE_FUTURE_AAVE_USDT", orderBody["symbol"]!.ToString());
         Assert.Equal("BUY", orderBody["side"]!.ToString());
         Assert.Equal("LIMIT", orderBody["type"]!.ToString());
-        Assert.Equal("GTC", orderBody["time_in_force"]!.ToString());
+        Assert.Equal("RPI", orderBody["time_in_force"]!.ToString());
         Assert.Equal("0.01", orderBody["qty"]!.ToString());
         Assert.Equal("60000", orderBody["price"]!.ToString());
         Assert.Equal("600", orderBody["quote_qty"]!.ToString());
@@ -348,13 +349,13 @@ public class CrossExRequestConstructionTests
 
         var accountQuery = ParseQuery(handler.Requests[8].RequestUri);
         Assert.Equal("/api/v4/crossex/accounts", handler.Requests[8].RequestUri.AbsolutePath);
-        Assert.Equal("BINANCE", accountQuery["exchange_type"]);
+        Assert.Equal("HYPERLIQUID", accountQuery["exchange_type"]);
 
         var accountUpdateBody = ParseBody(handler.Requests[9]);
         Assert.Equal(HttpMethod.Put, handler.Requests[9].Method);
         Assert.Equal("DUAL", accountUpdateBody["position_mode"]!.ToString());
         Assert.Equal("CROSS_EXCHANGE", accountUpdateBody["account_mode"]!.ToString());
-        Assert.Equal("BINANCE", accountUpdateBody["exchange_type"]!.ToString());
+        Assert.Equal("DERIBIT", accountUpdateBody["exchange_type"]!.ToString());
 
         var contractLeverageQuery = ParseQuery(handler.Requests[10].RequestUri);
         Assert.Equal("/api/v4/crossex/positions/leverage", handler.Requests[10].RequestUri.AbsolutePath);
@@ -424,6 +425,17 @@ public class CrossExRequestConstructionTests
         }));
 
         Assert.Equal("Symbols", exception.ParamName);
+    }
+
+    [Fact]
+    public void Current_crossex_venue_and_transfer_account_enums_map_to_wire_values()
+    {
+        Assert.Equal("KRAKEN", MapConverter.GetString(GateCrossExExchangeType.Kraken));
+        Assert.Equal("HYPERLIQUID", MapConverter.GetString(GateCrossExExchangeType.Hyperliquid));
+        Assert.Equal("DERIBIT", MapConverter.GetString(GateCrossExExchangeType.Deribit));
+        Assert.Equal("CROSSEX_KRAKEN", MapConverter.GetString(GateCrossExTransferAccountType.CrossExKraken));
+        Assert.Equal("CROSSEX_HYPERLIQUID", MapConverter.GetString(GateCrossExTransferAccountType.CrossExHyperliquid));
+        Assert.Equal("CROSSEX_DERIBIT", MapConverter.GetString(GateCrossExTransferAccountType.CrossExDeribit));
     }
 
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)

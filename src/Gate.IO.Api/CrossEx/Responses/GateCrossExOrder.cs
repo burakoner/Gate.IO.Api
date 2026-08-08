@@ -9,13 +9,13 @@ public record GateCrossExOrder
     /// User ID.
     /// </summary>
     [JsonProperty("user_id")]
-    public long? UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     /// Order ID.
     /// </summary>
     [JsonProperty("order_id")]
-    public long? OrderId { get; set; }
+    public string OrderId { get; set; }
 
     /// <summary>
     /// Client-defined order ID.
@@ -33,7 +33,7 @@ public record GateCrossExOrder
     public string State { get; set; }
 
     /// <summary>
-    /// Unique trading pair identifier, for example BINANCE_SPOT_BTC_USDT.
+    /// Unique trading pair identifier in Exchange_Business_Base_Counter form. Kraken and Hyperliquid support futures only in CrossEx; Bybit and Deribit do not currently support margin pairs.
     /// </summary>
     [JsonProperty("symbol")]
     public string Symbol { get; set; }

@@ -11,6 +11,7 @@ public class CrossExContractTests
     {
         var documentedSymbols = JsonFixture.Deserialize<List<GateCrossExSymbol>>("Docs/CrossEx/symbols.success.json");
         var liveSymbols = JsonFixture.Deserialize<List<GateCrossExSymbol>>("Live/CrossEx/symbols.BINANCE_FUTURE_ADA_USDT.json");
+        var liveKrakenSymbols = JsonFixture.Deserialize<List<GateCrossExSymbol>>("Live/CrossEx/symbols.KRAKEN_FUTURE_ADA_USD.json");
         var riskLimits = JsonFixture.Deserialize<List<GateCrossExRiskLimit>>("Docs/CrossEx/risk_limits.success.json");
         var liveRiskLimits = JsonFixture.Deserialize<List<GateCrossExRiskLimit>>("Live/CrossEx/risk_limits.BINANCE_FUTURE_ADA_USDT.json");
         var transferCoins = JsonFixture.Deserialize<List<GateCrossExTransferCoin>>("Docs/CrossEx/transfer_coins.success.json");
@@ -18,8 +19,13 @@ public class CrossExContractTests
 
         Assert.Equal("BINANCE_FUTURE_BTC_USDT", documentedSymbols[0].Symbol);
         Assert.Equal(0.001m, documentedSymbols[0].ContractSize);
+        Assert.False(documentedSymbols[0].SupportsRpi);
         Assert.Null(liveSymbols[0].ContractSize);
         Assert.Equal("BINANCE_FUTURE_ADA_USDT", liveSymbols[0].Symbol);
+        Assert.Equal("KRAKEN_FUTURE_ADA_USD", liveKrakenSymbols[0].Symbol);
+        Assert.Equal("KRAKEN", liveKrakenSymbols[0].ExchangeType);
+        Assert.Null(liveKrakenSymbols[0].MaximumMarketSize);
+        Assert.False(liveKrakenSymbols[0].SupportsRpi);
         Assert.Equal(2, riskLimits[0].Tiers.Count);
         Assert.Equal(20m, riskLimits[0].Tiers[0].MaximumLeverage);
         Assert.Equal(4, liveRiskLimits[0].Tiers.Count);
@@ -43,14 +49,21 @@ public class CrossExContractTests
         var leverages = JsonFixture.Deserialize<Dictionary<string, decimal>>("Docs/CrossEx/leverages.success.json");
         var leverage = JsonFixture.Deserialize<GateCrossExLeverageResult>("Docs/CrossEx/leverage.success.json");
 
-        Assert.Equal(123456, transfers[0].Id);
+        Assert.Equal("33829017692939266", transfers[0].Id);
+        Assert.Equal("CROSSEX_KRAKEN", transfers[0].FromAccountType);
         Assert.Equal(100.5m, transfers[0].Amount);
-        Assert.Equal(123456, transfer.TransactionId);
-        Assert.Equal(234567, action.OrderId);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750681141933).UtcDateTime, transfers[0].CreateTime);
+        Assert.Equal("33829017692939266", transfer.TransactionId);
+        Assert.Equal("2072652940337152", action.OrderId);
         Assert.Equal("t-cross-order", order.Text);
+        Assert.Equal("2072652940337152", order.OrderId);
+        Assert.Equal("900001", order.UserId);
+        Assert.Equal("KRAKEN_FUTURE_ADA_USD", order.Symbol);
+        Assert.Equal("KRAKEN", order.ExchangeType);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750681141933).UtcDateTime, order.CreateTime);
         Assert.Equal("2048522992198912", orders[0].Text);
         Assert.Equal(60000m, order.ExecutedAveragePrice);
-        Assert.Equal("USDT", order.FeeCoin);
+        Assert.Equal("USD", order.FeeCoin);
         Assert.Equal("COMMON", orders[0].Attribute);
         Assert.Equal("BINANCE", orders[0].ExchangeType);
         Assert.Equal("SPOT", orders[0].BusinessType);
@@ -85,6 +98,10 @@ public class CrossExContractTests
 
         Assert.Equal(0.000001m, interestRates[0].HourlyInterestRate);
         Assert.Equal(0.0004m, fees[0].SpecialFees[0].TakerFeeRate);
+        Assert.Equal(0m, fees[0].SpotRpiMakerFee);
+        Assert.Equal(0m, fees[0].FutureRpiMakerFee);
+        Assert.Equal(0m, fees[0].SpecialFees[0].RpiFeeRate);
+        Assert.Equal(new[] { "BINANCE", "OKX", "GATE", "BYBIT", "KRAKEN", "HYPERLIQUID", "DERIBIT" }, fees.Select(x => x.ExchangeType));
         Assert.Equal(60000m, positions[0].EntryPrice);
         Assert.Equal(60550m, positions[0].MarkPrice);
         Assert.Equal("BTC", marginPositions[0].AssetCoin);

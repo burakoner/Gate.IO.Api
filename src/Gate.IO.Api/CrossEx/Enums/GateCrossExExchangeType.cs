@@ -34,4 +34,22 @@ public enum GateCrossExExchangeType
     /// </summary>
     [Map("CROSSEX")]
     CrossEx = 5,
+
+    /// <summary>
+    /// Represents the Kraken value.
+    /// </summary>
+    [Map("KRAKEN")]
+    Kraken = 6,
+
+    /// <summary>
+    /// Represents the Hyperliquid value.
+    /// </summary>
+    [Map("HYPERLIQUID")]
+    Hyperliquid = 7,
+
+    /// <summary>
+    /// Represents the Deribit value.
+    /// </summary>
+    [Map("DERIBIT")]
+    Deribit = 8,
 }

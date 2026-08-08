@@ -1,0 +1,20 @@
+[
+  {
+    "symbol": "KRAKEN_FUTURE_ADA_USD",
+    "exchange_type": "KRAKEN",
+    "business_type": "FUTURE",
+    "state": "live",
+    "min_size": "1",
+    "min_notional": "1",
+    "lot_size": "1",
+    "tick_size": "0.00001",
+    "max_num_orders": "100",
+    "max_market_size": null,
+    "max_limit_size": "32000000",
+    "contract_size": null,
+    "liquidation_fee": "0.005",
+    "default_leverage": "5",
+    "delist_time": "0",
+    "support_rpi": "false"
+  }
+]

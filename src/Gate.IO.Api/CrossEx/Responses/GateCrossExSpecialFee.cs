@@ -22,4 +22,10 @@ public record GateCrossExSpecialFee
     /// </summary>
     [JsonProperty("maker_fee_rate")]
     public decimal MakerFeeRate { get; set; }
+
+    /// <summary>
+    /// Gets or sets the RPI Maker Fee Rate.
+    /// </summary>
+    [JsonProperty("rpi_fee_rate")]
+    public decimal? RpiFeeRate { get; set; }
 }

@@ -14,12 +14,15 @@ public class CrossExPublicIntegrationTests
         using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(30));
         var client = new GateRestApiClient();
 
-        var symbols = await client.CrossEx.GetSymbolsAsync(["BINANCE_FUTURE_ADA_USDT"], cts.Token);
-        var riskLimits = await client.CrossEx.GetRiskLimitsAsync(["BINANCE_FUTURE_ADA_USDT"], cts.Token);
+        var symbols = await client.CrossEx.GetSymbolsAsync(["KRAKEN_FUTURE_ADA_USD"], cts.Token);
+        var riskLimits = await client.CrossEx.GetRiskLimitsAsync(["KRAKEN_FUTURE_ADA_USD"], cts.Token);
         var transferCoins = await client.CrossEx.GetTransferCoinsAsync("USDT", cts.Token);
 
         Assert.True(symbols.Success, symbols.Error?.ToString());
         Assert.NotEmpty(symbols.Data!);
+        Assert.Equal("KRAKEN", symbols.Data![0].ExchangeType);
+        Assert.Null(symbols.Data[0].MaximumMarketSize);
+        Assert.False(symbols.Data[0].SupportsRpi);
         Assert.True(riskLimits.Success, riskLimits.Error?.ToString());
         Assert.NotEmpty(riskLimits.Data!);
         Assert.True(transferCoins.Success, transferCoins.Error?.ToString());

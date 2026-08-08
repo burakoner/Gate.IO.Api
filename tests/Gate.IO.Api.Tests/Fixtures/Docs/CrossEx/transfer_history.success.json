@@ -1,15 +1,15 @@
 [
   {
-    "id": "123456",
+    "id": "33829017692939266",
     "text": "t-cross-transfer",
-    "from_account_type": "SPOT",
-    "to_account_type": "CROSSEX",
+    "from_account_type": "CROSSEX_KRAKEN",
+    "to_account_type": "SPOT",
     "coin": "USDT",
     "amount": "100.5",
     "actual_receive": "100.5",
     "status": "SUCCESS",
     "fail_reason": "",
-    "create_time": 1739014413,
-    "update_time": 1739014416
+    "create_time": 1750681141933,
+    "update_time": 1750681142379
   }
 ]

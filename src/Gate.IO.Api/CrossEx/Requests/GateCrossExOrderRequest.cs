@@ -11,7 +11,7 @@ public record GateCrossExOrderRequest
     public string Text { get; set; }
 
     /// <summary>
-    /// Trading pair identifier
+    /// Trading pair identifier in Exchange_Business_Base_Counter form. Examples include KRAKEN_FUTURE_ADA_USD, HYPERLIQUID_FUTURE_ADA_USDC, and DERIBIT_FUTURE_ADA_USDC. Kraken and Hyperliquid support futures only in CrossEx; Bybit and Deribit do not currently support margin pairs.
     /// </summary>
     public string Symbol { get; set; }
 

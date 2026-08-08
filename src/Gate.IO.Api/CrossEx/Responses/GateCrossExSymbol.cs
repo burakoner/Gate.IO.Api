@@ -63,7 +63,7 @@ public record GateCrossExSymbol
     /// Gets or sets the Maximum Market Size.
     /// </summary>
     [JsonProperty("max_market_size")]
-    public decimal MaximumMarketSize { get; set; }
+    public decimal? MaximumMarketSize { get; set; }
 
     /// <summary>
     /// Gets or sets the Maximum Limit Size.
@@ -94,4 +94,10 @@ public record GateCrossExSymbol
     /// </summary>
     [JsonProperty("delist_time")]
     public long? DelistTime { get; set; }
+
+    /// <summary>
+    /// Gets or sets whether RPI order placement is supported.
+    /// </summary>
+    [JsonProperty("support_rpi")]
+    public bool? SupportsRpi { get; set; }
 }

@@ -28,4 +28,10 @@ public enum GateCrossExTimeInForce
     /// </summary>
     [Map("POC")]
     PendingOrCancelled = 4,
+
+    /// <summary>
+    /// Represents the Retail Price Improvement value.
+    /// </summary>
+    [Map("RPI")]
+    RetailPriceImprovement = 5,
 }

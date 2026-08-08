@@ -9,7 +9,7 @@ public record GateCrossExTransferRecord
     /// Gets or sets the ID.
     /// </summary>
     [JsonProperty("id")]
-    public long Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Gets or sets the Text.

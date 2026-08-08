@@ -24,6 +24,12 @@ public record GateCrossExFee
     public decimal SpotTakerFee { get; set; }
 
     /// <summary>
+    /// Gets or sets the Spot RPI Maker Fee.
+    /// </summary>
+    [JsonProperty("spot_rpi_maker_fee")]
+    public decimal? SpotRpiMakerFee { get; set; }
+
+    /// <summary>
     /// Gets or sets the Future Maker Fee.
     /// </summary>
     [JsonProperty("future_maker_fee")]
@@ -34,6 +40,12 @@ public record GateCrossExFee
     /// </summary>
     [JsonProperty("future_taker_fee")]
     public decimal FutureTakerFee { get; set; }
+
+    /// <summary>
+    /// Gets or sets the Futures RPI Maker Fee.
+    /// </summary>
+    [JsonProperty("future_rpi_maker_fee")]
+    public decimal? FutureRpiMakerFee { get; set; }
 
     /// <summary>
     /// Gets or sets the Special Fees.

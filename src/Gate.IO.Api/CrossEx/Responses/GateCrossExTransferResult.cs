@@ -9,7 +9,7 @@ public record GateCrossExTransferResult
     /// Gets or sets the Transaction ID.
     /// </summary>
     [JsonProperty("tx_id")]
-    public long TransactionId { get; set; }
+    public string TransactionId { get; set; }
 
     /// <summary>
     /// Gets or sets the Text.

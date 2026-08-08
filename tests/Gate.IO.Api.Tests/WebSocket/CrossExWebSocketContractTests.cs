@@ -166,7 +166,7 @@ public class CrossExWebSocketContractTests
             $"{FixtureRoot}/order.update.json");
         Assert.Equal("order", orders.Channel);
         Assert.True(orders.Result.Success);
-        Assert.Equal(2072652940337152, orders.Payload.OrderId);
+        Assert.Equal("2072652940337152", orders.Payload.OrderId);
         Assert.Equal("OKX_FUTURE_ADA_USDT", orders.Payload.Symbol);
         Assert.Equal(0.8499m, orders.Payload.Price);
         Assert.Equal(10m, orders.Payload.Quantity);
@@ -220,7 +220,7 @@ public class CrossExWebSocketContractTests
             $"{FixtureRoot}/api.place_order.success.json");
         Assert.Equal("place_order", placeOrder.Channel);
         Assert.Equal("api", placeOrder.Event);
-        Assert.Equal(2072652940337152, placeOrder.Payload.OrderId);
+        Assert.Equal("2072652940337152", placeOrder.Payload.OrderId);
         Assert.True(placeOrder.Result.Success);
 
         var cancelOrder = JsonFixture.Deserialize<GateCrossExStreamResponse<JToken>>(
@@ -249,7 +249,7 @@ public class CrossExWebSocketContractTests
         var closePosition = JsonFixture.Deserialize<GateCrossExStreamResponse<GateCrossExOrderActionResult>>(
             $"{FixtureRoot}/api.close_position.success.json");
         Assert.Equal("close_position", closePosition.Channel);
-        Assert.Equal(2072652940337152, closePosition.Payload.OrderId);
+        Assert.Equal("2072652940337152", closePosition.Payload.OrderId);
         Assert.True(closePosition.Result.Success);
     }
 

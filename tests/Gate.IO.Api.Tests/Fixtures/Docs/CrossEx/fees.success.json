@@ -1,16 +1,64 @@
 [
   {
     "exchange_type": "BINANCE",
-    "spot_maker_fee": "0.001",
-    "spot_taker_fee": "0.001",
-    "future_maker_fee": "0.0002",
-    "future_taker_fee": "0.0005",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "spot_rpi_maker_fee": "0",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022",
+    "future_rpi_maker_fee": "0",
     "special_fee_list": [
       {
         "symbol": "BINANCE_FUTURE_BTC_USDT",
         "taker_fee_rate": "0.0004",
-        "maker_fee_rate": "0.0001"
+        "maker_fee_rate": "0.0001",
+        "rpi_fee_rate": "0"
       }
     ]
+  },
+  {
+    "exchange_type": "OKX",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022",
+    "special_fee_list": []
+  },
+  {
+    "exchange_type": "GATE",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022",
+    "special_fee_list": []
+  },
+  {
+    "exchange_type": "BYBIT",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022",
+    "special_fee_list": []
+  },
+  {
+    "exchange_type": "KRAKEN",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022"
+  },
+  {
+    "exchange_type": "HYPERLIQUID",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022"
+  },
+  {
+    "exchange_type": "DERIBIT",
+    "spot_maker_fee": "0.0001",
+    "spot_taker_fee": "0.00025",
+    "future_maker_fee": "0.00006",
+    "future_taker_fee": "0.00022"
   }
 ]
