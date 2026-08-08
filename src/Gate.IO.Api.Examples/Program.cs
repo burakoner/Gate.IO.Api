@@ -329,7 +329,13 @@ internal class Program
             GateFuturesTimeInForce.GoodTillCancelled,
             "CLIENT-ORDER-ID", false, GateFuturesOrderAutoSize.CloseLong
         );
-        var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest { });
+        var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest
+        {
+            PositionMarginMode = GateFuturesPositionMarginMode.Cross,
+            Order = new GateFuturesInitial { Contract = "CONTRACT", Amount = "0.5", Price = "0", TimeInForce = GateFuturesTimeInForce.ImmediateOrCancel },
+            Trigger = new GateFuturesTrigger { PriceType = GateFuturesTriggerPrice.MarkPrice, Price = "100.01", Rule = GateSpotTriggerCondition.GreaterThanOrEqualTo }
+        });
+        var perpetual_48b = await api.Futures[settle].AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest { OrderId = 1_000_000_001, Amount = "0.25", TriggerPrice = "101.00", PriceType = GateFuturesTriggerPrice.MarkPrice });
         var perpetual_49 = await api.Futures[settle].GetPriceTriggeredOrdersAsync(new GateFuturesPriceTriggeredOrderQueryRequest { Status = GateSpotTriggerFilter.Open, Contract = "CONTRACT", Limit = 100 });
         var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync();
         var perpetual_51 = await api.Futures[settle].GetPriceTriggeredOrderAsync(1_000_000_001);

@@ -3,12 +3,15 @@
     "initial": {
       "contract": "BTC_USDT",
       "size": 100,
+      "amount": "100.5",
       "price": "5.03",
       "close": false,
       "tif": "gtc",
       "text": "t-test",
       "reduce_only": false,
-      "auto_size": "close_long"
+      "auto_size": "close_long",
+      "is_reduce_only": false,
+      "is_close": false
     },
     "trigger": {
       "strategy_type": 0,
@@ -27,6 +30,7 @@
     "finish_as": "cancelled",
     "reason": "",
     "me_order_id": 13566,
-    "order_type": "close-long-order"
+    "order_type": "close-long-order",
+    "pos_margin_mode": "cross"
   }
 ]

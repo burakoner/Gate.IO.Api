@@ -73,8 +73,13 @@ public class FuturesContractTests
         Assert.Equal(GateFuturesSelfTradeAction.CancelNewest, order.SelfTradeAction);
         Assert.Equal(GateFuturesPriceTriggerStatus.Finished, priceOrders[0].Status);
         Assert.Equal(GateFuturesOrderFinishAs.Cancelled, priceOrders[0].FinishAs);
+        Assert.Equal("100.5", priceOrders[0].Order.Amount);
+        Assert.False(priceOrders[0].Order.IsReduceOnly!.Value);
+        Assert.False(priceOrders[0].Order.IsClose!.Value);
+        Assert.Equal(GateFuturesPositionMarginMode.Cross, priceOrders[0].PositionMarginMode);
         Assert.Equal(GateSpotTriggerCondition.GreaterThanOrEqualTo, priceOrder.Trigger.Rule);
         Assert.Equal(GateFuturesTriggerType.CloseLongOrder, priceOrder.Type);
+        Assert.Equal("1283293", priceOrder.OrderIdString);
         Assert.NotNull(chaseOrder);
         Assert.Equal("9007199254740993", chaseOrder!.OrderId);
         Assert.Equal("100000", chaseOrder.UserId);

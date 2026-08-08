@@ -140,11 +140,12 @@ public class FuturesRequestConstructionTests
 
         var result = await client.Futures.USDT.PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest
         {
-            Type = GateFuturesTriggerType.CloseLongOrder,
+            Type = GateFuturesTriggerType.PlanCloseLongPosition,
+            PositionMarginMode = GateFuturesPositionMarginMode.Cross,
             Order = new GateFuturesInitial
             {
                 Contract = "BTC_USDT",
-                Size = 100,
+                Amount = "100.5",
                 Price = "5.03",
                 Close = false,
                 TimeInForce = GateFuturesTimeInForce.GoodTillCancelled,
@@ -154,28 +155,72 @@ public class FuturesRequestConstructionTests
             },
             Trigger = new GateFuturesTrigger
             {
-                StrategyType = GateFuturesTriggerStrategy.ByPrice,
                 PriceType = GateFuturesTriggerPrice.DealPrice,
                 Price = "3000",
                 Rule = GateSpotTriggerCondition.GreaterThanOrEqualTo,
-                Expiration = 86400,
             },
         });
 
         Assert.True(result.Success, result.Error?.ToString());
-        Assert.Equal(1283293, result.Data);
+        Assert.Equal(1283293, result.Data!.OrderId);
+        Assert.Equal("1283293", result.Data.OrderIdString);
         var request = Assert.Single(handler.Requests);
         Assert.Equal(HttpMethod.Post, request.Method);
         Assert.Equal("/api/v4/futures/usdt/price_orders", request.RequestUri.AbsolutePath);
 
         var body = JObject.Parse(request.Content);
-        Assert.Equal("close-long-order", body["order_type"]!.ToString());
+        Assert.Equal("plan-close-long-position", body["order_type"]!.ToString());
+        Assert.Equal("cross", body["pos_margin_mode"]!.ToString());
         Assert.Equal("BTC_USDT", body["initial"]!["contract"]!.ToString());
+        Assert.Null(body["initial"]!["size"]);
+        Assert.Equal(JTokenType.String, body["initial"]!["amount"]!.Type);
+        Assert.Equal("100.5", body["initial"]!["amount"]!.ToString());
         Assert.Equal("gtc", body["initial"]!["tif"]!.ToString());
         Assert.Equal("close_long", body["initial"]!["auto_size"]!.ToString());
-        Assert.Equal(0, body["trigger"]!["strategy_type"]!.Value<int>());
+        Assert.Null(body["trigger"]!["strategy_type"]);
         Assert.Equal(0, body["trigger"]!["price_type"]!.Value<int>());
         Assert.Equal(1, body["trigger"]!["rule"]!.Value<int>());
+        Assert.Null(body["trigger"]!["expiration"]);
+        AssertSignedHeaders(request);
+    }
+
+    [Fact]
+    public async Task Signed_futures_price_triggered_order_amend_uses_body_order_id_and_current_path()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/price_order_id.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Futures.USDT.AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest
+        {
+            OrderId = 1283293,
+            Size = 0,
+            Amount = "0.5",
+            Price = "0",
+            TriggerPrice = "988888",
+            PriceType = GateFuturesTriggerPrice.DealPrice,
+            AutoSize = GateFuturesOrderAutoSize.CloseLong,
+            Close = true,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(1283293, result.Data!.OrderId);
+        Assert.Equal("1283293", result.Data.OrderIdString);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Put, request.Method);
+        Assert.Equal("/api/v4/futures/usdt/price_orders/amend", request.RequestUri.AbsolutePath);
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal(1283293, body["order_id"]!.Value<long>());
+        Assert.Equal(0, body["size"]!.Value<long>());
+        Assert.Equal(JTokenType.String, body["amount"]!.Type);
+        Assert.Equal("0.5", body["amount"]!.Value<string>());
+        Assert.Equal("0", body["price"]!.Value<string>());
+        Assert.Equal("988888", body["trigger_price"]!.Value<string>());
+        Assert.Equal(0, body["price_type"]!.Value<int>());
+        Assert.Equal("close_long", body["auto_size"]!.Value<string>());
+        Assert.True(body["close"]!.Value<bool>());
+        Assert.Null(body["settle"]);
         AssertSignedHeaders(request);
     }
 

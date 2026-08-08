@@ -1129,8 +1129,8 @@ public class GateFuturesRestApiSettleClient
     /// <param name="orderReduceOnly">Set to true to create a reduce-only order</param>
     /// <param name="orderAutoSize">Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0</param>
     /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
+    /// <returns>New price-triggered order identifier</returns>
+    public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(
             // Type
             GateFuturesTriggerType triggerType,
 
@@ -1185,9 +1185,18 @@ public class GateFuturesRestApiSettleClient
     /// </summary>
     /// <param name="request">Order Request</param>
     /// <param name="ct">Cancellation Token</param>
-    /// <returns></returns>
-    public Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
+    /// <returns>New price-triggered order identifier</returns>
+    public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
         => _.PlacePriceTriggeredOrderAsync(Settlement, request, ct);
+
+    /// <summary>
+    /// Modify a price-triggered order
+    /// </summary>
+    /// <param name="request">Update request containing the target order ID and fields to modify</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Modified price-triggered order identifier</returns>
+    public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> AmendPriceTriggeredOrderAsync(GateFuturesPriceTriggeredOrderUpdateRequest request, CancellationToken ct = default)
+        => _.AmendPriceTriggeredOrderAsync(Settlement, request, ct);
 
     /// <summary>
     /// List all auto orders

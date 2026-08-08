@@ -64,6 +64,8 @@ public class DeliveryContractTests
         Assert.Equal(GateFuturesSelfTradeAction.None, order.SelfTradeAction);
         Assert.Equal(GateFuturesPriceTriggerStatus.Finished, priceOrders[0].Status);
         Assert.Equal(GateFuturesOrderFinishAs.Cancelled, priceOrders[0].FinishAs);
+        Assert.Equal("100.5", priceOrders[0].Order.Amount);
+        Assert.Equal(GateFuturesPositionMarginMode.Isolated, priceOrders[0].PositionMarginMode);
         Assert.Equal(GateSpotTriggerCondition.GreaterThanOrEqualTo, priceOrder.Trigger.Rule);
         Assert.Equal(GateFuturesTriggerType.CloseLongOrder, priceOrder.Type);
     }

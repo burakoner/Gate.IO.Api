@@ -22,6 +22,12 @@ public record GateFuturesPriceTriggeredOrderRequest
     /// </summary>
     [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerType? Type { get; set; }
+
+    /// <summary>
+    /// Position margin mode. Supported values are isolated and cross.
+    /// </summary>
+    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 }
 
 /// <summary>
@@ -38,14 +44,14 @@ public record GateFuturesInitial
     /// <summary>
     /// Order size. Positive size means to buy, while negative one means to sell. Set to 0 to close the position
     /// </summary>
-    [JsonProperty("size")]
-    public long Size { get; set; }
+    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
+    public long? Size { get; set; }
 
     /// <summary>
     /// Order amount. Used for decimal contract size when supported.
     /// </summary>
     [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
-    public decimal? Amount { get; set; }
+    public string Amount { get; set; }
 
     /// <summary>
     /// Order price. Set to 0 to use market price
@@ -56,26 +62,26 @@ public record GateFuturesInitial
     /// <summary>
     /// Set to true if trying to close the position
     /// </summary>
-    [JsonProperty("close")]
-    public bool Close { get; set; }
+    [JsonProperty("close", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? Close { get; set; }
 
     /// <summary>
     /// Time in force. If using market price, only ioc is supported.
     /// </summary>
-    [JsonProperty("tif"), JsonConverter(typeof(MapConverter))]
-    public GateFuturesTimeInForce TimeInForce { get; set; }
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    public GateFuturesTimeInForce? TimeInForce { get; set; }
     
     /// <summary>
     /// The source of the order
     /// </summary>
-    [JsonProperty("text")]
+    [JsonProperty("text", NullValueHandling = NullValueHandling.Ignore)]
     public string ClientOrderId { get; set; }
     
     /// <summary>
     /// Set to true to create a reduce-only order
     /// </summary>
-    [JsonProperty("reduce_only")]
-    public bool ReduceOnly { get; set; }
+    [JsonProperty("reduce_only", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? ReduceOnly { get; set; }
 
     /// <summary>
     /// Is the order reduce-only
@@ -92,8 +98,8 @@ public record GateFuturesInitial
     /// <summary>
     /// Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0
     /// </summary>
-    [JsonProperty("auto_size"), JsonConverter(typeof(MapConverter))]
-    public GateFuturesOrderAutoSize AutoSize { get; set; }
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    public GateFuturesOrderAutoSize? AutoSize { get; set; }
 }
 
 /// <summary>
@@ -104,14 +110,14 @@ public record GateFuturesTrigger
     /// <summary>
     /// How the order will be triggered
     /// </summary>
-    [JsonProperty("strategy_type"), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
-    public GateFuturesTriggerStrategy StrategyType { get; set; }
+    [JsonProperty("strategy_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
+    public GateFuturesTriggerStrategy? StrategyType { get; set; }
     
     /// <summary>
     /// Price Type
     /// </summary>
-    [JsonProperty("price_type"), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
-    public GateFuturesTriggerPrice PriceType { get; set; }
+    [JsonProperty("price_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
+    public GateFuturesTriggerPrice? PriceType { get; set; }
 
     /// <summary>
     /// Trigger price
@@ -128,6 +134,6 @@ public record GateFuturesTrigger
     /// <summary>
     /// How long (in seconds) to wait for the condition to be triggered before cancelling the order.
     /// </summary>
-    [JsonProperty("expiration")]
-    public int Expiration { get; set; }
+    [JsonProperty("expiration", NullValueHandling = NullValueHandling.Ignore)]
+    public int? Expiration { get; set; }
 }

@@ -1,5 +1,18 @@
 ## Change Log & Release Notes
 
+- Version 4.106.83 - 18 May 2026
+  - Aligned the Futures price-triggered order endpoints and their complete shared contract with the current official documentation retrieved on 08 August 2026.
+    - Added `PUT /futures/{settle}/price_orders/amend` with the target `order_id` in the JSON body and no order ID path segment.
+    - Added every current amend field: integer `size`, decimal-string `amount`, `price`, `trigger_price`, numeric `price_type`, `auto_size`, and `close`.
+    - Added typed `pos_margin_mode` support for `isolated` and `cross` to price-triggered order create requests and responses.
+    - Corrected the shared Futures/Delivery create payload to model decimal `amount` as a JSON string and documented optional value fields as nullable so they are omitted when unset; these property-type corrections are source-breaking.
+    - Changed Futures price-triggered order creation to return the complete `GateFuturesPriceTriggeredOrderId` response instead of discarding `id_string`; this is a source-breaking return-type correction.
+    - Kept the settlement currency authoritative in the endpoint path; the redundant optional body `settle` field is intentionally not emitted.
+    - Added signed create/amend request construction and current response contract coverage.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#create-price-triggered-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/futures/#modify-a-single-auto-order
+    - Source: https://www.gate.com/docs/developers/apiv4/en/delivery/#create-price-triggered-order
 - Version 4.106.82 - 14 May 2026
   - Added all five Futures Chase Limit Order endpoints and aligned their complete contracts with the current official Futures documentation retrieved on 08 August 2026.
     - Added create and stop operations, batch stop, filtered listing, and order detail retrieval under `/futures/{settle}/autoorder/v1/chase/*`.

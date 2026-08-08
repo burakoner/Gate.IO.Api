@@ -968,7 +968,7 @@ public class GateFuturesRestApiClient
     }
 
     // Create a price-triggered order
-    internal Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(
+    internal Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(
         // Settlement
         GateFuturesSettlement settle,
 
@@ -1019,7 +1019,7 @@ public class GateFuturesRestApiClient
         }, ct);
 
     // Create a price-triggered order
-    internal async Task<RestCallResult<long>> PlacePriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
+    internal Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
     {
         PerpetualHelpers.ValidateContractSymbol(request.Order.Contract);
 
@@ -1027,8 +1027,17 @@ public class GateFuturesRestApiClient
         parameters.SetBody(request);
 
         var endpoint = "{settle}/price_orders".Replace("{settle}", MapConverter.GetString(settle));
-        var result = await _.SendRequestInternal<GateFuturesPriceTriggeredOrderId>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
-        return result.As(result.Data?.OrderId ?? default);
+        return _.SendRequestInternal<GateFuturesPriceTriggeredOrderId>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    // Modify a price-triggered order
+    internal Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> AmendPriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderUpdateRequest request, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
+
+        var endpoint = "{settle}/price_orders/amend".Replace("{settle}", MapConverter.GetString(settle));
+        return _.SendRequestInternal<GateFuturesPriceTriggeredOrderId>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
     // List all auto orders
