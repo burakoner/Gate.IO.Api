@@ -1,5 +1,16 @@
 ## Change Log & Release Notes
 
+- Version 4.106.112 - 03 August 2026
+  - Fully synchronized all three CrossEx endpoints identified by v4.106.112 with their complete current official contracts retrieved on 08 August 2026.
+    - Updated `POST /crossex/position` documentation to state that automatic full closing applies only when the position is strictly below the minimum notional amount or minimum order size and the account has no open order for the symbol. Added preflight validation for the required symbol, valid position-side values, and the documented requirement that margin positions include `position_side`. The exchange remains authoritative for the live threshold and open-order checks.
+    - Corrected `GET /crossex/positions` identifiers `user_id` and `position_id` from nullable integers to strings, matching the published wire contract and avoiding range or formatting loss. Documented `funding_fee` as the accumulated position funding fee, where positive values are gains and negative values are losses, and verified that the documented zero `funding_time` sentinel maps to `null`. The identifier property-type changes are source/binary-breaking.
+    - Completed `GET /crossex/account_book` by adding the missing `symbol` response field and correcting `id`, `user_id`, and `business_id` from nullable integers to strings. Documented the per-`statement_type` meaning of `business_id` and the current statement-type set. These identifier property-type changes are source/binary-breaking.
+    - Allowed unfiltered account-book requests because every query field is optional, and rejected the documented `limit` maximum above 1000 before network I/O. No undocumented time-window restriction was introduced.
+  - Replaced the affected fixtures with the complete current official examples, expanded identifier/timestamp/funding/symbol assertions, covered empty optional queries and validation failures, and updated the close-position examples. No authenticated or state-changing live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#full-close-position
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-contract-positions
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#query-account-asset-change-history
 - Version 4.106.111 - 03 August 2026
   - Reverified the complete current signed `POST /stock/orders` and `GET /stock/orders/history` contracts identified by v4.106.111 against the official documentation retrieved on 08 August 2026.
     - Confirmed that `time_in_force` supports `day` only in both `TradFiSpotOrderRequest` and `OrderHistoryList`; the formerly documented `gtc` value is absent from the public enum and unsupported values are rejected before network I/O.

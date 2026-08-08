@@ -1,13 +1,14 @@
 [
   {
-    "id": "789012",
-    "user_id": "900001",
-    "business_id": "234567",
-    "statement_type": "trade",
+    "id": "121",
+    "user_id": "12345678",
+    "business_id": "20818182821",
+    "statement_type": "FUNDING_FEE",
     "exchange_type": "BINANCE",
     "coin": "USDT",
-    "change": "-0.3",
-    "balance": "1200.25",
-    "create_time": 1739014413
+    "symbol": "BINANCE_FUTURE_BTC_USDT",
+    "change": "-0.002",
+    "balance": "81",
+    "create_time": "1750941402661"
   }
 ]

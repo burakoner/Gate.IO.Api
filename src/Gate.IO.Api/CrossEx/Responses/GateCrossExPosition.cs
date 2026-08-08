@@ -9,13 +9,13 @@ public record GateCrossExPosition
     /// Gets or sets the User ID.
     /// </summary>
     [JsonProperty("user_id")]
-    public long? UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
     /// Gets or sets the Position ID.
     /// </summary>
     [JsonProperty("position_id")]
-    public long? PositionId { get; set; }
+    public string PositionId { get; set; }
 
     /// <summary>
     /// Gets or sets the Symbol.
@@ -105,13 +105,13 @@ public record GateCrossExPosition
     public decimal? Fee { get; set; }
 
     /// <summary>
-    /// Gets or sets the Funding Fee.
+    /// Gets or sets the accumulated position funding fee. A positive value indicates a gain; a negative value indicates a loss.
     /// </summary>
     [JsonProperty("funding_fee")]
     public decimal? FundingFee { get; set; }
 
     /// <summary>
-    /// Gets or sets the Funding Time.
+    /// Gets or sets the position funding-fee collection time. A wire value of zero means no fee has been collected and maps to null.
     /// </summary>
     [JsonProperty("funding_time")]
     [JsonConverter(typeof(DateTimeConverter))]

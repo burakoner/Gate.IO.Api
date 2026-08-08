@@ -21,7 +21,8 @@ public record GateCrossExAccountBookQueryRequest
     public string Coin { get; set; }
 
     /// <summary>
-    /// Statement type
+    /// Bill entry type. Supported values are TRANSACTION, TRADING_FEE, FUNDING_FEE, LIQUIDATION_FEE, TRANSFER_IN,
+    /// TRANSFER_OUT, BANKRUPT_COMPENSATION, AUTO_REPAY, INTEREST_ISOLATED, ACCOUNT_MODE_CHANGE, KRAKEN_CONVERSION, and OTHER.
     /// </summary>
     public string StatementType { get; set; }
 

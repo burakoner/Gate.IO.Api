@@ -253,7 +253,7 @@ public class CrossExRequestConstructionTests
         var book = await client.CrossEx.GetAccountBookAsync(new GateCrossExAccountBookQueryRequest
         {
             Coin = "USDT",
-            StatementType = "trade",
+            StatementType = "FUNDING_FEE",
             From = millisFrom,
             To = millisTo,
             Page = 3,
@@ -404,7 +404,7 @@ public class CrossExRequestConstructionTests
         var accountBookQuery = ParseQuery(handler.Requests[26].RequestUri);
         Assert.Equal("/api/v4/crossex/account_book", handler.Requests[26].RequestUri.AbsolutePath);
         Assert.Equal("USDT", accountBookQuery["coin"]);
-        Assert.Equal("trade", accountBookQuery["statement_type"]);
+        Assert.Equal("FUNDING_FEE", accountBookQuery["statement_type"]);
         Assert.Equal("1739000000123", accountBookQuery["from"]);
 
         var discountsQuery = ParseQuery(handler.Requests[27].RequestUri);
@@ -425,6 +425,63 @@ public class CrossExRequestConstructionTests
         }));
 
         Assert.Equal("Symbols", exception.ParamName);
+    }
+
+    [Fact]
+    public void Close_position_and_account_book_reject_documented_invalid_inputs_before_io()
+    {
+        var client = new GateRestApiClient();
+
+        var missingSymbol = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest());
+        });
+        var missingMarginSide = Assert.Throws<ArgumentException>(() =>
+        {
+            _ = client.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest
+            {
+                Symbol = "BINANCE_MARGIN_SOL_USDT",
+            });
+        });
+        var invalidSide = Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            _ = client.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest
+            {
+                Symbol = "BINANCE_FUTURE_SOL_USDT",
+                PositionSide = (GateCrossExPositionSide)int.MaxValue,
+            });
+        });
+        var excessiveLimit = Assert.Throws<ArgumentOutOfRangeException>(() =>
+        {
+            _ = client.CrossEx.GetAccountBookAsync(new GateCrossExAccountBookQueryRequest { Limit = 1001 });
+        });
+
+        Assert.Equal("Symbol", missingSymbol.ParamName);
+        Assert.Equal("PositionSide", missingMarginSide.ParamName);
+        Assert.Equal("PositionSide", invalidSide.ParamName);
+        Assert.Equal("Limit", excessiveLimit.ParamName);
+    }
+
+    [Fact]
+    public async Task Positions_and_account_book_omit_all_optional_filters()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var positions = await client.CrossEx.GetPositionsAsync();
+        var accountBook = await client.CrossEx.GetAccountBookAsync();
+
+        Assert.True(positions.Success, positions.Error?.ToString());
+        Assert.True(accountBook.Success, accountBook.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
+        Assert.Equal("/api/v4/crossex/positions", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Equal("/api/v4/crossex/account_book", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.All(handler.Requests, request =>
+        {
+            Assert.Empty(request.RequestUri.Query);
+            AssertSignedHeaders(request);
+        });
     }
 
     [Fact]

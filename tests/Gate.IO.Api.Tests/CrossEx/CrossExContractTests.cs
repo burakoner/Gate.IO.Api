@@ -109,8 +109,15 @@ public class CrossExContractTests
         Assert.Equal(0m, fees[0].FutureRpiMakerFee);
         Assert.Equal(0m, fees[0].SpecialFees[0].RpiFeeRate);
         Assert.Equal(new[] { "BINANCE", "OKX", "GATE", "BYBIT", "KRAKEN", "HYPERLIQUID", "DERIBIT" }, fees.Select(x => x.ExchangeType));
-        Assert.Equal(60000m, positions[0].EntryPrice);
-        Assert.Equal(60550m, positions[0].MarkPrice);
+        Assert.Equal("10001004", positions[0].UserId);
+        Assert.Equal("20062926505289216", positions[0].PositionId);
+        Assert.Equal("OKX_FUTURE_ADA_USDT", positions[0].Symbol);
+        Assert.Equal(0.5426m, positions[0].EntryPrice);
+        Assert.Equal(0.5795m, positions[0].MarkPrice);
+        Assert.Equal(0m, positions[0].FundingFee);
+        Assert.Null(positions[0].FundingTime);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750682334273).UtcDateTime, positions[0].CreateTime);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750730699867).UtcDateTime, positions[0].UpdateTime);
         Assert.Equal("BTC", marginPositions[0].AssetCoin);
         Assert.Equal(0.01m, marginPositions[0].Interest);
         Assert.Equal("111", adlRanks[0].UserId);
@@ -122,7 +129,13 @@ public class CrossExContractTests
         Assert.Equal("MARGIN", marginHistory[0].BusinessType);
         Assert.Equal(567890, marginInterests[0].InterestId);
         Assert.Equal(678901, trades[0].TransactionId);
-        Assert.Equal(-0.3m, accountBook[0].Change);
+        Assert.Equal("121", accountBook[0].Id);
+        Assert.Equal("12345678", accountBook[0].UserId);
+        Assert.Equal("20818182821", accountBook[0].BusinessId);
+        Assert.Equal("FUNDING_FEE", accountBook[0].StatementType);
+        Assert.Equal("BINANCE_FUTURE_BTC_USDT", accountBook[0].Symbol);
+        Assert.Equal(-0.002m, accountBook[0].Change);
+        Assert.Equal(DateTimeOffset.FromUnixTimeMilliseconds(1750941402661).UtcDateTime, accountBook[0].CreateTime);
         Assert.Equal(1m, discountRates[0].DiscountRate);
     }
 

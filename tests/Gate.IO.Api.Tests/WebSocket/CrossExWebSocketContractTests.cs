@@ -190,7 +190,7 @@ public class CrossExWebSocketContractTests
         var position = JsonFixture.Deserialize<GateCrossExStreamResponse<GateCrossExPosition>>(
             $"{FixtureRoot}/position.update.json");
         Assert.Equal("position", position.Channel);
-        Assert.Equal(20087051449819136, position.Payload.PositionId);
+        Assert.Equal("20087051449819136", position.Payload.PositionId);
         Assert.Equal("NONE", position.Payload.PositionSide);
         Assert.Equal(0.8499m, position.Payload.MarkPrice);
         Assert.Equal(12m, position.Payload.ClosedPnl);

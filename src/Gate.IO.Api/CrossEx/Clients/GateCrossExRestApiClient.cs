@@ -532,26 +532,39 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
-    /// Full close position
+    /// Fully close a futures or margin position that is strictly below either the minimum notional amount or the minimum order size.
+    /// The account must not have an open order for the symbol.
     /// </summary>
     /// <param name="symbol">Trading pair</param>
-    /// <param name="positionSide">Position side</param>
+    /// <param name="positionSide">Position side. Required for margin positions and optional for futures positions depending on the position mode.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateCrossExOrderActionResult>> ClosePositionAsync(string symbol, GateCrossExPositionSide? positionSide = null, CancellationToken ct = default)
         => ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = symbol, PositionSide = positionSide }, ct);
 
     /// <summary>
-    /// Full close position
+    /// Fully close a futures or margin position that is strictly below either the minimum notional amount or the minimum order size.
+    /// The account must not have an open order for the symbol.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateCrossExOrderActionResult>> ClosePositionAsync(GateCrossExClosePositionRequest request, CancellationToken ct = default)
     {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol))
+            throw new ArgumentException("Symbol is required", nameof(request.Symbol));
+        if (request.PositionSide.HasValue && !Enum.IsDefined(typeof(GateCrossExPositionSide), request.PositionSide.Value))
+            throw new ArgumentOutOfRangeException(nameof(request.PositionSide));
+
+        var symbol = request.Symbol.Trim();
+        if (IsMarginSymbol(symbol) && !request.PositionSide.HasValue)
+            throw new ArgumentException("Position side is required for margin positions", nameof(request.PositionSide));
+
         var parameters = new ParameterCollection
         {
-            { "symbol", request.Symbol },
+            { "symbol", symbol },
         };
         parameters.AddOptionalEnum("position_side", request.PositionSide);
 
@@ -608,6 +621,8 @@ public class GateCrossExRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateCrossExPosition>>> GetPositionsAsync(GateCrossExPositionQueryRequest request, CancellationToken ct = default)
     {
+        request ??= new GateCrossExPositionQueryRequest();
+
         var parameters = new ParameterCollection();
         AddPositionParameters(parameters, request);
 
@@ -775,8 +790,12 @@ public class GateCrossExRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateCrossExAccountBookRecord>>> GetAccountBookAsync(GateCrossExAccountBookQueryRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateCrossExAccountBookRecord>>> GetAccountBookAsync(GateCrossExAccountBookQueryRequest request = null, CancellationToken ct = default)
     {
+        request ??= new GateCrossExAccountBookQueryRequest();
+        if (request.Limit > 1000)
+            throw new ArgumentOutOfRangeException(nameof(request.Limit), "Limit cannot exceed 1000");
+
         var parameters = new ParameterCollection();
         AddPaging(parameters, request.Page, request.Limit);
         parameters.AddOptional("coin", request.Coin);

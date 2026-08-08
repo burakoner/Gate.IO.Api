@@ -617,7 +617,7 @@ internal class Program
         var crossex_15 = await api.CrossEx.UpdateContractLeverageAsync(new GateCrossExLeverageRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", Leverage = 5.0m });
         var crossex_16 = await api.CrossEx.GetMarginLeveragesAsync(new GateCrossExLeverageQueryRequest { Symbols = new[] { "GATE_MARGIN_BTC_USDT" } });
         var crossex_17 = await api.CrossEx.UpdateMarginLeverageAsync(new GateCrossExLeverageRequest { Symbol = "GATE_MARGIN_BTC_USDT", Leverage = 3.0m });
-        var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long });
+        var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long }); // Requires no open orders and a position strictly below min notional or min size; PositionSide is required for margin positions.
         var crossex_19 = await api.CrossEx.GetInterestRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
         var crossex_20 = await api.CrossEx.GetFeesAsync();
         var crossex_21 = await api.CrossEx.GetPositionsAsync(new GateCrossExPositionQueryRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", ExchangeType = GateCrossExExchangeType.Kraken });

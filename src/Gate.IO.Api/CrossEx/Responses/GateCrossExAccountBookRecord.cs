@@ -9,19 +9,20 @@ public record GateCrossExAccountBookRecord
     /// Gets or sets the ID.
     /// </summary>
     [JsonProperty("id")]
-    public long? Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// Gets or sets the User ID.
     /// </summary>
     [JsonProperty("user_id")]
-    public long? UserId { get; set; }
+    public string UserId { get; set; }
 
     /// <summary>
-    /// Gets or sets the Business ID.
+    /// Gets or sets the business ID. For TRANSACTION and TRADING_FEE it is an order ID; for LIQUIDATION_FEE it is a liquidation order ID;
+    /// for FUNDING_FEE it identifies the position and funding-fee settlement time. Other entry types use a system-generated processing ID.
     /// </summary>
     [JsonProperty("business_id")]
-    public long? BusinessId { get; set; }
+    public string BusinessId { get; set; }
 
     /// <summary>
     /// Gets or sets the Statement Type.
@@ -40,6 +41,12 @@ public record GateCrossExAccountBookRecord
     /// </summary>
     [JsonProperty("coin")]
     public string Coin { get; set; }
+
+    /// <summary>
+    /// Gets or sets the trading pair.
+    /// </summary>
+    [JsonProperty("symbol")]
+    public string Symbol { get; set; }
 
     /// <summary>
     /// Gets or sets the Change.
