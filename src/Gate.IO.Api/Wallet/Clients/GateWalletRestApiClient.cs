@@ -219,7 +219,7 @@ public class GateWalletRestApiClient
     /// <param name="offset">List offset, starting from 0</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(string currency = null, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletDeposit>>> GetDepositsAsync(string currency = null, DateTime? from = null, DateTime? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
         => GetDepositsAsync(new GateWalletDepositQueryRequest
         {
             Currency = currency,
@@ -235,7 +235,7 @@ public class GateWalletRestApiClient
     /// <param name="request">Deposit records query request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletTransaction>>> GetDepositsAsync(GateWalletDepositQueryRequest request, CancellationToken ct = default)
+    public Task<RestCallResult<List<GateWalletDeposit>>> GetDepositsAsync(GateWalletDepositQueryRequest request, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency", request.Currency);
@@ -244,7 +244,7 @@ public class GateWalletRestApiClient
         parameters.AddOptional("limit", request.Limit);
         parameters.AddOptional("offset", request.Offset);
 
-        return _.SendRequestInternal<List<GateWalletTransaction>>(_.GetUrl(api, v4, wallet, "deposits"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateWalletDeposit>>(_.GetUrl(api, v4, wallet, "deposits"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }
 
     /// <summary>

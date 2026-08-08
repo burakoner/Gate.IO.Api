@@ -603,10 +603,10 @@ var otc_08 = await api.Otc.GetBankSupplementChecklistAsync("BANK-CARD-ID");
 var otc_09 = await api.Otc.SubmitPersonalBankSupplementAsync(new GateOtcBankPersonalSupplementRequest { BankId = "BANK-CARD-ID", IdDocumentFront = "BASE64-ID-FRONT", IdDocumentBack = "BASE64-ID-BACK", AddressProof = "BASE64-ADDRESS-PROOF" });
 var otc_10 = await api.Otc.SubmitEnterpriseBankSupplementAsync(new GateOtcBankEnterpriseSupplementRequest { BankId = "BANK-CARD-ID", Certificate = "BASE64-CERTIFICATE", ShareHolders = "BASE64-SHAREHOLDERS", Passport = "BASE64-PASSPORT", ShareHoldingStructure = "BASE64-STRUCTURE" });
 var otc_11 = await api.Otc.MarkFiatOrderAsPaidAsync(new GateOtcMarkOrderPaidRequest { OrderId = "1000000001", PaymentReceiptFileKey = "PAYMENT-RECEIPT-FILE-KEY" });
-var otc_12 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
+var otc_12 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
 var otc_13 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
 var otc_14 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderListRequest { CoinName = "USDT", Status = "PROCESSING", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
-var otc_15 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = 1_000_000_001 });
+var otc_15 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
 
 // P2P Methods
 var p2p_01 = await api.P2p.GetUserInfoAsync();

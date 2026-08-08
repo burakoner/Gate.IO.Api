@@ -66,16 +66,20 @@ public class WalletContractTests
         var withdrawals = JsonFixture.Deserialize<List<List<GateWalletTransaction>>>("Docs/Wallet/withdrawals.success.json")
             .SelectMany(x => x)
             .ToList();
-        var deposits = JsonFixture.Deserialize<List<GateWalletTransaction>>("Docs/Wallet/deposits.success.json");
+        var deposits = JsonFixture.Deserialize<List<GateWalletDeposit>>("Docs/Wallet/deposits.success.json");
 
         Assert.Single(withdrawals);
         Assert.Equal("w1879219868", withdrawals[0].Id);
         Assert.Equal("w1879219868", withdrawals[0].WithdrawalId);
         Assert.Equal(GateWalletAssetClass.MainZone, withdrawals[0].AssetClass);
         Assert.Equal(GateWalletWithdrawalStatus.Done, withdrawals[0].Status);
-        Assert.Single(deposits);
-        Assert.Equal("210496", deposits[0].Id);
-        Assert.Equal(222.61m, deposits[0].Amount);
+        Assert.Equal(2, deposits.Count);
+        Assert.Equal("d123456", deposits[0].Id);
+        Assert.Equal(10m, deposits[0].Amount);
+        Assert.Equal(GateWalletDepositStatus.Blocked, deposits[0].Status);
+        Assert.Equal(GateWalletDepositRefundStatus.Refunding, deposits[0].RefundStatus);
+        Assert.Equal(GateWalletDepositStatus.Done, deposits[1].Status);
+        Assert.Null(deposits[1].RefundStatus);
     }
 
     [Fact]

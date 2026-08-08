@@ -110,7 +110,7 @@ public class OtcRequestConstructionTests
             PaymentReceiptFileKey = "receipt-file-key",
             PaymentReceipt = "receipt-file-key",
         });
-        var cancelled = await client.Otc.CancelFiatOrderAsync(203);
+        var cancelled = await client.Otc.CancelFiatOrderAsync("203");
         var fiatOrders = await client.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest
         {
             Type = GateOtcOrderType.Sell,
@@ -131,7 +131,7 @@ public class OtcRequestConstructionTests
             EndTime = end,
             Status = "PROCESSING",
         });
-        var detail = await client.Otc.GetFiatOrderAsync(41);
+        var detail = await client.Otc.GetFiatOrderAsync("41");
 
         Assert.True(quote.Success, quote.Error?.ToString());
         Assert.True(fiatOrder.Success, fiatOrder.Error?.ToString());
@@ -310,9 +310,13 @@ public class OtcRequestConstructionTests
         {
             OrderId = "203",
         }));
+        var cancelException = await Assert.ThrowsAsync<ArgumentException>(() => client.Otc.CancelFiatOrderAsync(string.Empty));
+        var detailException = await Assert.ThrowsAsync<ArgumentException>(() => client.Otc.GetFiatOrderAsync(string.Empty));
 
         Assert.Equal("DocumentationFile", bankException.ParamName);
         Assert.Equal("PaymentReceiptFileKey", paidException.ParamName);
+        Assert.Equal("OrderId", cancelException.ParamName);
+        Assert.Equal("OrderId", detailException.ParamName);
     }
 
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)

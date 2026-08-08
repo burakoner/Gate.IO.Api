@@ -22,7 +22,7 @@ public record GateOtcFiatOrder
     /// Order ID
     /// </summary>
     [JsonProperty("order_id")]
-    public long OrderId { get; set; }
+    public string OrderId { get; set; }
 
     /// <summary>
     /// Trade number
@@ -95,10 +95,16 @@ public record GateOtcFiatOrder
     public decimal Rate { get; set; }
 
     /// <summary>
-    /// Remark
+    /// Transfer remark. Empty when <see cref="ReferenceCode"/> is set.
     /// </summary>
     [JsonProperty("transfer_remark")]
     public string TransferRemark { get; set; }
+
+    /// <summary>
+    /// Unique bank transfer reference code for deposit buy orders. Mutually exclusive with <see cref="TransferRemark"/>.
+    /// </summary>
+    [JsonProperty("reference_code")]
+    public string ReferenceCode { get; set; }
 
     /// <summary>
     /// Bank account

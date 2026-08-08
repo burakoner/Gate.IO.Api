@@ -8,5 +8,5 @@ public record GateOtcOrderIdRequest
     /// <summary>
     /// Order ID
     /// </summary>
-    public long OrderId { get; set; }
+    public string OrderId { get; set; }
 }

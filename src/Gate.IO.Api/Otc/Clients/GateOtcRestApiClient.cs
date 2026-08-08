@@ -446,6 +446,15 @@ public class GateOtcRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateOtcActionResult>> CancelFiatOrderAsync(long orderId, CancellationToken ct = default)
+        => CancelFiatOrderAsync(orderId.ToString(CultureInfo.InvariantCulture), ct);
+
+    /// <summary>
+    /// Fiat order cancellation
+    /// </summary>
+    /// <param name="orderId">Order ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcActionResult>> CancelFiatOrderAsync(string orderId, CancellationToken ct = default)
         => CancelFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = orderId }, ct);
 
     /// <summary>
@@ -456,9 +465,11 @@ public class GateOtcRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateOtcActionResult>> CancelFiatOrderAsync(GateOtcOrderIdRequest request, CancellationToken ct = default)
     {
+        Require(request.OrderId, nameof(request.OrderId));
+
         var parameters = new ParameterCollection
         {
-            { "order_id", request.OrderId.ToString(CultureInfo.InvariantCulture) },
+            { "order_id", request.OrderId },
         };
 
         return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "order/cancel"), HttpMethod.Post, ct, true, queryParameters: parameters);
@@ -575,6 +586,15 @@ public class GateOtcRestApiClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateOtcFiatOrderDetail>> GetFiatOrderAsync(long orderId, CancellationToken ct = default)
+        => GetFiatOrderAsync(orderId.ToString(CultureInfo.InvariantCulture), ct);
+
+    /// <summary>
+    /// Fiat order details
+    /// </summary>
+    /// <param name="orderId">Order ID</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateOtcFiatOrderDetail>> GetFiatOrderAsync(string orderId, CancellationToken ct = default)
         => GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = orderId }, ct);
 
     /// <summary>
@@ -585,9 +605,11 @@ public class GateOtcRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<GateOtcFiatOrderDetail>> GetFiatOrderAsync(GateOtcOrderIdRequest request, CancellationToken ct = default)
     {
+        Require(request.OrderId, nameof(request.OrderId));
+
         var parameters = new ParameterCollection
         {
-            { "order_id", request.OrderId.ToString(CultureInfo.InvariantCulture) },
+            { "order_id", request.OrderId },
         };
 
         return SendOtcDataRequestAsync<GateOtcFiatOrderDetail>("order/detail", HttpMethod.Get, ct, parameters);

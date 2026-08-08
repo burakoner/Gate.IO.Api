@@ -55,25 +55,31 @@ public class OtcContractTests
         var fiatOrders = JsonFixture.Parse("Docs/Otc/fiat_orders.success.json")["data"]!.ToObject<GateOtcFiatOrderPage>()!;
         var stableOrders = JsonFixture.Parse("Docs/Otc/stablecoin_orders.success.json")["data"]!.ToObject<GateOtcStableCoinOrderPage>()!;
         var detail = JsonFixture.Parse("Docs/Otc/fiat_order_detail.success.json")["data"]!.ToObject<GateOtcFiatOrderDetail>()!;
+        var versionedDetail = JObject.Parse("{\"reference_code\":\"SGB123456\",\"transfer_remark\":\"\"}").ToObject<GateOtcFiatOrderDetail>()!;
 
         Assert.Equal(1, fiatOrders.PageNumber);
         Assert.Equal(2, fiatOrders.Count);
         Assert.Single(fiatOrders.List);
-        Assert.Equal(41, fiatOrders.List[0].OrderId);
-        Assert.Equal(GateOtcOrderType.Sell, fiatOrders.List[0].Type);
+        Assert.Equal("41", fiatOrders.List[0].OrderId);
+        Assert.Equal(GateOtcOrderType.Buy, fiatOrders.List[0].Type);
         Assert.Equal("USDT", fiatOrders.List[0].CryptoCurrency);
         Assert.Equal(199600m, fiatOrders.List[0].FiatAmount);
         Assert.Equal(0.998m, fiatOrders.List[0].Rate);
         Assert.Equal("USD", fiatOrders.List[0].FiatCurrencyInfo.Name);
+        Assert.Equal(string.Empty, fiatOrders.List[0].TransferRemark);
+        Assert.Equal("OTIK7M39QF42", fiatOrders.List[0].ReferenceCode);
         Assert.Equal(20, stableOrders.Total);
         Assert.Equal(1, stableOrders.List[0].Id);
         Assert.Equal(30000m, stableOrders.List[0].PayAmount);
         Assert.Equal(0.6667m, stableOrders.List[0].RateReciprocal);
         Assert.NotEqual(default, stableOrders.List[0].CreateTimeStamp);
-        Assert.Equal(41, detail.OrderId);
-        Assert.Equal(10001, detail.UserId);
-        Assert.Equal(GateOtcOrderType.Sell, detail.Type);
-        Assert.Equal(GateOtcOrderKind.Fiat, detail.Side);
-        Assert.Equal("20250207043457590939", detail.TradeNumber);
+        Assert.Equal("265", detail.OrderId);
+        Assert.Equal("2124269088", detail.UserId);
+        Assert.Equal(GateOtcOrderType.Buy, detail.Type);
+        Assert.Equal("Gate Global UAB", detail.GateBankAccountName);
+        Assert.Equal(string.Empty, detail.GateTransferRemark);
+        Assert.Equal("OTIK7M39QF42", detail.GateReferenceCode);
+        Assert.Equal("SGB123456", versionedDetail.GateReferenceCode);
+        Assert.Equal(string.Empty, versionedDetail.GateTransferRemark);
     }
 }

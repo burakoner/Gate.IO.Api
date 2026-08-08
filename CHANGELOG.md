@@ -1,5 +1,16 @@
 ## Change Log & Release Notes
 
+- Version 4.106.95 - 11 June 2026
+  - Aligned `GET /wallet/deposits`, `GET /otc/order/list`, and `GET /otc/order/detail` with the v4.106.95 change record and their complete current official endpoint contracts retrieved on 08 August 2026.
+    - Added the optional typed `refund_status` contract with all four documented values. Split deposit records into `GateWalletDeposit` with the complete deposit-specific status enum because the previous shared withdrawal model could not deserialize valid deposit-only statuses such as `BLOCKED`; the `GetDepositsAsync` response-type correction is source/binary-breaking.
+    - Added `reference_code` to fiat order-list items and documented its mutual exclusion with `transfer_remark`. The current generated OTC list table omits both fields despite the changelog explicitly requiring them, so both are retained from the authoritative version change and covered by a fixture.
+    - Aligned fiat order details with the current `gate_reference_code` / `gate_transfer_remark` wire names and added the complete documented user-bank and Gate-beneficiary bank field set. Legacy unprefixed detail response aliases remain deserializable.
+    - Preserved fiat order and user identifiers as strings, matching both current OTC endpoint schemas and preventing formatting or numeric-range loss. Existing numeric convenience overloads remain available, while `GateOtcOrderIdRequest.OrderId` and the affected response properties are now strings; these property-type corrections are source/binary-breaking.
+    - Refreshed contract fixtures, request-construction checks, and examples. No authenticated private or state-changing live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/wallet/#get-deposit-records
+    - Source: https://www.gate.com/docs/developers/apiv4/en/otc/#fiat-order-list
+    - Source: https://www.gate.com/docs/developers/apiv4/en/otc/#fiat-order-details
 - Version 4.106.94 - 08 June 2026
   - Aligned `GET /wallet/saved_address` with the complete current official Wallet documentation retrieved on 08 August 2026.
     - Made the existing convenience overload's `currency` argument optional while preserving its source and binary signature and its established `limit=100` / `page=1` defaults.

@@ -12,16 +12,15 @@
         "timestamp": 1739000013,
         "order_id": "41",
         "trade_no": "20250207043457590939",
-        "type": "SELL",
-        "status": "PROCESSIONG",
-        "db_status": "PAID",
+        "type": "BUY",
+        "status": "PROCESSING",
         "fiat_currency": "USD",
         "fiat_currency_info": {
           "name": "USD",
           "icon": "http://icon.url"
         },
         "fiat_amount": "199600",
-        "ceypto_currency": "USDT",
+        "crypto_currency": "USDT",
         "crypto_currency_info": {
           "name": "USDT",
           "icon": "http://icon.url"
@@ -29,7 +28,7 @@
         "crypto_amount": "200000",
         "rate": "0.998000",
         "transfer_remark": "",
-        "gate_bank_account_iban": "89b9b9b9b",
+        "reference_code": "OTIK7M39QF42",
         "promotion_code": ""
       }
     ]
