@@ -19,7 +19,8 @@ public class EarnContractTests
         Assert.Equal(272, plans[0].Id);
         Assert.Equal(GateEarnDualOptionType.Put, plans[0].Type);
         Assert.Equal(0.067m, plans[0].ExercisePrice);
-        Assert.Equal(1m, plans[0].PerValue);
+        Assert.Equal(1m, plans[0].MinAmount);
+        Assert.Equal(GateEarnDualPlanStatus.Ongoing, plans[0].Status);
         Assert.Single(orders);
         Assert.Equal(373, orders[0].Id);
         Assert.Equal(24500m, orders[0].ExercisePrice);
@@ -115,6 +116,7 @@ public class EarnContractTests
         Assert.NotEmpty(dualPlans);
         Assert.Contains(dualPlans, x => x.InvestCurrency == "BTC" || x.ExerciseCurrency == "BTC");
         Assert.All(dualPlans, x => Assert.True(x.Id > 0));
+        Assert.All(dualPlans, x => Assert.True(x.MinAmount > 0m));
         Assert.NotEmpty(products.List);
         Assert.Equal("USDT", products.List[0].Asset);
         Assert.True(products.List[0].MinLendAmount > 0m);

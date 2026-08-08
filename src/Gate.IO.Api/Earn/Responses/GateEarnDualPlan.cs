@@ -50,16 +50,16 @@ public record GateEarnDualPlan
     public DateTime DeliveryTime { get; set; }
 
     /// <summary>
-    /// Minimum share count
+    /// Annual yield
     /// </summary>
-    [JsonProperty("min_copies")]
-    public long MinCopies { get; set; }
+    [JsonProperty("apy_display")]
+    public decimal ApyDisplay { get; set; }
 
     /// <summary>
-    /// Maximum share count
+    /// Minimum investment amount
     /// </summary>
-    [JsonProperty("max_copies")]
-    public long MaxCopies { get; set; }
+    [JsonProperty("min_amount")]
+    public decimal MinAmount { get; set; }
 
     /// <summary>
     /// Start time
@@ -78,19 +78,6 @@ public record GateEarnDualPlan
     /// <summary>
     /// Product status
     /// </summary>
-    [JsonProperty("status")]
-    public string Status { get; set; }
-
-    /// <summary>
-    /// Annual yield
-    /// </summary>
-    [JsonProperty("apy_display")]
-    public decimal ApyDisplay { get; set; }
-
-    /// <summary>
-    /// Value per unit
-    /// </summary>
-    [JsonProperty("per_value")]
-    [JsonConverter(typeof(GateDecimalConverter))]
-    public decimal? PerValue { get; set; }
+    [JsonProperty("status"), JsonConverter(typeof(MapConverter))]
+    public GateEarnDualPlanStatus Status { get; set; }
 }

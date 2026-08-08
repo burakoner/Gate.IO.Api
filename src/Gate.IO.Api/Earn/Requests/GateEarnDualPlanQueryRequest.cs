@@ -23,7 +23,7 @@ public record GateEarnDualPlanQueryRequest
     /// <summary>
     /// Settlement currency
     /// </summary>
-    public string QuoteCurrency { get; set; }
+    public GateEarnDualQuoteCurrency? QuoteCurrency { get; set; }
 
     /// <summary>
     /// Sort field

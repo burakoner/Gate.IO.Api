@@ -23,6 +23,7 @@ public class EarnPublicIntegrationTests
         Assert.True(productsByAsset.Success, productsByAsset.Error?.ToString());
         Assert.NotEmpty(dualPlans.Data!);
         Assert.Contains(dualPlans.Data!, x => x.InvestCurrency == "BTC" || x.ExerciseCurrency == "BTC");
+        Assert.All(dualPlans.Data!, x => Assert.True(x.MinAmount > 0m));
         Assert.NotEmpty(products.Data!.List);
         Assert.Equal("USDT", products.Data.List[0].Asset);
         Assert.NotEmpty(productsByAsset.Data!.List);

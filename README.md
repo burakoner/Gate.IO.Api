@@ -531,7 +531,7 @@ var multiCollateralLoan_11 = await api.MultiCollateralLoan.GetFixedRatesAsync();
 var multiCollateralLoan_12 = await api.MultiCollateralLoan.GetCurrentRatesAsync(new GateMultiCollateralLoanCurrentRateRequest { Currencies = new[] { "BTC", "GT" }, VipLevel = "0" });
 
 // Earn Methods
-var earn_01 = await api.Earn.GetDualInvestmentPlansAsync(new GateEarnDualPlanQueryRequest { Coin = "BTC", Type = GateEarnDualOptionType.Put, QuoteCurrency = "USDT", Sort = GateEarnDualPlanSort.Apy });
+var earn_01 = await api.Earn.GetDualInvestmentPlansAsync(new GateEarnDualPlanQueryRequest { Coin = "BTC", Type = GateEarnDualOptionType.Put, QuoteCurrency = GateEarnDualQuoteCurrency.USDT, Sort = GateEarnDualPlanSort.Apy });
 var earn_02 = await api.Earn.GetDualInvestmentOrdersAsync(new GateEarnDualOrderQueryRequest { Coin = "BTC", Status = GateEarnDualOrderQueryStatus.All, From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
 var earn_03 = await api.Earn.PlaceDualInvestmentOrderAsync(new GateEarnDualOrderRequest { PlanId = 1_000_000_001, Amount = 1.0m, Text = "t-client-text" });
 var earn_04 = await api.Earn.GetDualInvestmentBalanceAsync();

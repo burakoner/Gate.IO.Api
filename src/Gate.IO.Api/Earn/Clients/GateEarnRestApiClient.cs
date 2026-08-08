@@ -74,7 +74,7 @@ public class GateEarnRestApiClient
         long? planId = null,
         string coin = null,
         GateEarnDualOptionType? type = null,
-        string quoteCurrency = null,
+        GateEarnDualQuoteCurrency? quoteCurrency = null,
         GateEarnDualPlanSort? sort = null,
         int? page = null,
         int? pageSize = null,
@@ -102,7 +102,7 @@ public class GateEarnRestApiClient
         parameters.AddOptional("plan_id", request.PlanId);
         parameters.AddOptional("coin", request.Coin);
         parameters.AddOptionalEnum("type", request.Type);
-        parameters.AddOptional("quote_currency", request.QuoteCurrency);
+        parameters.AddOptionalEnum("quote_currency", request.QuoteCurrency);
         parameters.AddOptionalEnum("sort", request.Sort);
         parameters.AddOptional("page", request.Page);
         parameters.AddOptional("page_size", request.PageSize);

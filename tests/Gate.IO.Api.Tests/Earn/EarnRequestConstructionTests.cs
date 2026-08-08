@@ -24,7 +24,7 @@ public class EarnRequestConstructionTests
             PlanId = 272,
             Coin = "BTC",
             Type = GateEarnDualOptionType.Call,
-            QuoteCurrency = "USDT",
+            QuoteCurrency = GateEarnDualQuoteCurrency.USDT,
             Sort = GateEarnDualPlanSort.ShortPeriod,
             Page = 2,
             PageSize = 50,

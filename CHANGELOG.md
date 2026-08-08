@@ -1,5 +1,14 @@
 ## Change Log & Release Notes
 
+- Version 4.106.84 - 18 May 2026
+  - Aligned `GET /earn/dual/investment_plan` with the current official Earn documentation and live public response retrieved on 08 August 2026.
+    - Added `min_amount`, documented as a decimal JSON string, and exposed it as the wrapper's strongly typed `decimal` minimum investment amount.
+    - Added typed query settlement currencies `USDT` / `GUSD` and response statuses `NOTSTARTED` / `ONGOING` / `ENDED`.
+    - Removed legacy `min_copies`, `max_copies`, and `per_value` properties that are absent from both the current official contract and live endpoint response; these removals and the typed query/status corrections are source-breaking.
+    - Preserved the response `type` field because the official example and live endpoint both return it even though the generated response property table omits it.
+    - Refreshed documented and live fixtures plus public request, response, and integration coverage.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/earn/#dual-investment-product-list
 - Version 4.106.83 - 18 May 2026
   - Aligned the Futures price-triggered order endpoints and their complete shared contract with the current official documentation retrieved on 08 August 2026.
     - Added `PUT /futures/{settle}/price_orders/amend` with the target `order_id` in the JSON body and no order ID path segment.
