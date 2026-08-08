@@ -551,21 +551,41 @@ public class GateWalletRestApiClient
     /// <summary>
     /// Query saved address
     /// </summary>
-    /// <param name="currency">Currency name</param>
+    /// <param name="currency">Currency name. Omit to query all currencies</param>
     /// <param name="chain">Chain name</param>
     /// <param name="limit">Maximum number returned, 100 at most</param>
     /// <param name="page">Page number</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency, string chain = null, int limit = 100, int page = 1, CancellationToken ct = default)
-    {
-        var parameters = new ParameterCollection
+    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(string currency = null, string chain = null, int limit = 100, int page = 1, CancellationToken ct = default)
+        => GetSavedAddressesAsync(new GateWalletSavedAddressQueryRequest
         {
-            { "currency", currency },
-            { "limit", limit },
-            { "page", page },
-        };
-        parameters.AddOptional("chain", chain);
+            Currency = currency,
+            Chain = chain,
+            Limit = limit,
+            Page = page,
+        }, ct);
+
+    /// <summary>
+    /// Query saved addresses
+    /// </summary>
+    /// <param name="request">Saved-address query filters</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateWalletSavedAddress>>> GetSavedAddressesAsync(GateWalletSavedAddressQueryRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+
+        request.Limit?.ValidateIntBetween(nameof(request.Limit), 1, 100);
+        request.Page?.ValidateIntBetween(nameof(request.Page), 1, int.MaxValue);
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency", request.Currency);
+        parameters.AddOptional("chain", request.Chain);
+        parameters.AddOptional("verified", request.Verified.HasValue ? (request.Verified.Value ? 1 : 0) : null);
+        parameters.AddOptional("limit", request.Limit);
+        parameters.AddOptional("page", request.Page);
 
         return _.SendRequestInternal<List<GateWalletSavedAddress>>(_.GetUrl(api, v4, wallet, "saved_address"), HttpMethod.Get, ct, true, queryParameters: parameters);
     }

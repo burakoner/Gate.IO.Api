@@ -1,5 +1,13 @@
 ## Change Log & Release Notes
 
+- Version 4.106.94 - 08 June 2026
+  - Aligned `GET /wallet/saved_address` with the complete current official Wallet documentation retrieved on 08 August 2026.
+    - Made the existing convenience overload's `currency` argument optional while preserving its source and binary signature and its established `limit=100` / `page=1` defaults.
+    - Added `GateWalletSavedAddressQueryRequest` so every documented optional filter can be omitted independently, including the new nullable `verified` filter serialized as `1` or `0`.
+    - Retained the strongly typed response `Verified` boolean because its existing converter correctly handles the documented string values `"0"` and `"1"`.
+    - Added documented response fixture coverage, signed request-construction coverage for filtered and unfiltered calls, and refreshed usage examples. No authenticated private live calls were made.
+    - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+    - Source: https://www.gate.com/docs/developers/apiv4/en/wallet/#query-saved-address
 - Version 4.106.93 - 03 June 2026
   - Verified the `FuturesOrder` additions announced by the official changelog against the complete current Futures order contract retrieved on 08 August 2026.
     - Confirmed that optional `tpsl_tp_bbo_type` and `tpsl_sl_bbo_type` request, response, single-order, and batch-order support was already implemented by the complete current-contract synchronization in version 4.106.86; no duplicate model change was required.

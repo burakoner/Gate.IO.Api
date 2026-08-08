@@ -67,7 +67,7 @@ internal class Program
         var wallet_14 = await api.Wallet.GetSubAccountMarginBalancesAsync();
         var wallet_15 = await api.Wallet.GetSubAccountFuturesBalancesAsync();
         var wallet_16 = await api.Wallet.GetSubAccountCrossMarginBalancesAsync();
-        var wallet_17 = await api.Wallet.GetSavedAddressesAsync("CURRENCY");
+        var wallet_17 = await api.Wallet.GetSavedAddressesAsync(new GateWalletSavedAddressQueryRequest { Chain = "CHAIN", Verified = true, Limit = 25, Page = 1 });
         var wallet_18 = await api.Wallet.GetTotalBalancesAsync();
         var wallet_19 = await api.Wallet.GetLowCapExchangeListAsync();
 

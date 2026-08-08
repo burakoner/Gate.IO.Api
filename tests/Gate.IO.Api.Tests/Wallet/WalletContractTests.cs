@@ -46,6 +46,7 @@ public class WalletContractTests
         var chains = JsonFixture.Deserialize<List<GateWalletCurencyChain>>("Docs/Wallet/currency_chains.success.json");
         var liveChains = JsonFixture.Deserialize<List<GateWalletCurencyChain>>("Live/Wallet/currency_chains.GT.json");
         var depositAddress = JsonFixture.Deserialize<GateWalletDepositAddress>("Docs/Wallet/deposit_address.success.json");
+        var savedAddresses = JsonFixture.Deserialize<List<GateWalletSavedAddress>>("Docs/Wallet/saved_address.success.json");
 
         Assert.Single(chains);
         Assert.Equal("ETH", chains[0].Chain);
@@ -54,6 +55,9 @@ public class WalletContractTests
         Assert.Equal("USDT", depositAddress.Currency);
         Assert.Equal(0.01m, depositAddress.MinDepositAmount);
         Assert.Contains(depositAddress.MultichainAddresses, x => x.Chain == "TRX" && !x.ObtainFailed);
+        Assert.Single(savedAddresses);
+        Assert.Equal("TRX", savedAddresses[0].Chain);
+        Assert.True(savedAddresses[0].Verified);
     }
 
     [Fact]

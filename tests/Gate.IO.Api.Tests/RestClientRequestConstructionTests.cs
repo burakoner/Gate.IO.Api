@@ -180,6 +180,44 @@ public class RestClientRequestConstructionTests
         AssertSignedHeaders(request);
     }
 
+    [Fact]
+    public async Task Signed_wallet_saved_address_requests_support_current_optional_filters()
+    {
+        var json = JsonFixture.Read("Docs/Wallet/saved_address.success.json");
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(json));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var allAddresses = await client.Wallet.GetSavedAddressesAsync();
+        var verifiedAddresses = await client.Wallet.GetSavedAddressesAsync(new GateWalletSavedAddressQueryRequest
+        {
+            Chain = "TRX",
+            Verified = true,
+        });
+
+        Assert.True(allAddresses.Success, allAddresses.Error?.ToString());
+        Assert.True(verifiedAddresses.Success, verifiedAddresses.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
+
+        var allQuery = ParseQuery(handler.Requests[0].RequestUri);
+        Assert.DoesNotContain("currency", allQuery.Keys);
+        Assert.DoesNotContain("chain", allQuery.Keys);
+        Assert.DoesNotContain("verified", allQuery.Keys);
+        Assert.Equal("100", allQuery["limit"]);
+        Assert.Equal("1", allQuery["page"]);
+
+        var filteredRequest = handler.Requests[1];
+        Assert.Equal(HttpMethod.Get, filteredRequest.Method);
+        Assert.Equal("/api/v4/wallet/saved_address", filteredRequest.RequestUri.AbsolutePath);
+        var filteredQuery = ParseQuery(filteredRequest.RequestUri);
+        Assert.DoesNotContain("currency", filteredQuery.Keys);
+        Assert.Equal("TRX", filteredQuery["chain"]);
+        Assert.Equal("1", filteredQuery["verified"]);
+        Assert.DoesNotContain("limit", filteredQuery.Keys);
+        Assert.DoesNotContain("page", filteredQuery.Keys);
+        AssertSignedHeaders(filteredRequest);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {
