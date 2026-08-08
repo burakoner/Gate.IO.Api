@@ -1,3 +1,4 @@
+using ApiSharp.Converters;
 using Gate.IO.Api.Spot;
 using Gate.IO.Api.Tests.Infrastructure;
 
@@ -107,6 +108,57 @@ public class SpotContractTests
         Assert.Equal(GateSpotTriggerCondition.GreaterThanOrEqualTo, priceOrders[0].Trigger.Rule);
         Assert.Equal(GateSpotPriceTriggeredOrderAccountType.Normal, priceOrders[0].Order.Account);
         Assert.Equal(1432329, priceOrderId.OrderId);
+    }
+
+    [Fact]
+    public void Documented_spot_pov_order_response_deserializes_complete_contract()
+    {
+        var order = JsonFixture.Deserialize<GateSpotPovOrder>("Docs/Spot/pov_order.success.json");
+        var orderWithoutOptionalFields = JsonConvert.DeserializeObject<GateSpotPovOrder>("""
+            {
+              "id": "1217",
+              "currency_pair": "ETH_USDT",
+              "side": "sell",
+              "amount": "1.25",
+              "participation_rate": 40,
+              "ttl": "7d",
+              "status": "TERMINATED",
+              "create_time_ms": 1784279005258
+            }
+            """);
+
+        Assert.Equal("1216", order.OrderId);
+        Assert.Equal("BTC_USDT", order.Symbol);
+        Assert.Equal(GateSpotOrderSide.Buy, order.Side);
+        Assert.Equal(0.010000m, order.Amount);
+        Assert.Equal(GateSpotPovParticipationRate.TenPercent, order.ParticipationRate);
+        Assert.Equal(GateSpotPovTimeToLive.OneHour, order.TimeToLive);
+        Assert.Equal(63000m, order.LimitPrice);
+        Assert.Equal(63000m, order.TriggerPrice);
+        Assert.Equal(GateSpotPovOrderStatus.Created, order.Status);
+        Assert.Equal(string.Empty, order.TerminatedAs);
+        Assert.Equal(0, order.StartTimeInMilliseconds);
+        Assert.Equal(0, order.EndTimeInMilliseconds);
+        Assert.Equal(1784365405074, order.ExpireTimeInMilliseconds);
+        Assert.Equal(1784279005258, order.CreateTimeInMilliseconds);
+        Assert.Equal(1784279005258, order.UpdateTimeInMilliseconds);
+        Assert.Null(order.ClientOrderId);
+        Assert.NotNull(orderWithoutOptionalFields);
+        Assert.Equal(GateSpotPovParticipationRate.FortyPercent, orderWithoutOptionalFields.ParticipationRate);
+        Assert.Equal(GateSpotPovTimeToLive.SevenDays, orderWithoutOptionalFields.TimeToLive);
+        Assert.Equal(GateSpotPovOrderStatus.Terminated, orderWithoutOptionalFields.Status);
+        Assert.Null(orderWithoutOptionalFields.LimitPrice);
+        Assert.Null(orderWithoutOptionalFields.TriggerPrice);
+        Assert.Null(orderWithoutOptionalFields.TerminatedAs);
+        Assert.Null(orderWithoutOptionalFields.StartTimeInMilliseconds);
+        Assert.Null(orderWithoutOptionalFields.EndTimeInMilliseconds);
+        Assert.Null(orderWithoutOptionalFields.ExpireTimeInMilliseconds);
+        Assert.Null(orderWithoutOptionalFields.UpdateTimeInMilliseconds);
+        Assert.Null(orderWithoutOptionalFields.ClientOrderId);
+
+        Assert.Equal(new[] { 5, 10, 20, 40 }, Enum.GetValues<GateSpotPovParticipationRate>().Select(x => (int)x));
+        Assert.Equal(new[] { "1h", "6h", "12h", "1d", "2d", "3d", "4d", "5d", "6d", "7d" }, Enum.GetValues<GateSpotPovTimeToLive>().Select(MapConverter.GetString));
+        Assert.Equal(new[] { "CREATED", "CANCELING", "RUNNING", "COMPLETED", "EXPIRED", "TERMINATED" }, Enum.GetValues<GateSpotPovOrderStatus>().Select(MapConverter.GetString));
     }
 
     [Fact]

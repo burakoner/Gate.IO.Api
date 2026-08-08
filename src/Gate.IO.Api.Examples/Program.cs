@@ -215,6 +215,11 @@ internal class Program
         var spot_29 = await api.Spot.CancelPriceTriggeredOrderAsync();
         var spot_30 = await api.Spot.AmendOrderAsync(new GateSpotAmendRequest { Symbol = "SYMBOL", OrderId = 1_000_000_000, Price = "1.01", StopProfit = new GateSpotOrderTpsl { TriggerPrice = "1.10", OrderPrice = "1.09" } });
         var spot_31 = await api.Spot.AmendOrdersAsync([new GateSpotAmendRequest { Symbol = "SYMBOL", ClientOrderId = "t-batch-order", Amount = "0.5", StopLoss = new GateSpotOrderTpsl() }]); // Empty object cancels stop loss; null leaves it unchanged.
+        var spot_32 = await api.Spot.GetPovOrdersAsync(new GateSpotPovOrderQueryRequest { Status = GateSpotOrderQueryStatus.Open, Symbol = "SYMBOL", Limit = 100 });
+        var spot_33 = await api.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest { Symbol = "SYMBOL", Side = GateSpotOrderSide.Buy, Amount = 1m, ParticipationRate = GateSpotPovParticipationRate.FivePercent, TimeToLive = GateSpotPovTimeToLive.OneHour, LimitPrice = 1m, ClientOrderId = "t-pov-order" });
+        var spot_34 = await api.Spot.GetPovOrderAsync("POV-ORDER-ID");
+        var spot_35 = await api.Spot.CancelPovOrderAsync("POV-ORDER-ID");
+        var spot_36 = await api.Spot.CancelPovOrdersAsync("SYMBOL"); // Omit SYMBOL only when intentionally cancelling every eligible Spot POV order. Confirm follow-up status before treating cancellation as complete.
 
         // Isolated Margin Methods
         var margin_01 = await api.IsolatedMargin.GetBalancesAsync("SYMBOL");

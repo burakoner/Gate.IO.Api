@@ -1,0 +1,17 @@
+{
+  "id": "1216",
+  "currency_pair": "BTC_USDT",
+  "side": "buy",
+  "amount": "0.010000",
+  "participation_rate": 10,
+  "ttl": "1h",
+  "limit_price": "63000",
+  "trigger_price": "63000",
+  "status": "CREATED",
+  "terminated_as": "",
+  "start_time_ms": 0,
+  "end_time_ms": 0,
+  "expire_time_ms": 1784365405074,
+  "create_time_ms": 1784279005258,
+  "update_time_ms": 1784279005258
+}

@@ -1,5 +1,20 @@
 ## Change Log & Release Notes
 
+- Version 4.106.116 - 04 August 2026
+  - Added all five signed Spot POV endpoints introduced by v4.106.116 and synchronized them with their complete current official contracts retrieved on 08 August 2026: create, list, detail, bulk cancel, and individual cancel under `/spot/pov_orders`.
+    - Added decimal-string amount, optional limit and trigger prices, typed buy/sell side, integer participation rates `5` / `10` / `20` / `40`, every documented TTL from `1h` through `7d`, and validated optional `text` custom IDs.
+    - Added the complete `SpotPovOrder` response contract with string IDs, typed uppercase lifecycle statuses, raw termination reason, exact millisecond timestamps including documented zero sentinels, and nullable fields matching the schema.
+    - The list parameter table marks `status` required while also saying it defaults to `open`; the official signed examples explicitly send `status=open`. The wrapper therefore always sends a typed status and defaults it to `open`, instead of relying on contradictory omission behavior.
+    - Applied the shared official pagination contract: optional omission remains omission, explicit `page` values are validated from 1 through this endpoint's documented maximum of 100, and explicit `limit` values from 1 through the general maximum of 1000.
+    - Bulk cancellation intentionally supports an omitted currency pair because the official query parameter is optional; callers should omit it only to target every eligible Spot POV order. Cancellation responses must be inspected per order and must not be treated as proof of an immediately terminal state, because the official examples can still return `CREATED`.
+  - Added the current official response fixture, complete field/enum/numeric/timestamp assertions, signed request route/query/body/authentication coverage for all five operations, preflight validation coverage, and README/example usage. No authenticated or state-changing live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#list-spot-pov-orders
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#create-a-spot-pov-order
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-spot-pov-orders
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#query-spot-pov-order-details
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-a-spot-pov-order
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#pagination
 - Version 4.106.115 - 03 August 2026
   - Synchronized the v4.106.115 CrossEx order-error guidance with the complete current official order and error-handling documentation retrieved on 08 August 2026.
     - Documented that a successful `POST /crossex/orders` action response is only an asynchronous CrossEx acknowledgement. It does not prove that the venue accepted or executed the order; callers must query the order or consume private order updates.

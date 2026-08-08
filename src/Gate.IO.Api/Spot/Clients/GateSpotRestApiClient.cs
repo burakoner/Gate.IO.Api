@@ -1207,4 +1207,125 @@ public class GateSpotRestApiClient
         var oid = _.CheckOrderId(orderId, clientOrderId);
         return _.SendRequestInternal<GateSpotPriceTriggeredOrder>(_.GetUrl(api, v4, spot, "price_orders".AppendPath(oid)), HttpMethod.Delete, ct, true);
     }
+
+    /// <summary>
+    /// List Spot POV orders
+    /// </summary>
+    /// <param name="status">Active or finished order filter. Defaults to active orders.</param>
+    /// <param name="symbol">Currency pair</param>
+    /// <param name="side">Buy or sell side. Both are returned when omitted.</param>
+    /// <param name="page">Page number, from 1 through 100</param>
+    /// <param name="limit">Maximum number of records returned in a single list. Defaults to 100 when omitted; maximum 1000.</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotPovOrder>>> GetPovOrdersAsync(
+        GateSpotOrderQueryStatus status = GateSpotOrderQueryStatus.Open,
+        string symbol = null,
+        GateSpotOrderSide? side = null,
+        int? page = null,
+        int? limit = null,
+        CancellationToken ct = default)
+        => GetPovOrdersAsync(new GateSpotPovOrderQueryRequest
+        {
+            Status = status,
+            Symbol = symbol,
+            Side = side,
+            Page = page,
+            Limit = limit,
+        }, ct);
+
+    /// <summary>
+    /// List Spot POV orders
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotPovOrder>>> GetPovOrdersAsync(GateSpotPovOrderQueryRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (!Enum.IsDefined(typeof(GateSpotOrderQueryStatus), request.Status))
+            throw new ArgumentOutOfRangeException(nameof(request.Status));
+        request.Page?.ValidateIntBetween(nameof(request.Page), 1, 100);
+        request.Limit?.ValidateIntBetween(nameof(request.Limit), 1, 1000);
+
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddEnum("status", request.Status);
+        parameters.AddOptionalEnum("side", request.Side);
+        parameters.AddOptional("page", request.Page);
+        parameters.AddOptional("limit", request.Limit);
+
+        return _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders"), HttpMethod.Get, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Create a Spot POV order
+    /// </summary>
+    /// <param name="request">Request</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateSpotPovOrder>> PlacePovOrderAsync(GateSpotPovOrderRequest request, CancellationToken ct = default)
+    {
+        if (request == null)
+            throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol))
+            throw new ArgumentException("Currency pair is required.", nameof(request.Symbol));
+        if (!Enum.IsDefined(typeof(GateSpotOrderSide), request.Side))
+            throw new ArgumentOutOfRangeException(nameof(request.Side));
+        if (!request.Amount.HasValue)
+            throw new ArgumentException("Trade amount is required.", nameof(request.Amount));
+        if (!Enum.IsDefined(typeof(GateSpotPovParticipationRate), request.ParticipationRate))
+            throw new ArgumentOutOfRangeException(nameof(request.ParticipationRate));
+        if (!Enum.IsDefined(typeof(GateSpotPovTimeToLive), request.TimeToLive))
+            throw new ArgumentOutOfRangeException(nameof(request.TimeToLive));
+        ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
+
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
+
+        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+    }
+
+    /// <summary>
+    /// Cancel Spot POV orders. The response reports the orders accepted for cancellation; callers must inspect their subsequent status to confirm completion.
+    /// </summary>
+    /// <param name="symbol">Currency pair. When omitted, all eligible Spot POV orders are targeted.</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<List<GateSpotPovOrder>>> CancelPovOrdersAsync(string symbol = null, CancellationToken ct = default)
+    {
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("currency_pair", symbol);
+
+        return _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath("cancel")), HttpMethod.Post, ct, true, queryParameters: parameters);
+    }
+
+    /// <summary>
+    /// Query Spot POV order details
+    /// </summary>
+    /// <param name="orderId">Exchange order ID or the custom ID supplied in the text field</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateSpotPovOrder>> GetPovOrderAsync(string orderId, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(orderId))
+            throw new ArgumentException("Order ID is required.", nameof(orderId));
+
+        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(orderId.Trim())), HttpMethod.Get, ct, true);
+    }
+
+    /// <summary>
+    /// Cancel a Spot POV order. The response acknowledges the request; callers must inspect the returned and subsequent status to confirm completion.
+    /// </summary>
+    /// <param name="orderId">Exchange order ID or the custom ID supplied in the text field</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns></returns>
+    public Task<RestCallResult<GateSpotPovOrder>> CancelPovOrderAsync(string orderId, CancellationToken ct = default)
+    {
+        if (string.IsNullOrWhiteSpace(orderId))
+            throw new ArgumentException("Order ID is required.", nameof(orderId));
+
+        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(orderId.Trim()).AppendPath("cancel")), HttpMethod.Post, ct, true);
+    }
 }

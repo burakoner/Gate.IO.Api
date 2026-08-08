@@ -324,14 +324,186 @@ public class SpotRequestConstructionTests
         AssertSignedHeaders(request);
     }
 
+    [Fact]
+    public async Task Signed_spot_pov_list_requests_send_required_default_and_documented_filters()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse($"[{JsonFixture.Read("Docs/Spot/pov_order.success.json")}]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var defaultResult = await client.Spot.GetPovOrdersAsync();
+        var filteredResult = await client.Spot.GetPovOrdersAsync(new GateSpotPovOrderQueryRequest
+        {
+            Symbol = "BTC_USDT",
+            Status = GateSpotOrderQueryStatus.Finished,
+            Side = GateSpotOrderSide.Sell,
+            Page = 100,
+            Limit = 50,
+        });
+
+        Assert.True(defaultResult.Success, defaultResult.Error?.ToString());
+        Assert.True(filteredResult.Success, filteredResult.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
+
+        var defaultRequest = handler.Requests[0];
+        Assert.Equal(HttpMethod.Get, defaultRequest.Method);
+        Assert.Equal("/api/v4/spot/pov_orders", defaultRequest.RequestUri.AbsolutePath);
+        var defaultQuery = ParseQuery(defaultRequest.RequestUri);
+        Assert.Equal("open", defaultQuery["status"]);
+        Assert.Single(defaultQuery);
+        AssertSignedHeaders(defaultRequest);
+
+        var filteredRequest = handler.Requests[1];
+        Assert.Equal(HttpMethod.Get, filteredRequest.Method);
+        Assert.Equal("/api/v4/spot/pov_orders", filteredRequest.RequestUri.AbsolutePath);
+        var filteredQuery = ParseQuery(filteredRequest.RequestUri);
+        Assert.Equal("BTC_USDT", filteredQuery["currency_pair"]);
+        Assert.Equal("finished", filteredQuery["status"]);
+        Assert.Equal("sell", filteredQuery["side"]);
+        Assert.Equal("100", filteredQuery["page"]);
+        Assert.Equal("50", filteredQuery["limit"]);
+        AssertSignedHeaders(filteredRequest);
+    }
+
+    [Fact]
+    public async Task Signed_spot_pov_create_request_serializes_exact_documented_body()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json"), System.Net.HttpStatusCode.Created));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest
+        {
+            Symbol = "BTC_USDT",
+            Side = GateSpotOrderSide.Buy,
+            Amount = 1m,
+            ParticipationRate = GateSpotPovParticipationRate.FivePercent,
+            TimeToLive = GateSpotPovTimeToLive.OneHour,
+            LimitPrice = 63000m,
+            TriggerPrice = 63000m,
+            ClientOrderId = "t-pov_1",
+        });
+        var minimalResult = await client.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest
+        {
+            Symbol = "ETH_USDT",
+            Side = GateSpotOrderSide.Sell,
+            Amount = 1.25m,
+            ParticipationRate = GateSpotPovParticipationRate.FortyPercent,
+            TimeToLive = GateSpotPovTimeToLive.SevenDays,
+        });
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.True(minimalResult.Success, minimalResult.Error?.ToString());
+        Assert.Equal(2, handler.Requests.Count);
+        var request = handler.Requests[0];
+        Assert.Equal(HttpMethod.Post, request.Method);
+        Assert.Equal("/api/v4/spot/pov_orders", request.RequestUri.AbsolutePath);
+        Assert.Empty(ParseQuery(request.RequestUri));
+
+        var body = JObject.Parse(request.Content);
+        Assert.Equal("BTC_USDT", body["currency_pair"]!.ToString());
+        Assert.Equal("buy", body["side"]!.ToString());
+        Assert.Equal(JTokenType.String, body["amount"]!.Type);
+        Assert.Equal("1", body["amount"]!.ToString());
+        Assert.Equal(JTokenType.Integer, body["participation_rate"]!.Type);
+        Assert.Equal("5", body["participation_rate"]!.ToString());
+        Assert.Equal("1h", body["ttl"]!.ToString());
+        Assert.Equal("63000", body["limit_price"]!.ToString());
+        Assert.Equal("63000", body["trigger_price"]!.ToString());
+        Assert.Equal("t-pov_1", body["text"]!.ToString());
+        var minimalBody = JObject.Parse(handler.Requests[1].Content);
+        Assert.Equal("40", minimalBody["participation_rate"]!.ToString());
+        Assert.Equal("7d", minimalBody["ttl"]!.ToString());
+        Assert.Null(minimalBody["limit_price"]);
+        Assert.Null(minimalBody["trigger_price"]);
+        Assert.Null(minimalBody["text"]);
+        AssertSignedHeaders(request);
+        AssertSignedHeaders(handler.Requests[1]);
+    }
+
+    [Fact]
+    public async Task Signed_spot_pov_detail_and_cancel_requests_use_documented_post_routes_without_bodies()
+    {
+        var handler = new RecordingHttpMessageHandler(request => request.RequestUri!.AbsolutePath.EndsWith("/cancel", StringComparison.Ordinal)
+            && request.RequestUri.AbsolutePath == "/api/v4/spot/pov_orders/cancel"
+                ? JsonResponse($"[{JsonFixture.Read("Docs/Spot/pov_order.success.json")}]")
+                : JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var detailResult = await client.Spot.GetPovOrderAsync("t-pov_1");
+        var cancelResult = await client.Spot.CancelPovOrderAsync("1216");
+        var cancelAllResult = await client.Spot.CancelPovOrdersAsync("BTC_USDT");
+        var cancelEveryResult = await client.Spot.CancelPovOrdersAsync();
+
+        Assert.True(detailResult.Success, detailResult.Error?.ToString());
+        Assert.True(cancelResult.Success, cancelResult.Error?.ToString());
+        Assert.True(cancelAllResult.Success, cancelAllResult.Error?.ToString());
+        Assert.True(cancelEveryResult.Success, cancelEveryResult.Error?.ToString());
+        Assert.Equal(4, handler.Requests.Count);
+
+        Assert.Equal(HttpMethod.Get, handler.Requests[0].Method);
+        Assert.Equal("/api/v4/spot/pov_orders/t-pov_1", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Equal(HttpMethod.Post, handler.Requests[1].Method);
+        Assert.Equal("/api/v4/spot/pov_orders/1216/cancel", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.True(string.IsNullOrEmpty(handler.Requests[1].Content));
+        Assert.Equal(HttpMethod.Post, handler.Requests[2].Method);
+        Assert.Equal("/api/v4/spot/pov_orders/cancel", handler.Requests[2].RequestUri.AbsolutePath);
+        Assert.Equal("BTC_USDT", ParseQuery(handler.Requests[2].RequestUri)["currency_pair"]);
+        Assert.True(string.IsNullOrEmpty(handler.Requests[2].Content));
+        Assert.Equal(HttpMethod.Post, handler.Requests[3].Method);
+        Assert.Equal("/api/v4/spot/pov_orders/cancel", handler.Requests[3].RequestUri.AbsolutePath);
+        Assert.Empty(ParseQuery(handler.Requests[3].RequestUri));
+        Assert.True(string.IsNullOrEmpty(handler.Requests[3].Content));
+        Assert.All(handler.Requests, AssertSignedHeaders);
+    }
+
+    [Fact]
+    public async Task Spot_pov_validation_rejects_invalid_financial_inputs_before_network_io()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
+        var client = CreateClient(handler);
+
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetPovOrdersAsync(new GateSpotPovOrderQueryRequest { Page = 101 }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetPovOrdersAsync(new GateSpotPovOrderQueryRequest { Limit = 1001 }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest
+        {
+            Symbol = "BTC_USDT",
+            Side = GateSpotOrderSide.Buy,
+            ParticipationRate = GateSpotPovParticipationRate.FivePercent,
+            TimeToLive = GateSpotPovTimeToLive.OneHour,
+        }));
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest
+        {
+            Symbol = "BTC_USDT",
+            Side = GateSpotOrderSide.Buy,
+            Amount = 1m,
+            ParticipationRate = (GateSpotPovParticipationRate)7,
+            TimeToLive = GateSpotPovTimeToLive.OneHour,
+        }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest
+        {
+            Symbol = "BTC_USDT",
+            Side = GateSpotOrderSide.Buy,
+            Amount = 1m,
+            ParticipationRate = GateSpotPovParticipationRate.FivePercent,
+            TimeToLive = GateSpotPovTimeToLive.OneHour,
+            ClientOrderId = "invalid",
+        }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetPovOrderAsync(" "));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.CancelPovOrderAsync(string.Empty));
+
+        Assert.Empty(handler.Requests);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {
             HttpClient = new HttpClient(handler),
         });
 
-    private static HttpResponseMessage JsonResponse(string json)
-        => new(System.Net.HttpStatusCode.OK)
+    private static HttpResponseMessage JsonResponse(string json, System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK)
+        => new(statusCode)
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json"),
         };
