@@ -27,7 +27,8 @@ public record GateCrossExOrder
     private string ClientOrderId { set => Text = value; }
 
     /// <summary>
-    /// Order state: NEW, OPEN, PARTIALLY_FILLED, FILLED, FAIL, or REJECT.
+    /// Order state. NEW is validated and queued for the venue; OPEN, PARTIALLY_FILLED, and FILLED report venue progress;
+    /// FAIL is a CrossEx validation failure; REJECT is a rejection by the venue.
     /// </summary>
     [JsonProperty("state")]
     public string State { get; set; }
@@ -141,7 +142,8 @@ public record GateCrossExOrder
     public decimal? Leverage { get; set; }
 
     /// <summary>
-    /// Failure reason description.
+    /// Failure reason for FAIL or REJECT. CrossEx validation failures can contain a serialized JSON object with
+    /// a machine-readable label and message; venue rejections can contain the venue's original error text.
     /// </summary>
     [JsonProperty("reason")]
     public string Reason { get; set; }

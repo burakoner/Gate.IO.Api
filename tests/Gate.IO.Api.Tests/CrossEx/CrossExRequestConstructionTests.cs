@@ -609,14 +609,37 @@ public class CrossExRequestConstructionTests
         Assert.Equal("CROSSEX_DERIBIT", MapConverter.GetString(GateCrossExTransferAccountType.CrossExDeribit));
     }
 
+    [Theory]
+    [InlineData("message")]
+    [InlineData("detail")]
+    public async Task Crossex_http_errors_preserve_machine_readable_labels_and_documented_message_fields(string messageField)
+    {
+        var error = new JObject
+        {
+            ["label"] = "TRADE_INVALID_ORDER_QTY",
+            [messageField] = "Invalid order quantity",
+        };
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(
+            error.ToString(Formatting.None),
+            System.Net.HttpStatusCode.BadRequest));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.CrossEx.GetOrderAsync("2072652940337152");
+
+        Assert.False(result.Success);
+        Assert.Equal("TRADE_INVALID_ORDER_QTY", Assert.IsType<string>(result.Error!.Data));
+        Assert.Equal("Invalid order quantity", result.Error.Message);
+    }
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {
             HttpClient = new HttpClient(handler),
         });
 
-    private static HttpResponseMessage JsonResponse(string json)
-        => new(System.Net.HttpStatusCode.OK)
+    private static HttpResponseMessage JsonResponse(string json, System.Net.HttpStatusCode statusCode = System.Net.HttpStatusCode.OK)
+        => new(statusCode)
         {
             Content = new StringContent(json, Encoding.UTF8, "application/json"),
         };

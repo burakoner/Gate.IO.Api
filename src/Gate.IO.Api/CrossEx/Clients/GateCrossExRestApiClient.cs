@@ -196,7 +196,8 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
-    /// Create an order
+    /// Create an order. A successful response only acknowledges that CrossEx accepted the asynchronous request.
+    /// Query the order or subscribe to private order updates to confirm venue acceptance and execution.
     /// </summary>
     /// <param name="symbol">Trading pair identifier</param>
     /// <param name="side">Order side</param>
@@ -237,7 +238,8 @@ public class GateCrossExRestApiClient
         }, ct);
 
     /// <summary>
-    /// Create an order
+    /// Create an order. A successful response only acknowledges that CrossEx accepted the asynchronous request.
+    /// Query the order or subscribe to private order updates to confirm venue acceptance and execution.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
@@ -262,7 +264,7 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
-    /// Query order details
+    /// Query order details, including the final CrossEx validation or venue rejection state and reason
     /// </summary>
     /// <param name="orderId">Order ID or client-defined order ID</param>
     /// <param name="ct">Cancellation Token</param>

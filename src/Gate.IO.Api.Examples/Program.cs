@@ -605,6 +605,7 @@ internal class Program
         var crossex_03 = await api.CrossEx.GetTransferCoinsAsync(new GateCrossExTransferCoinQueryRequest { Coin = "USDT" });
         var crossex_04 = await api.CrossEx.GetTransferHistoryAsync(new GateCrossExTransferHistoryQueryRequest { Coin = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Page = 1, Limit = 100 });
         var crossex_05 = await api.CrossEx.TransferAsync(new GateCrossExTransferRequest { Coin = "USDT", Amount = 100.0m, From = GateCrossExTransferAccountType.Spot, To = GateCrossExTransferAccountType.CrossExKraken, Text = "CLIENT-TRANSFER-ID" });
+        // A successful action response acknowledges asynchronous acceptance only. Confirm State via GetOrderAsync or the private order stream: FAIL is CrossEx validation; REJECT is venue rejection.
         var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", Side = GateCrossExOrderSide.Buy, Type = GateCrossExOrderType.Limit, TimeInForce = GateCrossExTimeInForce.GoodTillCancelled, Quantity = 1m, Price = 0.5m, Text = "CLIENT-ORDER-ID" });
         var crossex_07 = await api.CrossEx.GetOrderAsync("ORDER-ID");
         var crossex_08 = await api.CrossEx.UpdateOrderAsync("ORDER-ID", new GateCrossExOrderUpdateRequest { Quantity = 0.001m, Price = 61000.0m });

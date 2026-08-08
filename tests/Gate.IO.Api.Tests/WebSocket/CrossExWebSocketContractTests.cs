@@ -171,6 +171,10 @@ public class CrossExWebSocketContractTests
         Assert.Equal(0.8499m, orders.Payload.Price);
         Assert.Equal(10m, orders.Payload.Quantity);
         Assert.False(orders.Payload.ReduceOnly);
+        Assert.Equal("FAIL", orders.Payload.State);
+        var orderFailure = JObject.Parse(orders.Payload.Reason);
+        Assert.Equal("TRADE_INSUFFICIENT_AVAILABLE_MARGIN_ERROR", orderFailure["label"]!.ToString());
+        Assert.Equal("Insufficient availableMargin", orderFailure["message"]!.ToString());
 
         var asset = JsonFixture.Deserialize<GateCrossExStreamResponse<GateCrossExAccountAsset>>(
             $"{FixtureRoot}/asset.update.json");

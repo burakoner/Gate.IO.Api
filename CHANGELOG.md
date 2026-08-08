@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Version 4.106.115 - 03 August 2026
+  - Synchronized the v4.106.115 CrossEx order-error guidance with the complete current official order and error-handling documentation retrieved on 08 August 2026.
+    - Documented that a successful `POST /crossex/orders` action response is only an asynchronous CrossEx acknowledgement. It does not prove that the venue accepted or executed the order; callers must query the order or consume private order updates.
+    - Clarified the state boundary: `NEW` is validated and queued, `FAIL` is a CrossEx validation failure, and `REJECT` is an underlying-venue rejection. Preserved the raw `reason` because CrossEx failures can contain serialized label/message JSON while venue rejections can contain original venue text.
+    - Extended the shared REST error parser to support the documented `detail` alternative to `message`, while continuing to expose the stable error `label` through `RestCallResult.Error.Data`. Callers should branch on the label rather than unstable human-readable messages.
+  - Added regression coverage for both `message` and `detail` HTTP error bodies and for the documented private-order `FAIL` payload containing `TRADE_INSUFFICIENT_AVAILABLE_MARGIN_ERROR`. Updated the README/example safety guidance. No authenticated or state-changing live call was made.
+  - The expanded label troubleshooting table is operational documentation, not a new wire enum. No closed enum or speculative retry automation was added because labels and venue messages can evolve independently, and automatic retries can duplicate financial actions.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/crossex/en/#error-handling
+  - Source: https://www.gate.com/docs/developers/apiv4/en/crossex/#create-an-order
 - Version 4.106.114 - 03 August 2026
   - Reverified the complete current signed `GET /crossex/market/tickers` and `GET /crossex/market/funding_info` contracts identified by v4.106.114 against the official documentation retrieved on 08 August 2026.
     - Confirmed every documented response field, optional comma-separated symbol filter, authentication boundary, numeric-string conversion, empty Spot numeric handling, funding interval in seconds, and millisecond timestamp conversion.

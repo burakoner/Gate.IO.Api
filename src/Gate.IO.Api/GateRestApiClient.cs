@@ -219,16 +219,19 @@ public class GateRestApiClient : RestApiClient
         if (!error.HasValues)
             return new ServerError(error.ToString());
 
-        if (error["message"] == null && error["label"] == null)
+        var message = error["message"] ?? error["detail"];
+        var label = error["label"];
+
+        if (message == null && label == null)
             return new ServerError(error.ToString());
 
-        if (error["message"] != null && error["label"] == null)
-            return new ServerError((string)error["message"]!);
+        if (message != null && label == null)
+            return new ServerError((string)message!);
 
-        if (error["message"] == null && error["label"] != null)
-            return new ServerError((string)error["label"]!);
+        if (message == null && label != null)
+            return new ServerError((string)label!);
 
-        return new ServerError(0, (string)error["message"]!, (string)error["label"]!);
+        return new ServerError(0, (string)message!, (string)label!);
     }
     #endregion
 
