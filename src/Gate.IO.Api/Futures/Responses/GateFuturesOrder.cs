@@ -1,20 +1,21 @@
 ﻿namespace Gate.IO.Api.Futures;
 
 /// <summary>
-/// GateFuturesOrder
+/// Full or partial order details shared by Futures/Delivery REST and WebSocket consumers.
+/// ACK/RESULT may omit fields; transport success or absent/default values do not prove a fill or cancellation.
 /// </summary>
 public record GateFuturesOrder
 {
     /// <summary>
     /// Futures order ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UserId { get; set; }
     
     /// <summary>
@@ -31,7 +32,7 @@ public record GateFuturesOrder
     public long? CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
-    /// Order更新Time
+    /// Order update time
     /// </summary>
     [JsonProperty("update_time")]
     [JsonConverter(typeof(DateTimeConverter))]
@@ -152,7 +153,7 @@ public record GateFuturesOrder
     /// <summary>
     /// Reference user ID
     /// </summary>
-    [JsonProperty("refu")]
+    [JsonProperty("refu"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long ReferenceUserId { get; set; }
 
     /// <summary>
@@ -166,7 +167,7 @@ public record GateFuturesOrder
     /// 1. If the stp_id of two orders being matched is non-zero and equal, they will not be executed. Instead, the corresponding strategy will be executed based on the stp_act of the taker.
     /// 2. stp_id returns 0 by default for orders that have not been set for STP group
     /// </summary>
-    [JsonProperty("stp_id")]
+    [JsonProperty("stp_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? SelfTradeActionId { get; set; }
 
     /// <summary>

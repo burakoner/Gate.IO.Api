@@ -316,10 +316,12 @@ internal class Program
         var perpetual_26 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
         var perpetual_27 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
         var perpetual_28 = await api.Futures[settle].SetDualModeRiskLimitAsync("CONTRACT", 25);
-        var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("CONTRACT", 25.5m, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
-        var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "CONTRACT", Size = 25.5m, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m, PositionMarginMode = GateFuturesPositionMarginMode.Isolated, ActionMode = GateFuturesActionMode.Full, TakeProfitTriggerPrice = 110.0m, StopLossTriggerPrice = 90.0m });
+        // Illustrative only: use a real contract for the selected settlement and suitable account/market settings. Do not run these as a live batch.
+        var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("BTC_USDT", 25.5m, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
+        var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "BTC_USDT", Size = 25.5m, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m, PositionMarginMode = GateFuturesPositionMarginMode.Isolated, ActionMode = GateFuturesActionMode.Full, TakeProfitTriggerPrice = 110.0m, StopLossTriggerPrice = 90.0m });
         var perpetual_30b = await api.Futures[settle].GetOrdersAsync(new GateFuturesOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
-        var perpetual_31 = await api.Futures[settle].GetOrderAsync();
+        // Replace the example ID with an actual existing order ID. Transport success/ACK is not proof of a fill or cancellation.
+        var perpetual_31 = await api.Futures[settle].GetOrderAsync(orderId: 1_000_000_001);
         var perpetual_32 = await api.Futures[settle].CancelOrderAsync(orderId: 1_000_000_001, actionMode: GateFuturesActionMode.Result);
         var perpetual_33 = await api.Futures[settle].AmendOrderAsync(orderId: 1_000_000_001, size: 20.5m, price: 101.0m, actionMode: GateFuturesActionMode.Full);
         var perpetual_33b = await api.Futures[settle].CancelOrdersAsync(new GateFuturesOrderCancelAllRequest { Contract = "CONTRACT", ExcludeReduceOnly = true, ActionMode = GateFuturesActionMode.Acknowledge });

@@ -1,35 +1,36 @@
 namespace Gate.IO.Api.Futures;
 
 /// <summary>
-/// GateFuturesOrderRequest
+/// Standard Futures creation instructions. Saved JSON requires contract, size and price;
+/// explicit numeric values must fit decimal/Int64 exactly rather than being rounded or discarded.
 /// </summary>
 public record GateFuturesOrderRequest
 {
     /// <summary>
     /// Futures contract
     /// </summary>
-    [JsonProperty("contract")]
+    [JsonProperty("contract", Required = Required.Always)]
     public string Contract { get; set; }
 
     /// <summary>
-    /// Order size. Specify positive number to make a bid, and negative number to ask
+    /// Number of contracts, not currency units. Positive buys; negative sells. Full close uses zero with explicit closing flags.
     /// </summary>
-    [JsonProperty("size")]
-    [JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("size", Required = Required.Always)]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Size { get; set; }
 
     /// <summary>
     /// Display size for iceberg order. 0 for non-iceberg. Note that you will have to pay the taker fee for the hidden size
     /// </summary>
     [JsonProperty("iceberg", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? Iceberg { get; set; }
 
     /// <summary>
     /// Order price. 0 for market order with &#x60;tif&#x60; set as &#x60;ioc&#x60;
     /// </summary>
-    [JsonProperty("price")]
-    [JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("price", Required = Required.Always)]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Price { get; set; }
 
     /// <summary>
@@ -47,7 +48,7 @@ public record GateFuturesOrderRequest
     /// <summary>
     /// Time in force  - gtc: GoodTillCancelled - ioc: ImmediateOrCancelled, taker only - poc: PendingOrCancelled, makes a post-only order that always enjoys a maker fee - fok: FillOrKill, fill either completely or none
     /// </summary>
-    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesTimeInForce? TimeInForce { get; set; }
 
     /// <summary>
@@ -60,52 +61,53 @@ public record GateFuturesOrderRequest
     public string ClientOrderId { get; set; } = null;
 
     /// <summary>
-    /// Set side to close dual-mode position. &#x60;close_long&#x60; closes the long side; while &#x60;close_short&#x60; the short one. Note &#x60;size&#x60; also needs to be set to 0
+    /// Full hedge-mode close side: close_long or close_short, with size=0 and reduce_only=true.
+    /// Omit with null, not None. The client does not select the account's position mode.
     /// </summary>
-    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
 
     /// <summary>
     /// Self-Trading Prevention Action. Users can use this field to set self-trade prevetion strategies
     /// </summary>
-    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("stp_act", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesSelfTradeAction? SelfTradeAction { get; set; }
 
     /// <summary>
     /// Position ID. This field is write-only.
     /// </summary>
-    [JsonProperty("pid", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("pid", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? PositionId { get; set; }
 
     /// <summary>
     /// The maximum slippage allowed for market orders, based on the latest market price
     /// </summary>
     [JsonProperty("market_order_slip_ratio", NullValueHandling = NullValueHandling.Ignore)]
-    [JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? MarketOrderSlipRatio { get; set; }
 
     /// <summary>
     /// Position margin mode.
     /// </summary>
-    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 
     /// <summary>
     /// Controls how much order data is returned.
     /// </summary>
-    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesActionMode? ActionMode { get; set; }
 
     /// <summary>
     /// Take-profit trigger price.
     /// </summary>
-    [JsonProperty("tpsl_tp_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("tpsl_tp_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? TakeProfitTriggerPrice { get; set; }
 
     /// <summary>
     /// Stop-loss trigger price.
     /// </summary>
-    [JsonProperty("tpsl_sl_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("tpsl_sl_trigger_price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? StopLossTriggerPrice { get; set; }
 
     /// <summary>

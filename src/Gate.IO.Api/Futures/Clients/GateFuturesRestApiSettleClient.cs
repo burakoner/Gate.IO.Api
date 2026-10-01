@@ -622,7 +622,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="contract">Futures contract</param>
     /// <param name="size">Order size. Specify positive number to make a bid, and negative number to ask</param>
     /// <param name="iceberg">Display size for iceberg order. 0 for non-iceberg. Note that you will have to pay the taker fee for the hidden size</param>
-    /// <param name="price">Order price. 0 for market order with tif set as ioc</param>
+    /// <param name="price">Order price. Zero requires explicit ImmediateOrCancel; the client does not choose tif.</param>
     /// <param name="close">Set as true to close the position, with size set to 0</param>
     /// <param name="reduceOnly">Set as true to be reduce-only order</param>
     /// <param name="clientOrderId">User defined information. If not empty, must follow the rules below:</param>
@@ -644,7 +644,7 @@ public class GateFuturesRestApiSettleClient
     /// In dual position mode, to close one side position, you need to set auto_size side, reduce_only to true and size to 0
     /// Set stp_act to decide the strategy of self-trade prevention. For detailed usage, refer to the stp_act parameter in request body
     /// </summary>
-    /// <param name="request">Order Request</param>
+    /// <param name="request">Explicit creation instructions. Market price zero requires ioc; close=true requires size=0; auto_size requires size=0 and reduce_only=true. Account mode, precision and symbol-dependent limits remain server-side.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateFuturesOrderRequest request, CancellationToken ct = default)
@@ -749,11 +749,11 @@ public class GateFuturesRestApiSettleClient
     /// <summary>
     /// Get a single order
     /// 
-    /// Zero-fill order cannot be retrieved for 10 minutes after cancellation
+    /// Custom text lookup of an unfilled cancelled order expires after 60 seconds. Filled or partially filled orders remain queryable by text.
     /// Historical orders, by default, only data within the past 6 months is supported.
     /// </summary>
-    /// <param name="orderId">Order ID returned, or user custom ID(i.e., text field).</param>
-    /// <param name="clientOrderId">Order ID returned, or user custom ID(i.e., text field).</param>
+    /// <param name="orderId">Positive actual order ID. Supply exactly one of orderId/clientOrderId.</param>
+    /// <param name="clientOrderId">Custom t- identifier, at most 28 ASCII letters/digits/underscore/hyphen/dot after the prefix.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateFuturesOrder>> GetOrderAsync(long? orderId = null, string clientOrderId = null, CancellationToken ct = default)
@@ -761,9 +761,10 @@ public class GateFuturesRestApiSettleClient
 
     /// <summary>
     /// Cancel a single order
+    /// Partial ACK/RESULT responses are not a terminal cancellation confirmation. No retry or completion synthesis is added.
     /// </summary>
-    /// <param name="orderId">Order ID returned, or user custom ID(i.e., text field).</param>
-    /// <param name="clientOrderId">Order ID returned, or user custom ID(i.e., text field).</param>
+    /// <param name="orderId">Positive actual order ID. Supply exactly one of orderId/clientOrderId.</param>
+    /// <param name="clientOrderId">Custom t- identifier; unfilled cancelled text lookup expires after 60 seconds.</param>
     /// <param name="actionMode">Controls how much order data is returned</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
@@ -773,9 +774,9 @@ public class GateFuturesRestApiSettleClient
     /// <summary>
     /// Amend an order
     /// </summary>
-    /// <param name="orderId">Order ID returned, or user custom ID(i.e., text field).</param>
-    /// <param name="clientOrderId">Order ID returned, or user custom ID(i.e., text field).</param>
-    /// <param name="size">New order size, including filled part.</param>
+    /// <param name="orderId">Positive actual order ID. Supply exactly one of orderId/clientOrderId.</param>
+    /// <param name="clientOrderId">Custom t- identifier; unfilled cancelled text lookup expires after 60 seconds.</param>
+    /// <param name="size">New total including filled quantity. At or below filled quantity cancels; keep the original side. Close-order quantity cannot be amended. Server-side order state determines these constraints.</param>
     /// <param name="price">New order price.</param>
     /// <param name="amendText">Custom info during amending order</param>
     /// <param name="text">New user-defined order identifier. This field is available to internal users.</param>

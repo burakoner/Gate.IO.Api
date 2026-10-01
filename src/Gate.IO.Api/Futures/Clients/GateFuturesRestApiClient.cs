@@ -524,8 +524,7 @@ public class GateFuturesRestApiClient
     // Create a futures order
     internal Task<RestCallResult<GateFuturesOrder>> PlaceOrderAsync(GateFuturesSettlement settle, GateFuturesOrderRequest request, CancellationToken ct = default)
     {
-        PerpetualHelpers.ValidateContractSymbol(request.Contract);
-        ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
+        GateFuturesOrderValidation.Create(request);
 
         var parameters = new ParameterCollection();
         parameters.Add("contract", request.Contract);
@@ -624,19 +623,20 @@ public class GateFuturesRestApiClient
     {
         var endpoint = "{settle}/orders/{order_id}"
             .Replace("{settle}", MapConverter.GetString(settle))
-            .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
+            .Replace("{order_id}", GateFuturesOrderValidation.Identity(orderId, clientOrderId));
         return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Cancel a single order
     internal Task<RestCallResult<GateFuturesOrder>> CancelOrderAsync(GateFuturesSettlement settle, long? orderId = null, string clientOrderId = null, GateFuturesActionMode? actionMode = null, CancellationToken ct = default)
     {
+        GateFuturesOrderValidation.Defined(actionMode, nameof(actionMode));
         var parameters = new ParameterCollection();
         parameters.AddOptionalEnum("action_mode", actionMode);
 
         var endpoint = "{settle}/orders/{order_id}"
             .Replace("{settle}", MapConverter.GetString(settle))
-            .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
+            .Replace("{order_id}", GateFuturesOrderValidation.Identity(orderId, clientOrderId));
         return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
@@ -651,6 +651,7 @@ public class GateFuturesRestApiClient
         GateFuturesActionMode? actionMode = null,
         CancellationToken ct = default)
     {
+        GateFuturesOrderValidation.Defined(actionMode, nameof(actionMode));
         var parameters = new ParameterCollection();
         parameters.AddOptionalString("size", size);
         parameters.AddOptionalString("price", price);
@@ -660,7 +661,7 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/orders/{order_id}"
             .Replace("{settle}", MapConverter.GetString(settle))
-            .Replace("{order_id}", _.CheckOrderId(orderId, clientOrderId));
+            .Replace("{order_id}", GateFuturesOrderValidation.Identity(orderId, clientOrderId));
         return _.SendRequestInternal<GateFuturesOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Put, ct, true, bodyParameters: parameters);
     }
 
