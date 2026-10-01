@@ -19,7 +19,8 @@ public record GateP2pActionResult
     public string Method { get; set; }
 
     /// <summary>
-    /// Return code
+    /// Business result code. Zero means success; an HTTP success alone does not imply business success.
+    /// Advertisement code 70305102 means content risk control rejected the submission; inspect Data for details.
     /// </summary>
     [JsonProperty("code")]
     public int Code { get; set; }

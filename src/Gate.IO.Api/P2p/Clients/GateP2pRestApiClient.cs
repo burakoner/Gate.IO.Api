@@ -86,6 +86,46 @@ public class GateP2pRestApiClient
         parameters.AddEnum("trade_type", request.TradeType.Value);
     }
 
+    private static void ValidateAdvertisementPayments(GateP2pAdRequest request)
+    {
+        Require(request.PayType, nameof(request.PayType));
+        var types = request.PayType.Split(',').Select(value => value.Trim()).ToList();
+        if (types.Any(string.IsNullOrWhiteSpace))
+            throw new ArgumentException("PayType must contain non-empty comma-separated payment types", nameof(request.PayType));
+
+        if (request.PayTypeJson == null)
+            return;
+
+        JObject accounts;
+        try
+        {
+            using var reader = new JsonTextReader(new System.IO.StringReader(request.PayTypeJson))
+            {
+                DateParseHandling = DateParseHandling.None,
+            };
+            accounts = JObject.Load(reader, new JsonLoadSettings
+            {
+                DuplicatePropertyNameHandling = DuplicatePropertyNameHandling.Error,
+            });
+            if (reader.Read())
+                throw new JsonReaderException("Additional content after the payment map");
+        }
+        catch (JsonException error)
+        {
+            throw new ArgumentException("PayTypeJson must be a JSON object with unique payment type keys", nameof(request.PayTypeJson), error);
+        }
+
+        var enabledTypes = new HashSet<string>(types, StringComparer.Ordinal);
+        foreach (var account in accounts.Properties())
+        {
+            if (!enabledTypes.Contains(account.Name))
+                throw new ArgumentException("Each PayTypeJson key must be a payment type enabled in PayType", nameof(request.PayTypeJson));
+            if ((account.Value.Type != JTokenType.String && account.Value.Type != JTokenType.Integer)
+                || string.IsNullOrWhiteSpace(account.Value.ToString()))
+                throw new ArgumentException("Each PayTypeJson value must be a non-empty payment method ID", nameof(request.PayTypeJson));
+        }
+    }
+
     private static ParameterCollection CreateAdvertisementParameters(GateP2pAdRequest request)
     {
         var parameters = new ParameterCollection
@@ -495,13 +535,17 @@ public class GateP2pRestApiClient
     /// <summary>
     /// Publish or edit P2P advertisement
     /// </summary>
+    /// <remarks>
+    /// Use the request overload for editing so OrderId can be supplied. Inspect the returned Code for business success;
+    /// an HTTP success can contain advertisement content risk-control rejection code 70305102.
+    /// </remarks>
     /// <param name="currencyType">Cryptocurrency symbol</param>
     /// <param name="exchangeType">Fiat currency</param>
     /// <param name="type">Ad operation type</param>
     /// <param name="unitPrice">Per-unit price in fixed-price mode</param>
     /// <param name="number">Ad amount priced in currencyType</param>
-    /// <param name="payType">Payment types, comma-separated</param>
-    /// <param name="payTypeJson">JSON map of payment type to payment method ID</param>
+    /// <param name="payType">Enabled payment types, comma-separated, from the payment method list's pay_type values</param>
+    /// <param name="payTypeJson">Optional JSON string mapping enabled types to the current user's specific payment method IDs</param>
     /// <param name="minAmount">Minimum trade amount</param>
     /// <param name="maxAmount">Maximum trade amount</param>
     /// <param name="ct">Cancellation Token</param>
@@ -533,6 +577,12 @@ public class GateP2pRestApiClient
     /// <summary>
     /// Publish or edit P2P advertisement
     /// </summary>
+    /// <remarks>
+    /// Payment types and IDs must come from the current user's payment methods. No account lookup is performed.
+    /// Editing requires OrderId and must preserve the existing limit unit; fiat-limit edits must keep LimitBasis=Fiat.
+    /// RestCallResult.Success alone does not mean the advertisement was saved: inspect the returned Code.
+    /// Code 0 means success; 70305102 means content risk control rejected the advertisement and Data contains the prompt.
+    /// </remarks>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
@@ -542,7 +592,21 @@ public class GateP2pRestApiClient
             throw new ArgumentNullException(nameof(request));
         Require(request.CurrencyType, nameof(request.CurrencyType));
         Require(request.ExchangeType, nameof(request.ExchangeType));
-        Require(request.PayType, nameof(request.PayType));
+        if (!Enum.IsDefined(typeof(GateP2pAdOperationType), request.Type))
+            throw new ArgumentOutOfRangeException(nameof(request.Type));
+        if (request.Type == GateP2pAdOperationType.EditSell || request.Type == GateP2pAdOperationType.EditBuy)
+            Require(request.OrderId, nameof(request.OrderId));
+        if (request.LimitBasis.HasValue && !Enum.IsDefined(typeof(GateP2pAdLimitBasis), request.LimitBasis.Value))
+            throw new ArgumentOutOfRangeException(nameof(request.LimitBasis));
+        if (request.RateFixed.HasValue && request.RateFixed != 0 && request.RateFixed != 1)
+            throw new ArgumentOutOfRangeException(nameof(request.RateFixed));
+        if (request.AdvertisersLimit.HasValue && request.AdvertisersLimit != 0 && request.AdvertisersLimit != 1)
+            throw new ArgumentOutOfRangeException(nameof(request.AdvertisersLimit));
+        if (request.RateReferenceId.HasValue && (request.RateReferenceId < 1 || request.RateReferenceId > 3))
+            throw new ArgumentOutOfRangeException(nameof(request.RateReferenceId));
+        if (request.FloatTrend.HasValue && request.FloatTrend != 0 && request.FloatTrend != 1)
+            throw new ArgumentOutOfRangeException(nameof(request.FloatTrend));
+        ValidateAdvertisementPayments(request);
 
         if (request.LimitBasis == GateP2pAdLimitBasis.Fiat)
         {
@@ -552,6 +616,9 @@ public class GateP2pRestApiClient
                 throw new ArgumentException("FiatMaxAmount is required for fiat limits", nameof(request.FiatMaxAmount));
             if (request.FiatMinAmount > request.FiatMaxAmount)
                 throw new ArgumentException("FiatMinAmount must not exceed FiatMaxAmount", nameof(request.FiatMinAmount));
+            // Floating prices (and an omitted pricing mode) are determined by the server, not UnitPrice.
+            if (request.RateFixed == 1 && request.FiatMaxAmount > request.Number * request.UnitPrice)
+                throw new ArgumentException("FiatMaxAmount must not exceed the fixed-price advertisement's total fiat value", nameof(request.FiatMaxAmount));
         }
         else
         {

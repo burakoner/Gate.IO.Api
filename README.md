@@ -100,6 +100,14 @@ This setting is captured at construction and sends `x-gate-trader-copy-type: sto
 
 Japanese exchange queries use `GateStockExchange.Japan`. Symbol responses expose nullable `AssetType` (`STOCK`/`ETF`), and account assets expose nullable option market value and PnL fields so an omitted field is not mistaken for zero. `Category` remains a string supporting the documented `CS`, `ETF`, `ADRC`, `ADR`, `ETV`, `PFD`, `ETS`, `ETN` and `FUND` values.
 
+## P2P advertisement submission
+
+For [advertisement creation and editing](https://www.gate.com/docs/developers/apiv4/en/p2p/#publish-ad-order), `PayType` contains enabled payment **types**, such as `bank,swift`, not account IDs. Obtain the types and the current user's corresponding payment method IDs through `GetPaymentMethodsAsync`. If `PayTypeJson` is supplied, it is a JSON **string**, for example `{"bank":"10001","swift":"10002"}`. Its keys must be enabled in `PayType`. The mapping remains optional; the wrapper neither fetches accounts nor invents or rewrites IDs. The server verifies whether those accounts belong to the current user.
+
+Use the request overload for editing and supply `OrderId`. Preserve the existing advertisement's limit unit: fiat-limit edits must keep `LimitBasis = GateP2pAdLimitBasis.Fiat`. The wrapper does not fetch the existing advertisement to infer its unit. For explicit fixed-price fiat limits, `FiatMaxAmount` must not exceed `Number * UnitPrice`; floating-price and unspecified-mode valuation remains server-side.
+
+`RestCallResult.Success` alone does not confirm that the advertisement was saved. Also inspect `result.Data.Code`: `0` means business success; `70305102` means content risk control rejected the submission. In that case, `result.Data.Data.RiskEvent` contains the prompt. The existing response contract is preserved; business rejections are not converted into transport errors or retried automatically.
+
 ## Rest Api Examples
 
 ```csharp
@@ -667,7 +675,7 @@ var p2p_06 = await api.P2p.GetTransactionDetailsAsync(new GateP2pTransactionDeta
 var p2p_07 = await api.P2p.ConfirmPaymentAsync(new GateP2pConfirmPaymentRequest { TransactionId = 40_000_001, PaymentMethod = "bank" });
 var p2p_08 = await api.P2p.ConfirmReceiptAsync(new GateP2pTransactionIdRequest { TransactionId = 40_000_001 });
 var p2p_09 = await api.P2p.CancelOrderAsync(new GateP2pCancelOrderRequest { TransactionId = 40_000_001, ReasonId = "1", ReasonMemo = "Canceled after agreement with the counterparty" });
-var p2p_10 = await api.P2p.SubmitAdvertisementAsync(new GateP2pAdRequest { CurrencyType = "USDT", ExchangeType = "USD", Type = GateP2pAdOperationType.PublishSell, UnitPrice = 1.1m, Number = 100.0m, PayType = "bank", PayTypeJson = "{\"bank\":\"10001\"}", LimitBasis = GateP2pAdLimitBasis.Fiat, FiatMinAmount = 100.0m, FiatMaxAmount = 110.0m, PolymarketRestricted = false, RateFixed = 1, ExpireMinutes = 20 });
+var p2p_10 = await api.P2p.SubmitAdvertisementAsync(new GateP2pAdRequest { CurrencyType = "USDT", ExchangeType = "USD", Type = GateP2pAdOperationType.PublishSell, UnitPrice = 1.1m, Number = 100.0m, PayType = "bank,swift", PayTypeJson = "{\"bank\":\"10001\",\"swift\":\"10002\"}", LimitBasis = GateP2pAdLimitBasis.Fiat, FiatMinAmount = 100.0m, FiatMaxAmount = 110.0m, PolymarketRestricted = false, RateFixed = 1, ExpireMinutes = 20 });
 var p2p_11 = await api.P2p.UpdateAdvertisementStatusAsync(new GateP2pAdStatusUpdateRequest { AdvertisementId = 2_124_000_001, Status = GateP2pAdStatusUpdate.Delisted });
 var p2p_12 = await api.P2p.GetAdvertisementAsync(new GateP2pAdvertisementIdRequest { AdvertisementId = "2124000001" });
 var p2p_13 = await api.P2p.GetMyAdvertisementsAsync(new GateP2pAdListRequest { Asset = "USDT", FiatUnit = "USD", TradeType = GateP2pOrderSide.Sell });

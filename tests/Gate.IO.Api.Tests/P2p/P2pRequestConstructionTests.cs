@@ -1,5 +1,6 @@
 using Gate.IO.Api.P2p;
 using Gate.IO.Api.Tests.Infrastructure;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Gate.IO.Api.Tests.P2p;
@@ -104,10 +105,10 @@ public class P2pRequestConstructionTests
         {
             CurrencyType = "USDT",
             ExchangeType = "USD",
-            Type = GateP2pAdOperationType.PublishSell,
+            Type = GateP2pAdOperationType.EditSell,
             UnitPrice = 1.1m,
             Number = 100m,
-            PayType = "bank",
+            PayType = "bank,swift",
             PayTypeJson = """{"bank":"10001","swift":"10002"}""",
             RateFixed = 1,
             OrderId = "2124000001",
@@ -259,10 +260,10 @@ public class P2pRequestConstructionTests
         Assert.Equal("/api/v4/p2p/merchant/books/place_biz_push_order", handler.Requests[10].RequestUri.AbsolutePath);
         Assert.Equal("USDT", adBody["currencyType"]!.ToString());
         Assert.Equal("USD", adBody["exchangeType"]!.ToString());
-        Assert.Equal("0", adBody["type"]!.ToString());
+        Assert.Equal("2", adBody["type"]!.ToString());
         Assert.Equal("1.1", adBody["unitPrice"]!.ToString());
         Assert.Equal("100", adBody["number"]!.ToString());
-        Assert.Equal("bank", adBody["payType"]!.ToString());
+        Assert.Equal("bank,swift", adBody["payType"]!.ToString());
         Assert.Equal("""{"bank":"10001","swift":"10002"}""", adBody["pay_type_json"]!.ToString());
         Assert.Equal("1", adBody["rateFixed"]!.ToString());
         Assert.Equal("2124000001", adBody["oid"]!.ToString());
@@ -270,6 +271,23 @@ public class P2pRequestConstructionTests
         Assert.Equal("100", adBody["fiatMinAmount"]!.ToString());
         Assert.Equal("110", adBody["fiatMaxAmount"]!.ToString());
         Assert.Equal("0", adBody["polymarket_limit"]!.ToString());
+        Assert.Equal("0", adBody["tierLimit"]!.ToString());
+        Assert.Equal("0", adBody["verifiedLimit"]!.ToString());
+        Assert.Equal("0", adBody["regTimeLimit"]!.ToString());
+        Assert.Equal("0", adBody["advertisersLimit"]!.ToString());
+        Assert.Equal("Please pay from an account under your real name", adBody["trade_tips"]!.ToString());
+        Assert.Equal("Thanks for your order. I will process it soon.", adBody["auto_reply"]!.ToString());
+        Assert.Equal("2", adBody["min_completed_limit"]!.ToString());
+        Assert.Equal("100", adBody["max_completed_limit"]!.ToString());
+        Assert.Equal("3", adBody["user_order_limit"]!.ToString());
+        Assert.Equal("1", adBody["rateReferenceId"]!.ToString());
+        Assert.Equal("0.5", adBody["rateOffset"]!.ToString());
+        Assert.Equal("0", adBody["float_trend"]!.ToString());
+        Assert.Equal("1000001", adBody["team_payment_uid"]!.ToString());
+        foreach (var property in adBody.Properties())
+            Assert.Equal(property.Name is "limitBasis" or "polymarket_limit" ? JTokenType.Integer : JTokenType.String, property.Value.Type);
+        Assert.Null(adBody["minAmount"]);
+        Assert.Null(adBody["maxAmount"]);
         Assert.Equal("20", adBody["expire_min"]!.ToString());
         Assert.Equal("90", adBody["completed_rate_limit"]!.ToString());
         Assert.Equal("-1", adBody["user_country_limit"]!.ToString());
@@ -346,6 +364,275 @@ public class P2pRequestConstructionTests
         Assert.Equal("Message", chatException.ParamName);
     }
 
+    [Fact]
+    public async Task Advertisement_mapping_cannot_select_a_payment_type_not_enabled_for_the_ad()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.PayType = "bank";
+        request.PayTypeJson = """{"bank":"10001","swift":"10002"}""";
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(nameof(request.PayTypeJson), error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Editing_an_advertisement_requires_its_id_before_network_io()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.Type = GateP2pAdOperationType.EditSell;
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(nameof(request.OrderId), error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Fixed_price_advertisement_fiat_maximum_cannot_exceed_its_total_fiat_value()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.RateFixed = 1;
+        request.LimitBasis = GateP2pAdLimitBasis.Fiat;
+        request.FiatMinAmount = 100m;
+        request.FiatMaxAmount = 110.01m;
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(nameof(request.FiatMaxAmount), error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData(GateP2pAdOperationType.PublishSell, "0")]
+    [InlineData(GateP2pAdOperationType.PublishBuy, "1")]
+    [InlineData(GateP2pAdOperationType.EditSell, "2")]
+    [InlineData(GateP2pAdOperationType.EditBuy, "3")]
+    public async Task Ad_operations_preserve_the_string_payment_map_and_edit_id(GateP2pAdOperationType type, string wireType)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.Type = type;
+        if (type is GateP2pAdOperationType.EditSell or GateP2pAdOperationType.EditBuy)
+            request.OrderId = "2124000001";
+        request.PayTypeJson = """{ "bank": "00010001", "swift": "9007199254740993" }""";
+
+        var result = await client.P2p.SubmitAdvertisementAsync(request);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(0, result.Data!.Code);
+        Assert.Null(result.Data.Data!.RiskCode);
+        Assert.Null(result.Data.Data.RiskEvent);
+        var sent = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Post, sent.Method);
+        Assert.Equal("/api/v4/p2p/merchant/books/place_biz_push_order", sent.RequestUri.AbsolutePath);
+        Assert.Empty(sent.RequestUri.Query);
+        var body = ParseBody(sent);
+        Assert.Equal(wireType, body["type"]!.Value<string>());
+        Assert.Equal(JTokenType.String, body["pay_type_json"]!.Type);
+        Assert.Equal(request.PayTypeJson, body["pay_type_json"]!.Value<string>());
+        Assert.Equal(request.OrderId, body["oid"]?.Value<string>());
+        Assert.Equal("10", body["minAmount"]!.Value<string>());
+        Assert.Equal("100", body["maxAmount"]!.Value<string>());
+        Assert.Null(body["limitBasis"]);
+        Assert.Null(body["fiatMinAmount"]);
+        Assert.Null(body["fiatMaxAmount"]);
+        AssertSignedHeaders(sent);
+    }
+
+    [Fact]
+    public async Task Convenience_ad_overload_keeps_payment_mapping_optional()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.P2p.SubmitAdvertisementAsync("USDT", "USD", GateP2pAdOperationType.PublishBuy, 1.1m, 100m, "bank,swift", null, 10m, 100m);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var sent = Assert.Single(handler.Requests);
+        var body = ParseBody(sent);
+        Assert.Equal("bank,swift", body["payType"]!.Value<string>());
+        Assert.Null(body["pay_type_json"]);
+        Assert.Null(body["oid"]);
+        AssertSignedHeaders(sent);
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData("not-json")]
+    [InlineData("[]")]
+    [InlineData("null")]
+    [InlineData("{\"bank\":\"10001\",\"bank\":\"10002\"}")]
+    [InlineData("{\"bank\":\"10001\"}{\"swift\":\"10002\"}")]
+    [InlineData("{\"bank\":\"10001\",\"paypal\":\"10002\"}")]
+    [InlineData("{\"bank\":null}")]
+    [InlineData("{\"bank\":\" \"}")]
+    [InlineData("{\"bank\":true}")]
+    [InlineData("{\"bank\":1.5}")]
+    [InlineData("{\"bank\":[]}")]
+    [InlineData("{\"bank\":{\"id\":\"10001\"}}")]
+    public async Task Malformed_or_ambiguous_payment_mappings_fail_before_io(string mapping)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.PayTypeJson = mapping;
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(nameof(request.PayTypeJson), error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData("{\"bank\":10001,\"swift\":10002}")]
+    [InlineData("{\"bank\":\"2026-10-01T00:00:00Z\",\"swift\":\"10002\"}")]
+    public async Task Payment_ids_are_not_coerced_or_reformatted_by_preflight_validation(string mapping)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.PayTypeJson = mapping;
+
+        var result = await client.P2p.SubmitAdvertisementAsync(request);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(mapping, ParseBody(Assert.Single(handler.Requests))["pay_type_json"]!.Value<string>());
+    }
+
+    [Theory]
+    [InlineData("bank,")]
+    [InlineData(",bank")]
+    [InlineData("bank,,swift")]
+    [InlineData(" ")]
+    public async Task Empty_payment_type_entries_fail_before_io(string types)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        var request = ValidAdvertisement();
+        request.PayType = types;
+
+        var error = await Assert.ThrowsAsync<ArgumentException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(nameof(request.PayType), error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData("Type", 4)]
+    [InlineData("LimitBasis", 2)]
+    [InlineData("RateFixed", -1)]
+    [InlineData("RateFixed", 2)]
+    [InlineData("AdvertisersLimit", 2)]
+    [InlineData("RateReferenceId", 0)]
+    [InlineData("RateReferenceId", 4)]
+    [InlineData("FloatTrend", 2)]
+    public async Task Unsupported_documented_ad_flags_fail_before_io(string field, int value)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        var request = ValidAdvertisement();
+        switch (field)
+        {
+            case "Type": request.Type = (GateP2pAdOperationType)value; break;
+            case "LimitBasis": request.LimitBasis = (GateP2pAdLimitBasis)value; break;
+            case "RateFixed": request.RateFixed = value; break;
+            case "AdvertisersLimit": request.AdvertisersLimit = value; break;
+            case "RateReferenceId": request.RateReferenceId = value; break;
+            case "FloatTrend": request.FloatTrend = value; break;
+        }
+
+        var error = await Assert.ThrowsAsync<ArgumentOutOfRangeException>(() => client.P2p.SubmitAdvertisementAsync(request));
+
+        Assert.Equal(field, error.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData(1, 110)]
+    [InlineData(0, 200)]
+    [InlineData(null, 200)]
+    public async Task Fiat_limit_boundary_uses_the_price_only_in_explicit_fixed_price_mode(int? pricingMode, int maximum)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/P2p/action.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var request = ValidAdvertisement();
+        request.RateFixed = pricingMode;
+        request.LimitBasis = GateP2pAdLimitBasis.Fiat;
+        request.FiatMinAmount = 100m;
+        request.FiatMaxAmount = maximum;
+
+        var result = await client.P2p.SubmitAdvertisementAsync(request);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(maximum.ToString(), ParseBody(Assert.Single(handler.Requests))["fiatMaxAmount"]!.Value<string>());
+    }
+
+    [Theory]
+    [InlineData("trade_tips")]
+    [InlineData("auto_reply")]
+    [InlineData("trade_tips_auto_reply")]
+    public async Task Http_success_preserves_business_rejection_and_all_documented_risk_details(string contentRiskType)
+    {
+        var response = JsonFixture.Parse("Docs/P2p/ad_risk.success.json");
+        response["data"]!["risk_event"]!["content_risk_type"] = contentRiskType;
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(response.ToString(Formatting.None)));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.P2p.SubmitAdvertisementAsync(ValidAdvertisement());
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var rejection = result.Data!;
+        Assert.Equal(70305102, rejection.Code);
+        Assert.Equal("Advertisement content triggered risk control", rejection.Message);
+        Assert.Equal("--", rejection.Method);
+        Assert.Equal("1.0.0", rejection.Version);
+        Assert.Equal(DateTimeOffset.FromUnixTimeSeconds(1767009886).UtcDateTime.AddTicks(6380320), rejection.Timestamp!.Value, TimeSpan.FromTicks(1));
+        Assert.Equal(0, rejection.Data!.RiskCode);
+        var risk = rejection.Data.RiskEvent;
+        Assert.Equal("modal", risk.Type);
+        Assert.Equal("Security reminder", risk.Title);
+        Assert.Equal("Remove off-platform contact details.", risk.Message);
+        Assert.Equal(contentRiskType, risk.ContentRiskType);
+        Assert.Equal("Trade terms contain off-platform contact details.", risk.TradeTips);
+        Assert.Equal("Automatic reply contains off-platform contact details.", risk.AutoReply);
+        var action = Assert.Single(risk.Actions);
+        Assert.Equal("close", action.ActionType);
+        Assert.Equal("Close", action.Title);
+        Assert.Equal(0, action.Mainly);
+        Assert.Empty(action.ActionData);
+    }
+
+    private static GateP2pAdRequest ValidAdvertisement() => new()
+    {
+        CurrencyType = "USDT",
+        ExchangeType = "USD",
+        Type = GateP2pAdOperationType.PublishSell,
+        UnitPrice = 1.1m,
+        Number = 100m,
+        PayType = "bank,swift",
+        PayTypeJson = """{"bank":"10001","swift":"10002"}""",
+        MinAmount = 10m,
+        MaxAmount = 100m,
+    };
+
     private static GateRestApiClient CreateClient(RecordingHttpMessageHandler handler)
         => new(new GateRestApiClientOptions
         {
@@ -367,5 +654,12 @@ public class P2pRequestConstructionTests
         Assert.NotEmpty(Assert.Single(request.Headers["Timestamp"]));
         Assert.NotEmpty(Assert.Single(request.Headers["SIGN"]));
         Assert.True(request.Headers.ContainsKey("X-Gate-Channel-Id"));
+        var timestamp = Assert.Single(request.Headers["Timestamp"]);
+        var bodyHash = Convert.ToHexString(SHA512.HashData(Encoding.UTF8.GetBytes(request.Content))).ToLowerInvariant();
+        var query = System.Net.WebUtility.UrlDecode(request.RequestUri.Query.TrimStart('?'));
+        var signatureInput = $"{request.Method.Method}\n{request.RequestUri.AbsolutePath}\n{query}\n{bodyHash}\n{timestamp}";
+        using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes("secret"));
+        var expectedSignature = Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureInput))).ToLowerInvariant();
+        Assert.Equal(expectedSignature, Assert.Single(request.Headers["SIGN"]));
     }
 }

@@ -31,12 +31,15 @@ public record GateP2pAdRequest
     public decimal Number { get; set; }
 
     /// <summary>
-    /// Payment types, comma-separated
+    /// Payment types enabled for the advertisement, comma-separated.
+    /// Use pay_type values from the current user's payment method list, not payment method IDs.
     /// </summary>
     public string PayType { get; set; }
 
     /// <summary>
-    /// JSON map of payment type to payment method ID
+    /// Optional JSON string mapping enabled payment types to the current user's specific payment method IDs.
+    /// For PayType="bank,swift", an example is {"bank":"10001","swift":"10002"}.
+    /// Each key must be listed in PayType; omitting this field remains supported.
     /// </summary>
     public string PayTypeJson { get; set; }
 
@@ -46,7 +49,7 @@ public record GateP2pAdRequest
     public int? RateFixed { get; set; }
 
     /// <summary>
-    /// Advertisement ID when editing
+    /// Required advertisement ID when editing. Omit or leave empty when publishing a new advertisement.
     /// </summary>
     public string OrderId { get; set; }
 
@@ -62,6 +65,7 @@ public record GateP2pAdRequest
 
     /// <summary>
     /// Trading-limit unit. Defaults to cryptocurrency quantity for a new advertisement.
+    /// Cannot be changed when editing an existing advertisement; fiat-limit edits must keep Fiat.
     /// </summary>
     public GateP2pAdLimitBasis? LimitBasis { get; set; }
 
@@ -72,6 +76,7 @@ public record GateP2pAdRequest
 
     /// <summary>
     /// Maximum fiat amount per order. Required when <see cref="LimitBasis"/> is <see cref="GateP2pAdLimitBasis.Fiat"/>.
+    /// Must not exceed the total fiat value of the advertisement; checked locally only for explicit fixed pricing.
     /// </summary>
     public decimal? FiatMaxAmount { get; set; }
 
@@ -146,7 +151,7 @@ public record GateP2pAdRequest
     public int? RateReferenceId { get; set; }
 
     /// <summary>
-    /// Absolute floating offset ratio
+    /// Absolute floating offset ratio. For example, 0.5 means 0.5 percent.
     /// </summary>
     public decimal? RateOffset { get; set; }
 

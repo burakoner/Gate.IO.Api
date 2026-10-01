@@ -17,8 +17,8 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 | --- | --- | --- |
 | 1 | Spot POV cancellation correction from `127`: both DELETE routes, optional bulk filter, string IDs, signatures, full response contract and cancellation semantics | Completed |
 | 2 | Stock contracts from `121`, `136`, `141` and the Stock portion of `143`: order sessions, opt-in lead-trading context, Japanese exchanges, asset types, option assets, categories, rate-limit and fee documentation | Completed |
-| 3 | P2P advertisement payment mappings from `117`; reconcile the complete current advertisement endpoint | Next |
-| 4 | Spot currency-pair limits and unified-market quote support from `122` and `133` | Pending |
+| 3 | P2P advertisement payment mappings from `117`; reconcile the complete current advertisement endpoint | Completed |
+| 4 | Spot currency-pair limits and unified-market quote support from `122` and `133` | Next |
 | 5 | Margin market status from `124`, then Futures ADL states from `125` and `usd1` settlement from `126`; preserve the DeFi settlement restriction | Pending |
 | 6 | CrossEx symbol and position changes from `130` and `131`, then LIGHTER support from `139`; assess missing isolated-margin endpoints against current documentation | Pending |
 | 7 | TradFi response changes from `132`, order leverage from `138`, and authentication verification from `143`; both affected symbol queries are already signed in this wrapper | Pending |
@@ -34,16 +34,16 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 - Never place, cancel, transfer, upload, or otherwise mutate financial accounts in live verification. Signed request construction is tested with a recording HTTP handler and dummy credentials.
 - Check that user-supplied identifiers cannot change the target path or broaden the scope of mutating requests. The POV cancellation tests exposed this risk even after the documented route correction.
 - After four development turns, review changes, documentation, and this plan. Do not continue past five turns without that retrospective and an explicit scope/order revision where needed.
-- Current catch-up development turn: 2. First review checkpoint is due after turn 4 and mandatory before turn 6.
+- Current catch-up development turn: 3. First review checkpoint is due after turn 4 and mandatory before turn 6.
 - A previously completed out-of-order endpoint is rechecked when its original release is reached, without duplicating implementation or declaring unfinished sibling endpoints complete.
 
 ## Current turn
 
-01 October 2026: reconciled the current Stock endpoint contracts indexed by `121`, `136`, `141` and the Stock portion of `143`. Added the missing limit-order session guard, updated both examples, and added an explicit lead-trading option captured at client construction. The header is request-scoped, excludes both transaction operations, and does not affect personal clients or other modules. Added Japanese exchange support, nullable asset types and nullable option account fields. Category accessors remain strings. The market/account work previously scheduled as order 9 was consolidated here because it shares the same models and transport helper; P2P advertisement payment mapping is next.
+01 October 2026: reconciled `POST /p2p/merchant/books/place_biz_push_order` against its complete current request, response and authentication contracts, using `117` as the index. Existing request fields, wire types and risk response models were already present. Added payment-map preflight validation while retaining the optional field and existing public signatures: keys must match enabled payment types, duplicate keys and malformed maps are rejected, and supplied IDs are not reformatted. Corrected the test that enabled only `bank` but also selected a `swift` account.
 
-Documented the 5 qps guidance and Japanese/Korean fee scope; no automatic limiter was added because the documentation does not define quota-sharing buckets. Retained the earlier production-verified signing of `/stock/exchanges` and timestamps on public Stock calls despite the documentation discrepancy; neither behavior was rechecked against the live gateway this turn. The schema's `trade_mode=4` remains authoritative over the inconsistent example value `3`. The TradFi portion of `143`, the OTC portion of `127`, and other pending rows remain open; package/assembly versions remain `4.106.116`.
+Added guards for documented operation/limit/price flags, required edit IDs and the fixed-price fiat maximum. The official full request example uses a publish operation with an edit ID and a fiat maximum above the stated fixed-price total; follow the parameter descriptions instead of copying those inconsistent example values. Omitted price mode and floating valuation are not inferred from UnitPrice. Account ownership and the existing advertisement's limit unit remain server-verified; no live account lookup or automatic payment selection is added. HTTP 200 business rejection code `70305102` remains in the public action response and must not be treated as a saved advertisement.
 
-Verification: 34 focused offline Stock tests and 338 total offline tests passed, explicitly excluding both `PublicIntegration` and `LiveCapture`. The Release solution build passed for `netstandard2.0` and `netstandard2.1`, including examples and tests, with zero warnings and errors. The corrected session regression failed before implementation with a positive limit price; the old test had rejected the missing price instead of testing the session. Request tests cover all 16 Stock operations with lead trading enabled and disabled, both option-mutation directions, transfer exclusions, shared HTTP client isolation, independently recomputed signatures, current response additions and the documented HTTP 400 error envelope. No live account mutation or authenticated live call was attempted.
+Verification: 46 focused P2P tests and 379 offline tests passed, excluding both `PublicIntegration` and `LiveCapture`. The Release solution build passed for `netstandard2.0` and `netstandard2.1`, including examples and tests, with zero warnings and errors. The mismatched payment type, missing edit ID and excessive fixed-price fiat maximum regressions failed before their fixes. Coverage includes all four operations, optional payment-map omission, raw ID/string preservation, all submitted wire-field types, preflight exclusions, independently recomputed signatures, complete risk details and fractional timestamps. No authenticated or state-changing live call was made. Remaining releases and the version gap are still open; package/assembly versions remain `4.106.116`. Spot quote-currency support is next, followed by the first retrospective checkpoint after development turn 4.
 
 ## Sources
 
@@ -57,3 +57,5 @@ Verification: 34 focused offline Stock tests and 338 total offline tests passed,
 - [Stock symbol details](https://www.gate.com/docs/developers/apiv4/en/stock/#query-symbol-details)
 - [Stock account assets](https://www.gate.com/docs/developers/apiv4/en/stock/#query-user-assets)
 - [Japanese and Korean stock fee rates](https://www.gate.com/docs/developers/apiv4/en/stock/#query-fee-rates-for-japanese-and-korean-stocks)
+- [P2P advertisement submission](https://www.gate.com/docs/developers/apiv4/en/p2p/#publish-ad-order)
+- [P2P payment method list](https://www.gate.com/docs/developers/apiv4/en/p2p/#get-payment-method-list)
