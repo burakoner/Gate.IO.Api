@@ -1,0 +1,38 @@
+[
+  {
+    "symbol": "BINANCE_FUTURE_ADA_USDT",
+    "exchange_type": "BINANCE",
+    "business_type": "FUTURE",
+    "state": "live",
+    "min_size": "1",
+    "min_notional": "5",
+    "lot_size": "1",
+    "tick_size": "0.00010",
+    "max_num_orders": "200",
+    "max_market_size": "300000",
+    "max_limit_size": "2000000",
+    "contract_size": "1",
+    "liquidation_fee": "0.012500",
+    "support_rpi": "false",
+    "support_cross": "true",
+    "delist_time": "0"
+  },
+  {
+    "symbol": "OKX_FUTURE_ADA_USDT",
+    "exchange_type": "OKX",
+    "business_type": "FUTURE",
+    "state": "suspend",
+    "min_size": "10",
+    "min_notional": "0",
+    "lot_size": "10",
+    "tick_size": "0.0001",
+    "max_num_orders": "10",
+    "max_market_size": "1000000",
+    "max_limit_size": "10000000000",
+    "contract_size": "100",
+    "liquidation_fee": "0",
+    "support_rpi": "false",
+    "support_cross": "true",
+    "delist_time": "1762163297615"
+  }
+]

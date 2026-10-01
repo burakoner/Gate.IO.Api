@@ -71,12 +71,20 @@ public class GateCrossExRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateCrossExSymbol>>> GetSymbolsAsync(GateCrossExSymbolsQueryRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateCrossExSymbol>>> GetSymbolsAsync(GateCrossExSymbolsQueryRequest request, CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection();
-        parameters.AddOptional("symbols", JoinValues(request.Symbols));
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        var symbols = request.Symbols?.ToList();
+        if (symbols != null && symbols.Any(x => string.IsNullOrWhiteSpace(x) || x.Any(char.IsWhiteSpace) || x.Any(char.IsControl) || x.Contains(',')))
+            throw new ArgumentException("Each symbol must be one nonblank value, not an embedded CSV list", nameof(request.Symbols));
 
-        return _.SendRequestInternal<List<GateCrossExSymbol>>(_.GetUrl(api, v4, crossex, "rule/symbols"), HttpMethod.Get, ct, queryParameters: parameters);
+        var parameters = new ParameterCollection();
+        parameters.AddOptional("symbols", symbols == null || symbols.Count == 0 ? null : string.Join(",", symbols));
+
+        var result = await _.SendRequestInternal<List<GateCrossExSymbol>>(_.GetUrl(api, v4, crossex, "rule/symbols"), HttpMethod.Get, ct, queryParameters: parameters).ConfigureAwait(false);
+        if (result.Success && result.Data == null)
+            return result.AsError<List<GateCrossExSymbol>>(new DeserializeError("Expected a CrossEx symbols array", result.Data));
+        return result;
     }
 
     /// <summary>
@@ -534,6 +542,45 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
+    /// Increase/decrease an existing Hyperliquid isolated futures position's margin. Signed POST; HTTP 202 is acceptance only.
+    /// Documented rate limit: 100 requests per 10 seconds.
+    /// No account-mode lookup, automatic margin-mode change, retry or completion confirmation is performed.
+    /// </summary>
+    /// <param name="symbol">Hyperliquid futures trading pair</param>
+    /// <param name="margin">Signed adjustment. Sent unchanged as a string; the server truncates beyond two decimal places.</param>
+    /// <param name="positionSide">Optional NONE/LONG/SHORT. Omission defaults to NONE for one-way positions on the server.</param>
+    /// <param name="ct">Cancellation Token</param>
+    public Task<RestCallResult<GateCrossExIsolatedMarginResponse>> UpdateIsolatedMarginAsync(string symbol, decimal margin, GateCrossExPositionSide? positionSide = null, CancellationToken ct = default)
+        => UpdateIsolatedMarginAsync(new GateCrossExIsolatedMarginRequest { Symbol = symbol, Margin = margin, PositionSide = positionSide }, ct);
+
+    /// <summary>
+    /// Increase/decrease an existing Hyperliquid isolated futures position's margin. HTTP 202 acknowledges acceptance, not completion.
+    /// Documented rate limit: 100 requests per 10 seconds.
+    /// Eligibility, available margin and actual truncation are server-side; the supplied instructions are not rewritten.
+    /// </summary>
+    /// <param name="request">Explicit margin adjustment</param>
+    /// <param name="ct">Cancellation Token</param>
+    public async Task<RestCallResult<GateCrossExIsolatedMarginResponse>> UpdateIsolatedMarginAsync(GateCrossExIsolatedMarginRequest request, CancellationToken ct = default)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol)
+            || !request.Symbol.StartsWith("HYPERLIQUID_FUTURE_", StringComparison.Ordinal)
+            || request.Symbol.LastIndexOf('_') <= "HYPERLIQUID_FUTURE_".Length
+            || request.Symbol.EndsWith("_", StringComparison.Ordinal)
+            || request.Symbol.Any(char.IsWhiteSpace) || request.Symbol.Any(char.IsControl) || request.Symbol.Contains(','))
+            throw new ArgumentException("A single Hyperliquid futures symbol is required", nameof(request.Symbol));
+        if (request.PositionSide.HasValue && !Enum.IsDefined(typeof(GateCrossExPositionSide), request.PositionSide.Value))
+            throw new ArgumentException("PositionSide must be NONE, LONG or SHORT", nameof(request.PositionSide));
+
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
+        var result = await _.SendRequestInternal<GateCrossExIsolatedMarginResponse>(_.GetUrl(api, v4, crossex, "positions/margin"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        if (result.Success && result.Data == null)
+            return result.AsError<GateCrossExIsolatedMarginResponse>(new DeserializeError("Expected an isolated-margin acknowledgement object", result.Data));
+        return result;
+    }
+
+    /// <summary>
     /// Fully close a futures or margin position that is strictly below either the minimum notional amount or the minimum order size.
     /// The account must not have an open order for the symbol.
     /// </summary>
@@ -731,16 +778,33 @@ public class GateCrossExRestApiClient
 
     /// <summary>
     /// Query contract position history
+    /// Optional time filters use milliseconds; the documented maximum limit is 1000.
+    /// Documented rate limit: 200 requests per 10 seconds.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateCrossExHistoricalPosition>>> GetHistoricalPositionsAsync(GateCrossExHistoryQueryRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateCrossExHistoricalPosition>>> GetHistoricalPositionsAsync(GateCrossExHistoryQueryRequest request, CancellationToken ct = default)
     {
-        var parameters = new ParameterCollection();
-        AddHistoryParameters(parameters, request);
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (request.Limit > 1000) throw new ArgumentOutOfRangeException(nameof(request.Limit), "Maximum limit is 1000");
+        // Normalize explicit local instants only. Preserve the legacy UTC interpretation of unspecified values.
+        var from = request.From?.Kind == DateTimeKind.Local ? request.From.Value.ToUniversalTime() : request.From;
+        var to = request.To?.Kind == DateTimeKind.Local ? request.To.Value.ToUniversalTime() : request.To;
+        if (from.HasValue && to.HasValue && from.Value.ConvertToMilliseconds() > to.Value.ConvertToMilliseconds())
+            throw new ArgumentException("From must not be later than To", nameof(request.From));
+        if (request.Symbol != null && (string.IsNullOrWhiteSpace(request.Symbol) || request.Symbol.Any(char.IsWhiteSpace) || request.Symbol.Any(char.IsControl) || request.Symbol.Contains(',')))
+            throw new ArgumentException("Symbol must be a single nonblank trading pair", nameof(request.Symbol));
 
-        return _.SendRequestInternal<List<GateCrossExHistoricalPosition>>(_.GetUrl(api, v4, crossex, "history_positions"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var parameters = new ParameterCollection();
+        AddPaging(parameters, request.Page, request.Limit);
+        parameters.AddOptional("symbol", request.Symbol);
+        AddMilliseconds(parameters, from, to);
+
+        var result = await _.SendRequestInternal<List<GateCrossExHistoricalPosition>>(_.GetUrl(api, v4, crossex, "history_positions"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        if (result.Success && result.Data == null)
+            return result.AsError<List<GateCrossExHistoricalPosition>>(new DeserializeError("Expected a CrossEx historical positions array", result.Data));
+        return result;
     }
 
     /// <summary>

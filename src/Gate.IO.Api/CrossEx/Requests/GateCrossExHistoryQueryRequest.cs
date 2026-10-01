@@ -11,7 +11,7 @@ public record GateCrossExHistoryQueryRequest
     public int? Page { get; set; }
 
     /// <summary>
-    /// Maximum number of records returned in a single list
+    /// Maximum number of records returned in a single list. GetHistoricalPositionsAsync documents a maximum of 1000.
     /// </summary>
     public int? Limit { get; set; }
 
@@ -21,12 +21,14 @@ public record GateCrossExHistoryQueryRequest
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Start time, serialized as a Unix timestamp in milliseconds
+    /// Start time, serialized as a Unix timestamp in milliseconds. Prefer UTC.
+    /// GetHistoricalPositionsAsync normalizes explicit Local values; Unspecified retains the legacy UTC interpretation.
     /// </summary>
     public DateTime? From { get; set; }
 
     /// <summary>
-    /// End time, serialized as a Unix timestamp in milliseconds
+    /// End time, serialized as a Unix timestamp in milliseconds. Prefer UTC.
+    /// GetHistoricalPositionsAsync normalizes explicit Local values; Unspecified retains the legacy UTC interpretation.
     /// </summary>
     public DateTime? To { get; set; }
 

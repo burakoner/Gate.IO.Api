@@ -1,0 +1,24 @@
+[
+  {
+    "position_id": "20064013106942976",
+    "user_id": "12345678",
+    "symbol": "BINANCE_FUTURE_ADA_USDT",
+    "closed_type": "COMPLETE_CLOSED",
+    "closed_pnl": "-0.001",
+    "closed_pnl_rate": "-0.001",
+    "open_avg_price": "0.5598",
+    "closed_avg_price": "0.5597",
+    "max_position_qty": "10",
+    "closed_qty": "10",
+    "closed_value": "5.597",
+    "fee": "0.0055975",
+    "liq_fee": "0",
+    "funding_fee": "0",
+    "position_side": "LONG",
+    "position_mode": "DUAL",
+    "leverage": "1",
+    "create_time": "1750941400632",
+    "update_time": "1750941402661",
+    "margin_mode": "CROSS"
+  }
+]

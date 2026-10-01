@@ -180,6 +180,22 @@ using var cfdLeadApi = new GateRestApiClient(new GateRestApiClientOptions { Trad
 
 Eligible TradFi requests use the request-scoped `x-gate-trader-copy-type: cfd_copy` header; user activation and both transaction methods are excluded. It does not change shared HTTP defaults, Stock context or an existing client's context when options are later modified. These examples are not safe to run as a batch against a live financial account.
 
+## CrossEx symbols, position history and isolated margin
+
+The current [CrossEx API reference](https://www.gate.com/docs/developers/apiv4/en/crossex/) is the contract for the three endpoints reconciled in this catch-up turn. This closes the changes indexed by `v4.106.130/131`, not the whole CrossEx module or LIGHTER order/transfer/convert support from `139`.
+
+`GetSymbolsAsync` remains public and unsigned, including when credentials are configured. `GateCrossExSymbol.SupportsCross` and `SupportsRpi` map the documented string flags to `bool?`; missing/null means unknown, not false or permission to trade. Serialization writes lowercase string flags; legacy boolean tokens remain readable, while malformed values fail. `DelistTime` is milliseconds and zero means not delisted. The deprecated nullable `ContractSize`, legacy `DefaultLeverage` and captured nullable market-size metadata remain compatible. Pass one nonblank symbol per collection element, not embedded CSV; null/empty collections intentionally request all symbols, but invalid supplied elements are not dropped.
+
+`GetHistoricalPositionsAsync` is signed. It preserves optional page/limit/symbol/from/to filters, with millisecond times and a documented maximum limit of 1000; historical-order `Attributes` are not forwarded. `GateCrossExHistoricalPosition.MarginMode` retains raw `CROSS`/`ISOLATED` or unfamiliar values, with no assumed mode on omission. `PositionId` and `UserId` stay nullable `long`: exact numeric strings/integers are accepted, but fractional/boolean/nonnumeric/overflow IDs now fail rather than selecting another identity. No accessor type migration is required.
+
+Prefer UTC for position-history filters. This endpoint now converts explicit `DateTimeKind.Local` instants to UTC before validation/serialization; `Unspecified` retains the existing UTC interpretation. The shared time helper and other endpoint contracts are unchanged.
+
+Symbol metadata requires all 14 documented non-optional keys rather than fabricating missing limits as zero. Two required keys, `max_market_size` and deprecated `contract_size`, still permit null because captured legacy venue responses contain it despite the string schema. The other required values reject null. Symbol and historical-position monetary fields accept exact decimal strings/integers; lossy floating tokens, underflow/overflow and blank values fail rather than being rounded or replaced with zero/null. Symbol order counts and delisting timestamps also require exact Int64 values. These scoped parsing changes keep existing accessor types but require saved response JSON to follow the documented wire shapes; serialization writes decimal strings.
+
+`UpdateIsolatedMarginAsync` sends a signed POST to `/crossex/positions/margin`, only for Hyperliquid isolated futures positions. Use an explicit `GateCrossExIsolatedMarginRequest` or the symbol/margin/optional-side overload. Positive margin increases and negative margin decreases; the client writes the supplied `decimal` unchanged as an invariant string. **The server truncates beyond two decimal places.** Nullable `PositionSide` is omitted; the server defaults to `NONE` for one-way positions, and the wrapper never selects a hedge side or changes margin mode. Availability, isolated-position eligibility and available funds remain server-side.
+
+HTTP 202 is acceptance only, not completed adjustment. `GateCrossExIsolatedMarginResponse.Margin` is the returned adjustment for this request, not resulting total position margin; returned symbol/side are not filled from the input. Missing required symbol/margin, absent response objects and missing list containers fail with HTTP metadata retained; empty arrays remain valid. Saved request JSON must supply symbol and an exact decimal string/integer margin. Unknown side mappings and lossy floating tokens fail instead of silently changing the financial instruction. Calling this method is an explicit financial mutation; it adds no automatic lookups, mode changes, retries or polling. Verification used no live exchange calls.
+
 ## Rest Api Examples
 
 ```csharp
@@ -807,6 +823,9 @@ var crossex_14 = await api.CrossEx.GetContractLeveragesAsync(new GateCrossExLeve
 var crossex_15 = await api.CrossEx.UpdateContractLeverageAsync(new GateCrossExLeverageRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", Leverage = 5.0m });
 var crossex_16 = await api.CrossEx.GetMarginLeveragesAsync(new GateCrossExLeverageQueryRequest { Symbols = new[] { "GATE_MARGIN_BTC_USDT" } });
 var crossex_17 = await api.CrossEx.UpdateMarginLeverageAsync(new GateCrossExLeverageRequest { Symbol = "GATE_MARGIN_BTC_USDT", Leverage = 3.0m });
+// Explicit financial action for an existing Hyperliquid isolated position only. Do not run this catalogue as a batch.
+// The server truncates -30.129 to two decimal places; HTTP 202 is acceptance, not proof of completed adjustment.
+var crossex_17b = await api.CrossEx.UpdateIsolatedMarginAsync(new GateCrossExIsolatedMarginRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", Margin = -30.129m, PositionSide = GateCrossExPositionSide.None });
 var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long }); // Requires no open orders and a position strictly below min notional or min size; PositionSide is required for margin positions.
 var crossex_19 = await api.CrossEx.GetInterestRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
 var crossex_20 = await api.CrossEx.GetFeesAsync();
