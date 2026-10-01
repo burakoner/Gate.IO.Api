@@ -14,13 +14,13 @@ public record GateFuturesAdlRecord
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long User { get; set; }
 
     /// <summary>
     /// Order ID. Order IDs before 2023-02-20 are null
     /// </summary>
-    [JsonProperty("order_id")]
+    [JsonProperty("order_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? OrderId { get; set; }
 
     /// <summary>

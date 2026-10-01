@@ -2,6 +2,6 @@ namespace Gate.IO.Api.Futures;
 
 internal record GateFuturesTrailOrderListResponse
 {
-    [JsonProperty("orders")]
+    [JsonProperty("orders", Required = Required.Always)]
     public List<GateFuturesTrailOrder> Orders { get; set; } = [];
 }

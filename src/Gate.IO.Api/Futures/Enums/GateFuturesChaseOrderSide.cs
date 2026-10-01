@@ -5,6 +5,9 @@ namespace Gate.IO.Api.Futures;
 /// </summary>
 public enum GateFuturesChaseOrderSide : byte
 {
+    /// <summary>Explicit unknown side filter, as documented by the current endpoint.</summary>
+    Unknown = 0,
+
     /// <summary>
     /// Long side
     /// </summary>

@@ -128,7 +128,19 @@ Use `api.Futures.BTC.GetAdlRiskStatesAsync()`, `api.Futures.USDT.GetAdlRiskState
 
 Check transport success, the returned settlement and the requested dictionary entry before interpreting a snapshot. Missing/null required response fields fail deserialization instead of becoming `normal`, an empty mapping or time zero. Empty mappings contain no market evidence; null entries and unknown/empty state strings remain unconfirmed, not normal. Calculation times are preserved, with no automatic freshness threshold, polling or trading action. A reported market state is not an account-level guarantee against ADL.
 
-`GateFuturesSettlement.USD1` adds the `usd1` REST settlement and is accessible through both `api.Futures.USD1` and the indexer. Existing BTC/USDT values and clients are unchanged. This does not add a WebSocket URL, Delivery settlement or DeFi API; the [v4.106.126 changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog) limits DeFi Futures to `btc`/`usdt`. Shared registration, six price-order contracts and four standard single-order operations are reconciled. The [execution plan](EXECUTION_PLAN.md) tracks the remaining groups; this release is not yet complete.
+`GateFuturesSettlement.USD1` adds the `usd1` REST settlement and is accessible through both `api.Futures.USD1` and the indexer. Existing BTC/USDT values and clients are unchanged. This does not add a WebSocket URL, Delivery settlement or DeFi API; the [v4.106.126 changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog) limits DeFi Futures to `btc`/`usdt`. The 02 October 2026 reconciliation covers all 71 current Futures REST operations on 64 paths, closing release `126`. This is not a claim of full catch-up or live exchange acceptance; package/assembly versions remain `4.106.116`. See the [audit record](FUTURES_REST_AUDIT.md) and [execution plan](EXECUTION_PLAN.md).
+
+## Futures REST migration and remaining families
+
+Seven approved public type changes are required: `GateFuturesTrade.Size` and `GateFuturesContract.OrderSizeMinimum`, `OrderSizeMaximum`, `TradeSize`, `PositionSize`, `MinimumLeverage`, `MaximumLeverage` are now `decimal`. Update consumers that assign these quantities to integer variables. The [contract](https://www.gate.com/docs/developers/apiv4/en/futures/#contract) and [trade](https://www.gate.com/docs/developers/apiv4/en/futures/#futurestrade) schemas use numeric strings without an integer-only restriction. These fields read exact decimal strings or integer tokens and reject floating JSON tokens, rounding, underflow and overflow. Existing numeric IDs stay `long`; integer strings retain Int64 precision, while fractional, boolean, nonnumeric and overflowing IDs fail. Existing string Chase IDs and raw `id_string` metadata keep their types.
+
+`GetAllContractsAsync()` adds the separate `contracts_all` query, including delisted contracts. Discover the actual contract for your selected settlement; the client does not substitute a symbol. `SetPositionLeverageAsync()` uses the new explicit `margin_mode` query, without replacing legacy leverage-zero semantics. `SetPositionModeAsync()` uses the account holding modes `Single`, `Dual`, `DualPlus`, distinct from an individual position's `single`/`dual_long`/`dual_short`. Changing holding mode requires no holdings or pending orders; this remains server-enforced, with no automatic cancellation. `PlaceBboOrderAsync()` requires an integer signed quantity, book direction and depth 1-20. Direction selects asks/bids and does not rewrite quantity or infer account mode.
+
+Trading, mark and index candlesticks accept DTO `Timezone` (`all`, `utc0`, `utc8`). Range requests omit the conflicting recent `limit`; recent limits are 1-2000, or 1-1000 for premium index. `NaturalWeek` maps to `1w`, distinct from `OneWeek` (`7d`); existing `OneMonth` (`30d`) is retained. The ordinary candle parameter description explicitly documents `1w`/`30d` although its enum table omits them. Premium index has neither timezone nor `10s`/`1w`/`30d`; those inputs fail before I/O. Calendar enum values are not elapsed-second durations. Private liquidation history now has a DTO with `From`, `To`, `At`, `Limit`, `Offset` and optional `Contract`, preserving the legacy overload.
+
+Trading fees now use signed GET query parameters; batch ID cancellation uses signed POST with an array of invariant integer strings. Risk-table queries are public and send no credentials. Batch creation/amendment accepts 1-10 entries, cancellation 1-20; inputs are enumerated once. A batch transport success does not confirm each item succeeded: inspect nullable `Succeeded`, `ErrorLabel`, `ErrorMessage` and available order state. ACK/RESULT may be partial. Filtered bulk cancellation with omitted `Contract` intentionally has account-wide scope; blank or malformed contracts are rejected, not turned into an omitted filter. Countdown accepts 0 to disable or at least 5 seconds; a missing/null response timestamp fails instead of fabricating a successful date.
+
+Trail creation/detail validate the envelope's integer business code as well as a positive order ID. Stop/update accept both documented flat and `order`-wrapped responses. Chase creation/stop/stop-all now accept optional body `Settlement`; unlike price-order amendment, the Chase contract explicitly gives the path precedence, so the supplied body is preserved. Existing Chase IDs remain strings. Required result containers must be present, while empty lists remain valid. These structural checks are client safety rules, not a claim that every response field is schema-required. Strategies preserve failed state/error labels; returned IDs or HTTP 200 do not prove creation, execution or cancellation reached its terminal state. There are no automatic retries, polling, account lookups or financial actions.
 
 ## Futures standard single orders
 
@@ -136,7 +148,7 @@ Current [creation](https://www.gate.com/docs/developers/apiv4/en/futures/#place-
 
 For detail/amend/cancel, supply exactly one positive numeric `long` order ID or custom `t-` identifier. The latter permits at most 28 ASCII letters/digits/underscore/hyphen/dot after the prefix; routing syntax and whitespace are rejected before I/O. Custom-text lookup of an unfilled cancelled order expires after 60 seconds; filled/partially filled orders remain queryable by text. IDs and `PositionId` retain `long`; fractional, boolean, nonnumeric and overflowing identities fail rather than becoming another ID. Absent optional response IDs retain legacy defaults and do not identify an order. Shared response parsing also affects existing batch, Delivery and WebSocket consumers, without applying the single-order preflight to their routes.
 
-Saved `GateFuturesOrderRequest` JSON requires non-null `contract`, `size` and `price`. Explicit unknown enum strings, blank/infinite decimals, underflow and decimal precision loss fail instead of being omitted or becoming zero. Use documented decimal strings: floating numeric JSON is rejected even with `FloatParseHandling.Decimal`, because a reader can round before the converter sees the value. Exact integer tokens and optional nulls remain supported; typed C# decimal requests still serialize as strings. This DTO is also used in Futures batch creation; batch endpoint reconciliation is still pending.
+Saved `GateFuturesOrderRequest` JSON requires non-null `contract`, `size` and `price`. Explicit unknown enum strings, blank/infinite decimals, underflow and decimal precision loss fail instead of being omitted or becoming zero. Use documented decimal strings: floating numeric JSON is rejected even with `FloatParseHandling.Decimal`, because a reader can round before the converter sees the value. Exact integer tokens and optional nulls remain supported; typed C# decimal requests still serialize as strings. Futures batch creation uses the same DTO and preflight.
 
 Single amendment uses only optional `size`, `price`, `amend_text`, internal-user `text` and `action_mode`, following [FuturesOrderAmendment](https://www.gate.com/docs/developers/apiv4/en/futures/#futuresorderamendment) rather than the contradictory POST-style example containing `contract`. New size includes fills; at/below the filled quantity cancels, and original side/close/reduce-only constraints depend on server state. Explicit zero/empty values are preserved. Cancellation sends optional `action_mode` in the query, not the body. Existing `ReceiveWindow` supplies the optional Unix-millisecond `x-gate-exptime` header; null omits it. ACK/RESULT can return partial orders: inspect actual `Status`/`FinishAs`, not missing-field defaults or HTTP success, for execution/cancellation evidence. No automatic retry, polling or terminal-state synthesis is added.
 
@@ -427,11 +439,14 @@ var sample_13 = await api.Futures[GateFuturesSettlement.USDT].GetContractsAsync(
 var sample_14 = await api.Delivery[GateDeliverySettlement.USDT].GetContractsAsync();
 
 // Perpetual Futures Methods
+// Catalog only, not a live workflow. Replace placeholders and deliberately select each financial action; never run the whole example with live credentials.
 var settle = GateFuturesSettlement.USDT;
 var perpetual_01 = await api.Futures[settle].GetContractsAsync();
+var perpetual_01b = await api.Futures[settle].GetAllContractsAsync(); // Includes delisted contracts; presence does not imply tradability.
 var perpetual_02 = await api.Futures[settle].GetContractAsync("CONTRACT");
 var perpetual_03 = await api.Futures[settle].GetOrderBookAsync("CONTRACT");
 var perpetual_04 = await api.Futures[settle].GetTradesAsync(new GateFuturesTradeQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
+var perpetual_04b = await api.Futures[settle].GetCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "BTC_USDT", Interval = GateFuturesCandlestickInterval.NaturalWeek, Timezone = "utc0", Limit = 100 });
 var perpetual_05 = await api.Futures[settle].GetMarkPriceCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
 var perpetual_06 = await api.Futures[settle].GetIndexPriceCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
 var perpetual_07 = await api.Futures[settle].GetPremiumIndexCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
@@ -451,10 +466,12 @@ var perpetual_18 = await api.Futures[settle].GetPositionAsync("CONTRACT");
 var perpetual_19 = await api.Futures[settle].SetPositionMarginAsync("CONTRACT", 100.0M);
 var perpetual_19b = await api.Futures[settle].GetLeverageAsync("CONTRACT", GateFuturesPositionMarginMode.Isolated, GateFuturesDualModeSide.DualLong);
 var perpetual_20 = await api.Futures[settle].SetLeverageAsync("CONTRACT", 10);
+var perpetual_20b = await api.Futures[settle].SetPositionLeverageAsync("BTC_USDT", 10, GateFuturesPositionMarginMode.Isolated); // Explicit instruction, not an inferred leverage/mode.
 var perpetual_21 = await api.Futures[settle].SetMarginModeAsync("CONTRACT", GateFuturesMarginMode.Cross);
 var perpetual_22 = await api.Futures[settle].SwithMarginModeUnderHedgeAsync("CONTRACT", GateFuturesMarginMode.Isolated);
 var perpetual_23 = await api.Futures[settle].SetRiskLimitAsync("CONTRACT", 25);
 var perpetual_24 = await api.Futures[settle].SetDualModeAsync(true);
+var perpetual_24b = await api.Futures[settle].SetPositionModeAsync(GateFuturesAccountPositionMode.DualPlus); // Account-wide change; server requires no holdings or pending orders.
 var perpetual_25 = await api.Futures[settle].GetDualModePositionsAsync("CONTRACT");
 var perpetual_26 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
 var perpetual_27 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
@@ -463,6 +480,7 @@ var perpetual_28 = await api.Futures[settle].SetDualModeRiskLimitAsync("CONTRACT
 var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("BTC_USDT", 25.5m, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
 var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "BTC_USDT", Size = 25.5m, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m, PositionMarginMode = GateFuturesPositionMarginMode.Isolated, ActionMode = GateFuturesActionMode.Full, TakeProfitTriggerPrice = 110.0m, StopLossTriggerPrice = 90.0m });
 var perpetual_30b = await api.Futures[settle].GetOrdersAsync(new GateFuturesOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
+var perpetual_30c = await api.Futures[settle].PlaceBboOrderAsync(new GateFuturesBboOrderRequest { Contract = "BTC_USDT", Size = 1, Direction = GateFuturesBboDirection.Buy, Level = 1 }); // Integer quantity; not a standard decimal-order alias.
 // Replace the example ID with an actual existing order ID. Transport success/ACK is not proof of a fill or cancellation.
 var perpetual_31 = await api.Futures[settle].GetOrderAsync(orderId: 1_000_000_001);
 var perpetual_32 = await api.Futures[settle].CancelOrderAsync(orderId: 1_000_000_001, actionMode: GateFuturesActionMode.Result);
@@ -474,12 +492,14 @@ var perpetual_36 = await api.Futures[settle].GetUserTradesAsync(new GateFuturesU
 var perpetual_37 = await api.Futures[settle].GetPositionClosesAsync();
 var perpetual_38 = await api.Futures[settle].GetPositionClosesAsync(new GateFuturesPositionCloseQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
 var perpetual_39 = await api.Futures[settle].GetUserLiquidationsAsync();
+var perpetual_39b = await api.Futures[settle].GetUserLiquidationsAsync(new GateFuturesUserLiquidationQueryRequest { Contract = "BTC_USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Offset = 0, Limit = 100 });
 var perpetual_40 = await api.Futures[settle].GetAdlHistoryAsync("CONTRACT");
 var perpetual_41 = await api.Futures[settle].GetAdlHistoryAsync(new GateFuturesAdlHistoryQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
 var perpetual_42 = await api.Futures[settle].CancelAllAsync(new GateFuturesCountdownCancelAllRequest { Timeout = 30, Contract = "CONTRACT" });
 var perpetual_43 = await api.Futures[settle].GetTradingFeesAsync();
-var perpetual_44 = await api.Futures[settle].CancelOrdersAsync([]);
-var perpetual_45 = await api.Futures[settle].AmendOrdersAsync([]);
+// Replace this ID with an actual order ID; inspect every result item, not just transport Success.
+var perpetual_44 = await api.Futures[settle].CancelOrdersAsync(new[] { 1_000_000_001L }); // POST, 1-20 IDs.
+var perpetual_45 = await api.Futures[settle].AmendOrdersAsync(new[] { new GateFuturesOrderAmendRequest { OrderId = 1_000_000_001L, Price = 101.0m } }); // 1-10 entries.
 var perpetual_46 = await api.Futures[settle].GetRiskLimitTableAsync("TABLE-ID");
 var perpetual_46b = await api.Futures[settle].PlaceTrailOrderAsync(new GateFuturesTrailOrderRequest { Contract = "CONTRACT", Amount = 10, ActivationPrice = 50000, IsGreaterThanOrEqual = true, PriceType = GateFuturesTrailPriceType.Latest, PriceOffset = "0.1%" });
 var perpetual_46c = await api.Futures[settle].GetTrailOrdersAsync(new GateFuturesTrailOrderQueryRequest { Contract = "CONTRACT", IsFinished = false });

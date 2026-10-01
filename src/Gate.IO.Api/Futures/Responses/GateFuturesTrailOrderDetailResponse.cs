@@ -3,7 +3,7 @@ namespace Gate.IO.Api.Futures;
 internal record GateFuturesTrailOrderDetailResponse
 {
     [JsonProperty("code")]
-    public int Code { get; set; }
+    public JToken Code { get; set; }
 
     [JsonProperty("message")]
     public string Message { get; set; }

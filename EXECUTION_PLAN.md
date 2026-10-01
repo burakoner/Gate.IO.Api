@@ -1,10 +1,10 @@
 # Gate API update execution plan
 
-This document tracks the catch-up from the last completed API version, `v4.106.116`, to the current official endpoint contracts. It is a living execution contract: findings can change the order and scope, and a group below can require several small development turns.
+This document tracks the catch-up from its starting baseline, `v4.106.116`, to the current official endpoint contracts. It is a living execution contract: findings can change the order and scope, and a group below can require several small development turns.
 
 ## Baseline and evidence
 
-- Last completed release: `v4.106.116` dated 04 August 2026, implemented on 08 August 2026.
+- Starting sequential baseline: `v4.106.116` dated 04 August 2026, implemented on 08 August 2026. Later endpoint groups are completed out of release order below; closing `126` does not close unfinished earlier or later groups.
 - Documentation checked on 02 October 2026: the website identifies `v4.106.146`, but its last changelog entry is `v4.106.144` dated 17 September 2026. The linked official C# SDK also identifies API version `v4.106.144`. Changes for `145` and `146` remain unverified.
 - The changelog identifies endpoints to inspect; it is not the complete implementation specification. Reconcile each touched endpoint with its entire current request, response, authentication, validation, and documented error contract.
 - Partial fixes do not mark an entire release complete. The package version stays at the last completed release until a separate version update is justified; no publishing or pushing is part of this work.
@@ -20,16 +20,16 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 | 3 | P2P advertisement payment mappings from `117`; reconcile the complete current advertisement endpoint | Completed |
 | 4 | Spot currency-pair limits and unified-market quote support from `122` and `133`, including the shared batch request and full cancellation/trade contracts | Completed |
 | 5a | Margin market status from `124`; reconcile both currency-pair queries in a bounded turn | Completed |
-| 5b1 | Complete market-level ADL risk endpoint from `125` and shared `usd1` REST client registration from `126`; do not infer WebSocket, Delivery or DeFi support | Completed bounded scope; `126` is not complete |
+| 5b1 | Complete market-level ADL risk endpoint from `125` and shared `usd1` REST client registration from `126`; do not infer WebSocket, Delivery or DeFi support | Completed; `126` closed in turn 10 after remaining families |
 | 5b2 | Reconcile all six Futures price-triggered order endpoints against current contracts using `126` as the index; include the missing optional amendment body settlement and safe client/body consistency | Completed bounded scope |
 | 5b3 | Inventory remaining Futures families indexed by `126`; reconcile standard single-order POST creation and GET/PUT/DELETE ID routes on btc/usdt/usd1 | Completed bounded scope |
-| 5b4 | Standard collection orders: GET orders, GET orders_timerange and filtered bulk DELETE orders; include list/history response differences and scope-safe filters | Next bounded group |
-| 5b5 | Batch creation/amendment/cancellation and countdown cancellation; reconcile each complete contract and per-item failure semantics | Pending; split if needed |
-| 5b6 | Missing POST bbo_orders in the current official module index; reconcile and add separately rather than assuming a standard-order alias | Pending; newly evidenced endpoint |
-| 5b7 | Position/dual-mode margin, leverage, risk and mode mutations, plus accounts/fees/private histories | Pending; select small state-sensitive families before public metadata |
-| 5b8 | Public contract/market/risk metadata and trail/chase strategies | Pending; separate metadata and mutating strategy turns |
+| 5b4 | Standard collection orders: GET orders, GET orders_timerange and filtered bulk DELETE orders; include list/history response differences and scope-safe filters | Completed in turn 10 |
+| 5b5 | Batch creation/amendment/cancellation and countdown cancellation; reconcile each complete contract and per-item failure semantics | Completed in turn 10 |
+| 5b6 | Missing POST bbo_orders; reconcile its distinct integer quantity, direction and depth contract | Completed in turn 10 |
+| 5b7 | Position/dual-mode margin, leverage, risk and mode mutations, plus accounts/fees/private histories; include missing set_leverage and set_position_mode | Completed in turn 10 |
+| 5b8 | Public contract/market/risk metadata and trail/chase strategies; include missing contracts_all and ordinary trading candlesticks | Completed in turn 10 |
 | 6 | TradFi response removal from `132`, optional order leverage from `138`, authentication from `143`, and the full current affected contracts plus direct cancellation context | Completed bounded scope; IDs retain `long` by explicit user policy |
-| 7 | CrossEx symbol and position changes from `130` and `131`, then LIGHTER support from `139`; assess missing isolated-margin endpoints against current documentation | Pending |
+| 7 | CrossEx symbol and position changes from `130` and `131`, then LIGHTER support from `139`; assess missing isolated-margin endpoints against current documentation | Next: inventory first, then bounded families |
 | 8 | Remaining OTC change from `127`, then pre-upload and related business submissions from `135` | Pending |
 | 9 | Stock category and market/account changes from `136` and `143`, without a C# breaking accessor change solely because the Java SDK changed | Completed in order 2 |
 | 10 | REST announcement queries from `142` and `144` | Pending |
@@ -42,11 +42,27 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 - Never place, cancel, transfer, upload, or otherwise mutate financial accounts in live verification. Signed request construction is tested with a recording HTTP handler and dummy credentials.
 - Check that user-supplied identifiers cannot change the target path or broaden the scope of mutating requests. The POV cancellation tests exposed this risk even after the documented route correction.
 - After four development turns, review changes, documentation, and this plan. Do not continue past five turns without that retrospective and an explicit scope/order revision where needed.
-- Current catch-up development turn: 9. Retrospectives after turns 4 and 8 are complete; the next is due after turn 12 and mandatory before turn 14.
+- Current catch-up development turn: 10. Retrospectives after turns 4 and 8 are complete; this turn includes an intra-turn Futures review. The next cross-turn retrospective is due after turn 12 and mandatory before turn 14.
 - Keep existing numeric identifier accessors as `long` when the wire format is a numeric string, as explicitly requested by the user. Reject nonnumeric/out-of-range values rather than rounding or introducing string identifiers. Document acknowledgement/task identity separately from actual order identity.
 - A previously completed out-of-order endpoint is rechecked when its original release is reached, without duplicating implementation or declaring unfinished sibling endpoints complete.
 
 ## Current turn
+
+02 October 2026, turn 10: the user explicitly requested closing `v4.106.126` in this turn. Expanded the previously separated 5b4-5b8 groups into a complete current Futures REST reconciliation, with an endpoint inventory and incremental request/response regressions. This closes `126`, not all catch-up releases. The changelog's historical USD1 addition is the index; the current whole endpoint documentation supplies the implementation contract. The [audit record](FUTURES_REST_AUDIT.md) links the evidence, coverage inventory and documented disagreements.
+
+All 71 distinct current REST operations on 64 paths are represented, with 17 public and 54 signed operations, on BTC/USDT/USD1. Added the four missing paths: GET contracts_all, POST positions/{contract}/set_leverage, POST set_position_mode and POST bbo_orders. Added access to ordinary trading candlesticks and timezone filters alongside mark/index variants, and all private liquidation filters without removing the legacy overload. Fixed fee POST/body to GET/query, batch cancellation DELETE to POST/body and incorrectly signed public risk_limit_table. Account holding mode is distinct from position direction; BBO quantities remain endpoint-specific integers and direction does not rewrite them.
+
+With explicit user approval, migrated GateFuturesTrade.Size and six GateFuturesContract quantity/leverage accessors to decimal. Existing numeric identities remain long, including numeric-string wire values; existing Chase string IDs and raw metadata remain unchanged. Exact Int64 parsing covers audited response/request identity fields and legacy integer price-order quantities. Seven failing saved-DTO regressions demonstrated fractional/boolean coercion into long values; scoped converter annotations close the gap without changing the generic parser. Valid shared Delivery and WebSocket model consumers remain compatible; their endpoint contracts are not newly audited here.
+
+Reconciled batch limits and single enumeration, per-item failure flags, collection/time-range contracts, mode/leverage operations, account/trade/ticker/contract metadata and trail/chase bodies/filters. Trail envelope business errors, missing useful strategy containers/IDs, malformed batch funding shapes and missing countdown timestamps no longer produce fabricated successful results. Supported both documented funding and trail response shapes; retained explicitly described natural candle intervals despite the enum-table omission. Structural fail-closed requirements are client safety constraints, not misreported schema required flags. No guesses about account state, precision, STP membership, fills or server-dependent margin/leverage limits, and no automatic lookups, financial actions or retries.
+
+Verification and intra-turn review: 336 new tests (220 route/signature inventory tests plus 116 contract/safety tests), 616 focused offline Futures/Delivery tests and 1,068 total offline tests passed, excluding PublicIntegration and LiveCapture. The 73 route cases cover 71 operations plus mark/index variants of the ordinary candle path, across all three settlements. HMAC signatures are independently recomputed from the actual method/path/query/body. Review also caught an undocumented BBO reduce_only requirement copied from standard orders; a failing regression drove its removal while keeping documented size=0. Error tests retain HTTP 400/429/500 and business/deserialization metadata without retry; other regressions cover exact long/decimal values, optional zero/false/omission, batch partial failures and existing APIs. The Release solution build passed for netstandard2.0/netstandard2.1, examples and tests with zero warnings/errors. Examples are compiled, never executed; no live exchange calls. Package/assembly versions remain 4.106.116 and nothing is published or pushed.
+
+Forward revision: move to CrossEx inventory (130/131/139), then choose a bounded family from actual current evidence, not a whole-module rewrite by default. Do not reopen already completed Futures work merely on reaching a later indexed release unless fresh evidence shows a difference. Remaining OTC, announcements, SDK Launch/Unified assessment and the undocumented 145/146 gap stay open. The next cross-turn retrospective remains turn 12.
+
+## Development turn 9 record
+
+Historical checkpoint; its pending Futures groups are superseded by the turn 10 closure above.
 
 02 October 2026, turn 9: inventoried the remaining local Futures REST families and selected four standard single-order operations for complete current-contract reconciliation: POST /orders and GET/PUT/DELETE /orders/{order_id}. The existing methods, request/response fields, settlement routing and signed transport match the current tables and linked FuturesOrder/FuturesOrderAmendment schemas. No field is added merely because a code example contradicts its schema: single amendment has no contract body property. BBO placement is present in the official index but absent locally and is now a separate pending group.
 
@@ -80,6 +96,7 @@ Forward revision: split the combined Margin/Futures group into two bounded steps
 
 ## Sources
 
+- [Current Futures REST audit and endpoint evidence](FUTURES_REST_AUDIT.md)
 - [Official changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog)
 - [Official C# SDK](https://github.com/gate/gateapi-csharp)
 - [Bulk Spot POV cancellation](https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-spot-pov-orders)

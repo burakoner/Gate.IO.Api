@@ -65,6 +65,10 @@ public enum GateFuturesCandlestickInterval
     [Map("7d")]
     OneWeek = 604800,
 
+    /// <summary>Natural week (Monday-Sunday), documented separately from Unix-aligned 7d. Numeric enum values are not calendar durations.</summary>
+    [Map("1w")]
+    NaturalWeek = 604801,
+
     /// <summary>
     /// 1 Month
     /// </summary>

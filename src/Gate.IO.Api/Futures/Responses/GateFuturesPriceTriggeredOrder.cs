@@ -8,7 +8,7 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     /// <summary>
     /// Auto order ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>
@@ -20,7 +20,7 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UserId { get; set; }
 
     /// <summary>
@@ -40,7 +40,7 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     /// <summary>
     /// ID of the newly created order on condition triggered
     /// </summary>
-    [JsonProperty("trade_id")]
+    [JsonProperty("trade_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? TradeId { get; set; }
 
     /// <summary>
@@ -64,6 +64,6 @@ public record GateFuturesPriceTriggeredOrder : GateFuturesPriceTriggeredOrderReq
     /// <summary>
     /// Corresponding order ID of order take-profit/stop-loss.
     /// </summary>
-    [JsonProperty("me_order_id")]
+    [JsonProperty("me_order_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long MeOrderId { get; set; }
 }

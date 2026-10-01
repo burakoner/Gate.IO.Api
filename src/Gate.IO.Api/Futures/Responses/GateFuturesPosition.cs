@@ -8,7 +8,7 @@ public record GateFuturesPosition
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UserId { get; set; }
 
     /// <summary>
@@ -201,7 +201,7 @@ public record GateFuturesPosition
     /// <summary>
     /// Update ID. The value increments by 1 each time the position is updated
     /// </summary>
-    [JsonProperty("update_id")]
+    [JsonProperty("update_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UpdateId { get; set; }
 
     /// <summary>
@@ -268,13 +268,13 @@ public record GateFuturesPosition
     /// <summary>
     /// Experience Coupon ID
     /// </summary>
-    [JsonProperty("voucher_id")]
+    [JsonProperty("voucher_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? VoucherId { get; set; }
 
     /// <summary>
     /// 分仓仓位id
     /// </summary>
-    [JsonProperty("pid")]
+    [JsonProperty("pid"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? PID { get; set; }
 
     /// <summary>
@@ -305,7 +305,7 @@ public record GateFuturesPositionCloseOrder
     /// <summary>
     /// Close order ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>

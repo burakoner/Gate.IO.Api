@@ -12,6 +12,7 @@ public record GateFuturesUserTradeQueryRequest
     /// <summary>
     /// Gets or sets the Order ID.
     /// </summary>
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? OrderId { get; set; }
     /// <summary>
     /// Gets or sets the Limit.
@@ -24,5 +25,6 @@ public record GateFuturesUserTradeQueryRequest
     /// <summary>
     /// Gets or sets the Last ID.
     /// </summary>
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? LastId { get; set; }
 }

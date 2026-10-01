@@ -15,13 +15,13 @@ public record GateFuturesPriceTriggeredOrderUpdateRequest
     /// <summary>
     /// ID of the pending price-triggered order.
     /// </summary>
-    [JsonProperty("order_id", Required = Required.Always)]
+    [JsonProperty("order_id", Required = Required.Always), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>
     /// Modified contract quantity. Set to zero for a full close.
     /// </summary>
-    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? Size { get; set; }
 
     /// <summary>

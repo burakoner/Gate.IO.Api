@@ -5,6 +5,10 @@ namespace Gate.IO.Api.Futures;
 /// </summary>
 public record GateFuturesChaseOrderRequest
 {
+    /// <summary>Optional body settlement, overridden by the selected REST settlement path.</summary>
+    [JsonProperty("settle", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
+    public GateFuturesSettlement? Settlement { get; set; }
+
     /// <summary>
     /// Contract name
     /// </summary>
@@ -50,13 +54,13 @@ public record GateFuturesChaseOrderRequest
     /// <summary>
     /// Chase price type
     /// </summary>
-    [JsonProperty("price_type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("price_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
     public GateFuturesChaseOrderPriceType? PriceType { get; set; }
 
     /// <summary>
     /// Price gap type used when the price type is <see cref="GateFuturesChaseOrderPriceType.PriceGap"/>
     /// </summary>
-    [JsonProperty("price_gap_type", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("price_gap_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
     public GateFuturesChaseOrderPriceGapType? PriceGapType { get; set; }
 
     /// <summary>
@@ -68,7 +72,7 @@ public record GateFuturesChaseOrderRequest
     /// <summary>
     /// Position margin mode
     /// </summary>
-    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 
     /// <summary>

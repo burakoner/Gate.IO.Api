@@ -284,11 +284,14 @@ internal class Program
         var sample_14 = await api.Delivery[GateDeliverySettlement.USDT].GetContractsAsync();
 
         // Perpetual Futures Methods
+        // Catalog only, not a live workflow. Replace placeholders and deliberately select each financial action; never run the whole file with live credentials.
         var settle = GateFuturesSettlement.USDT;
         var perpetual_01 = await api.Futures[settle].GetContractsAsync();
+        var perpetual_01b = await api.Futures[settle].GetAllContractsAsync(); // Includes delisted contracts; presence does not imply tradability.
         var perpetual_02 = await api.Futures[settle].GetContractAsync("CONTRACT");
         var perpetual_03 = await api.Futures[settle].GetOrderBookAsync("CONTRACT");
         var perpetual_04 = await api.Futures[settle].GetTradesAsync(new GateFuturesTradeQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
+        var perpetual_04b = await api.Futures[settle].GetCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "BTC_USDT", Interval = GateFuturesCandlestickInterval.NaturalWeek, Timezone = "utc0", Limit = 100 });
         var perpetual_05 = await api.Futures[settle].GetMarkPriceCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
         var perpetual_06 = await api.Futures[settle].GetIndexPriceCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
         var perpetual_07 = await api.Futures[settle].GetPremiumIndexCandlesticksAsync(new GateFuturesCandlestickQueryRequest { Contract = "CONTRACT", Interval = GateFuturesCandlestickInterval.OneDay, Limit = 100 });
@@ -308,10 +311,12 @@ internal class Program
         var perpetual_19 = await api.Futures[settle].SetPositionMarginAsync("CONTRACT", 100.0M);
         var perpetual_19b = await api.Futures[settle].GetLeverageAsync("CONTRACT", GateFuturesPositionMarginMode.Isolated, GateFuturesDualModeSide.DualLong);
         var perpetual_20 = await api.Futures[settle].SetLeverageAsync("CONTRACT", 10);
+        var perpetual_20b = await api.Futures[settle].SetPositionLeverageAsync("BTC_USDT", 10, GateFuturesPositionMarginMode.Isolated); // Explicit instruction, not an inferred leverage/mode.
         var perpetual_21 = await api.Futures[settle].SetMarginModeAsync("CONTRACT", GateFuturesMarginMode.Cross);
         var perpetual_22 = await api.Futures[settle].SwithMarginModeUnderHedgeAsync("CONTRACT", GateFuturesMarginMode.Isolated);
         var perpetual_23 = await api.Futures[settle].SetRiskLimitAsync("CONTRACT", 25);
         var perpetual_24 = await api.Futures[settle].SetDualModeAsync(true);
+        var perpetual_24b = await api.Futures[settle].SetPositionModeAsync(GateFuturesAccountPositionMode.DualPlus); // Account-wide change; server requires no holdings or pending orders.
         var perpetual_25 = await api.Futures[settle].GetDualModePositionsAsync("CONTRACT");
         var perpetual_26 = await api.Futures[settle].SetDualModeMarginAsync("CONTRACT", GateFuturesDualModeSide.DualLong, 100);
         var perpetual_27 = await api.Futures[settle].SetDualModeLeverageAsync("CONTRACT", 10);
@@ -320,6 +325,7 @@ internal class Program
         var perpetual_29 = await api.Futures[settle].PlaceOrderAsync("BTC_USDT", 25.5m, price: 100.0m, timeInForce: GateFuturesTimeInForce.GoodTillCancelled);
         var perpetual_30 = await api.Futures[settle].PlaceOrderAsync(new GateFuturesOrderRequest { Contract = "BTC_USDT", Size = 25.5m, Price = 100.0m, TimeInForce = GateFuturesTimeInForce.GoodTillCancelled, MarketOrderSlipRatio = 0.03m, PositionMarginMode = GateFuturesPositionMarginMode.Isolated, ActionMode = GateFuturesActionMode.Full, TakeProfitTriggerPrice = 110.0m, StopLossTriggerPrice = 90.0m });
         var perpetual_30b = await api.Futures[settle].GetOrdersAsync(new GateFuturesOrderQueryRequest { Contract = "CONTRACT", Status = GateFuturesOrderStatus.Open, Limit = 100 });
+        var perpetual_30c = await api.Futures[settle].PlaceBboOrderAsync(new GateFuturesBboOrderRequest { Contract = "BTC_USDT", Size = 1, Direction = GateFuturesBboDirection.Buy, Level = 1 }); // Integer quantity; not a standard decimal-order alias.
         // Replace the example ID with an actual existing order ID. Transport success/ACK is not proof of a fill or cancellation.
         var perpetual_31 = await api.Futures[settle].GetOrderAsync(orderId: 1_000_000_001);
         var perpetual_32 = await api.Futures[settle].CancelOrderAsync(orderId: 1_000_000_001, actionMode: GateFuturesActionMode.Result);
@@ -331,12 +337,14 @@ internal class Program
         var perpetual_37 = await api.Futures[settle].GetPositionClosesAsync();
         var perpetual_38 = await api.Futures[settle].GetPositionClosesAsync(new GateFuturesPositionCloseQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
         var perpetual_39 = await api.Futures[settle].GetUserLiquidationsAsync();
+        var perpetual_39b = await api.Futures[settle].GetUserLiquidationsAsync(new GateFuturesUserLiquidationQueryRequest { Contract = "BTC_USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Offset = 0, Limit = 100 });
         var perpetual_40 = await api.Futures[settle].GetAdlHistoryAsync("CONTRACT");
         var perpetual_41 = await api.Futures[settle].GetAdlHistoryAsync(new GateFuturesAdlHistoryQueryRequest { Contract = "CONTRACT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow });
         var perpetual_42 = await api.Futures[settle].CancelAllAsync(new GateFuturesCountdownCancelAllRequest { Timeout = 30, Contract = "CONTRACT" });
         var perpetual_43 = await api.Futures[settle].GetTradingFeesAsync();
-        var perpetual_44 = await api.Futures[settle].CancelOrdersAsync([]);
-        var perpetual_45 = await api.Futures[settle].AmendOrdersAsync([]);
+        // Replace this ID with an actual order ID; inspect every result item, not just transport Success.
+        var perpetual_44 = await api.Futures[settle].CancelOrdersAsync(new[] { 1_000_000_001L }); // POST, 1-20 IDs.
+        var perpetual_45 = await api.Futures[settle].AmendOrdersAsync(new[] { new GateFuturesOrderAmendRequest { OrderId = 1_000_000_001L, Price = 101.0m } }); // 1-10 entries.
         var perpetual_46 = await api.Futures[settle].GetRiskLimitTableAsync("TABLE-ID");
         var perpetual_46b = await api.Futures[settle].PlaceTrailOrderAsync(new GateFuturesTrailOrderRequest { Contract = "CONTRACT", Amount = 10, ActivationPrice = 50000, IsGreaterThanOrEqual = true, PriceType = GateFuturesTrailPriceType.Latest, PriceOffset = "0.1%" });
         var perpetual_46c = await api.Futures[settle].GetTrailOrdersAsync(new GateFuturesTrailOrderQueryRequest { Contract = "CONTRACT", IsFinished = false });
@@ -345,6 +353,11 @@ internal class Program
         var perpetual_46f = await api.Futures[settle].CancelTrailOrderAsync(1_000_000_001);
         var perpetual_46g = await api.Futures[settle].CancelTrailOrdersAsync(new GateFuturesTrailOrdersCancelRequest { Contract = "CONTRACT" });
         var perpetual_46h = await api.Futures[settle].GetTrailOrderChangeLogAsync(new GateFuturesTrailOrderChangeLogQueryRequest { OrderId = 1_000_000_001 });
+        var perpetual_46i = await api.Futures[settle].PlaceChaseOrderAsync(new GateFuturesChaseOrderRequest { Contract = "BTC_USDT", Amount = "10", PriceLimit = "0", OffsetLimit = "100", Settlement = GateFuturesSettlement.USDT }); // Body settlement is optional; path takes precedence.
+        var perpetual_46j = await api.Futures[settle].CancelChaseOrderAsync("1000000001"); // Existing string API; replace with an actual Chase ID.
+        var perpetual_46k = await api.Futures[settle].CancelChaseOrdersAsync(new GateFuturesChaseOrdersCancelRequest { Contract = "BTC_USDT", PositionMarginMode = GateFuturesPositionMarginMode.Isolated });
+        var perpetual_46l = await api.Futures[settle].GetChaseOrdersAsync(new GateFuturesChaseOrderQueryRequest { Contract = "BTC_USDT", IsFinished = false, SortBy = GateFuturesChaseOrderSort.CreatedAt, PageNumber = 1, PageSize = 100 });
+        var perpetual_46m = await api.Futures[settle].GetChaseOrderAsync("1000000001");
         var perpetual_47 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
             GateFuturesTriggerType.PlanCloseShortPosition,
             GateFuturesTriggerPrice.MarkPrice,

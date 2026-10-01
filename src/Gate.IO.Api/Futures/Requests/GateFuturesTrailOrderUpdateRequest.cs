@@ -8,6 +8,7 @@ public record GateFuturesTrailOrderUpdateRequest
     /// <summary>
     /// Gets or sets the Order ID.
     /// </summary>
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
     /// <summary>
     /// Gets or sets the Amount.

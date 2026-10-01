@@ -8,7 +8,7 @@ public record GateFuturesBalanceChange
     /// <summary>
     /// Account change record ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? Id { get; set; }
 
     /// <summary>
@@ -51,6 +51,6 @@ public record GateFuturesBalanceChange
     /// <summary>
     /// Trade id
     /// </summary>
-    [JsonProperty("trade_id")]
+    [JsonProperty("trade_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long TradeId { get; set; }
 }

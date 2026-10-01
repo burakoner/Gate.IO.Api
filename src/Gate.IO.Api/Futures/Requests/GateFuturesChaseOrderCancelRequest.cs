@@ -5,6 +5,10 @@ namespace Gate.IO.Api.Futures;
 /// </summary>
 public record GateFuturesChaseOrderCancelRequest
 {
+    /// <summary>Optional body settlement, overridden by the selected REST settlement path.</summary>
+    [JsonProperty("settle", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
+    public GateFuturesSettlement? Settlement { get; set; }
+
     /// <summary>
     /// Order ID. Either this field or <see cref="ClientOrderId"/> must be provided
     /// </summary>

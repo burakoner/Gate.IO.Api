@@ -8,8 +8,16 @@ public record GateFuturesUserTrade
     /// <summary>
     /// Trade ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long Id { get; set; }
+
+    /// <summary>Fill ID returned by my_trades_timerange (distinct JSON field from my_trades.id).</summary>
+    [JsonProperty("trade_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
+    public long? TradeId { get; set; }
+
+    /// <summary>Trade value reported by my_trades. Not guaranteed on the time-range endpoint.</summary>
+    [JsonProperty("trade_value")]
+    public decimal? TradeValue { get; set; }
 
     /// <summary>
     /// Trading time
@@ -27,7 +35,7 @@ public record GateFuturesUserTrade
     /// <summary>
     /// Order ID related
     /// </summary>
-    [JsonProperty("order_id")]
+    [JsonProperty("order_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>

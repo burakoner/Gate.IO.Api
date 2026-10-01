@@ -8,7 +8,7 @@ public record GateFuturesPriceTriggeredOrderId
     /// <summary>
     /// Auto order ID.
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>

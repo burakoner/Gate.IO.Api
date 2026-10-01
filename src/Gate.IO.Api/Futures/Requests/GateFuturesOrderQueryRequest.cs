@@ -24,5 +24,6 @@ public record GateFuturesOrderQueryRequest
     /// <summary>
     /// Gets or sets the Last ID.
     /// </summary>
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? LastId { get; set; }
 }

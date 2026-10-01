@@ -8,7 +8,7 @@ public record GateFuturesOrderBook
     /// <summary>
     /// Order book ID, which is updated whenever the order book is changed. Valid only when &#x60;with_id&#x60; is set to &#x60;true&#x60;
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? Id { get; set; }
 
     /// <summary>

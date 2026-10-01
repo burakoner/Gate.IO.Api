@@ -8,13 +8,13 @@ public record GateFuturesOrderCancel
     /// <summary>
     /// Futures order ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UserId { get; set; }
 
     /// <summary>

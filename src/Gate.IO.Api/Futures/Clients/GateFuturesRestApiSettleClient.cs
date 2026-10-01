@@ -27,6 +27,10 @@ public class GateFuturesRestApiSettleClient
     public Task<RestCallResult<List<GateFuturesContract>>> GetContractsAsync(int limit = 100, int offset = 0, CancellationToken ct = default)
         => _.GetContractsAsync(Settlement, limit, offset, ct);
 
+    /// <summary>List all contracts including delisted contracts. This does not change GetContractsAsync semantics.</summary>
+    public Task<RestCallResult<List<GateFuturesContract>>> GetAllContractsAsync(int limit = 100, int offset = 0, CancellationToken ct = default)
+        => _.GetAllContractsAsync(Settlement, limit, offset, ct);
+
     /// <summary>
     /// Get a single contract
     /// </summary>
@@ -96,6 +100,14 @@ public class GateFuturesRestApiSettleClient
     public Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateFuturesTradeQueryRequest request, CancellationToken ct = default)
         => _.GetTradesAsync(Settlement, request.Contract, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, request.Offset ?? 0, request.LastId, ct);
 
+    /// <summary>Get trading-price candlesticks (without a mark_ or index_ prefix).</summary>
+    public Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
+        => _.GetCandlesticksAsync(Settlement, "", contract, interval, from, to, limit, ct);
+
+    /// <summary>Get trading-price candlesticks with timezone and optional range filters.</summary>
+    public Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateFuturesCandlestickQueryRequest request, CancellationToken ct = default)
+        => _.GetCandlesticksAsync(Settlement, "", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct, request.Timezone);
+
     /// <summary>
     /// Get futures candlesticks
     /// Return specified contract candlesticks. If prefix contract with mark_, the contract's mark price candlesticks are returned; if prefix with index_, index price candlesticks will be returned.
@@ -133,7 +145,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesCandlestick>>> GetMarkPriceCandlesticksAsync(GateFuturesCandlestickQueryRequest request, CancellationToken ct = default)
-        => _.GetCandlesticksAsync(Settlement, "mark_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
+        => _.GetCandlesticksAsync(Settlement, "mark_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct, request.Timezone);
 
     /// <summary>
     /// Get futures candlesticks
@@ -172,7 +184,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesCandlestick>>> GetIndexPriceCandlesticksAsync(GateFuturesCandlestickQueryRequest request, CancellationToken ct = default)
-        => _.GetCandlesticksAsync(Settlement, "index_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
+        => _.GetCandlesticksAsync(Settlement, "index_", request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct, request.Timezone);
 
     /// <summary>
     /// Premium Index K-Line
@@ -209,7 +221,11 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesCandlestickPremium>>> GetPremiumIndexCandlesticksAsync(GateFuturesCandlestickQueryRequest request, CancellationToken ct = default)
-        => _.GetPremiumIndexCandlesticksAsync(Settlement, request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (request.Timezone != null) throw new ArgumentException("premium_index does not support timezone", nameof(request));
+        return _.GetPremiumIndexCandlesticksAsync(Settlement, request.Contract, request.Interval, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.Limit ?? 100, ct);
+    }
 
     /// <summary>
     /// List futures tickers
@@ -895,6 +911,22 @@ public class GateFuturesRestApiSettleClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(string contract = null, int limit = 100, long? at = null, CancellationToken ct = default)
         => _.GetUserLiquidationsAsync(Settlement, contract, limit, at, ct);
+
+    /// <summary>Private liquidation history with all current optional filters, including from, to and offset.</summary>
+    public Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(GateFuturesUserLiquidationQueryRequest request, CancellationToken ct = default)
+        => _.GetUserLiquidationsAsync(Settlement, request, ct);
+
+    /// <summary>Set leverage for an explicit margin mode, optionally specifying the hedge side.</summary>
+    public Task<RestCallResult<GateFuturesPosition>> SetPositionLeverageAsync(string contract, decimal leverage, GateFuturesPositionMarginMode marginMode, GateFuturesDualModeSide? dualSide = null, CancellationToken ct = default)
+        => _.SetPositionLeverageAsync(Settlement, contract, leverage, marginMode, dualSide, ct);
+
+    /// <summary>Set account holding mode: single, dual or dual_plus. Requires no holdings or pending orders; server-enforced without automatic cancellation.</summary>
+    public Task<RestCallResult<GateFuturesBalance>> SetPositionModeAsync(GateFuturesAccountPositionMode positionMode, CancellationToken ct = default)
+        => _.SetPositionModeAsync(Settlement, positionMode, ct);
+
+    /// <summary>Create an order using a selected BBO book side and depth. Quantity is an integer on this endpoint.</summary>
+    public Task<RestCallResult<GateFuturesOrder>> PlaceBboOrderAsync(GateFuturesBboOrderRequest request, CancellationToken ct = default)
+        => _.PlaceBboOrderAsync(Settlement, request, ct);
 
     /// <summary>
     /// Query ADL auto-deleveraging order information

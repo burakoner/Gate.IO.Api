@@ -57,7 +57,7 @@ public record GateFuturesUserLiquidation
     /// <summary>
     /// Liquidation order ID. Not returned in public endpoints.
     /// </summary>
-    [JsonProperty("order_id")]
+    [JsonProperty("order_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
     
     /// <summary>

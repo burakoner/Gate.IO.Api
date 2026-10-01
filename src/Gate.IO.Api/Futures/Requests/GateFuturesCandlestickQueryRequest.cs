@@ -25,4 +25,7 @@ public record GateFuturesCandlestickQueryRequest
     /// Gets or sets the Limit.
     /// </summary>
     public int? Limit { get; set; }
+
+    /// <summary>Candlestick timezone: all, utc0 or utc8. Omitted uses the server's utc0 default. Not supported by premium_index.</summary>
+    public string Timezone { get; set; }
 }

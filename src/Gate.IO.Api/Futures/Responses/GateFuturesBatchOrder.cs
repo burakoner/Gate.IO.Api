@@ -6,7 +6,7 @@ namespace Gate.IO.Api.Futures;
 public record GateFuturesBatchOrder : GateFuturesOrder
 {
     /// <summary>
-    /// Whether the batch of orders succeeded
+    /// Whether this individual order succeeded, not whether the entire batch succeeded
     /// </summary>
     [JsonProperty("succeeded")]
     public bool Succeeded { get; set; }

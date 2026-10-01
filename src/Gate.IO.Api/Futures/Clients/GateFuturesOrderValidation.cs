@@ -1,6 +1,6 @@
 namespace Gate.IO.Api.Futures;
 
-// Single standard-order preflight only. Do not infer account mode or rewrite trading instructions.
+// Futures order preflight only. Do not infer account mode or rewrite trading instructions.
 internal static class GateFuturesOrderValidation
 {
     internal static void Create(GateFuturesOrderRequest request)
@@ -36,12 +36,38 @@ internal static class GateFuturesOrderValidation
         return clientOrderId;
     }
 
+    internal static List<T> Batch<T>(IEnumerable<T> items, int maximum, string name)
+    {
+        if (items == null) throw new ArgumentNullException(name);
+        // Bounded, single enumeration: avoids validating one sequence and transmitting a different one.
+        var list = items.Take(maximum + 1).ToList();
+        if (list.Count == 0 || list.Count > maximum) throw new ArgumentException($"Specify between 1 and {maximum} items", name);
+        return list;
+    }
+
+    internal static void Bbo(GateFuturesBboOrderRequest request)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        GateFuturesPriceOrderValidation.Contract(request.Contract, required: true);
+        Defined<GateFuturesBboDirection>(request.Direction, nameof(request.Direction));
+        Defined(request.TimeInForce, nameof(request.TimeInForce));
+        Defined(request.SelfTradeAction, nameof(request.SelfTradeAction));
+        ClientTag(request.ClientOrderId, allowEmpty: true);
+        if (request.Level < 1 || request.Level > 20) throw new ArgumentOutOfRangeException(nameof(request.Level));
+        if (request.AutoSize.HasValue && request.AutoSize != GateFuturesOrderAutoSize.CloseLong && request.AutoSize != GateFuturesOrderAutoSize.CloseShort)
+            throw new ArgumentException("Use close_long or close_short, or omit auto_size", nameof(request.AutoSize));
+        if (request.Close == true && request.Size != 0) throw new ArgumentException("close=true requires size=0", nameof(request.Size));
+        // BBO documents size=0 for auto_size, but not standard orders' reduce_only=true requirement.
+        if (request.AutoSize.HasValue && request.Size != 0)
+            throw new ArgumentException("Hedge-mode full close requires size=0", nameof(request.AutoSize));
+    }
+
     internal static void Defined<T>(T? value, string name) where T : struct, Enum
     {
         if (value.HasValue && !Enum.IsDefined(typeof(T), value.Value)) throw new ArgumentOutOfRangeException(name);
     }
 
-    private static void ClientTag(string value, bool allowEmpty)
+    internal static void ClientTag(string value, bool allowEmpty)
     {
         if (allowEmpty && string.IsNullOrEmpty(value)) return;
         if (value == null || !Regex.IsMatch(value, @"\At-[A-Za-z0-9_.-]{0,28}\z"))

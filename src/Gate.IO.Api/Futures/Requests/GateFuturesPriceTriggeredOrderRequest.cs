@@ -45,7 +45,7 @@ public record GateFuturesInitial
     /// Contract quantity. Zero denotes full closing. Planned partial closing uses positive size for short positions
     /// and negative size for long positions. Amount takes precedence when both quantity fields are supplied.
     /// </summary>
-    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? Size { get; set; }
 
     /// <summary>

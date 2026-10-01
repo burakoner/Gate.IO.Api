@@ -8,7 +8,7 @@ public record GateFuturesTrade
     /// <summary>
     /// Trade ID
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long Id { get; set; }
 
     /// <summary>
@@ -33,8 +33,8 @@ public record GateFuturesTrade
     /// <summary>
     /// Trading size
     /// </summary>
-    [JsonProperty("size")]
-    public long Size { get; set; }
+    [JsonProperty("size"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal Size { get; set; }
 
     /// <summary>
     /// Trading price (quote currency)

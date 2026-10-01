@@ -8,7 +8,7 @@ public record GateFuturesOrderAmendRequest
     /// <summary>
     /// Order id, order_id and text must contain at least one
     /// </summary>
-    [JsonProperty("order_id", NullValueHandling = NullValueHandling.Ignore)]
+    [JsonProperty("order_id", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? OrderId { get; set; }
 
     /// <summary>
@@ -25,13 +25,13 @@ public record GateFuturesOrderAmendRequest
     /// - For reduce-only orders, increasing the size may cancel other reduce-only orders.
     /// - If the price is not modified, decreasing the size will not affect the depth queue, while increasing the size will place it at the end of the current price level.
     /// </summary>
-    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? Size { get; set; }
 
     /// <summary>
     /// New order price
     /// </summary>
-    [JsonProperty("price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateDecimalStringConverter))]
+    [JsonProperty("price", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? Price { get; set; }
 
     /// <summary>
@@ -43,6 +43,6 @@ public record GateFuturesOrderAmendRequest
     /// <summary>
     /// Controls how much order data is returned.
     /// </summary>
-    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("action_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesActionMode? ActionMode { get; set; }
 }

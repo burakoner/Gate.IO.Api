@@ -64,4 +64,8 @@ public record GateFuturesBalanceHistory
     /// </summary>
     [JsonProperty("bonus_offset")]
     public decimal BonusOffset { get; set; }
+
+    /// <summary>Cumulative unified-account settlement. Negative: futures to spot; positive: spot to futures.</summary>
+    [JsonProperty("cross_settle")]
+    public decimal? CrossSettle { get; set; }
 }

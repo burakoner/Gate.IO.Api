@@ -8,19 +8,19 @@ public record GateFuturesTrailOrder
     /// <summary>
     /// Gets or sets the Order ID.
     /// </summary>
-    [JsonProperty("id")]
+    [JsonProperty("id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderId { get; set; }
 
     /// <summary>
     /// Gets or sets the User ID.
     /// </summary>
-    [JsonProperty("user_id")]
+    [JsonProperty("user_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? UserId { get; set; }
 
     /// <summary>
     /// Gets or sets the User.
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? User { get; set; }
 
     /// <summary>
@@ -146,7 +146,7 @@ public record GateFuturesTrailOrder
     /// <summary>
     /// Gets or sets the Sub Order ID.
     /// </summary>
-    [JsonProperty("suborder_id")]
+    [JsonProperty("suborder_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? SubOrderId { get; set; }
 
     /// <summary>

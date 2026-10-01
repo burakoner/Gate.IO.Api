@@ -5,6 +5,10 @@
 /// </summary>
 public record GateFuturesContract
 {
+    /// <summary>Whether the contract enables the mark-price circuit breaker. Null means not reported.</summary>
+    [JsonProperty("enable_circuit_breaker")]
+    public bool? EnableCircuitBreaker { get; set; }
+
     /// <summary>
     /// Futures contract
     /// </summary>
@@ -26,14 +30,14 @@ public record GateFuturesContract
     /// <summary>
     /// Minimum leverage
     /// </summary>
-    [JsonProperty("leverage_min")]
-    public int MinimumLeverage { get; set; }
+    [JsonProperty("leverage_min"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal MinimumLeverage { get; set; }
 
     /// <summary>
     /// Maximum leverage
     /// </summary>
-    [JsonProperty("leverage_max")]
-    public int MaximumLeverage { get; set; }
+    [JsonProperty("leverage_max"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal MaximumLeverage { get; set; }
     
     /// <summary>
     /// Maintenance rate of margin
@@ -148,14 +152,14 @@ public record GateFuturesContract
     /// <summary>
     /// Minimum order size the contract allowed
     /// </summary>
-    [JsonProperty("order_size_min")]
-    public long OrderSizeMinimum { get; set; }
+    [JsonProperty("order_size_min"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal OrderSizeMinimum { get; set; }
 
     /// <summary>
     /// Maximum order size the contract allowed
     /// </summary>
-    [JsonProperty("order_size_max")]
-    public long OrderSizeMaximum { get; set; }
+    [JsonProperty("order_size_max"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal OrderSizeMaximum { get; set; }
     
     /// <summary>
     /// deviation between order price and current index price. If price of an order is denoted as order_price, it must meet the following condition:      abs(order_price - mark_price) &lt;&#x3D; mark_price * order_price_deviate
@@ -178,26 +182,26 @@ public record GateFuturesContract
     /// <summary>
     /// Current orderbook ID
     /// </summary>
-    [JsonProperty("orderbook_id")]
+    [JsonProperty("orderbook_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long OrderbookId { get; set; }
     
     /// <summary>
     /// Current trade ID
     /// </summary>
-    [JsonProperty("trade_id")]
+    [JsonProperty("trade_id"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long TradeId { get; set; }
     
     /// <summary>
     /// Historical accumulated trade size
     /// </summary>
-    [JsonProperty("trade_size")]
-    public long TradeSize { get; set; }
+    [JsonProperty("trade_size"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal TradeSize { get; set; }
 
     /// <summary>
     /// Current total long position size
     /// </summary>
-    [JsonProperty("position_size")]
-    public long PositionSize { get; set; }
+    [JsonProperty("position_size"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
+    public decimal PositionSize { get; set; }
 
     /// <summary>
     /// Current long user count

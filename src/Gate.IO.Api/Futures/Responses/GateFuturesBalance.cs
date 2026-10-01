@@ -8,7 +8,7 @@ public record GateFuturesBalance
     /// <summary>
     /// User ID
     /// </summary>
-    [JsonProperty("user")]
+    [JsonProperty("user"), JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? UserId { get; set; }
 
     /// <summary>
@@ -160,6 +160,14 @@ public record GateFuturesBalance
     /// </summary>
     [JsonProperty("enable_tiered_mm")]
     public bool IsEnabledTiredMM { get; set; }
+
+    /// <summary>Whether split position mode is supported. Null means not reported.</summary>
+    [JsonProperty("enable_dual_plus")]
+    public bool? EnableDualPlus { get; set; }
+
+    /// <summary>Account holding mode: single, dual or dual_plus. Not the position's long/short direction.</summary>
+    [JsonProperty("position_mode")]
+    public string PositionMode { get; set; }
 
     /// <summary>
     /// Total Position Experience Coupon Amount in Account

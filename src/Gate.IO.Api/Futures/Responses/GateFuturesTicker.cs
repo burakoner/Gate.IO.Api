@@ -47,6 +47,18 @@ public record GateFuturesTicker
     [JsonProperty("volume_24h")]
     public decimal Volume24h { get; set; }
 
+    /// <summary>Deprecated BTC volume. Prefer base, quote or settle volumes.</summary>
+    [JsonProperty("volume_24h_btc")]
+    public decimal? Volume24hBtc { get; set; }
+
+    /// <summary>Deprecated USD volume. Prefer base, quote or settle volumes.</summary>
+    [JsonProperty("volume_24h_usd")]
+    public decimal? Volume24hUsd { get; set; }
+
+    /// <summary>Deprecated indicative funding rate. Prefer funding_rate.</summary>
+    [JsonProperty("funding_rate_indicative")]
+    public decimal? FundingRateIndicative { get; set; }
+
     /// <summary>
     /// Trade volume in recent 24h, in base currency
     /// </summary>
