@@ -13,8 +13,19 @@ public class GateTradFiRestApiClient
     // Root Client
     internal GateRestApiClient _ { get; }
 
+    private readonly bool leadTrading;
+
     // Constructor
-    internal GateTradFiRestApiClient(GateRestApiClient root) => _ = root;
+    internal GateTradFiRestApiClient(GateRestApiClient root, bool leadTrading)
+    {
+        _ = root;
+        this.leadTrading = leadTrading;
+    }
+
+    private Dictionary<string, string> GetHeaders(string endpoint)
+        => leadTrading && endpoint != "users" && endpoint != "transactions"
+            ? new Dictionary<string, string> { ["x-gate-trader-copy-type"] = "cfd_copy" }
+            : null;
 
     private async Task<RestCallResult<T>> SendTradFiDataRequestAsync<T>(
         string endpoint,
@@ -24,8 +35,18 @@ public class GateTradFiRestApiClient
         ParameterCollection queryParameters = null,
         ParameterCollection bodyParameters = null) where T : class
     {
-        var result = await _.SendRequestInternal<GateTradFiResponse<T>>(_.GetUrl(api, v4, tradfi, endpoint), method, ct, signed, queryParameters, bodyParameters).ConfigureAwait(false);
+        var result = await _.SendRequestInternal<GateTradFiResponse<T>>(_.GetUrl(api, v4, tradfi, endpoint), method, ct, signed, queryParameters, bodyParameters, headerParameters: GetHeaders(endpoint)).ConfigureAwait(false);
         if (!result.Success) return result.As<T>(default);
+
+        var envelope = result.Data;
+        if ((envelope?.Code is int code && code != 0) || !string.IsNullOrEmpty(envelope?.Label))
+        {
+            var message = envelope.Message ?? "TradFi business error";
+            var error = envelope.Code.HasValue
+                ? new ServerError(envelope.Code.Value, message, envelope.Label)
+                : new ServerError(message, envelope.Label);
+            return result.AsError<T>(error);
+        }
 
         var data = result.Data?.Data;
         if (data == null && typeof(T) == typeof(object))
@@ -71,7 +92,7 @@ public class GateTradFiRestApiClient
     /// <param name="categoryCodes">Category code list</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    /// <remarks>Gate production currently requires API v4 authentication for this operation.</remarks>
+    /// <remarks>The current official documentation requires API v4 authentication.</remarks>
     public Task<RestCallResult<List<GateTradFiSymbolCommission>>> GetSymbolCommissionsAsync(IEnumerable<string> symbols, IEnumerable<string> categoryCodes = null, CancellationToken ct = default)
         => GetSymbolCommissionsAsync(new GateTradFiSymbolCommissionQueryRequest
         {
@@ -85,11 +106,14 @@ public class GateTradFiRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    /// <remarks>Gate production currently requires API v4 authentication for this operation.</remarks>
+    /// <remarks>The current official documentation requires API v4 authentication.</remarks>
     public Task<RestCallResult<List<GateTradFiSymbolCommission>>> GetSymbolCommissionsAsync(GateTradFiSymbolCommissionQueryRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
         var symbols = request.Symbols?.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList() ?? [];
         var categoryCodes = request.CategoryCodes?.Where(x => !string.IsNullOrWhiteSpace(x)).Select(x => x.Trim()).ToList() ?? [];
+        ValidateListEntries(symbols, nameof(request.Symbols));
+        ValidateListEntries(categoryCodes, nameof(request.CategoryCodes));
         if (symbols.Count == 0 && categoryCodes.Count == 0)
             throw new ArgumentException("At least one symbol or category code must be provided.", nameof(request));
 
@@ -114,6 +138,7 @@ public class GateTradFiRestApiClient
     /// <param name="symbols">Trading symbol code list, max 10 symbols</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    /// <remarks>Pass one symbol per entry; API v4 authentication is required.</remarks>
     public Task<RestCallResult<List<GateTradFiSymbolDetails>>> GetSymbolDetailsAsync(IEnumerable<string> symbols, CancellationToken ct = default)
         => GetSymbolDetailsAsync(new GateTradFiSymbolDetailsRequest { Symbols = symbols }, ct);
 
@@ -123,9 +148,12 @@ public class GateTradFiRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    /// <remarks>Pass one symbol per entry; API v4 authentication is required.</remarks>
     public Task<RestCallResult<List<GateTradFiSymbolDetails>>> GetSymbolDetailsAsync(GateTradFiSymbolDetailsRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
         var symbols = request.Symbols?.Where(x => !string.IsNullOrWhiteSpace(x)).ToList() ?? [];
+        ValidateListEntries(symbols, nameof(request.Symbols));
         symbols.Count.ValidateIntBetween(nameof(request.Symbols), 1, 10);
 
         var parameters = new ParameterCollection
@@ -134,6 +162,12 @@ public class GateTradFiRestApiClient
         };
 
         return SendTradFiListRequestAsync<GateTradFiSymbolDetails>("symbols/detail", HttpMethod.Get, ct, true, parameters);
+    }
+
+    private static void ValidateListEntries(IEnumerable<string> entries, string name)
+    {
+        if (entries.Any(x => x.Contains(",")))
+            throw new ArgumentException("Pass one symbol or category code per collection entry, not a comma-separated list.", name);
     }
 
     /// <summary>
@@ -283,7 +317,7 @@ public class GateTradFiRestApiClient
         => SendTradFiListRequestAsync<GateTradFiOrder>("orders", HttpMethod.Get, ct, true);
 
     /// <summary>
-    /// Create an order
+    /// Submit an order and return its queue task acknowledgement, not an order ID or fill confirmation
     /// </summary>
     /// <param name="symbol">Trading symbol code</param>
     /// <param name="side">Order side</param>
@@ -307,13 +341,18 @@ public class GateTradFiRestApiClient
         }, ct);
 
     /// <summary>
-    /// Create an order
+    /// Submit an order and return its queue task acknowledgement, not an order ID or fill confirmation
     /// </summary>
     /// <param name="request">Order request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<GateTradFiOrderId>> PlaceOrderAsync(GateTradFiOrderRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol)) throw new ArgumentException("A symbol is required.", nameof(request.Symbol));
+        if (!Enum.IsDefined(typeof(GateTradFiOrderSide), request.Side)) throw new ArgumentOutOfRangeException(nameof(request.Side));
+        if (!Enum.IsDefined(typeof(GateTradFiOrderPriceType), request.PriceType)) throw new ArgumentOutOfRangeException(nameof(request.PriceType));
+
         var parameters = new ParameterCollection
         {
             { "symbol", request.Symbol },
@@ -325,13 +364,15 @@ public class GateTradFiRestApiClient
         parameters.AddOptionalString("price_tp", request.TakeProfitPrice);
         parameters.AddOptionalString("price_sl", request.StopLossPrice);
 
+        parameters.AddOptional("leverage", request.Leverage);
+
         return SendTradFiDataRequestAsync<GateTradFiOrderId>("orders", HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
 
     /// <summary>
     /// Modify order
     /// </summary>
-    /// <param name="orderId">Order ID</param>
+    /// <param name="orderId">Actual created order ID, not the submission queue task ID</param>
     /// <param name="price">Price</param>
     /// <param name="takeProfitPrice">Take profit price</param>
     /// <param name="stopLossPrice">Stop loss price</param>
@@ -365,11 +406,14 @@ public class GateTradFiRestApiClient
     /// <summary>
     /// Cancel order
     /// </summary>
-    /// <param name="orderId">Order ID</param>
+    /// <param name="orderId">Actual created order ID, not the submission queue task ID</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<object>> CancelOrderAsync(long orderId, CancellationToken ct = default)
-        => _.SendRequestInternal<object>(_.GetUrl(api, v4, tradfi, "orders/{order_id}".Replace("{order_id}", orderId.ToString())), HttpMethod.Delete, ct, true);
+    {
+        if (orderId <= 0) throw new ArgumentOutOfRangeException(nameof(orderId), "Specify an actual created order ID");
+        return SendTradFiDataRequestAsync<object>("orders/" + orderId.ToString(CultureInfo.InvariantCulture), HttpMethod.Delete, ct, true);
+    }
 
     /// <summary>
     /// Query historical order list

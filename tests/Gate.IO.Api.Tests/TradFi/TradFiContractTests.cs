@@ -31,7 +31,7 @@ public class TradFiContractTests
         Assert.Equal(GateTradFiTradeMode.Full, symbols[0].TradeMode);
         Assert.Single(symbolDetails);
         Assert.Equal(100000m, symbolDetails[0].ContractVolume);
-        Assert.Equal(25, symbolDetails[0].Leverage);
+        Assert.Equal("25", symbolDetails[0].Leverage);
         Assert.Equal(10m, symbolDetails[0].MinOrderVolume);
         Assert.Equal(2, candlesticks.Count);
         Assert.Equal(1.17213m, candlesticks[0].Close);
@@ -50,8 +50,7 @@ public class TradFiContractTests
 
         Assert.Equal(GateTradFiAccountStatus.NotOpened, mt5Account.Status);
         Assert.Equal(GateTradFiAccountStatus.Active, user.Status);
-        Assert.Equal(1, user.Mt5Uid);
-        Assert.Equal(10122, accountAssets.Mt5Uid);
+        Assert.Equal(1, user.Leverage);
         Assert.Equal(0m, accountAssets.Equity);
         Assert.Equal(2, transactions.Total);
         Assert.Equal(GateTradFiTransactionType.Dividend, transactions.List[0].Type);

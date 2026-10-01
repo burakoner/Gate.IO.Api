@@ -40,10 +40,4 @@ public record GateTradFiAccountAssets
     /// </summary>
     [JsonProperty("unrealized_pnl")]
     public decimal UnrealizedPnl { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Mt5 UID.
-    /// </summary>
-    [JsonProperty("mt5_uid")]
-    public long Mt5Uid { get; set; }
 }

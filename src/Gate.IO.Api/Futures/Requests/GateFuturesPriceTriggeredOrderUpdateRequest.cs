@@ -51,7 +51,7 @@ public record GateFuturesPriceTriggeredOrderUpdateRequest
     /// <summary>
     /// Side to close when fully closing a hedge-mode position.
     /// </summary>
-    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
 
     /// <summary>

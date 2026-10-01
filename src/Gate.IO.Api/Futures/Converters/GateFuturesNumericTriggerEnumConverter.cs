@@ -19,7 +19,9 @@ public class GateFuturesNumericTriggerEnumConverter : JsonConverter
             return Nullable.GetUnderlyingType(objectType) == null ? Activator.CreateInstance(objectType) : null;
 
         var type = Nullable.GetUnderlyingType(objectType) ?? objectType;
-        var value = Convert.ToInt32(reader.Value, CultureInfo.InvariantCulture);
+        if ((reader.TokenType != JsonToken.Integer && reader.TokenType != JsonToken.String)
+            || !int.TryParse(Convert.ToString(reader.Value, CultureInfo.InvariantCulture), NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+            throw new JsonSerializationException($"Expected an exact Int32 trigger enum at {reader.Path}");
 
         if (type == typeof(GateFuturesTriggerStrategy))
             return (GateFuturesTriggerStrategy)value;

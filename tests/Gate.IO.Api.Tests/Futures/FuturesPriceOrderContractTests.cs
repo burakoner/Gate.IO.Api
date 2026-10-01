@@ -145,4 +145,65 @@ public class FuturesPriceOrderContractTests
     [InlineData("{\"order_id\":null}")]
     public void Amendment_id_is_required_when_reading_a_saved_request(string json)
         => Assert.ThrowsAny<JsonException>(() => JsonConvert.DeserializeObject<GateFuturesPriceTriggeredOrderUpdateRequest>(json));
+
+    [Theory]
+    [InlineData("order_type")]
+    [InlineData("pos_margin_mode")]
+    [InlineData("initial.tif")]
+    [InlineData("initial.auto_size")]
+    public void Explicit_unknown_saved_request_enums_cannot_disappear_into_server_defaults(string path)
+    {
+        var json = JObject.Parse("{\"initial\":{\"contract\":\"BTC_USD1\",\"price\":\"1\"},\"trigger\":{\"price\":\"2\",\"rule\":1}}");
+        var parts = path.Split('.');
+        var owner = parts.Length == 1 ? json : (JObject)json[parts[0]]!;
+        owner[parts[^1]] = "unsupported-explicit-value";
+        Assert.ThrowsAny<JsonException>(() => json.ToObject<GateFuturesPriceTriggeredOrderRequest>());
+    }
+
+    [Fact]
+    public void Explicit_unknown_saved_amendment_side_cannot_be_omitted()
+        => Assert.ThrowsAny<JsonException>(() => JsonConvert.DeserializeObject<GateFuturesPriceTriggeredOrderUpdateRequest>("{\"order_id\":117,\"auto_size\":\"unsupported-explicit-value\"}"));
+
+    [Theory]
+    [InlineData("price_type", "1.5")]
+    [InlineData("strategy_type", "0.1")]
+    [InlineData("price_type", "true")]
+    [InlineData("price_type", "2147483648")]
+    public void Saved_numeric_trigger_enums_cannot_round_or_coerce_an_explicit_value(string field, string token)
+        => Assert.ThrowsAny<JsonException>(() => JsonConvert.DeserializeObject<GateFuturesPriceTriggeredOrderRequest>(
+            "{\"initial\":{\"contract\":\"BTC_USD1\",\"price\":\"1\"},\"trigger\":{\"price\":\"2\",\"rule\":1,\"" + field + "\":" + token + "}}"));
+
+    [Theory]
+    [InlineData("order_type")]
+    [InlineData("pos_margin_mode")]
+    [InlineData("initial.tif")]
+    [InlineData("initial.auto_size")]
+    public void Shared_known_enum_mappings_and_null_omission_remain_compatible(string path)
+    {
+        foreach (var fixture in new[] { "Docs/Futures/price_order.success.json", "Docs/Delivery/price_order.success.json" })
+        {
+            var json = JObject.Parse(JsonFixture.Read(fixture));
+            var parts = path.Split('.');
+            var owner = parts.Length == 1 ? json : (JObject)json[parts[0]]!;
+            owner[parts[^1]] = JValue.CreateNull();
+            var result = json.ToObject<GateFuturesPriceTriggeredOrder>()!;
+            Assert.Null(JObject.FromObject(result).SelectToken(path));
+            owner[parts[^1]] = "unsupported-explicit-value";
+            Assert.ThrowsAny<JsonException>(() => json.ToObject<GateFuturesPriceTriggeredOrder>());
+        }
+    }
+
+    [Theory]
+    [InlineData("0", GateFuturesTriggerPrice.DealPrice)]
+    [InlineData("1", GateFuturesTriggerPrice.MarkPrice)]
+    [InlineData("2", GateFuturesTriggerPrice.IndexPrice)]
+    public void Exact_numeric_and_legacy_numeric_string_trigger_enums_remain_compatible(string value, GateFuturesTriggerPrice expected)
+    {
+        foreach (var token in new[] { value, "\"" + value + "\"" })
+        {
+            var result = JsonConvert.DeserializeObject<GateFuturesPriceTriggeredOrderUpdateRequest>("{\"order_id\":117,\"price_type\":" + token + "}")!;
+            Assert.Equal(expected, result.PriceType);
+            Assert.Equal(int.Parse(value), JObject.FromObject(result)["price_type"]!.Value<int>());
+        }
+    }
 }

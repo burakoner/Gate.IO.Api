@@ -6,12 +6,6 @@ namespace Gate.IO.Api.TradFi;
 public record GateTradFiMt5Account
 {
     /// <summary>
-    /// Gets or sets the Mt5 UID.
-    /// </summary>
-    [JsonProperty("mt5_uid")]
-    public long Mt5Uid { get; set; }
-
-    /// <summary>
     /// Gets or sets the Leverage.
     /// </summary>
     [JsonProperty("leverage")]

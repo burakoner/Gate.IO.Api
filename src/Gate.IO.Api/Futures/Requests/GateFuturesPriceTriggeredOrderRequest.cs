@@ -20,13 +20,13 @@ public record GateFuturesPriceTriggeredOrderRequest
     /// <summary>
     /// Optional order type. On Futures creation, CloseLongOrder and CloseShortOrder are read-only response types.
     /// </summary>
-    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesTriggerType? Type { get; set; }
 
     /// <summary>
     /// Position margin mode. Supported values are isolated and cross.
     /// </summary>
-    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("pos_margin_mode", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesPositionMarginMode? PositionMarginMode { get; set; }
 }
 
@@ -72,7 +72,7 @@ public record GateFuturesInitial
     /// Price-triggered orders support gtc and ioc; omission defaults to gtc on the server.
     /// Market-price Futures creation requires explicit ioc; it is never selected automatically.
     /// </summary>
-    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesTimeInForce? TimeInForce { get; set; }
     
     /// <summary>
@@ -103,7 +103,7 @@ public record GateFuturesInitial
     /// Hedge-mode full closing (quantity zero) requires close_long or close_short. Partial closing does not require it.
     /// Use null to omit this DTO field; Futures preflight rejects the empty-string None sentinel.
     /// </summary>
-    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
+    [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesPriceOrderMapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
 }
 

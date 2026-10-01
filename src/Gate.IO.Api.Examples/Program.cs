@@ -379,6 +379,8 @@ internal class Program
         var tradfi_11 = await api.TradFi.CreateTransactionAsync(new GateTradFiTransactionRequest { Asset = "USDT", Change = 100.0m, Type = GateTradFiTransactionType.Deposit });
         var tradfi_12 = await api.TradFi.GetOrdersAsync();
         var tradfi_13 = await api.TradFi.PlaceOrderAsync(new GateTradFiOrderRequest { Symbol = "XAUUSD", Side = GateTradFiOrderSide.Buy, PriceType = GateTradFiOrderPriceType.Market, Price = 0m, Volume = 0.01m });
+        // Leverage is intentionally omitted; do not choose a multiplier without verifying symbol rules.
+        // tradfi_13.Data.Id identifies a queue task, not an actual order for update/cancel below.
         var tradfi_14 = await api.TradFi.UpdateOrderAsync(1_000_000_001, new GateTradFiOrderUpdateRequest { Price = 100.0m, TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
         var tradfi_15 = await api.TradFi.CancelOrderAsync(1_000_000_001);
         var tradfi_16 = await api.TradFi.GetOrderHistoryAsync(new GateTradFiOrderHistoryQueryRequest { Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });

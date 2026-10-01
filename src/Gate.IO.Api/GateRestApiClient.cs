@@ -166,7 +166,7 @@ public class GateRestApiClient : RestApiClient
         FlashSwap = new GateSwapRestApiClient(this);
         Futures = new GateFuturesRestApiClient(this);
         Delivery = new GateDeliveryRestApiClient(this);
-        TradFi = new GateTradFiRestApiClient(this);
+        TradFi = new GateTradFiRestApiClient(this, options.TradFiLeadTrading);
         Stock = new GateStockRestApiClient(this, options.StockLeadTrading);
 
         Options = new GateOptionsRestApiClient(this);

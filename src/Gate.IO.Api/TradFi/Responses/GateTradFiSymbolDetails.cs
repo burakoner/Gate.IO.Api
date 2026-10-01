@@ -48,10 +48,10 @@ public record GateTradFiSymbolDetails
     public decimal MinOrderVolume { get; set; }
 
     /// <summary>
-    /// Gets or sets the Leverage.
+    /// Raw leverage string from symbol details. No allowed-value list format is assumed.
     /// </summary>
     [JsonProperty("leverage")]
-    public int Leverage { get; set; }
+    public string Leverage { get; set; }
 
     /// <summary>
     /// Gets or sets the Price Precision.

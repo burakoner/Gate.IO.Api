@@ -140,6 +140,24 @@ List queries accept `open`/`finished`, a positive limit and a nonnegative offset
 
 Response `initial`, `trigger`, `initial.contract`, both prices and `trigger.rule` are required in the current Futures and Delivery schemas; missing/null values now fail deserialization in the shared model. Valid Delivery contracts and outgoing requests are preserved; Futures-only preflight checks are not applied to Delivery. Existing enums, return types, string quantities, int64 IDs and timestamp accessors remain compatible.
 
+The shared price-order models reject explicit unknown `order_type`, `pos_margin_mode`, `tif` and `auto_size` strings during JSON deserialization instead of discarding them as omitted values. This also applies to responses; an unsupported mapping is an error, not a guessed default. Numeric trigger enums accept exact integers or legacy integer strings, not fractional or boolean values that could be coerced into another trading instruction. Known mappings and null omission remain compatible; unrelated modules' converters are unchanged.
+
+## TradFi CFD migration
+
+The current [CFD API reference](https://www.gate.com/docs/developers/apiv4/en/cfd/) requires signed account, user activation, asset, commission, symbol-detail and order-submission requests. The three account response models no longer expose `Mt5Uid`; remove references to that retired identifier. `GateTradFiSymbolDetails.Leverage` is now the raw documented string, so consumers previously using its integer accessor must migrate too.
+
+Use optional `GateTradFiOrderRequest.Leverage` to submit an integer multiplier. Null omits it, including through the unchanged positional overload. Permitted multipliers are symbol-dependent; the client does not select leverage, fetch account settings or infer a list format from the symbol-detail string. Pass one symbol/category per collection entry, not embedded CSV; detail queries accept at most ten symbols.
+
+`PlaceOrderAsync` returns a queue task acknowledgement: `GateTradFiOrderId.Id` is **not an order ID** for update/cancel. It stays `long` by project policy, parsing numeric strings exactly; nonnumeric/out-of-range task IDs fail deserialization. Omitted IDs still default to zero and do not identify a task. Transport success is not proof of execution. Nonzero business `code` or nonempty `label` in unwrapped TradFi envelopes produces an error with HTTP metadata retained, without retry or polling. Optional response data is not synthesized into proof of an opened account or created order.
+
+Personal trading remains the default. CFD lead trading is explicit and captured when constructing a separate client:
+
+```csharp
+using var cfdLeadApi = new GateRestApiClient(new GateRestApiClientOptions { TradFiLeadTrading = true });
+```
+
+Eligible TradFi requests use the request-scoped `x-gate-trader-copy-type: cfd_copy` header; user activation and both transaction methods are excluded. It does not change shared HTTP defaults, Stock context or an existing client's context when options are later modified. These examples are not safe to run as a batch against a live financial account.
+
 ## Rest Api Examples
 
 ```csharp
@@ -499,6 +517,8 @@ var tradfi_10 = await api.TradFi.GetTransactionsAsync(new GateTradFiTransactionQ
 var tradfi_11 = await api.TradFi.CreateTransactionAsync(new GateTradFiTransactionRequest { Asset = "USDT", Change = 100.0m, Type = GateTradFiTransactionType.Deposit });
 var tradfi_12 = await api.TradFi.GetOrdersAsync();
 var tradfi_13 = await api.TradFi.PlaceOrderAsync(new GateTradFiOrderRequest { Symbol = "XAUUSD", Side = GateTradFiOrderSide.Buy, PriceType = GateTradFiOrderPriceType.Market, Price = 0m, Volume = 0.01m });
+// Leverage is intentionally omitted; choose an allowed multiplier explicitly via the DTO when needed.
+// tradfi_13.Data.Id is a queue task ID, not the actual order ID required by the next calls.
 var tradfi_14 = await api.TradFi.UpdateOrderAsync(1_000_000_001, new GateTradFiOrderUpdateRequest { Price = 100.0m, TakeProfitPrice = 110.0m, StopLossPrice = 90.0m });
 var tradfi_15 = await api.TradFi.CancelOrderAsync(1_000_000_001);
 var tradfi_16 = await api.TradFi.GetOrderHistoryAsync(new GateTradFiOrderHistoryQueryRequest { Symbol = "XAUUSD", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow });

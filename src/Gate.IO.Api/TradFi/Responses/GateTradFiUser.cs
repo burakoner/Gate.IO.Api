@@ -16,10 +16,4 @@ public record GateTradFiUser
     /// </summary>
     [JsonProperty("leverage")]
     public int Leverage { get; set; }
-
-    /// <summary>
-    /// Gets or sets the Mt5 UID.
-    /// </summary>
-    [JsonProperty("mt5_uid")]
-    public long Mt5Uid { get; set; }
 }

@@ -31,6 +31,16 @@ public class GateRestApiClientOptions : RestApiClientOptions
     public bool StockLeadTrading { get; set; }
 
     /// <summary>
+    /// Enable TradFi CFD lead trading using the cfd_copy request header. Defaults to false.
+    /// User activation and both fund transfer operations are excluded.
+    /// </summary>
+    /// <remarks>
+    /// Captured at construction. Use separate clients for personal and lead trading;
+    /// later option changes cannot change an existing client's trading context.
+    /// </remarks>
+    public bool TradFiLeadTrading { get; set; }
+
+    /// <summary>
     /// Gate.IO API Client Options
     /// </summary>
     public GateRestApiClientOptions() : this(null)

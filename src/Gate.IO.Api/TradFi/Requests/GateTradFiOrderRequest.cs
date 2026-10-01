@@ -33,4 +33,10 @@ public record GateTradFiOrderRequest
     /// Gets or sets the Stop Loss Price.
     /// </summary>
     public decimal? StopLossPrice { get; set; }
+
+    /// <summary>
+    /// Optional leverage multiplier, subject to the symbol's allowed multipliers on the server.
+    /// Null omits the field; no default or allowed-value list is inferred by this client.
+    /// </summary>
+    public int? Leverage { get; set; }
 }
