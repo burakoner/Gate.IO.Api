@@ -6,19 +6,19 @@ namespace Gate.IO.Api.Futures;
 public record GateFuturesPriceTriggeredOrderRequest
 {
     /// <summary>
-    /// Initial Order
+    /// Required initial order. Futures creation validates this object before sending.
     /// </summary>
-    [JsonProperty("initial")]
+    [JsonProperty("initial", Required = Required.Always)]
     public GateFuturesInitial Order { get; set; }
 
     /// <summary>
-    /// Trigger
+    /// Required trigger configuration.
     /// </summary>
-    [JsonProperty("trigger")]
+    [JsonProperty("trigger", Required = Required.Always)]
     public GateFuturesTrigger Trigger { get; set; }
 
     /// <summary>
-    /// Order Type
+    /// Optional order type. On Futures creation, CloseLongOrder and CloseShortOrder are read-only response types.
     /// </summary>
     [JsonProperty("order_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTriggerType? Type { get; set; }
@@ -38,17 +38,19 @@ public record GateFuturesInitial
     /// <summary>
     /// Futures contract
     /// </summary>
-    [JsonProperty("contract")]
+    [JsonProperty("contract", Required = Required.Always)]
     public string Contract { get; set; }
 
     /// <summary>
-    /// Order size. Positive size means to buy, while negative one means to sell. Set to 0 to close the position
+    /// Contract quantity. Zero denotes full closing. Planned partial closing uses positive size for short positions
+    /// and negative size for long positions. Amount takes precedence when both quantity fields are supplied.
     /// </summary>
     [JsonProperty("size", NullValueHandling = NullValueHandling.Ignore)]
     public long? Size { get; set; }
 
     /// <summary>
-    /// Order amount. Used for decimal contract size when supported.
+    /// Decimal contract quantity when supported. Takes precedence over Size when both are supplied.
+    /// The wrapper preserves both fields and does not choose a quantity or direction.
     /// </summary>
     [JsonProperty("amount", NullValueHandling = NullValueHandling.Ignore)]
     public string Amount { get; set; }
@@ -56,17 +58,19 @@ public record GateFuturesInitial
     /// <summary>
     /// Order price. Set to 0 to use market price
     /// </summary>
-    [JsonProperty("price")]
+    [JsonProperty("price", Required = Required.Always)]
     public string Price { get; set; }
 
     /// <summary>
-    /// Set to true if trying to close the position
+    /// Set true for a full close in single-position mode. Partial closing or hedge mode can omit it or set false.
+    /// The wrapper does not infer the account's position mode.
     /// </summary>
     [JsonProperty("close", NullValueHandling = NullValueHandling.Ignore)]
     public bool? Close { get; set; }
 
     /// <summary>
-    /// Time in force. If using market price, only ioc is supported.
+    /// Price-triggered orders support gtc and ioc; omission defaults to gtc on the server.
+    /// Market-price Futures creation requires explicit ioc; it is never selected automatically.
     /// </summary>
     [JsonProperty("tif", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesTimeInForce? TimeInForce { get; set; }
@@ -84,19 +88,20 @@ public record GateFuturesInitial
     public bool? ReduceOnly { get; set; }
 
     /// <summary>
-    /// Is the order reduce-only
+    /// Read-only response flag. For Futures creation use ReduceOnly instead; this field must be omitted.
     /// </summary>
     [JsonProperty("is_reduce_only", NullValueHandling = NullValueHandling.Ignore)]
     public bool? IsReduceOnly { get; set; }
 
     /// <summary>
-    /// Is the order to close position
+    /// Read-only response flag. For Futures creation use Close instead; this field must be omitted.
     /// </summary>
     [JsonProperty("is_close", NullValueHandling = NullValueHandling.Ignore)]
     public bool? IsClose { get; set; }
     
     /// <summary>
-    /// Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0
+    /// Hedge-mode full closing (quantity zero) requires close_long or close_short. Partial closing does not require it.
+    /// Use null to omit this DTO field; Futures preflight rejects the empty-string None sentinel.
     /// </summary>
     [JsonProperty("auto_size", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(MapConverter))]
     public GateFuturesOrderAutoSize? AutoSize { get; set; }
@@ -108,7 +113,8 @@ public record GateFuturesInitial
 public record GateFuturesTrigger
 {
     /// <summary>
-    /// How the order will be triggered
+    /// Trigger strategy. The current contract describes 0 and 1 but explicitly supports only 0 for creation.
+    /// Futures creation rejects ByPriceGap; response values can still be read.
     /// </summary>
     [JsonProperty("strategy_type", NullValueHandling = NullValueHandling.Ignore), JsonConverter(typeof(GateFuturesNumericTriggerEnumConverter))]
     public GateFuturesTriggerStrategy? StrategyType { get; set; }
@@ -122,13 +128,13 @@ public record GateFuturesTrigger
     /// <summary>
     /// Trigger price
     /// </summary>
-    [JsonProperty("price")]
+    [JsonProperty("price", Required = Required.Always)]
     public string Price { get; set; }
 
     /// <summary>
     /// Price trigger condition
     /// </summary>
-    [JsonProperty("rule"), JsonConverter(typeof(GateFuturesTriggerConditionConverter))]
+    [JsonProperty("rule", Required = Required.Always), JsonConverter(typeof(GateFuturesTriggerConditionConverter))]
     public GateSpotTriggerCondition Rule { get; set; }
 
     /// <summary>

@@ -6,9 +6,16 @@ namespace Gate.IO.Api.Futures;
 public record GateFuturesPriceTriggeredOrderUpdateRequest
 {
     /// <summary>
+    /// Optional body settlement. When supplied, it must match the selected BTC, USDT or USD1 REST client.
+    /// Omission uses the route's settlement; the client never overwrites an explicit mismatch.
+    /// </summary>
+    [JsonProperty("settle", NullValueHandling = NullValueHandling.Ignore)]
+    public string Settlement { get; set; }
+
+    /// <summary>
     /// ID of the pending price-triggered order.
     /// </summary>
-    [JsonProperty("order_id")]
+    [JsonProperty("order_id", Required = Required.Always)]
     public long OrderId { get; set; }
 
     /// <summary>

@@ -344,13 +344,13 @@ internal class Program
         var perpetual_46g = await api.Futures[settle].CancelTrailOrdersAsync(new GateFuturesTrailOrdersCancelRequest { Contract = "CONTRACT" });
         var perpetual_46h = await api.Futures[settle].GetTrailOrderChangeLogAsync(new GateFuturesTrailOrderChangeLogQueryRequest { OrderId = 1_000_000_001 });
         var perpetual_47 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
-            GateFuturesTriggerType.CloseShortPosition,
+            GateFuturesTriggerType.PlanCloseShortPosition,
             GateFuturesTriggerPrice.MarkPrice,
             GateFuturesTriggerStrategy.ByPrice,
             GateSpotTriggerCondition.GreaterThanOrEqualTo,
-            100.01m, TimeSpan.FromMinutes(15), "CONTRACT", 100.00m, 25, true,
+            100.01m, TimeSpan.FromMinutes(15), "CONTRACT", 100.00m, 25, false,
             GateFuturesTimeInForce.GoodTillCancelled,
-            "CLIENT-ORDER-ID", false, GateFuturesOrderAutoSize.CloseLong
+            "CLIENT-ORDER-ID", true, GateFuturesOrderAutoSize.None
         );
         var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest
         {
@@ -358,9 +358,10 @@ internal class Program
             Order = new GateFuturesInitial { Contract = "CONTRACT", Amount = "0.5", Price = "0", TimeInForce = GateFuturesTimeInForce.ImmediateOrCancel },
             Trigger = new GateFuturesTrigger { PriceType = GateFuturesTriggerPrice.MarkPrice, Price = "100.01", Rule = GateSpotTriggerCondition.GreaterThanOrEqualTo }
         });
-        var perpetual_48b = await api.Futures[settle].AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest { OrderId = 1_000_000_001, Amount = "0.25", TriggerPrice = "101.00", PriceType = GateFuturesTriggerPrice.MarkPrice });
+        // Use an existing order ID from this same settlement. Omit Settlement if the route is sufficient.
+        var perpetual_48b = await api.Futures.USD1.AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest { Settlement = "usd1", OrderId = 1_000_000_001, Amount = "0.25", TriggerPrice = "101.00", PriceType = GateFuturesTriggerPrice.MarkPrice });
         var perpetual_49 = await api.Futures[settle].GetPriceTriggeredOrdersAsync(new GateFuturesPriceTriggeredOrderQueryRequest { Status = GateSpotTriggerFilter.Open, Contract = "CONTRACT", Limit = 100 });
-        var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync();
+        var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync("CONTRACT"); // Null intentionally broadens scope to all eligible orders; inspect every returned status.
         var perpetual_51 = await api.Futures[settle].GetPriceTriggeredOrderAsync(1_000_000_001);
         var perpetual_52 = await api.Futures[settle].CancelPriceTriggeredOrderAsync(1_000_000_001);
 

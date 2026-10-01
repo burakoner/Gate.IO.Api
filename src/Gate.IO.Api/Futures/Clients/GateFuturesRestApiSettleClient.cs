@@ -1152,7 +1152,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="orderTimeInForce">Time in force. If using market price, only ioc is supported.</param>
     /// <param name="orderClientOrderId">The source of the order, including:</param>
     /// <param name="orderReduceOnly">Set to true to create a reduce-only order</param>
-    /// <param name="orderAutoSize">Set side to close dual-mode position. close_long closes the long side; while close_short the short one. Note size also needs to be set to 0</param>
+    /// <param name="orderAutoSize">Side for hedge-mode full closing. None omits auto_size; no closing side is inferred.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns>New price-triggered order identifier</returns>
     public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(
@@ -1211,6 +1211,12 @@ public class GateFuturesRestApiSettleClient
     /// <param name="request">Order Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns>New price-triggered order identifier</returns>
+    /// <remarks>
+    /// Market-price creation requires explicit ioc. Only gtc/ioc and strategy_type=0 are currently writable.
+    /// Order take-profit/stop-loss types and is_close/is_reduce_only are read-only; use a new request with writable fields.
+    /// Amount takes precedence over Size on the server. Position mode, closing direction and live trigger-price relationships
+    /// remain server-side; the wrapper does not infer them or retry submissions. Check the returned identifier as well as HTTP success.
+    /// </remarks>
     public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
         => _.PlacePriceTriggeredOrderAsync(Settlement, request, ct);
 
@@ -1220,6 +1226,10 @@ public class GateFuturesRestApiSettleClient
     /// <param name="request">Update request containing the target order ID and fields to modify</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns>Modified price-triggered order identifier</returns>
+    /// <remarks>
+    /// Optional body Settlement must exactly match this client's btc/usdt/usd1 route. Null leaves it omitted.
+    /// Existing tif and position mode are not fetched or inferred; partial fields remain omitted.
+    /// </remarks>
     public Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> AmendPriceTriggeredOrderAsync(GateFuturesPriceTriggeredOrderUpdateRequest request, CancellationToken ct = default)
         => _.AmendPriceTriggeredOrderAsync(Settlement, request, ct);
 
@@ -1242,14 +1252,21 @@ public class GateFuturesRestApiSettleClient
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
     public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> GetPriceTriggeredOrdersAsync(GateFuturesPriceTriggeredOrderQueryRequest request, CancellationToken ct = default)
-        => _.GetPriceTriggeredOrdersAsync(Settlement, request.Status, request.Contract, request.Limit ?? 100, request.Offset ?? 0, ct);
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        return _.GetPriceTriggeredOrdersAsync(Settlement, request.Status, request.Contract, request.Limit ?? 100, request.Offset ?? 0, ct);
+    }
 
     /// <summary>
     /// Cancel all open orders
     /// </summary>
-    /// <param name="contract">Futures contract</param>
+    /// <param name="contract">One literal Futures contract. Null intentionally targets all eligible orders in this settlement; blank is rejected.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    /// <remarks>
+    /// HTTP success is not proof that every order was cancelled. Inspect each returned Status and FinishAs.
+    /// A trigger's succeeded finish means it created an order, not that the resulting order filled. No automatic polling or retry is performed.
+    /// </remarks>
     public Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(string contract = null, CancellationToken ct = default)
         => _.CancelPriceTriggeredOrdersAsync(Settlement, contract, ct);
 
@@ -1268,6 +1285,7 @@ public class GateFuturesRestApiSettleClient
     /// <param name="orderId">Retrieve the data of the order with the specified ID</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    /// <remarks>Inspect the returned Status and FinishAs; HTTP success alone does not confirm terminal cancellation. No automatic polling or retry is performed.</remarks>
     public Task<RestCallResult<GateFuturesPriceTriggeredOrder>> CancelPriceTriggeredOrderAsync(long orderId, CancellationToken ct = default)
         => _.CancelPriceTriggeredOrderAsync(Settlement, orderId, ct);
 }

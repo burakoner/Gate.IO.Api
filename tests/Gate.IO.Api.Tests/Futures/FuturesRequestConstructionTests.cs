@@ -431,7 +431,7 @@ public class FuturesRequestConstructionTests
             Order = new GateFuturesInitial
             {
                 Contract = "BTC_USDT",
-                Amount = "100.5",
+                Amount = "-100.5",
                 Price = "5.03",
                 Close = false,
                 TimeInForce = GateFuturesTimeInForce.GoodTillCancelled,
@@ -460,7 +460,7 @@ public class FuturesRequestConstructionTests
         Assert.Equal("BTC_USDT", body["initial"]!["contract"]!.ToString());
         Assert.Null(body["initial"]!["size"]);
         Assert.Equal(JTokenType.String, body["initial"]!["amount"]!.Type);
-        Assert.Equal("100.5", body["initial"]!["amount"]!.ToString());
+        Assert.Equal("-100.5", body["initial"]!["amount"]!.ToString());
         Assert.Equal("gtc", body["initial"]!["tif"]!.ToString());
         Assert.Equal("close_long", body["initial"]!["auto_size"]!.ToString());
         Assert.Null(body["trigger"]!["strategy_type"]);
@@ -486,7 +486,7 @@ public class FuturesRequestConstructionTests
             TriggerPrice = "988888",
             PriceType = GateFuturesTriggerPrice.DealPrice,
             AutoSize = GateFuturesOrderAutoSize.CloseLong,
-            Close = true,
+            Close = false,
         });
 
         Assert.True(result.Success, result.Error?.ToString());
@@ -505,7 +505,7 @@ public class FuturesRequestConstructionTests
         Assert.Equal("988888", body["trigger_price"]!.Value<string>());
         Assert.Equal(0, body["price_type"]!.Value<int>());
         Assert.Equal("close_long", body["auto_size"]!.Value<string>());
-        Assert.True(body["close"]!.Value<bool>());
+        Assert.False(body["close"]!.Value<bool>());
         Assert.Null(body["settle"]);
         AssertSignedHeaders(request);
     }

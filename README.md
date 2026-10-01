@@ -128,7 +128,17 @@ Use `api.Futures.BTC.GetAdlRiskStatesAsync()`, `api.Futures.USDT.GetAdlRiskState
 
 Check transport success, the returned settlement and the requested dictionary entry before interpreting a snapshot. Missing/null required response fields fail deserialization instead of becoming `normal`, an empty mapping or time zero. Empty mappings contain no market evidence; null entries and unknown/empty state strings remain unconfirmed, not normal. Calculation times are preserved, with no automatic freshness threshold, polling or trading action. A reported market state is not an account-level guarantee against ADL.
 
-`GateFuturesSettlement.USD1` adds the `usd1` REST settlement and is accessible through both `api.Futures.USD1` and the indexer. Existing BTC/USDT values and clients are unchanged. This does not add a WebSocket URL, Delivery settlement or DeFi API; the [v4.106.126 changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog) limits DeFi Futures to `btc`/`usdt`. The shared REST registration is complete, but the full price-triggered order reconciliation is the next execution-plan step, including its currently missing optional amendment body settlement. This step does not claim a fresh audit of every inherited Futures endpoint or a completed v4.106.126 release.
+`GateFuturesSettlement.USD1` adds the `usd1` REST settlement and is accessible through both `api.Futures.USD1` and the indexer. Existing BTC/USDT values and clients are unchanged. This does not add a WebSocket URL, Delivery settlement or DeFi API; the [v4.106.126 changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog) limits DeFi Futures to `btc`/`usdt`. Shared registration and the six price-order contracts are reconciled; the remaining inherited Futures contracts still need an inventory/audit before declaring this release complete.
+
+## Futures price-triggered orders
+
+All six [current price-order endpoints](https://www.gate.com/docs/developers/apiv4/en/futures/#query-auto-order-list) are signed and available on BTC, USDT and USD1 REST clients. Creation requires `Order` and `Trigger`, their documented prices, a literal contract and rule. For [amendment](https://www.gate.com/docs/developers/apiv4/en/futures/#modify-a-single-auto-order), optional string `Settlement` must exactly match the selected client's `btc`, `usdt` or `usd1`; `null` omits it. Blank, unknown and mismatched values fail before I/O and are not overwritten. Supply an actual created order ID for amendment, detail and single cancellation.
+
+Creation supports `gtc`/`ioc`; the server default for omitted `tif` is `gtc`, so market-price creation requires explicit `ImmediateOrCancel`. The current explanation permits only `strategy_type=0`, despite listing 1 as a described strategy. `CloseLongOrder`/`CloseShortOrder` and `IsClose`/`IsReduceOnly` are read-only; construct a new request using writable `Close`/`ReduceOnly` instead. The POST example contradicts this restriction, so follow the parameter rules. To omit `AutoSize` in a DTO, use `null`, not `None`; the older non-nullable overload translates `None` into omission. `Amount` takes precedence over `Size`, but both supplied values are preserved. Position mode, required close flags, closing direction, contract precision and trigger relationships to live prices remain server-side; the wrapper does not fetch or infer them.
+
+List queries accept `open`/`finished`, a positive limit and a nonnegative offset, retaining the existing client defaults of 100 and 0 without inventing an upper bound. For [bulk cancellation](https://www.gate.com/docs/developers/apiv4/en/futures/#cancel-all-auto-orders), `contract = null` intentionally includes all eligible orders in the selected settlement. Explicit blank/malformed filters are rejected without trimming or widening scope. HTTP success is not blanket cancellation: inspect each order's `Status` and `FinishAs`; `succeeded` describes successful triggering, not execution fills. Optional create/amend IDs can be absent, so transport success alone is not proof of an identified new order. No polling or retry is added.
+
+Response `initial`, `trigger`, `initial.contract`, both prices and `trigger.rule` are required in the current Futures and Delivery schemas; missing/null values now fail deserialization in the shared model. Valid Delivery contracts and outgoing requests are preserved; Futures-only preflight checks are not applied to Delivery. Existing enums, return types, string quantities, int64 IDs and timestamp accessors remain compatible.
 
 ## Rest Api Examples
 
@@ -454,13 +464,13 @@ var perpetual_46k = await api.Futures[settle].CancelChaseOrdersAsync(new GateFut
 var perpetual_46l = await api.Futures[settle].GetChaseOrdersAsync(new GateFuturesChaseOrderQueryRequest { Contract = "CONTRACT", IsFinished = false, SortBy = GateFuturesChaseOrderSort.CreatedAt, PageNumber = 1, PageSize = 100 });
 var perpetual_46m = await api.Futures[settle].GetChaseOrderAsync("1000000001");
 var perpetual_47 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(
-    GateFuturesTriggerType.CloseShortPosition,
+    GateFuturesTriggerType.PlanCloseShortPosition,
     GateFuturesTriggerPrice.MarkPrice,
     GateFuturesTriggerStrategy.ByPrice,
     GateSpotTriggerCondition.GreaterThanOrEqualTo,
-    100.01m, TimeSpan.FromMinutes(15), "CONTRACT", 100.00m, 25, true,
+    100.01m, TimeSpan.FromMinutes(15), "CONTRACT", 100.00m, 25, false,
     GateFuturesTimeInForce.GoodTillCancelled,
-    "CLIENT-ORDER-ID", false, GateFuturesOrderAutoSize.CloseLong
+    "CLIENT-ORDER-ID", true, GateFuturesOrderAutoSize.None
 );
 var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderRequest
 {
@@ -468,9 +478,10 @@ var perpetual_48 = await api.Futures[settle].PlacePriceTriggeredOrderAsync(new G
     Order = new GateFuturesInitial { Contract = "CONTRACT", Amount = "0.5", Price = "0", TimeInForce = GateFuturesTimeInForce.ImmediateOrCancel },
     Trigger = new GateFuturesTrigger { PriceType = GateFuturesTriggerPrice.MarkPrice, Price = "100.01", Rule = GateSpotTriggerCondition.GreaterThanOrEqualTo }
 });
-var perpetual_48b = await api.Futures[settle].AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest { OrderId = 1_000_000_001, Amount = "0.25", TriggerPrice = "101.00", PriceType = GateFuturesTriggerPrice.MarkPrice });
+// Use an existing order ID from this same settlement. Omit Settlement if the route is sufficient.
+var perpetual_48b = await api.Futures.USD1.AmendPriceTriggeredOrderAsync(new GateFuturesPriceTriggeredOrderUpdateRequest { Settlement = "usd1", OrderId = 1_000_000_001, Amount = "0.25", TriggerPrice = "101.00", PriceType = GateFuturesTriggerPrice.MarkPrice });
 var perpetual_49 = await api.Futures[settle].GetPriceTriggeredOrdersAsync(new GateFuturesPriceTriggeredOrderQueryRequest { Status = GateSpotTriggerFilter.Open, Contract = "CONTRACT", Limit = 100 });
-var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync();
+var perpetual_50 = await api.Futures[settle].CancelPriceTriggeredOrdersAsync("CONTRACT"); // Null intentionally broadens scope to all eligible orders; inspect every returned status.
 var perpetual_51 = await api.Futures[settle].GetPriceTriggeredOrderAsync(1_000_000_001);
 var perpetual_52 = await api.Futures[settle].CancelPriceTriggeredOrderAsync(1_000_000_001);
 

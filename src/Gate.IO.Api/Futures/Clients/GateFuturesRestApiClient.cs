@@ -1054,14 +1054,14 @@ public class GateFuturesRestApiClient
                 TimeInForce = orderTimeInForce,
                 ClientOrderId = orderClientOrderId,
                 ReduceOnly = orderReduceOnly,
-                AutoSize = orderAutoSize,
+                AutoSize = orderAutoSize == GateFuturesOrderAutoSize.None ? null : orderAutoSize,
             }
         }, ct);
 
     // Create a price-triggered order
     internal Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> PlacePriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderRequest request, CancellationToken ct = default)
     {
-        PerpetualHelpers.ValidateContractSymbol(request.Order.Contract);
+        GateFuturesPriceOrderValidation.Create(request);
 
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
@@ -1073,6 +1073,8 @@ public class GateFuturesRestApiClient
     // Modify a price-triggered order
     internal Task<RestCallResult<GateFuturesPriceTriggeredOrderId>> AmendPriceTriggeredOrderAsync(GateFuturesSettlement settle, GateFuturesPriceTriggeredOrderUpdateRequest request, CancellationToken ct = default)
     {
+        GateFuturesPriceOrderValidation.Amend(settle, request);
+
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
 
@@ -1089,6 +1091,8 @@ public class GateFuturesRestApiClient
         int offset = 0,
         CancellationToken ct = default)
     {
+        GateFuturesPriceOrderValidation.Query(status, contract, limit, offset);
+
         var parameters = new ParameterCollection
         {
             { "limit", limit },
@@ -1104,7 +1108,7 @@ public class GateFuturesRestApiClient
     // Cancel all open orders
     internal Task<RestCallResult<List<GateFuturesPriceTriggeredOrder>>> CancelPriceTriggeredOrdersAsync(GateFuturesSettlement settle, string contract = null, CancellationToken ct = default)
     {
-        if (!string.IsNullOrWhiteSpace(contract)) PerpetualHelpers.ValidateContractSymbol(contract);
+        GateFuturesPriceOrderValidation.Contract(contract);
 
         var parameters = new ParameterCollection();
         parameters.AddOptional("contract", contract);
@@ -1116,18 +1120,22 @@ public class GateFuturesRestApiClient
     // Get a price-triggered order
     internal Task<RestCallResult<GateFuturesPriceTriggeredOrder>> GetPriceTriggeredOrderAsync(GateFuturesSettlement settle, long orderId, CancellationToken ct = default)
     {
+        GateFuturesPriceOrderValidation.OrderId(orderId);
+
         var endpoint = "{settle}/price_orders/{order_id}"
             .Replace("{settle}", MapConverter.GetString(settle))
-            .Replace("{order_id}", orderId.ToString());
+            .Replace("{order_id}", orderId.ToString(CultureInfo.InvariantCulture));
         return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true);
     }
 
     // Cancel a price-triggered order
     internal Task<RestCallResult<GateFuturesPriceTriggeredOrder>> CancelPriceTriggeredOrderAsync(GateFuturesSettlement settle, long orderId, CancellationToken ct = default)
     {
+        GateFuturesPriceOrderValidation.OrderId(orderId);
+
         var endpoint = "{settle}/price_orders/{order_id}"
             .Replace("{settle}", MapConverter.GetString(settle))
-            .Replace("{order_id}", orderId.ToString());
+            .Replace("{order_id}", orderId.ToString(CultureInfo.InvariantCulture));
         return _.SendRequestInternal<GateFuturesPriceTriggeredOrder>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Delete, ct, true);
     }
 
