@@ -4,6 +4,8 @@ A .Net wrapper for the Gate.IO API as described on [Gate.IO](https://www.gate.io
 
 **If you think something is broken, something is missing or have any questions, please open an [Issue](https://github.com/burakoner/Gate.IO.Api/issues)**
 
+The current API catch-up scope, completed steps and review checkpoints are tracked in the [execution plan](EXECUTION_PLAN.md).
+
 ## Donations
 
 Donations are greatly appreciated and a motivation to keep improving.
@@ -281,6 +283,7 @@ var spot_33 = await api.Spot.PlacePovOrderAsync(new GateSpotPovOrderRequest { Sy
 var spot_34 = await api.Spot.GetPovOrderAsync("POV-ORDER-ID");
 var spot_35 = await api.Spot.CancelPovOrderAsync("POV-ORDER-ID");
 var spot_36 = await api.Spot.CancelPovOrdersAsync("SYMBOL"); // Omit SYMBOL only when intentionally cancelling every eligible Spot POV order.
+// POV cancellations use signed DELETE /spot/pov_orders/{order_id} and DELETE /spot/pov_orders, without a request body.
 // POV cancel responses can still contain a non-terminal status such as CREATED or CANCELING. Confirm the returned list/order and follow-up status before treating cancellation as complete.
 
 // Isolated Margin Methods

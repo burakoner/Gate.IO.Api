@@ -1298,7 +1298,7 @@ public class GateSpotRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
 
-        return _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath("cancel")), HttpMethod.Post, ct, true, queryParameters: parameters);
+        return _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders"), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
 
     /// <summary>
@@ -1326,6 +1326,11 @@ public class GateSpotRestApiClient
         if (string.IsNullOrWhiteSpace(orderId))
             throw new ArgumentException("Order ID is required.", nameof(orderId));
 
-        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(orderId.Trim()).AppendPath("cancel")), HttpMethod.Post, ct, true);
+        var id = orderId.Trim();
+        // URI normalization must never turn a single-order cancellation into a bulk request.
+        if (id == "." || id == ".." || id.IndexOfAny(['/', '\\', '?', '#', '%']) >= 0 || id.Any(char.IsControl))
+            throw new ArgumentException("Order ID must be a literal path segment without URL routing syntax.", nameof(orderId));
+
+        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(id)), HttpMethod.Delete, ct, true);
     }
 }

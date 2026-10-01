@@ -1,5 +1,6 @@
 using Gate.IO.Api.Spot;
 using Gate.IO.Api.Tests.Infrastructure;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace Gate.IO.Api.Tests.Spot;
@@ -422,10 +423,10 @@ public class SpotRequestConstructionTests
     }
 
     [Fact]
-    public async Task Signed_spot_pov_detail_and_cancel_requests_use_documented_post_routes_without_bodies()
+    public async Task Signed_spot_pov_detail_and_cancel_requests_use_documented_delete_routes_without_bodies()
     {
-        var handler = new RecordingHttpMessageHandler(request => request.RequestUri!.AbsolutePath.EndsWith("/cancel", StringComparison.Ordinal)
-            && request.RequestUri.AbsolutePath == "/api/v4/spot/pov_orders/cancel"
+        var handler = new RecordingHttpMessageHandler(request => request.Method == HttpMethod.Delete
+            && request.RequestUri.AbsolutePath == "/api/v4/spot/pov_orders"
                 ? JsonResponse($"[{JsonFixture.Read("Docs/Spot/pov_order.success.json")}]")
                 : JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
         var client = CreateClient(handler);
@@ -444,18 +445,103 @@ public class SpotRequestConstructionTests
 
         Assert.Equal(HttpMethod.Get, handler.Requests[0].Method);
         Assert.Equal("/api/v4/spot/pov_orders/t-pov_1", handler.Requests[0].RequestUri.AbsolutePath);
-        Assert.Equal(HttpMethod.Post, handler.Requests[1].Method);
-        Assert.Equal("/api/v4/spot/pov_orders/1216/cancel", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.Equal(HttpMethod.Delete, handler.Requests[1].Method);
+        Assert.Equal("/api/v4/spot/pov_orders/1216", handler.Requests[1].RequestUri.AbsolutePath);
+        Assert.Empty(ParseQuery(handler.Requests[1].RequestUri));
         Assert.True(string.IsNullOrEmpty(handler.Requests[1].Content));
-        Assert.Equal(HttpMethod.Post, handler.Requests[2].Method);
-        Assert.Equal("/api/v4/spot/pov_orders/cancel", handler.Requests[2].RequestUri.AbsolutePath);
-        Assert.Equal("BTC_USDT", ParseQuery(handler.Requests[2].RequestUri)["currency_pair"]);
+        Assert.Equal(HttpMethod.Delete, handler.Requests[2].Method);
+        Assert.Equal("/api/v4/spot/pov_orders", handler.Requests[2].RequestUri.AbsolutePath);
+        var cancelQuery = ParseQuery(handler.Requests[2].RequestUri);
+        Assert.Equal("BTC_USDT", cancelQuery["currency_pair"]);
+        Assert.Single(cancelQuery);
         Assert.True(string.IsNullOrEmpty(handler.Requests[2].Content));
-        Assert.Equal(HttpMethod.Post, handler.Requests[3].Method);
-        Assert.Equal("/api/v4/spot/pov_orders/cancel", handler.Requests[3].RequestUri.AbsolutePath);
+        Assert.Equal(HttpMethod.Delete, handler.Requests[3].Method);
+        Assert.Equal("/api/v4/spot/pov_orders", handler.Requests[3].RequestUri.AbsolutePath);
         Assert.Empty(ParseQuery(handler.Requests[3].RequestUri));
         Assert.True(string.IsNullOrEmpty(handler.Requests[3].Content));
         Assert.All(handler.Requests, AssertSignedHeaders);
+        Assert.All(handler.Requests.Skip(1), AssertSignedSignature);
+        Assert.Equal(GateSpotPovOrderStatus.Created, cancelResult.Data.Status);
+        Assert.Equal(GateSpotPovOrderStatus.Created, Assert.Single(cancelAllResult.Data).Status);
+        Assert.Equal(GateSpotPovOrderStatus.Created, Assert.Single(cancelEveryResult.Data).Status);
+    }
+
+    [Theory]
+    [InlineData("1216", "1216")]
+    [InlineData("9223372036854775808", "9223372036854775808")]
+    [InlineData("  t-pov_1-a.b  ", "t-pov_1-a.b")]
+    public async Task Signed_spot_pov_single_cancel_accepts_exchange_and_custom_string_ids(string orderId, string expectedId)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Spot.CancelPovOrderAsync(orderId);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Delete, request.Method);
+        Assert.Equal($"/api/v4/spot/pov_orders/{expectedId}", request.RequestUri.AbsolutePath);
+        Assert.Empty(ParseQuery(request.RequestUri));
+        Assert.True(string.IsNullOrEmpty(request.Content));
+        AssertSignedSignature(request);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" \t ")]
+    public async Task Spot_pov_single_cancel_rejects_missing_order_ids_before_network_io(string? orderId)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.CancelPovOrderAsync(orderId!));
+
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData(".")]
+    [InlineData("..")]
+    [InlineData("1216/..")]
+    [InlineData("1216\\..")]
+    [InlineData("1216?currency_pair=BTC_USDT")]
+    [InlineData("1216#fragment")]
+    [InlineData("%2e")]
+    [InlineData("%2e%2e")]
+    [InlineData("12\n16")]
+    [InlineData("12\r16")]
+    [InlineData("12\t16")]
+    public async Task Spot_pov_single_cancel_rejects_routing_syntax_before_network_io(string orderId)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Spot/pov_order.success.json")));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var exception = await Record.ExceptionAsync(() => client.Spot.CancelPovOrderAsync(orderId));
+
+        Assert.True(handler.Requests.Count == 0,
+            $"Unexpected request: {string.Join(", ", handler.Requests.Select(x => $"{x.Method} {x.RequestUri.AbsolutePath}"))}");
+        Assert.IsType<ArgumentException>(exception);
+    }
+
+    [Fact]
+    public async Task Signed_spot_pov_bulk_cancel_preserves_an_empty_order_list()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+
+        var result = await client.Spot.CancelPovOrdersAsync("BTC_USDT");
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Empty(result.Data);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Delete, request.Method);
+        Assert.Equal("/api/v4/spot/pov_orders", request.RequestUri.AbsolutePath);
+        AssertSignedSignature(request);
     }
 
     [Fact]
@@ -524,5 +610,18 @@ public class SpotRequestConstructionTests
         Assert.NotEmpty(Assert.Single(request.Headers["Timestamp"]));
         Assert.NotEmpty(Assert.Single(request.Headers["SIGN"]));
         Assert.True(request.Headers.ContainsKey("X-Gate-Channel-Id"));
+    }
+
+    private static void AssertSignedSignature(RecordedHttpRequest request)
+    {
+        AssertSignedHeaders(request);
+        var timestamp = Assert.Single(request.Headers["Timestamp"]);
+        var bodyHash = Convert.ToHexString(SHA512.HashData(Encoding.UTF8.GetBytes(request.Content))).ToLowerInvariant();
+        var query = System.Net.WebUtility.UrlDecode(request.RequestUri.Query.TrimStart('?'));
+        var signatureInput = $"{request.Method.Method}\n{request.RequestUri.AbsolutePath}\n{query}\n{bodyHash}\n{timestamp}";
+        using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes("secret"));
+        var expectedSignature = Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureInput))).ToLowerInvariant();
+
+        Assert.Equal(expectedSignature, Assert.Single(request.Headers["SIGN"]));
     }
 }

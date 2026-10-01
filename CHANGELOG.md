@@ -1,5 +1,15 @@
 ## Change Log & Release Notes
 
+- Unreleased - 01 October 2026
+  - Corrected the Spot POV cancellation portion of v4.106.127 against the complete current endpoint contracts: bulk cancellation uses signed `DELETE /spot/pov_orders` with the optional `currency_pair` query, and single cancellation uses signed `DELETE /spot/pov_orders/{order_id}`. Removed the erroneous POST `/cancel` paths without changing public method signatures.
+  - Rechecked all cancellation response fields, enums, timestamps, optional prices and custom IDs. The existing response model remains compatible; a successful HTTP response can still contain a non-terminal order status and must not be treated as confirmed cancellation completion.
+  - Added regressions for DELETE routes, empty bodies, filtered and unfiltered bulk cancellation, string/custom IDs, missing-ID rejection, empty order lists and independently recomputed request signatures. New route regressions failed against the old implementation before the fix.
+  - Added a single-cancellation preflight guard for URL routing syntax and control characters. Local tests confirmed that dot segments and encoded dots could normalize the intended single-order URL to the collection or parent path; these IDs now fail before any request is sent. Ordinary string IDs and valid custom IDs remain supported.
+  - Verification: 44 focused offline Spot tests and 317 total offline tests passed. The Release solution build succeeded for netstandard2.0 and netstandard2.1, including examples and tests, with zero warnings/errors; the reviewed diff passed whitespace checks.
+  - Started the living catch-up [execution plan](EXECUTION_PLAN.md). The OTC portion of v4.106.127 and intervening releases remain pending, so package/assembly versions stay at 4.106.116. No authenticated or state-changing live call was made.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/#changelog
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-spot-pov-orders
+  - Source: https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-a-spot-pov-order
 - Version 4.106.116 - 04 August 2026
   - Added all five signed Spot POV endpoints introduced by v4.106.116 and synchronized them with their complete current official contracts retrieved on 08 August 2026: create, list, detail, bulk cancel, and individual cancel under `/spot/pov_orders`.
     - Added decimal-string amount, optional limit and trigger prices, typed buy/sell side, integer participation rates `5` / `10` / `20` / `40`, every documented TTL from `1h` through `7d`, and validated optional `text` custom IDs.
