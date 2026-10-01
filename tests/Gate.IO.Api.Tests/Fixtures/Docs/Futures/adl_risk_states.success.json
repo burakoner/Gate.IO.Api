@@ -1,0 +1,17 @@
+{
+  "settle": "usdt",
+  "states": {
+    "BTC_USDT": {
+      "state": "normal",
+      "calculated_at_ms": 1786695185345
+    },
+    "GT_USDT": {
+      "state": "warning",
+      "calculated_at_ms": 1786695185345
+    },
+    "HYPE_USDT": {
+      "state": "adl_risk",
+      "calculated_at_ms": 1786695185345
+    }
+  }
+}

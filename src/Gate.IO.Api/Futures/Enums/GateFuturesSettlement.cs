@@ -19,4 +19,10 @@ public enum GateFuturesSettlement : byte
     /// </summary>
     [Map("usdt")]
     USDT = 3,
+
+    /// <summary>
+    /// USD1 perpetual futures REST settlement. This does not add WebSocket or DeFi Futures support.
+    /// </summary>
+    [Map("usd1")]
+    USD1 = 4,
 }

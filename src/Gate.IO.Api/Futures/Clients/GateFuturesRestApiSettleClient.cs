@@ -37,6 +37,16 @@ public class GateFuturesRestApiSettleClient
         => _.GetContractAsync(Settlement, contract, ct);
 
     /// <summary>
+    /// List current market-level ADL risk states for all contracts in this settlement currency.
+    /// Public GET /futures/{settle}/adl_risk_states has no query filters and requires no authentication.
+    /// This is not the current user's position ADL ranking or ADL execution history.
+    /// </summary>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>The returned settlement currency and contract-to-state mapping, including calculation times in Unix milliseconds.</returns>
+    public Task<RestCallResult<GateFuturesAdlRiskStates>> GetAdlRiskStatesAsync(CancellationToken ct = default)
+        => _.GetAdlRiskStatesAsync(Settlement, ct);
+
+    /// <summary>
     /// Futures order book
     /// Bids will be sorted by price from high to low, while asks sorted reversely
     /// </summary>

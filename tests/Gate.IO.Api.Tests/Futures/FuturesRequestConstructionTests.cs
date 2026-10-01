@@ -9,6 +9,25 @@ namespace Gate.IO.Api.Tests.Futures;
 public class FuturesRequestConstructionTests
 {
     [Fact]
+    public void Futures_rest_registers_usd1_without_changing_existing_settlement_values()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("{}"));
+        var client = CreateClient(handler);
+
+        Assert.Equal((byte)1, (byte)GateFuturesSettlement.BTC);
+        Assert.Equal((byte)3, (byte)GateFuturesSettlement.USDT);
+        Assert.Same(client.Futures.BTC, client.Futures[GateFuturesSettlement.BTC]);
+        Assert.Same(client.Futures.USDT, client.Futures[GateFuturesSettlement.USDT]);
+        Assert.Equal((byte)4, (byte)GateFuturesSettlement.USD1);
+        Assert.Equal("btc", ApiSharp.Converters.MapConverter.GetString(GateFuturesSettlement.BTC));
+        Assert.Equal("usdt", ApiSharp.Converters.MapConverter.GetString(GateFuturesSettlement.USDT));
+        Assert.Equal("usd1", ApiSharp.Converters.MapConverter.GetString(GateFuturesSettlement.USD1));
+        Assert.Same(client.Futures.USD1, client.Futures[GateFuturesSettlement.USD1]);
+        Assert.DoesNotContain(GateFuturesSettlement.USD1, new GateWebSocketClientOptions().StreamPerpetualFuturesAddresses.Keys);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
     public async Task Public_futures_contracts_request_serializes_query_without_authentication_headers()
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Futures/contracts.success.json")));

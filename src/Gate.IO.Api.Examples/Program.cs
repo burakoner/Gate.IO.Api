@@ -273,6 +273,10 @@ internal class Program
         var sample_01 = await api.Futures.BTC.GetContractsAsync();
         var sample_03 = await api.Futures.USDT.GetContractsAsync();
         var sample_04 = await api.Delivery.USDT.GetContractsAsync();
+        var sample_05 = await api.Futures.USD1.GetAdlRiskStatesAsync(); // Public, read-only market snapshot; no financial action is inferred.
+        if (sample_05.Success && sample_05.Data?.Settlement == "usd1"
+            && sample_05.Data.States.TryGetValue("BTC_USD1", out var marketAdl) && marketAdl != null)
+            Console.WriteLine($"Market ADL: {marketAdl.State}; calculated at (Unix ms): {marketAdl.CalculatedAtInMilliseconds}");
 
         // Dictionary Access for Futures (Perpetual & Delivery) Methods
         var sample_11 = await api.Futures[GateFuturesSettlement.BTC].GetContractsAsync();

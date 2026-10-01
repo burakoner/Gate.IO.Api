@@ -26,6 +26,11 @@ public class GateFuturesRestApiClient
     public GateFuturesRestApiSettleClient USDT { get; }
 
     /// <summary>
+    /// USD1 Settled Perpetual Futures REST Client. DeFi Futures and WebSocket support are not implied.
+    /// </summary>
+    public GateFuturesRestApiSettleClient USD1 { get; }
+
+    /// <summary>
     /// Get a perpetual futures settle client
     /// </summary>
     /// <param name="settle">Perpetual Settlement Asset</param>
@@ -40,10 +45,12 @@ public class GateFuturesRestApiClient
 
         BTC = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.BTC);
         USDT = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.USDT);
+        USD1 = new GateFuturesRestApiSettleClient(this, GateFuturesSettlement.USD1);
         Clients = new Dictionary<GateFuturesSettlement, GateFuturesRestApiSettleClient>
         {
             { GateFuturesSettlement.BTC, BTC },
             { GateFuturesSettlement.USDT, USDT },
+            { GateFuturesSettlement.USD1, USD1 },
         };
     }
 
@@ -66,6 +73,13 @@ public class GateFuturesRestApiClient
             .Replace("{settle}", MapConverter.GetString(settle))
             .Replace("{contract}", contract);
         return _.SendRequestInternal<GateFuturesContract>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct);
+    }
+
+    // List current market-level ADL risk states. The public endpoint has no query parameters.
+    internal Task<RestCallResult<GateFuturesAdlRiskStates>> GetAdlRiskStatesAsync(GateFuturesSettlement settle, CancellationToken ct = default)
+    {
+        var endpoint = $"{MapConverter.GetString(settle)}/adl_risk_states";
+        return _.SendRequestInternal<GateFuturesAdlRiskStates>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, false);
     }
 
     // Futures order book

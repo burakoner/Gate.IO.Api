@@ -122,6 +122,14 @@ The public [lending market list](https://www.gate.com/docs/developers/apiv4/en/i
 
 `DelistedTime` is a nullable raw `long` matching the documented `int64`. The current contract does not specify its unit or the meaning of zero, so the wrapper does not convert it to `DateTime` or interpret sentinels. Missing/null stays `null`, and disabled status is not treated as proof of delisting. Borrow minima and leverage keep their existing decimal accessors and read the documented numeric strings without relaxing invalid-value handling. The single-market `GetMarketsAsync(string)` overload requires a literal currency-pair path segment; missing values, whitespace and URL routing syntax are rejected before I/O, without trimming or substituting a market.
 
+## Futures market ADL risk
+
+Use `api.Futures.BTC.GetAdlRiskStatesAsync()`, `api.Futures.USDT.GetAdlRiskStatesAsync()` or `api.Futures.USD1.GetAdlRiskStatesAsync()` for the public [market-level ADL risk endpoint](https://www.gate.com/docs/developers/apiv4/en/futures/#list-market-level-adl-risk-states). It returns the server's `Settlement` and a `States` dictionary keyed by contract, not a list or the current user's position ranking/history. Each item exposes the raw `State` (`normal`, `warning`, `adl_risk`) and exact `CalculatedAtInMilliseconds` Unix timestamp. No query filters or authentication are added, even when API credentials are configured.
+
+Check transport success, the returned settlement and the requested dictionary entry before interpreting a snapshot. Missing/null required response fields fail deserialization instead of becoming `normal`, an empty mapping or time zero. Empty mappings contain no market evidence; null entries and unknown/empty state strings remain unconfirmed, not normal. Calculation times are preserved, with no automatic freshness threshold, polling or trading action. A reported market state is not an account-level guarantee against ADL.
+
+`GateFuturesSettlement.USD1` adds the `usd1` REST settlement and is accessible through both `api.Futures.USD1` and the indexer. Existing BTC/USDT values and clients are unchanged. This does not add a WebSocket URL, Delivery settlement or DeFi API; the [v4.106.126 changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog) limits DeFi Futures to `btc`/`usdt`. The shared REST registration is complete, but the full price-triggered order reconciliation is the next execution-plan step, including its currently missing optional amendment body settlement. This step does not claim a fresh audit of every inherited Futures endpoint or a completed v4.106.126 release.
+
 ## Rest Api Examples
 
 ```csharp
@@ -370,6 +378,10 @@ var swap_08 = await api.FlashSwap.GetOrderAsync(1_000_000_000);
 var sample_01 = await api.Futures.BTC.GetContractsAsync();
 var sample_03 = await api.Futures.USDT.GetContractsAsync();
 var sample_04 = await api.Delivery.USDT.GetContractsAsync();
+var sample_05 = await api.Futures.USD1.GetAdlRiskStatesAsync(); // Public, read-only market snapshot; no financial action is inferred.
+if (sample_05.Success && sample_05.Data?.Settlement == "usd1"
+    && sample_05.Data.States.TryGetValue("BTC_USD1", out var marketAdl) && marketAdl != null)
+    Console.WriteLine($"Market ADL: {marketAdl.State}; calculated at (Unix ms): {marketAdl.CalculatedAtInMilliseconds}");
 
 // Dictionary Access for Futures (Perpetual & Delivery) Methods
 var sample_11 = await api.Futures[GateFuturesSettlement.BTC].GetContractsAsync();
