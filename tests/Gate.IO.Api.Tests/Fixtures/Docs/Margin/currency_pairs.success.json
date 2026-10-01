@@ -3,6 +3,8 @@
     "currency_pair": "AE_USDT",
     "base_min_borrow_amount": "100",
     "quote_min_borrow_amount": "100",
-    "leverage": "3"
+    "leverage": "3",
+    "status": "enabled",
+    "delisted_time": 1786329745
   }
 ]

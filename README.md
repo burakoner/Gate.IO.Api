@@ -116,6 +116,12 @@ Use `GateSpotCancelOrdersRequest.TradeQuote` to restrict [bulk cancellation](htt
 
 Orders and trades expose the returned actual `TradeQuote`. The public and personal trade queries do not document a quote query filter, so none is invented. `CreateTimeInMillisecondsPrecise` preserves fractional milliseconds in trade responses; the existing `long` accessor retains its truncating behavior. For `MarketOrderMaxStock` and `MarketOrderMaxMoney`, both `null` and zero mean no limit. These limits are returned as-is, not converted into an automatic order-sizing policy. Use the existing client `ReceiveWindow` option for the documented `x-gate-exptime` header.
 
+## Isolated margin market metadata
+
+The public [lending market list](https://www.gate.com/docs/developers/apiv4/en/isolated-margin/#list-lending-markets) and [market details](https://www.gate.com/docs/developers/apiv4/en/isolated-margin/#get-lending-market-details) expose `GateMarginMarket.Status` as the returned string: `enabled` or `disabled`. Missing/null status stays `null`, and unknown strings are preserved. To confirm an explicit enabled response, check `result.Success && result.Data?.Status == "enabled"`; HTTP success alone is not market availability, and an enabled market does not guarantee permission or capacity to borrow. The historical `GateMarginMarketStatus` numeric enum is unchanged and is not used for this string field.
+
+`DelistedTime` is a nullable raw `long` matching the documented `int64`. The current contract does not specify its unit or the meaning of zero, so the wrapper does not convert it to `DateTime` or interpret sentinels. Missing/null stays `null`, and disabled status is not treated as proof of delisting. Borrow minima and leverage keep their existing decimal accessors and read the documented numeric strings without relaxing invalid-value handling. The single-market `GetMarketsAsync(string)` overload requires a literal currency-pair path segment; missing values, whitespace and URL routing syntax are rejected before I/O, without trimming or substituting a market.
+
 ## Rest Api Examples
 
 ```csharp
@@ -326,6 +332,7 @@ var margin_05 = await api.IsolatedMargin.GetAutoRepaymentAsync();
 var margin_06 = await api.IsolatedMargin.GetTransferableAmountAsync(new GateMarginTransferableAmountRequest { Currency = "CURRENCY", Symbol = "SYMBOL" });
 var margin_07 = await api.IsolatedMargin.GetMarketsAsync();
 var margin_08 = await api.IsolatedMargin.GetMarketsAsync("SYMBOL");
+Console.WriteLine($"Explicitly enabled: {margin_08.Success && margin_08.Data?.Status == "enabled"}; raw delisting time: {margin_08.Data?.DelistedTime}"); // Missing/unknown status is unconfirmed; enabled is not a borrowing guarantee.
 var margin_09 = await api.IsolatedMargin.GetEstimatedInterestRateAsync(new List<string> { "BTC", "ETH" });
 var margin_10 = await api.IsolatedMargin.BorrowOrRepayAsync(new GateMarginLoanRequest { Symbol = "SYMBOL", Currency = "CURRENCY", Type = GateMarginUniOrderType.Borrow, Amount = 100.0m });
 var margin_11 = await api.IsolatedMargin.RepayAsync("SYMBOL", "CURRENCY", 100.0m, true);

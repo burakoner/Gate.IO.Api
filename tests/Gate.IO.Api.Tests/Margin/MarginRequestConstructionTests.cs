@@ -46,15 +46,144 @@ public class MarginRequestConstructionTests
     {
         var handler = new RecordingHttpMessageHandler(_ => JsonResponse(JsonFixture.Read("Docs/Margin/currency_pairs.success.json")));
         var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
 
         var result = await client.IsolatedMargin.GetMarketsAsync();
 
         Assert.True(result.Success, result.Error?.ToString());
+        var market = JObject.FromObject(Assert.Single(result.Data!));
+        Assert.Equal("enabled", market["status"]?.Value<string>());
+        Assert.Equal(1786329745L, market["delisted_time"]?.Value<long>());
         var request = Assert.Single(handler.Requests);
         Assert.Equal(HttpMethod.Get, request.Method);
         Assert.Equal("/api/v4/margin/uni/currency_pairs", request.RequestUri.AbsolutePath);
+        Assert.Empty(request.RequestUri.Query);
+        Assert.Empty(request.Content);
         Assert.DoesNotContain("KEY", request.Headers.Keys);
         Assert.DoesNotContain("SIGN", request.Headers.Keys);
+        Assert.DoesNotContain("Timestamp", request.Headers.Keys);
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("")]
+    [InlineData(" ")]
+    [InlineData(" BTC_USDT")]
+    [InlineData("BTC_USDT ")]
+    [InlineData(".")]
+    [InlineData("..")]
+    [InlineData("BTC_USDT/..")]
+    [InlineData("BTC_USDT\\..")]
+    [InlineData("BTC_USDT?currency_pair=ETH_USDT")]
+    [InlineData("BTC_USDT#fragment")]
+    [InlineData("%2e%2e")]
+    [InlineData("BTC_USDT%2f..")]
+    [InlineData("BTC_USDT\n")]
+    [InlineData("BTC_USDT\u0000")]
+    public void Single_margin_market_rejects_missing_or_routing_symbols_before_io(string? symbol)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("{}"));
+        var client = CreateClient(handler);
+
+        var exception = Assert.Throws<ArgumentException>(() => { _ = client.IsolatedMargin.GetMarketsAsync(symbol!); });
+
+        Assert.Equal("symbol", exception.ParamName);
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData("AE_USDT", false)]
+    [InlineData("BTC_USDT", true)]
+    [InlineData("1000SHIB_USDT", true)]
+    [InlineData("BTC5L_USDT", false)]
+    public async Task Single_margin_market_preserves_the_symbol_and_omits_authentication(string symbol, bool credentials)
+    {
+        var body = JObject.Parse(JsonFixture.Read("Docs/Margin/currency_pair.success.json"));
+        body["currency_pair"] = symbol;
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(body.ToString()));
+        var client = CreateClient(handler);
+        if (credentials)
+            client.SetApiCredentials("key", "secret");
+
+        var result = await client.IsolatedMargin.GetMarketsAsync(symbol);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Equal(symbol, result.Data!.Symbol);
+        Assert.Equal(100m, result.Data.MinimumBaseBorrowQuantity);
+        Assert.Equal(100m, result.Data.MinimumQuoteBorrowQuantity);
+        Assert.Equal(3m, result.Data.Leverage);
+        Assert.Equal("enabled", result.Data.Status);
+        Assert.Equal(1786329745L, result.Data.DelistedTime);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Get, request.Method);
+        Assert.Equal($"/api/v4/margin/uni/currency_pairs/{symbol}", request.RequestUri.AbsolutePath);
+        Assert.Empty(request.RequestUri.Query);
+        Assert.Empty(request.Content);
+        Assert.DoesNotContain("KEY", request.Headers.Keys);
+        Assert.DoesNotContain("SIGN", request.Headers.Keys);
+        Assert.DoesNotContain("Timestamp", request.Headers.Keys);
+    }
+
+    [Fact]
+    public async Task Margin_market_queries_preserve_disabled_status_independently_from_delisting_time()
+    {
+        var body = JObject.Parse(JsonFixture.Read("Docs/Margin/currency_pair.success.json"));
+        body["status"] = "disabled";
+        body["delisted_time"] = 0L;
+        var handler = new RecordingHttpMessageHandler(request => JsonResponse(
+            request.RequestUri.AbsolutePath.EndsWith("/AE_USDT", StringComparison.Ordinal)
+                ? body.ToString() : new JArray(body).ToString()));
+        var client = CreateClient(handler);
+
+        var list = await client.IsolatedMargin.GetMarketsAsync();
+        var single = await client.IsolatedMargin.GetMarketsAsync("AE_USDT");
+
+        Assert.True(list.Success, list.Error?.ToString());
+        Assert.True(single.Success, single.Error?.ToString());
+        foreach (var market in new[] { Assert.Single(list.Data!), single.Data! })
+        {
+            Assert.Equal("disabled", market.Status);
+            Assert.Equal(0L, market.DelistedTime);
+        }
+        Assert.Equal(2, handler.Requests.Count);
+    }
+
+    [Fact]
+    public async Task Empty_margin_market_list_remains_successful()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+
+        var result = await client.IsolatedMargin.GetMarketsAsync();
+
+        Assert.True(result.Success, result.Error?.ToString());
+        Assert.Empty(result.Data!);
+        Assert.Single(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Margin_market_http_errors_do_not_become_successful_market_responses()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent("{\"label\":\"INVALID_ARGUMENT\",\"message\":\"invalid argument\"}", Encoding.UTF8, "application/json"),
+        });
+        var client = CreateClient(handler);
+
+        var list = await client.IsolatedMargin.GetMarketsAsync();
+        var single = await client.IsolatedMargin.GetMarketsAsync("AE_USDT");
+
+        Assert.False(list.Success);
+        Assert.False(single.Success);
+        Assert.Null(list.Data);
+        Assert.Null(single.Data);
+        Assert.All(new[] { list.Error, single.Error }, error =>
+        {
+            Assert.NotNull(error);
+            Assert.Equal("invalid argument", error.Message);
+            Assert.Contains("INVALID_ARGUMENT", error.ToString());
+        });
+        Assert.Equal(2, handler.Requests.Count);
     }
 
     [Fact]

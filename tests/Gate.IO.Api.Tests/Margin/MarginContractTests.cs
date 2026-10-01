@@ -51,12 +51,133 @@ public class MarginContractTests
         var tiers = JsonFixture.Deserialize<List<GateMarginTier>>("Docs/Margin/loan_margin_tiers.success.json");
 
         Assert.Single(markets);
-        Assert.Equal("AE_USDT", markets[0].Symbol);
-        Assert.Equal(100m, market.MinimumBaseBorrowQuantity);
+        foreach (var item in new[] { markets[0], market })
+        {
+            Assert.Equal("AE_USDT", item.Symbol);
+            Assert.Equal(100m, item.MinimumBaseBorrowQuantity);
+            Assert.Equal(100m, item.MinimumQuoteBorrowQuantity);
+            Assert.Equal(3m, item.Leverage);
+            Assert.Equal("enabled", item.Status);
+            Assert.Equal(1786329745L, item.DelistedTime);
+        }
         Assert.Equal(0.0000703m, estimateRates["BTC"]);
         Assert.Single(tiers);
         Assert.Equal(100m, tiers[0].UpperLimit);
         Assert.Equal(0.9m, tiers[0].MMR);
+    }
+
+    [Theory]
+    [InlineData("enabled")]
+    [InlineData("disabled")]
+    [InlineData("future-status")]
+    public void Margin_market_status_preserves_the_wire_string_without_inference(string status)
+    {
+        var body = new JObject { ["status"] = status, ["delisted_time"] = 1786329745L };
+
+        var market = JsonConvert.DeserializeObject<GateMarginMarket>(body.ToString())!;
+
+        Assert.Equal(status, market.Status);
+        Assert.Equal(1786329745L, market.DelistedTime);
+        Assert.Equal(status, JObject.FromObject(market)["status"]!.Value<string>());
+    }
+
+    [Theory]
+    [InlineData("{}")]
+    [InlineData("{\"status\":null,\"delisted_time\":null}")]
+    public void Optional_margin_market_metadata_is_not_defaulted_to_disabled_or_zero(string json)
+    {
+        var market = JsonConvert.DeserializeObject<GateMarginMarket>(json)!;
+
+        Assert.Null(market.Status);
+        Assert.Null(market.DelistedTime);
+        var serialized = JObject.FromObject(market);
+        Assert.Null(serialized["status"]);
+        Assert.Null(serialized["delisted_time"]);
+    }
+
+    [Theory]
+    [InlineData(0L)]
+    [InlineData(1786329745L)]
+    [InlineData(long.MaxValue)]
+    [InlineData(long.MinValue)]
+    public void Margin_delisting_time_preserves_int64_values_without_date_or_sentinel_conversion(long time)
+    {
+        var body = new JObject { ["status"] = "enabled", ["delisted_time"] = time };
+
+        var market = JsonConvert.DeserializeObject<GateMarginMarket>(body.ToString())!;
+        var serialized = JObject.FromObject(market);
+
+        Assert.Equal(time, market.DelistedTime);
+        Assert.Equal("enabled", market.Status);
+        Assert.Equal(JTokenType.Integer, serialized["delisted_time"]!.Type);
+        Assert.Equal(time, serialized["delisted_time"]!.Value<long>());
+    }
+
+    [Theory]
+    [InlineData("en-US")]
+    [InlineData("tr-TR")]
+    [InlineData("fr-FR")]
+    public void Margin_market_decimal_strings_preserve_precision_without_changing_existing_accessors(string culture)
+    {
+        const string json = "{\"currency_pair\":\"AE_USDT\",\"base_min_borrow_amount\":\"0.1234567890123456789012345678\",\"quote_min_borrow_amount\":\"100.12345678901234567890123456\",\"leverage\":\"3.5\",\"status\":\"enabled\",\"delisted_time\":1786329745}";
+        var previousCulture = System.Globalization.CultureInfo.CurrentCulture;
+        try
+        {
+            System.Globalization.CultureInfo.CurrentCulture = System.Globalization.CultureInfo.GetCultureInfo(culture);
+            var market = JsonConvert.DeserializeObject<GateMarginMarket>(json)!;
+            var serializedJson = JsonConvert.SerializeObject(market);
+            var serialized = JObject.Parse(serializedJson);
+            var roundTrip = JsonConvert.DeserializeObject<GateMarginMarket>(serializedJson)!;
+
+            Assert.Equal(0.1234567890123456789012345678m, market.MinimumBaseBorrowQuantity);
+            Assert.Equal(100.12345678901234567890123456m, market.MinimumQuoteBorrowQuantity);
+            Assert.Equal(3.5m, market.Leverage);
+            Assert.Equal(market.MinimumBaseBorrowQuantity, roundTrip.MinimumBaseBorrowQuantity);
+            Assert.Equal(market.MinimumQuoteBorrowQuantity, roundTrip.MinimumQuoteBorrowQuantity);
+            Assert.Equal(market.Leverage, roundTrip.Leverage);
+            Assert.Equal(6, serialized.Count);
+            var source = JObject.Parse(json);
+            foreach (var field in new[] { "currency_pair", "base_min_borrow_amount", "quote_min_borrow_amount", "leverage", "status" })
+                Assert.Equal(JTokenType.String, source[field]!.Type);
+            Assert.Equal(JTokenType.String, serialized["status"]!.Type);
+            Assert.Equal("enabled", serialized["status"]!.Value<string>());
+            Assert.Equal(JTokenType.Integer, serialized["delisted_time"]!.Type);
+        }
+        finally
+        {
+            System.Globalization.CultureInfo.CurrentCulture = previousCulture;
+        }
+    }
+
+    [Theory]
+    [InlineData("base_min_borrow_amount", "Infinity")]
+    [InlineData("quote_min_borrow_amount", "∞")]
+    [InlineData("leverage", "")]
+    [InlineData("leverage", " ")]
+    public void Undocumented_margin_numeric_strings_are_not_silently_converted_to_zero(string field, string value)
+    {
+        var body = new JObject { [field] = value };
+
+        Assert.ThrowsAny<JsonException>(() => JsonConvert.DeserializeObject<GateMarginMarket>(body.ToString()));
+    }
+
+    [Fact]
+    public void Historical_margin_market_payloads_and_numeric_enum_mappings_remain_compatible()
+    {
+        const string json = "{\"currency_pair\":\"AE_USDT\",\"base_min_borrow_amount\":\"100\",\"quote_min_borrow_amount\":\"100\",\"leverage\":\"3\"}";
+
+        var market = JsonConvert.DeserializeObject<GateMarginMarket>(json)!;
+
+        Assert.Equal("AE_USDT", market.Symbol);
+        Assert.Equal(100m, market.MinimumBaseBorrowQuantity);
+        Assert.Equal(100m, market.MinimumQuoteBorrowQuantity);
+        Assert.Equal(3m, market.Leverage);
+        Assert.Null(market.Status);
+        Assert.Null(market.DelistedTime);
+        Assert.Equal((byte)0, (byte)GateMarginMarketStatus.Disabled);
+        Assert.Equal((byte)1, (byte)GateMarginMarketStatus.Enabled);
+        Assert.Equal("0", ApiSharp.Converters.MapConverter.GetString(GateMarginMarketStatus.Disabled));
+        Assert.Equal("1", ApiSharp.Converters.MapConverter.GetString(GateMarginMarketStatus.Enabled));
     }
 
     [Fact]

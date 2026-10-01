@@ -156,7 +156,8 @@ public class GateMarginRestApiClient
     }
 
     /// <summary>
-    /// List lending markets
+    /// List lending markets through public GET /margin/uni/currency_pairs. No query parameters or authentication are required.
+    /// Market status and raw delisting time are returned independently when supplied by the server.
     /// </summary>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
@@ -166,13 +167,23 @@ public class GateMarginRestApiClient
     }
 
     /// <summary>
-    /// Get detail of lending market
+    /// Get lending market details through public GET /margin/uni/currency_pairs/{currency_pair}.
+    /// Market status and raw delisting time are returned independently when supplied by the server.
     /// </summary>
-    /// <param name="symbol">Symbol</param>
+    /// <param name="symbol">Required currency pair as a literal path segment, without whitespace or URL routing syntax</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
+    /// <exception cref="ArgumentException">The currency pair is missing or cannot be used as a literal path segment.</exception>
     public Task<RestCallResult<GateMarginMarket>> GetMarketsAsync(string symbol, CancellationToken ct = default)
     {
+        if (string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Currency pair is required.", nameof(symbol));
+
+        // Do not let URI normalization change a single-market query into the collection or another route.
+        if (symbol == "." || symbol == ".." || symbol.IndexOfAny(['/', '\\', '?', '#', '%']) >= 0
+            || symbol.Any(c => char.IsWhiteSpace(c) || char.IsControl(c)))
+            throw new ArgumentException("Currency pair must be a literal path segment without whitespace or URL routing syntax.", nameof(symbol));
+
         return _.SendRequestInternal<GateMarginMarket>(_.GetUrl(api, v4, marginuni, $"currency_pairs/{symbol}"), HttpMethod.Get, ct, false);
     }
 

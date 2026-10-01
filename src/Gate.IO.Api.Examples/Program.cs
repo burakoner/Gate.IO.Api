@@ -235,6 +235,7 @@ internal class Program
         var margin_06 = await api.IsolatedMargin.GetTransferableAmountAsync(new GateMarginTransferableAmountRequest { Currency = "CURRENCY", Symbol = "SYMBOL" });
         var margin_07 = await api.IsolatedMargin.GetMarketsAsync();
         var margin_08 = await api.IsolatedMargin.GetMarketsAsync("SYMBOL");
+        Console.WriteLine($"Explicitly enabled: {margin_08.Success && margin_08.Data?.Status == "enabled"}; raw delisting time: {margin_08.Data?.DelistedTime}"); // Missing/unknown status is unconfirmed; enabled is not a borrowing guarantee.
         var margin_09 = await api.IsolatedMargin.GetEstimatedInterestRateAsync(new List<string> { "BTC", "ETH" });
         var margin_10 = await api.IsolatedMargin.BorrowOrRepayAsync(new GateMarginLoanRequest { Symbol = "SYMBOL", Currency = "CURRENCY", Type = GateMarginUniOrderType.Borrow, Amount = 100.0m });
         var margin_11 = await api.IsolatedMargin.RepayAsync("SYMBOL", "CURRENCY", 100.0m, true);
