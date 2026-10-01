@@ -36,7 +36,13 @@ public record GateSpotMarket
     public string QuoteName { get; set; }
 
     /// <summary>
-    /// Trading fee
+    /// Actual quote currencies supported by this unified market. Null means unified quotes are not supported.
+    /// </summary>
+    [JsonProperty("trade_quotes")]
+    public List<string> TradeQuotes { get; set; }
+
+    /// <summary>
+    /// Trading fee rate (deprecated by Gate).
     /// </summary>
     [JsonProperty("fee")]
     public decimal Fee { get; set; }
@@ -141,13 +147,13 @@ public record GateSpotMarket
     public decimal? Slippage { get; set; }
 
     /// <summary>
-    /// Maximum market order quantity
+    /// Maximum market order quantity. Null or zero means no limit.
     /// </summary>
     [JsonProperty("market_order_max_stock")]
     public decimal? MarketOrderMaxStock { get; set; }
 
     /// <summary>
-    /// Maximum market order amount
+    /// Maximum market order amount. Null or zero means no limit.
     /// </summary>
     [JsonProperty("market_order_max_money")]
     public decimal? MarketOrderMaxMoney { get; set; }

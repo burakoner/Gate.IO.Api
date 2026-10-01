@@ -620,6 +620,32 @@ public class P2pRequestConstructionTests
         Assert.Empty(action.ActionData);
     }
 
+    [Fact]
+    public void Missing_action_code_is_not_replaced_with_business_success()
+    {
+        var response = JsonConvert.DeserializeObject<GateP2pActionResult>("{\"data\":{}}")!;
+        Assert.Null(JObject.FromObject(response!)["code"]);
+        Assert.Null(response.BusinessCode);
+        Assert.False(response.BusinessCode == 0);
+        Assert.Equal(0, response.Code); // Existing accessor remains compatible, but is not a safe success check.
+    }
+
+    [Theory]
+    [InlineData("{\"code\":0}", 0, true)]
+    [InlineData("{\"code\":70305102}", 70305102, false)]
+    [InlineData("{\"code\":null}", null, false)]
+    public void Action_business_codes_preserve_explicit_success_rejection_and_absence(string json, int? code, bool success)
+    {
+        var response = JsonConvert.DeserializeObject<GateP2pActionResult>(json)!;
+        Assert.Equal(code, response.BusinessCode);
+        Assert.Equal(success, response.BusinessCode == 0);
+        if (code.HasValue) Assert.Equal(code.Value, response.Code);
+
+        response.Code = 70305102;
+        Assert.Equal(70305102, response.BusinessCode);
+        Assert.Equal(70305102, JObject.FromObject(response)["code"]!.Value<int>());
+    }
+
     private static GateP2pAdRequest ValidAdvertisement() => new()
     {
         CurrencyType = "USDT",

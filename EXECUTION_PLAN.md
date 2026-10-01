@@ -18,10 +18,11 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 | 1 | Spot POV cancellation correction from `127`: both DELETE routes, optional bulk filter, string IDs, signatures, full response contract and cancellation semantics | Completed |
 | 2 | Stock contracts from `121`, `136`, `141` and the Stock portion of `143`: order sessions, opt-in lead-trading context, Japanese exchanges, asset types, option assets, categories, rate-limit and fee documentation | Completed |
 | 3 | P2P advertisement payment mappings from `117`; reconcile the complete current advertisement endpoint | Completed |
-| 4 | Spot currency-pair limits and unified-market quote support from `122` and `133` | Next |
-| 5 | Margin market status from `124`, then Futures ADL states from `125` and `usd1` settlement from `126`; preserve the DeFi settlement restriction | Pending |
-| 6 | CrossEx symbol and position changes from `130` and `131`, then LIGHTER support from `139`; assess missing isolated-margin endpoints against current documentation | Pending |
-| 7 | TradFi response changes from `132`, order leverage from `138`, and authentication verification from `143`; both affected symbol queries are already signed in this wrapper | Pending |
+| 4 | Spot currency-pair limits and unified-market quote support from `122` and `133`, including the shared batch request and full cancellation/trade contracts | Completed |
+| 5a | Margin market status from `124`; reconcile both currency-pair queries in a bounded turn | Next |
+| 5b | Futures ADL states from `125` and `usd1` settlement from `126`; preserve the DeFi settlement restriction | Pending after 5a |
+| 6 | TradFi breaking response changes from `132`, order leverage from `138`, and authentication verification from `143`; both affected symbol queries are already signed in this wrapper | Pending |
+| 7 | CrossEx symbol and position changes from `130` and `131`, then LIGHTER support from `139`; assess missing isolated-margin endpoints against current documentation | Pending |
 | 8 | Remaining OTC change from `127`, then pre-upload and related business submissions from `135` | Pending |
 | 9 | Stock category and market/account changes from `136` and `143`, without a C# breaking accessor change solely because the Java SDK changed | Completed in order 2 |
 | 10 | REST announcement queries from `142` and `144` | Pending |
@@ -34,16 +35,24 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 - Never place, cancel, transfer, upload, or otherwise mutate financial accounts in live verification. Signed request construction is tested with a recording HTTP handler and dummy credentials.
 - Check that user-supplied identifiers cannot change the target path or broaden the scope of mutating requests. The POV cancellation tests exposed this risk even after the documented route correction.
 - After four development turns, review changes, documentation, and this plan. Do not continue past five turns without that retrospective and an explicit scope/order revision where needed.
-- Current catch-up development turn: 3. First review checkpoint is due after turn 4 and mandatory before turn 6.
+- Current catch-up development turn: 4. First retrospective is complete; the next is due after turn 8 and mandatory before turn 10.
 - A previously completed out-of-order endpoint is rechecked when its original release is reached, without duplicating implementation or declaring unfinished sibling endpoints complete.
 
 ## Current turn
 
-01 October 2026: reconciled `POST /p2p/merchant/books/place_biz_push_order` against its complete current request, response and authentication contracts, using `117` as the index. Existing request fields, wire types and risk response models were already present. Added payment-map preflight validation while retaining the optional field and existing public signatures: keys must match enabled payment types, duplicate keys and malformed maps are rejected, and supplied IDs are not reformatted. Corrected the test that enabled only `bank` but also selected a `swift` account.
+01 October 2026: reconciled both Spot currency-pair queries, order creation, bulk cancellation, public trades and personal trade history using `122` and `133` as the index. Added nullable `trade_quotes`, optional order `trade_quote`, actual quote responses and a bulk cancellation request overload without changing the existing signatures. An omitted quote remains omitted; empty explicit cancellation filters are rejected instead of silently widening scope. Market limit null/zero sentinels remain unchanged.
 
-Added guards for documented operation/limit/price flags, required edit IDs and the fixed-price fiat maximum. The official full request example uses a publish operation with an edit ID and a fiat maximum above the stated fixed-price total; follow the parameter descriptions instead of copying those inconsistent example values. Omitted price mode and floating valuation are not inferred from UnitPrice. Account ownership and the existing advertisement's limit unit remain server-verified; no live account lookup or automatic payment selection is added. HTTP 200 business rejection code `70305102` remains in the public action response and must not be treated as a saved advertisement.
+The full contracts exposed additional gaps: bulk cancellation discarded per-order success/error fields, trade timestamps discarded fractional milliseconds, and public trade `reverse` used capitalized boolean text. Fixed all three while preserving the legacy cancellation return type and whole-millisecond accessor. Added documented pagination, order-filter/time-range, limit-price and iceberg checks. Since the order request is shared with batch creation, reconciled that endpoint too: retain the quote in each body, require matching accounts and enforce four pairs/ten orders per pair. Snapshot the enumerable once so validation and transmission use the same batch. Existing ReceiveWindow already supports the expiration header and is covered by signed request tests.
 
-Verification: 46 focused P2P tests and 379 offline tests passed, excluding both `PublicIntegration` and `LiveCapture`. The Release solution build passed for `netstandard2.0` and `netstandard2.1`, including examples and tests, with zero warnings and errors. The mismatched payment type, missing edit ID and excessive fixed-price fiat maximum regressions failed before their fixes. Coverage includes all four operations, optional payment-map omission, raw ID/string preservation, all submitted wire-field types, preflight exclusions, independently recomputed signatures, complete risk details and fractional timestamps. No authenticated or state-changing live call was made. Remaining releases and the version gap are still open; package/assembly versions remain `4.106.116`. Spot quote-currency support is next, followed by the first retrospective checkpoint after development turn 4.
+Verification: 154 focused Spot/P2P/Stock tests and 409 offline tests passed, excluding both PublicIntegration and LiveCapture. The Release solution build passed for netstandard2.0 and netstandard2.1, including examples and tests, with zero warnings/errors. Missing quotes, lost cancellation errors, the absent P2P action code and public trade boolean casing each failed a regression before correction. No authenticated or state-changing live call was made. Package/assembly versions remain 4.106.116; remaining releases and the 145/146 evidence gap are not declared complete.
+
+## Retrospective after development turn 4
+
+Reviewed the four catch-up turns' production diffs, regressions, README/XML guidance, changelog and work order against current official endpoint documentation. POV cancellation retains the two signed DELETE routes, routing-syntax preflight protection and asynchronous completion warning. Stock lead context remains request-scoped, captured at construction and excluded from both transaction methods; session rules and additive nullable asset fields remain consistent with the current contract. The prior Stock authentication exceptions are retained as previously observed production behavior, not claimed as newly verified evidence.
+
+Found and fixed a P2P success-detection gap: the action schema marks code optional, but the legacy integer accessor defaulted an absent code to zero. Added nullable BusinessCode and changed the guidance to require an explicit zero. Code remains a compatibility accessor, so callers must migrate their success check; missing codes and risk rejections are not success. Existing payment ownership, edit-unit checks and floating valuation remain server-side, without automatic lookups or retries.
+
+Forward revision: split the combined Margin/Futures group into two bounded steps. Keep Margin next and Futures after it, then inspect TradFi's documented breaking response removal before CrossEx's additive fields. This avoids combining unrelated financial contracts in one turn and advances a known compatibility change. No automatic throttler, quote-selection policy or historical version fence is introduced. The next review checkpoint is after turn 8.
 
 ## Sources
 
@@ -59,3 +68,10 @@ Verification: 46 focused P2P tests and 379 offline tests passed, excluding both 
 - [Japanese and Korean stock fee rates](https://www.gate.com/docs/developers/apiv4/en/stock/#query-fee-rates-for-japanese-and-korean-stocks)
 - [P2P advertisement submission](https://www.gate.com/docs/developers/apiv4/en/p2p/#publish-ad-order)
 - [P2P payment method list](https://www.gate.com/docs/developers/apiv4/en/p2p/#get-payment-method-list)
+- [Spot currency pairs](https://www.gate.com/docs/developers/apiv4/en/spot/#query-all-supported-currency-pairs)
+- [Spot currency pair details](https://www.gate.com/docs/developers/apiv4/en/spot/#query-single-currency-pair-details)
+- [Spot order creation](https://www.gate.com/docs/developers/apiv4/en/spot/#create-order)
+- [Spot batch order creation](https://www.gate.com/docs/developers/apiv4/en/spot/#batch-place-orders)
+- [Spot bulk cancellation](https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-all-open-orders-in-specified-currency-pair)
+- [Spot public trades](https://www.gate.com/docs/developers/apiv4/en/spot/#query-market-transaction-records)
+- [Spot personal trades](https://www.gate.com/docs/developers/apiv4/en/spot/#query-personal-trading-records)

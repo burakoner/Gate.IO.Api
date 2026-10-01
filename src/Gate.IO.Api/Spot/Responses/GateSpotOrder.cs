@@ -63,6 +63,30 @@ public record GateSpotOrder
     /// </summary>
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
+
+    /// <summary>
+    /// Actual quote currency used for the order in a unified market.
+    /// </summary>
+    [JsonProperty("trade_quote")]
+    public string TradeQuote { get; set; }
+
+    /// <summary>
+    /// Per-order cancellation result returned by bulk cancellation. Null when not supplied; HTTP success alone does not confirm cancellation.
+    /// </summary>
+    [JsonProperty("succeeded", NullValueHandling = NullValueHandling.Ignore)]
+    public bool? Succeeded { get; set; }
+
+    /// <summary>
+    /// Bulk cancellation error label, if supplied.
+    /// </summary>
+    [JsonProperty("label", NullValueHandling = NullValueHandling.Ignore)]
+    public string ErrorLabel { get; set; }
+
+    /// <summary>
+    /// Bulk cancellation error message, if supplied.
+    /// </summary>
+    [JsonProperty("message", NullValueHandling = NullValueHandling.Ignore)]
+    public string ErrorMessage { get; set; }
     
     /// <summary>
     /// Order Type
@@ -71,7 +95,7 @@ public record GateSpotOrder
     public GateSpotOrderType Type { get; set; }
     
     /// <summary>
-    /// Account type. spot - use spot account; margin - use margin account; cross_margin - use cross margin account. Portfolio margin account must set to &#x60;cross-margin&#x60; 
+    /// Account type: spot, margin or unified. CrossMargin is retained for compatibility.
     /// </summary>
     [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType Account { get; set; }
@@ -83,7 +107,7 @@ public record GateSpotOrder
     public GateSpotOrderSide Side { get; set; }
     
     /// <summary>
-    /// When "type" is limit, it refers to base currency.  For instance, &#x60;BTC_USDT&#x60; means &#x60;BTC&#x60;  When &#x60;type&#x60; is &#x60;market&#x60;, it refers to different currency according to &#x60;side&#x60;  - &#x60;side&#x60; : &#x60;buy&#x60; means quote currency, &#x60;BTC_USDT&#x60; means &#x60;USDT&#x60; - &#x60;side&#x60; : &#x60;sell&#x60; means base currency，&#x60;BTC_USDT&#x60; means &#x60;BTC&#x60; 
+    /// Base-currency quantity for limit orders and market sells; actual quote-currency amount for market buys.
     /// </summary>
     [JsonProperty("amount")]
     public decimal Amount { get; set; }

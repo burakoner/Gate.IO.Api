@@ -8,6 +8,89 @@ namespace Gate.IO.Api.Tests.Spot;
 public class SpotContractTests
 {
     [Fact]
+    public void Unified_market_quote_fields_survive_deserialization()
+    {
+        var market = JsonConvert.DeserializeObject<GateSpotMarket>("""
+            {"id":"BTC_USD","quote":"USD","trade_quotes":["USDC","RLUSD"]}
+            """);
+        var order = JsonConvert.DeserializeObject<GateSpotOrder>("""
+            {"id":"123","currency_pair":"BTC_USD","trade_quote":"USDC"}
+            """);
+        var trade = JsonConvert.DeserializeObject<GateSpotTrade>("""
+            {"id":"456","currency_pair":"BTC_USD","trade_quote":"RLUSD"}
+            """);
+        var history = JsonConvert.DeserializeObject<GateSpotTradeHistory>("""
+            {"id":"456","currency_pair":"BTC_USD","trade_quote":"RLUSD"}
+            """);
+
+        Assert.Equal(new[] { "USDC", "RLUSD" }, JObject.FromObject(market!)["trade_quotes"]?.Values<string>());
+        Assert.Equal("USDC", JObject.FromObject(order!)["trade_quote"]?.Value<string>());
+        Assert.Equal("RLUSD", JObject.FromObject(trade!)["trade_quote"]?.Value<string>());
+        Assert.Equal("RLUSD", JObject.FromObject(history!)["trade_quote"]?.Value<string>());
+    }
+
+    [Fact]
+    public void Bulk_cancellation_preserves_per_order_failure_details()
+    {
+        var order = JsonConvert.DeserializeObject<GateSpotOrder>("""
+            {"id":"123","succeeded":false,"label":"ORDER_NOT_FOUND","message":"Order not found"}
+            """);
+        var json = JObject.FromObject(order!);
+
+        Assert.Equal(false, json["succeeded"]?.Value<bool>());
+        Assert.Equal("ORDER_NOT_FOUND", json["label"]?.Value<string>());
+        Assert.Equal("Order not found", json["message"]?.Value<string>());
+    }
+
+    [Theory]
+    [InlineData("{}")]
+    [InlineData("{\"trade_quotes\":null,\"market_order_max_stock\":null,\"market_order_max_money\":null}")]
+    [InlineData("{\"market_order_max_stock\":\"0\",\"market_order_max_money\":\"0\"}")]
+    public void Markets_preserve_absent_quotes_and_unlimited_market_order_sentinels(string json)
+    {
+        var market = JsonConvert.DeserializeObject<GateSpotMarket>(json)!;
+        Assert.Null(market.TradeQuotes);
+        Assert.True(market.MarketOrderMaxStock is null or 0);
+        Assert.True(market.MarketOrderMaxMoney is null or 0);
+        Assert.Null(JsonConvert.DeserializeObject<GateSpotOrder>("{}")!.TradeQuote);
+        Assert.Null(JsonConvert.DeserializeObject<GateSpotTrade>("{}")!.TradeQuote);
+        Assert.Null(JsonConvert.DeserializeObject<GateSpotTradeHistory>("{}")!.TradeQuote);
+    }
+
+    [Fact]
+    public void Historical_market_limit_aliases_remain_readable()
+    {
+        var market = JsonConvert.DeserializeObject<GateSpotMarket>("""
+            {"max_market_order_stock":"100000","max_market_order_money":"1000000"}
+            """)!;
+        Assert.Equal(100000m, market.MarketOrderMaxStock);
+        Assert.Equal(1000000m, market.MarketOrderMaxMoney);
+    }
+
+    [Fact]
+    public void Precise_trade_milliseconds_and_legacy_accessors_share_one_value()
+    {
+        const string json = "{\"create_time_ms\":\"1548000000123.456\",\"trade_quote\":\"USDC\"}";
+        var trade = JsonConvert.DeserializeObject<GateSpotTrade>(json)!;
+        var history = JsonConvert.DeserializeObject<GateSpotTradeHistory>(json)!;
+        var privateTrade = JsonConvert.DeserializeObject<GateSpotPrivateTrade>(json)!;
+        Assert.Equal(1548000000123.456m, trade.CreateTimeInMillisecondsPrecise);
+        Assert.Equal(1548000000123.456m, history.CreateTimeInMillisecondsPrecise);
+        Assert.Equal(1548000000123.456m, privateTrade.CreateTimeInMillisecondsPrecise);
+        Assert.Equal("USDC", privateTrade.TradeQuote);
+        Assert.Equal("1548000000123.456", JObject.FromObject(trade)["create_time_ms"]!.Value<string>());
+        Assert.Equal("1548000000123.456", JObject.FromObject(history)["create_time_ms"]!.Value<string>());
+        trade.CreateTimeInMilliseconds = 123;
+        history.CreateTimeInMilliseconds = 456;
+        Assert.Equal(123m, trade.CreateTimeInMillisecondsPrecise);
+        Assert.Equal(456m, history.CreateTimeInMillisecondsPrecise);
+        trade.CreateTimeInMillisecondsPrecise = 789.456m;
+        history.CreateTimeInMillisecondsPrecise = 987.654m;
+        Assert.Equal(789, trade.CreateTimeInMilliseconds);
+        Assert.Equal(987, history.CreateTimeInMilliseconds);
+    }
+
+    [Fact]
     public void Documented_spot_currency_and_market_responses_deserialize()
     {
         var currencies = JsonFixture.Deserialize<List<GateSpotCurrency>>("Docs/Spot/currencies.success.json");
@@ -22,6 +105,8 @@ public class SpotContractTests
         Assert.Equal(GateSpotMarketStatus.Tradable, market.Status);
         Assert.Equal(GateSpotMarketType.Normal, market.Type);
         Assert.Equal(100000m, market.MarketOrderMaxStock);
+        Assert.Equal(new[] { "USDC", "RLUSD" }, market.TradeQuotes);
+        Assert.Equal(new[] { "USDC", "RLUSD" }, markets[0].TradeQuotes);
     }
 
     [Fact]
@@ -41,6 +126,7 @@ public class SpotContractTests
         Assert.Single(trades);
         Assert.Equal(GateSpotOrderSide.Sell, trades[0].Side);
         Assert.Equal(1548000000123, trades[0].CreateTimeInMilliseconds);
+        Assert.Equal(1548000000123.456m, trades[0].CreateTimeInMillisecondsPrecise);
         Assert.Single(candles);
         Assert.Equal(4.214m, candles[0].Volume);
         Assert.True(candles[0].WindowClosed);
@@ -73,6 +159,8 @@ public class SpotContractTests
         Assert.Equal(GateSpotTimeInForce.GoodTillCancelled, order.TimeInForce);
         Assert.Equal(GateSpotSelfTradeAction.None, order.SelfTradingPreventionAction);
         Assert.Equal(GateSpotFinishAs.Filled, order.FinishAs);
+        Assert.Equal("USDC", order.TradeQuote);
+        Assert.Null(order.Succeeded);
         Assert.Equal(0.05m, order.Slippage);
         Assert.Equal("67000", order.StopProfit.TriggerPrice);
         Assert.Equal("63000", order.StopLoss.TriggerPrice);
@@ -101,6 +189,7 @@ public class SpotContractTests
         Assert.Single(tradeHistory);
         Assert.Equal(GateSpotOrderSide.Sell, tradeHistory[0].Side);
         Assert.Equal(1548000000123, tradeHistory[0].CreateTimeInMilliseconds);
+        Assert.Equal(1548000000123.456m, tradeHistory[0].CreateTimeInMillisecondsPrecise);
         Assert.Equal(0.001m, fees["BTC_USDT"].MakerFee);
         Assert.NotEqual(default, countdown.Time);
         Assert.Single(priceOrders);

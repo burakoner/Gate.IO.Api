@@ -31,16 +31,32 @@ public record GateSpotTradeHistory
     public DateTime CreateTime { get; set; }
 
     /// <summary>
-    /// Trading time, with millisecond precision
+    /// Trading time in whole milliseconds, truncated for compatibility. Use CreateTimeInMillisecondsPrecise to retain the fractional part.
     /// </summary>
-    [JsonProperty("create_time_ms"), JsonConverter(typeof(GateLongConverter))]
-    public long CreateTimeInMilliseconds { get; set; }
+    [JsonIgnore]
+    public long CreateTimeInMilliseconds
+    {
+        get => (long)CreateTimeInMillisecondsPrecise;
+        set => CreateTimeInMillisecondsPrecise = value;
+    }
+
+    /// <summary>
+    /// Trading timestamp in milliseconds, including the fractional milliseconds returned by Gate.
+    /// </summary>
+    [JsonProperty("create_time_ms"), JsonConverter(typeof(GateDecimalStringConverter))]
+    public decimal CreateTimeInMillisecondsPrecise { get; set; }
 
     /// <summary>
     /// Currency pair
     /// </summary>
     [JsonProperty("currency_pair")]
     public string Symbol { get; set; }
+
+    /// <summary>
+    /// Actual quote currency used for the trade.
+    /// </summary>
+    [JsonProperty("trade_quote")]
+    public string TradeQuote { get; set; }
 
     /// <summary>
     /// Order side

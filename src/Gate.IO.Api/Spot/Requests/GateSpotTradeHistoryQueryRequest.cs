@@ -11,7 +11,7 @@ public record GateSpotTradeHistoryQueryRequest
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Account type
+    /// Deprecated by Gate. Retained for compatibility; the endpoint queries account transaction records without this filter.
     /// </summary>
     public GateSpotAccountType? Account { get; set; }
 

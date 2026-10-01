@@ -19,11 +19,22 @@ public record GateP2pActionResult
     public string Method { get; set; }
 
     /// <summary>
-    /// Business result code. Zero means success; an HTTP success alone does not imply business success.
+    /// Business result code as supplied by Gate. Null means no code was supplied and is not success.
+    /// An explicit zero means success; an HTTP success alone does not imply business success.
     /// Advertisement code 70305102 means content risk control rejected the submission; inspect Data for details.
     /// </summary>
-    [JsonProperty("code")]
-    public int Code { get; set; }
+    [JsonProperty("code", NullValueHandling = NullValueHandling.Ignore)]
+    public int? BusinessCode { get; set; }
+
+    /// <summary>
+    /// Compatibility accessor. Missing codes still read as zero; use BusinessCode == 0 to confirm an explicit success code.
+    /// </summary>
+    [JsonIgnore]
+    public int Code
+    {
+        get => BusinessCode ?? 0;
+        set => BusinessCode = value;
+    }
 
     /// <summary>
     /// Message

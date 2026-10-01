@@ -106,7 +106,15 @@ For [advertisement creation and editing](https://www.gate.com/docs/developers/ap
 
 Use the request overload for editing and supply `OrderId`. Preserve the existing advertisement's limit unit: fiat-limit edits must keep `LimitBasis = GateP2pAdLimitBasis.Fiat`. The wrapper does not fetch the existing advertisement to infer its unit. For explicit fixed-price fiat limits, `FiatMaxAmount` must not exceed `Number * UnitPrice`; floating-price and unspecified-mode valuation remains server-side.
 
-`RestCallResult.Success` alone does not confirm that the advertisement was saved. Also inspect `result.Data.Code`: `0` means business success; `70305102` means content risk control rejected the submission. In that case, `result.Data.Data.RiskEvent` contains the prompt. The existing response contract is preserved; business rejections are not converted into transport errors or retried automatically.
+`RestCallResult.Success` alone does not confirm that the advertisement was saved. Require `result.Data?.BusinessCode == 0`, which confirms an explicit success code. A missing code remains `null` and is not success; `70305102` means content risk control rejected the submission, with the prompt in `result.Data.Data.RiskEvent`. The legacy `Code` accessor remains available but returns zero for an absent code, so do not use it alone as a success check. Business rejections are not converted into transport errors or retried automatically.
+
+## Spot unified market quotes
+
+The [current Spot contract](https://www.gate.com/docs/developers/apiv4/en/spot/#create-order) distinguishes a market's `Quote` from its actual trading quote. `GetMarketsAsync` and `GetMarketAsync` expose `TradeQuotes`; `null` means the market does not support unified quotes. Select a supported actual currency explicitly through `GateSpotOrderRequest.TradeQuote` for single or batch orders. An omitted quote stays omitted, with no automatic currency substitution or account switch. For a market buy, `Amount` is expressed in the actual quote currency; limit orders and market sells use base-currency quantity.
+
+Use `GateSpotCancelOrdersRequest.TradeQuote` to restrict [bulk cancellation](https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-all-open-orders-in-specified-currency-pair) to one actual quote. Omitting it includes all quotes matching the other filters; omitting `Symbol` or `Account` further broadens the scope. Existing overloads keep their signatures and do not add a quote filter. HTTP success is not proof that every cancellation succeeded: inspect each returned order's nullable `Succeeded`, `ErrorLabel` and `ErrorMessage`.
+
+Orders and trades expose the returned actual `TradeQuote`. The public and personal trade queries do not document a quote query filter, so none is invented. `CreateTimeInMillisecondsPrecise` preserves fractional milliseconds in trade responses; the existing `long` accessor retains its truncating behavior. For `MarketOrderMaxStock` and `MarketOrderMaxMoney`, both `null` and zero mean no limit. These limits are returned as-is, not converted into an automatic order-sizing policy. Use the existing client `ReceiveWindow` option for the documented `x-gate-exptime` header.
 
 ## Rest Api Examples
 

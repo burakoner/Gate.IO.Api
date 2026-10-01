@@ -21,13 +21,20 @@ public record GateSpotOrderRequest
     public string Symbol { get; set; }
 
     /// <summary>
+    /// Actual quote currency for a unified market, selected from the market's TradeQuotes.
+    /// Omit to retain the server's default. The wrapper never substitutes the currency pair's quote.
+    /// </summary>
+    [JsonProperty("trade_quote", NullValueHandling = NullValueHandling.Ignore)]
+    public string TradeQuote { get; set; }
+
+    /// <summary>
     /// Order Type
     /// </summary>
     [JsonProperty("type"), JsonConverter(typeof(MapConverter))]
     public GateSpotOrderType Type { get; set; }
 
     /// <summary>
-    /// Account type. spot - use spot account; margin - use margin account; cross_margin - use cross margin account. Portfolio margin account must set to &#x60;cross-margin&#x60; 
+    /// Account type: spot, margin or unified. CrossMargin is retained for compatibility.
     /// </summary>
     [JsonProperty("account"), JsonConverter(typeof(MapConverter))]
     public GateSpotAccountType Account { get; set; }
@@ -39,7 +46,7 @@ public record GateSpotOrderRequest
     public GateSpotOrderSide Side { get; set; }
 
     /// <summary>
-    /// When "type" is limit, it refers to base currency.  For instance, &#x60;BTC_USDT&#x60; means &#x60;BTC&#x60;  When &#x60;type&#x60; is &#x60;market&#x60;, it refers to different currency according to &#x60;side&#x60;  - &#x60;side&#x60; : &#x60;buy&#x60; means quote currency, &#x60;BTC_USDT&#x60; means &#x60;USDT&#x60; - &#x60;side&#x60; : &#x60;sell&#x60; means base currency，&#x60;BTC_USDT&#x60; means &#x60;BTC&#x60; 
+    /// Base-currency quantity for limit orders and market sells. For market buys, the amount is in the actual quote currency (TradeQuote when specified).
     /// </summary>
     [JsonProperty("amount"), JsonConverter(typeof(GateDecimalStringConverter))]
     public decimal Amount { get; set; }

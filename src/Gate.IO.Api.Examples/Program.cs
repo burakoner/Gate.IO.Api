@@ -172,7 +172,12 @@ internal class Program
             StopLoss = new GateSpotOrderTpsl { TriggerPrice = "0.90", OrderPrice = "0.89" }
         });
         var spot_17 = await api.Spot.GetOrdersAsync(new GateSpotOrderQueryRequest { Symbol = "SYMBOL", Status = GateSpotOrderQueryStatus.Open, Account = GateSpotAccountType.Spot, Limit = 100 });
-        var spot_18 = await api.Spot.CancelOrdersAsync("SYMBOL");
+        // Select a TradeQuote returned by GetMarketAsync. Omission includes all matching quotes.
+        var spot_18 = await api.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest
+        {
+            Symbol = "BTC_USD", Account = GateSpotAccountType.Unified, TradeQuote = "USDC",
+        });
+        // Even with HTTP success, inspect each order's Succeeded/ErrorLabel/ErrorMessage.
         var spot_19 = await api.Spot.GetOrderAsync("SYMBOL", 1_000_000_000);
         var spot_20 = await api.Spot.CancelOrderAsync("SYMBOL", 1_000_000_000);
         var spot_21 = await api.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest { Symbol = "SYMBOL", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Limit = 100 });
@@ -583,6 +588,7 @@ internal class Program
         var p2p_08 = await api.P2p.ConfirmReceiptAsync(new GateP2pTransactionIdRequest { TransactionId = 40_000_001 });
         var p2p_09 = await api.P2p.CancelOrderAsync(new GateP2pCancelOrderRequest { TransactionId = 40_000_001, ReasonId = "1", ReasonMemo = "Canceled after agreement with the counterparty" });
         var p2p_10 = await api.P2p.SubmitAdvertisementAsync(new GateP2pAdRequest { CurrencyType = "USDT", ExchangeType = "USD", Type = GateP2pAdOperationType.PublishSell, UnitPrice = 1.1m, Number = 100.0m, PayType = "bank,swift", PayTypeJson = "{\"bank\":\"10001\",\"swift\":\"10002\"}", LimitBasis = GateP2pAdLimitBasis.Fiat, FiatMinAmount = 100.0m, FiatMaxAmount = 110.0m, PolymarketRestricted = false, RateFixed = 1, ExpireMinutes = 20 });
+        var advertisementSaved = p2p_10.Success && p2p_10.Data?.BusinessCode == 0; // Missing code is not success.
         var p2p_11 = await api.P2p.UpdateAdvertisementStatusAsync(new GateP2pAdStatusUpdateRequest { AdvertisementId = 2_124_000_001, Status = GateP2pAdStatusUpdate.Delisted });
         var p2p_12 = await api.P2p.GetAdvertisementAsync(new GateP2pAdvertisementIdRequest { AdvertisementId = "2124000001" });
         var p2p_13 = await api.P2p.GetMyAdvertisementsAsync(new GateP2pAdListRequest { Asset = "USDT", FiatUnit = "USD", TradeType = GateP2pOrderSide.Sell });

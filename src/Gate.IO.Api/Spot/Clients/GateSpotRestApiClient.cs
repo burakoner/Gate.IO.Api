@@ -23,6 +23,46 @@ public class GateSpotRestApiClient
     // Constructor
     internal GateSpotRestApiClient(GateRestApiClient root) => _ = root;
 
+    private static void ValidateTradeQuote(string quote)
+    {
+        if (quote != null && string.IsNullOrWhiteSpace(quote))
+            throw new ArgumentException("Supply a non-empty actual quote currency or null to omit it.", nameof(quote));
+    }
+
+    private static void ValidateOrderRequest(GateSpotOrderRequest request)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol))
+            throw new ArgumentException("Currency pair is required.", nameof(request.Symbol));
+        ValidateTradeQuote(request.TradeQuote);
+        if (request.Type == GateSpotOrderType.Limit && !request.Price.HasValue)
+            throw new ArgumentException("A limit order requires a price.", nameof(request.Price));
+        if (request.Iceberg < 0)
+            throw new ArgumentException("Fully hidden iceberg orders are not supported.", nameof(request.Iceberg));
+        if (request.Type == GateSpotOrderType.Market && request.TimeInForce.HasValue
+            && request.TimeInForce != GateSpotTimeInForce.ImmediateOrCancel
+            && request.TimeInForce != GateSpotTimeInForce.FillOrKill)
+            throw new ArgumentException("Only IOC and FOK are supported for market orders.", nameof(request.TimeInForce));
+    }
+
+    private static void ValidateTradePagination(int? limit, int? page)
+    {
+        var effectiveLimit = limit ?? 100;
+        effectiveLimit.ValidateIntBetween(nameof(limit), 1, 1000);
+        if (page.HasValue && page.Value < 1) throw new ArgumentOutOfRangeException(nameof(page));
+        if ((long)effectiveLimit * ((long)(page ?? 1) - 1) > 100000)
+            throw new ArgumentException("Trade pagination offset cannot exceed 100000.", nameof(page));
+    }
+
+    private static void ValidateTradeHistoryQuery(string symbol, string orderId, int? limit, int? page, long? from, long? to)
+    {
+        ValidateTradePagination(limit, page);
+        if (orderId != null && string.IsNullOrWhiteSpace(symbol))
+            throw new ArgumentException("Currency pair is required when filtering by order ID.", nameof(symbol));
+        if (from.HasValue && to.HasValue && (to.Value < from.Value || (decimal)to.Value - from.Value > 30 * 24 * 60 * 60))
+            throw new ArgumentException("Trade history time range must be ordered and cannot exceed 30 days.");
+    }
+
     private static GateSpotPriceTriggeredOrderAccountType MapPriceTriggeredAccount(GateSpotAccountType account)
         => account switch
         {
@@ -145,14 +185,16 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotTrade>>> GetTradesAsync(GateSpotTradeQueryRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol)) throw new ArgumentException("Currency pair is required.", nameof(request.Symbol));
         var limit = request.Limit ?? 100;
-        limit.ValidateIntBetween(nameof(request.Limit), 1, 1000);
+        ValidateTradePagination(limit, request.Page);
         var parameters = new ParameterCollection
         {
             { "currency_pair", request.Symbol },
             { "limit", limit },
         };
-        parameters.AddOptional("reverse", request.Reverse);
+        parameters.AddOptional("reverse", request.Reverse?.ToString().ToLowerInvariant());
         parameters.AddOptional("page", request.Page);
         parameters.AddOptionalSeconds("from", request.From);
         parameters.AddOptionalSeconds("to", request.To);
@@ -355,20 +397,22 @@ public class GateSpotRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<List<GateSpotBatchOrder>>> PlaceOrdersAsync(IEnumerable<GateSpotOrderRequest> requests, CancellationToken ct = default)
     {
-        foreach (var request in requests)
+        if (requests == null) throw new ArgumentNullException(nameof(requests));
+        var orders = requests.ToList();
+        if (orders.Count == 0) throw new ArgumentException("At least one order is required.", nameof(requests));
+        if (orders.Select(x => x?.Account).Distinct().Count() != 1)
+            throw new ArgumentException("All batch orders must use the same account type.", nameof(requests));
+        var markets = orders.GroupBy(x => x?.Symbol).ToList();
+        if (markets.Count > 4 || markets.Any(x => x.Count() > 10))
+            throw new ArgumentException("A batch supports at most four currency pairs and ten orders per pair.", nameof(requests));
+        foreach (var request in orders)
         {
+            ValidateOrderRequest(request);
             ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, false);
-
-            if (request.Type == GateSpotOrderType.Market
-                && request.TimeInForce.HasValue
-                && request.TimeInForce != GateSpotTimeInForce.ImmediateOrCancel
-                && request.TimeInForce != GateSpotTimeInForce.FillOrKill)
-                throw new ArgumentException("Only IOC (ImmediateOrCancel) and FOK (FillOrKill) are supported for market orders");
-
         }
 
         var parameters = new ParameterCollection();
-        parameters.SetBody(requests);
+        parameters.SetBody(orders);
 
         return _.SendRequestInternal<List<GateSpotBatchOrder>>(_.GetUrl(api, v4, spot, "batch_orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
     }
@@ -435,17 +479,13 @@ public class GateSpotRestApiClient
     /// <summary>
     /// Create an order
     /// 
-    /// You can place orders with spot, portfolio, margin or cross margin account through setting the accountfield. It defaults to spot, which means spot account is used to place orders. If the user is using unified account, it defaults to the unified account.
-    /// When margin account is used, i.e., account is margin, auto_borrow field can be set to true to enable the server to borrow the amount lacked using POST /margin/loans when your account's balance is not enough. Whether margin orders' fill will be used to repay margin loans automatically is determined by the auto repayment setting in your margin account, which can be updated or queried using /margin/auto_repay API.
-    /// When cross margin account is used, i.e., account is cross_margin, auto_borrow can also be enabled to achieve borrowing the insufficient amount automatically if cross account's balance is not enough. But it differs from margin account that automatic repayment is determined by order's auto_repay field and only current order's fill will be used to repay cross margin loans.
-    /// Automatic repayment will be triggered when the order is finished, i.e., its status is either cancelled or closed.
-    /// 
-    /// Order status
-    /// An order waiting to be filled is open, and it stays open until it is filled totally. If fully filled, order is finished and its status turns to closed.If the order is cancelled before it is totally filled, whether or not partially filled, its status is cancelled. Iceberg order
-    /// iceberg field can be used to set the amount shown. Set to -1 to hide the order completely. Note that the hidden part's fee will be charged using taker's fee rate. Self Trade Prevention
-    /// Set stp_act to decide the strategy of self-trade prevention. For detailed usage, refer to the stp_act parameter in request body
+    /// Use spot, margin or unified to select the account. Margin auto borrowing uses POST /margin/uni/loans;
+    /// isolated-margin repayment is account-level, while unified auto_repay applies to this order only.
+    /// Open orders finish as closed when fully filled or cancelled when cancelled; auto repayment occurs on completion.
+    /// Iceberg quantities must not hide the entire order; hidden fills pay taker fees. Use stp_act for self-trade prevention.
+    /// Use the request overload and TradeQuote to select an actual quote currency in a unified market.
     /// </summary>
-    /// <param name="account">Account types， spot - spot account, margin - margin account, unified - unified account, cross_margin - cross margin account. Portfolio margin accounts can only be set to cross_margin</param>
+    /// <param name="account">Spot, margin or unified account. CrossMargin is retained for compatibility.</param>
     /// <param name="symbol">Currency pair</param>
     /// <param name="type">Order Type</param>
     /// <param name="side">Order side</param>
@@ -498,15 +538,11 @@ public class GateSpotRestApiClient
     /// <summary>
     /// Create an order
     /// 
-    /// You can place orders with spot, portfolio, margin or cross margin account through setting the accountfield. It defaults to spot, which means spot account is used to place orders. If the user is using unified account, it defaults to the unified account.
-    /// When margin account is used, i.e., account is margin, auto_borrow field can be set to true to enable the server to borrow the amount lacked using POST /margin/loans when your account's balance is not enough. Whether margin orders' fill will be used to repay margin loans automatically is determined by the auto repayment setting in your margin account, which can be updated or queried using /margin/auto_repay API.
-    /// When cross margin account is used, i.e., account is cross_margin, auto_borrow can also be enabled to achieve borrowing the insufficient amount automatically if cross account's balance is not enough. But it differs from margin account that automatic repayment is determined by order's auto_repay field and only current order's fill will be used to repay cross margin loans.
-    /// Automatic repayment will be triggered when the order is finished, i.e., its status is either cancelled or closed.
-    /// 
-    /// Order status
-    /// An order waiting to be filled is open, and it stays open until it is filled totally. If fully filled, order is finished and its status turns to closed.If the order is cancelled before it is totally filled, whether or not partially filled, its status is cancelled. Iceberg order
-    /// iceberg field can be used to set the amount shown. Set to -1 to hide the order completely. Note that the hidden part's fee will be charged using taker's fee rate. Self Trade Prevention
-    /// Set stp_act to decide the strategy of self-trade prevention. For detailed usage, refer to the stp_act parameter in request body
+    /// Use spot, margin or unified to select the account. Margin auto borrowing uses POST /margin/uni/loans;
+    /// isolated-margin repayment is account-level, while unified auto_repay applies to this order only.
+    /// Open orders finish as closed when fully filled or cancelled when cancelled; auto repayment occurs on completion.
+    /// Iceberg quantities must not hide the entire order; hidden fills pay taker fees. Use stp_act for self-trade prevention.
+    /// TradeQuote selects the actual quote currency in a unified market; it is never inferred from Symbol.
     /// </summary>
     /// <param name="request">Order Request</param>
     /// <param name="ct">Cancellation Token</param>
@@ -514,19 +550,15 @@ public class GateSpotRestApiClient
     /// <exception cref="ArgumentException"></exception>
     public Task<RestCallResult<GateSpotOrder>> PlaceOrderAsync(GateSpotOrderRequest request, CancellationToken ct = default)
     {
+        ValidateOrderRequest(request);
         ExchangeHelpers.ValidateClientOrderId(request.ClientOrderId, true);
-
-        if (request.Type == GateSpotOrderType.Market
-            && request.TimeInForce.HasValue
-            && request.TimeInForce != GateSpotTimeInForce.ImmediateOrCancel
-            && request.TimeInForce != GateSpotTimeInForce.FillOrKill)
-            throw new ArgumentException("Only IOC (ImmediateOrCancel) and FOK (FillOrKill) are supported for market orders");
 
         var parameters = new ParameterCollection()
         {
             { "currency_pair", request.Symbol },
         };
         parameters.AddOptional("text", request.ClientOrderId);
+        parameters.AddOptional("trade_quote", request.TradeQuote);
         parameters.AddEnum("type", request.Type);
         parameters.AddEnum("account", request.Account);
         parameters.AddEnum("side", request.Side);
@@ -647,7 +679,7 @@ public class GateSpotRestApiClient
     }
 
     /// <summary>
-    /// Cancel all open orders in specified currency pair
+    /// Cancel matching open orders. Omitted currency pair, account or side filters broaden the cancellation scope.
     /// </summary>
     /// <param name="symbol">Currency pair</param>
     /// <param name="account">Specify account type:</param>
@@ -661,12 +693,33 @@ public class GateSpotRestApiClient
         GateSpotAccountType? account = null,
         GateSpotActionMode? actionMode = null,
         CancellationToken ct = default)
+        => CancelOrdersAsync(new GateSpotCancelOrdersRequest
+        {
+            Symbol = symbol,
+            Side = side,
+            Account = account,
+            ActionMode = actionMode,
+        }, ct);
+
+    /// <summary>
+    /// Cancel matching open orders. In a unified market, TradeQuote restricts cancellation to that actual quote currency.
+    /// If omitted, all quotes matching the other filters are included. Inspect each response's Succeeded and error fields.
+    /// </summary>
+    /// <param name="request">Cancellation filters. An empty request targets all eligible open orders.</param>
+    /// <param name="ct">Cancellation Token</param>
+    /// <returns>Per-order results, not a blanket guarantee of cancellation.</returns>
+    public Task<RestCallResult<List<GateSpotOrder>>> CancelOrdersAsync(GateSpotCancelOrdersRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        ValidateTradeQuote(request.TradeQuote);
+        if (request.Symbol != null && string.IsNullOrWhiteSpace(request.Symbol))
+            throw new ArgumentException("Supply a non-empty currency pair or null to explicitly omit the filter.", nameof(request.Symbol));
         var parameters = new ParameterCollection();
-        parameters.AddOptional("currency_pair", symbol);
-        parameters.AddOptionalEnum("side", side);
-        parameters.AddOptionalEnum("account", account);
-        parameters.AddOptionalEnum("action_mode", actionMode);
+        parameters.AddOptional("currency_pair", request.Symbol);
+        parameters.AddOptionalEnum("side", request.Side);
+        parameters.AddOptionalEnum("account", request.Account);
+        parameters.AddOptionalEnum("action_mode", request.ActionMode);
+        parameters.AddOptional("trade_quote", request.TradeQuote);
 
         return _.SendRequestInternal<List<GateSpotOrder>>(_.GetUrl(api, v4, spot, "orders"), HttpMethod.Delete, ct, true, queryParameters: parameters);
     }
@@ -839,10 +892,10 @@ public class GateSpotRestApiClient
 
     /// <summary>
     /// List personal trading history
-    /// Spot,portfolio and margin trades are queried by default. If cross margin trades are needed, account must be set to cross_margin
+    /// Queries spot, unified and isolated-margin transaction records. The account filter is deprecated by Gate and retained for compatibility.
     /// You can also set from and(or) to to query by time range. If you don't specify from and/or to parameters, only the last 7 days of data will be retured. The range of from and to is not alloed to exceed 30 days. Time range parameters are handled as order finish time.
     /// </summary>
-    /// <param name="account">Specify operation account. Default to spot ,portfolio and margin account if not specified. Set to cross_margin to operate against margin account. Portfolio margin account must set to cross_margin only</param>
+    /// <param name="account">Deprecated by Gate; retained for compatibility.</param>
     /// <param name="symbol">Retrieve results with specified currency pair</param>
     /// <param name="from">Start timestamp of the query</param>
     /// <param name="to">Time range ending, default to current time</param>
@@ -877,10 +930,10 @@ public class GateSpotRestApiClient
 
     /// <summary>
     /// List personal trading history
-    /// Spot,portfolio and margin trades are queried by default. If cross margin trades are needed, account must be set to cross_margin
+    /// Queries spot, unified and isolated-margin transaction records. The account filter is deprecated by Gate and retained for compatibility.
     /// You can also set from and(or) to to query by time range. If you don't specify from and/or to parameters, only the last 7 days of data will be retured. The range of from and to is not alloed to exceed 30 days. Time range parameters are handled as order finish time.
     /// </summary>
-    /// <param name="account">Specify operation account. Default to spot ,portfolio and margin account if not specified. Set to cross_margin to operate against margin account. Portfolio margin account must set to cross_margin only</param>
+    /// <param name="account">Deprecated by Gate; retained for compatibility.</param>
     /// <param name="symbol">Retrieve results with specified currency pair</param>
     /// <param name="from">Start timestamp of the query</param>
     /// <param name="to">Time range ending, default to current time</param>
@@ -903,6 +956,7 @@ public class GateSpotRestApiClient
         CancellationToken ct = default)
     {
         var oid = orderId != null || !string.IsNullOrEmpty(clientOrderId) ? _.CheckOrderId(orderId, clientOrderId) : null;
+        ValidateTradeHistoryQuery(symbol, oid, limit, page, from, to);
         var parameters = new ParameterCollection
         {
             { "page", page },
@@ -925,7 +979,9 @@ public class GateSpotRestApiClient
     /// <returns></returns>
     public Task<RestCallResult<List<GateSpotTradeHistory>>> GetTradeHistoryAsync(GateSpotTradeHistoryQueryRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
         var oid = request.OrderId != null || !string.IsNullOrEmpty(request.ClientOrderId) ? _.CheckOrderId(request.OrderId, request.ClientOrderId) : null;
+        ValidateTradeHistoryQuery(request.Symbol, oid, request.Limit, request.Page, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds());
         var parameters = new ParameterCollection();
         parameters.AddOptionalEnum("account", request.Account);
         parameters.AddOptional("currency_pair", request.Symbol);

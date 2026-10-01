@@ -8,6 +8,7 @@
   "update_time_ms": 1710488334074,
   "status": "closed",
   "currency_pair": "BTC_USDT",
+  "trade_quote": "USDC",
   "type": "limit",
   "account": "unified",
   "side": "buy",

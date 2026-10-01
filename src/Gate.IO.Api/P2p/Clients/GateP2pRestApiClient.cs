@@ -536,7 +536,7 @@ public class GateP2pRestApiClient
     /// Publish or edit P2P advertisement
     /// </summary>
     /// <remarks>
-    /// Use the request overload for editing so OrderId can be supplied. Inspect the returned Code for business success;
+    /// Use the request overload for editing so OrderId can be supplied. Inspect the returned BusinessCode for explicit business success;
     /// an HTTP success can contain advertisement content risk-control rejection code 70305102.
     /// </remarks>
     /// <param name="currencyType">Cryptocurrency symbol</param>
@@ -580,8 +580,8 @@ public class GateP2pRestApiClient
     /// <remarks>
     /// Payment types and IDs must come from the current user's payment methods. No account lookup is performed.
     /// Editing requires OrderId and must preserve the existing limit unit; fiat-limit edits must keep LimitBasis=Fiat.
-    /// RestCallResult.Success alone does not mean the advertisement was saved: inspect the returned Code.
-    /// Code 0 means success; 70305102 means content risk control rejected the advertisement and Data contains the prompt.
+    /// RestCallResult.Success alone does not mean the advertisement was saved: inspect the returned BusinessCode.
+    /// Explicit code 0 means success; null means no code was supplied. 70305102 means content risk control rejected the advertisement and Data contains the prompt.
     /// </remarks>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>

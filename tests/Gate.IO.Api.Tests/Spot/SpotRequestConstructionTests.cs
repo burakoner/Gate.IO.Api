@@ -8,6 +8,304 @@ namespace Gate.IO.Api.Tests.Spot;
 [Trait("Category", "Unit")]
 public class SpotRequestConstructionTests
 {
+    [Theory]
+    [InlineData(null, false)]
+    [InlineData("USDC", false)]
+    [InlineData("RLUSD", true)]
+    public async Task Single_and_batch_orders_preserve_actual_quote_and_optional_omission(string? quote, bool market)
+    {
+        var handler = new RecordingHttpMessageHandler(request => request.RequestUri!.AbsolutePath.EndsWith("batch_orders", StringComparison.Ordinal)
+            ? JsonResponse(JsonFixture.Read("Docs/Spot/batch_orders.success.json"))
+            : JsonResponse(JsonFixture.Read("Docs/Spot/order.success.json"), System.Net.HttpStatusCode.Created));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var order = new GateSpotOrderRequest
+        {
+            Symbol = "BTC_USD", TradeQuote = quote, ClientOrderId = "t-quote",
+            Account = GateSpotAccountType.Unified, Side = GateSpotOrderSide.Buy,
+            Type = market ? GateSpotOrderType.Market : GateSpotOrderType.Limit,
+            Amount = market ? 100m : 0.001m, Price = market ? null : 65000m,
+            TimeInForce = market ? GateSpotTimeInForce.ImmediateOrCancel : null,
+        };
+
+        Assert.True((await client.Spot.PlaceOrderAsync(order)).Success);
+        Assert.True((await client.Spot.PlaceOrdersAsync([order])).Success);
+        Assert.Equal(2, handler.Requests.Count);
+        foreach (var request in handler.Requests)
+        {
+            var body = request.RequestUri.AbsolutePath.EndsWith("batch_orders", StringComparison.Ordinal)
+                ? Assert.IsType<JObject>(Assert.Single(JArray.Parse(request.Content))) : JObject.Parse(request.Content);
+            Assert.Equal("BTC_USD", body["currency_pair"]!.Value<string>());
+            if (quote == null) Assert.Null(body["trade_quote"]);
+            else
+            {
+                Assert.Equal(JTokenType.String, body["trade_quote"]!.Type);
+                Assert.Equal(quote, body["trade_quote"]!.Value<string>());
+            }
+            Assert.Equal(JTokenType.String, body["amount"]!.Type);
+            Assert.Equal(order.Amount, body["amount"]!.Value<decimal>());
+            if (market) Assert.Null(body["price"]);
+            AssertSignedSignature(request);
+        }
+    }
+
+    [Fact]
+    public async Task Bulk_cancel_quote_filter_is_signed_and_partial_failures_are_visible()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("""
+            [{"id":"123","currency_pair":"BTC_USD","succeeded":true,"status":"cancelled","amount":"1"},
+             {"id":"124","succeeded":false,"label":"ORDER_NOT_FOUND","message":"Order not found"}]
+            """));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var result = await client.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest
+        {
+            Symbol = "BTC_USD", TradeQuote = "USDC", Side = GateSpotOrderSide.Buy,
+            Account = GateSpotAccountType.Unified, ActionMode = GateSpotActionMode.Full,
+        });
+
+        Assert.True(result.Success);
+        Assert.Equal(2, result.Data.Count);
+        Assert.True(result.Data[0].Succeeded);
+        Assert.False(result.Data[1].Succeeded);
+        Assert.Equal("ORDER_NOT_FOUND", result.Data[1].ErrorLabel);
+        Assert.Equal("Order not found", result.Data[1].ErrorMessage);
+        var request = Assert.Single(handler.Requests);
+        Assert.Equal(HttpMethod.Delete, request.Method);
+        Assert.Equal("/api/v4/spot/orders", request.RequestUri.AbsolutePath);
+        var query = ParseQuery(request.RequestUri);
+        Assert.Equal(5, query.Count);
+        Assert.Equal("BTC_USD", query["currency_pair"]);
+        Assert.Equal("USDC", query["trade_quote"]);
+        Assert.Equal("buy", query["side"]);
+        Assert.Equal("unified", query["account"]);
+        Assert.Equal("FULL", query["action_mode"]);
+        Assert.Equal(string.Empty, request.Content);
+        AssertSignedSignature(request);
+    }
+
+    [Fact]
+    public async Task Legacy_cancel_calls_and_quote_omission_keep_their_original_scope()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        using var cancellation = new CancellationTokenSource();
+        Assert.True((await client.Spot.CancelOrdersAsync("BTC_USD", GateSpotOrderSide.Sell, GateSpotAccountType.Unified, GateSpotActionMode.Result, cancellation.Token)).Success);
+        Assert.True((await client.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest { Symbol = "BTC_USD" }, cancellation.Token)).Success);
+        Assert.True((await client.Spot.CancelOrdersAsync()).Success);
+
+        Assert.Equal(3, handler.Requests.Count);
+        Assert.Equal(4, ParseQuery(handler.Requests[0].RequestUri).Count);
+        Assert.Single(ParseQuery(handler.Requests[1].RequestUri));
+        Assert.Empty(ParseQuery(handler.Requests[2].RequestUri));
+        foreach (var request in handler.Requests)
+        {
+            Assert.DoesNotContain("trade_quote", ParseQuery(request.RequestUri).Keys);
+            AssertSignedSignature(request);
+        }
+    }
+
+    [Theory]
+    [InlineData("")]
+    [InlineData(" ")]
+    public async Task Empty_explicit_quotes_cannot_silently_broaden_cancellation_or_choose_an_order_quote(string quote)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        var order = new GateSpotOrderRequest { Symbol = "BTC_USD", Price = 10, Type = GateSpotOrderType.Limit, ClientOrderId = "t-quote", TradeQuote = quote };
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrderAsync(order));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync([order]));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest { Symbol = "BTC_USD", TradeQuote = quote }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest { Symbol = quote }));
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Currency_pair_queries_are_unsigned_and_deserialize_unified_quotes()
+    {
+        var handler = new RecordingHttpMessageHandler(request => JsonResponse(JsonFixture.Read(
+            request.RequestUri!.AbsolutePath.EndsWith("ETH_USDT", StringComparison.Ordinal)
+                ? "Docs/Spot/currency_pair.success.json" : "Docs/Spot/currency_pairs.success.json")));
+        var client = CreateClient(handler);
+        var markets = await client.Spot.GetMarketsAsync();
+        var market = await client.Spot.GetMarketAsync("ETH_USDT");
+        Assert.True(markets.Success);
+        Assert.True(market.Success);
+        Assert.Equal(new[] { "USDC", "RLUSD" }, Assert.Single(markets.Data).TradeQuotes);
+        Assert.Equal(new[] { "USDC", "RLUSD" }, market.Data.TradeQuotes);
+        Assert.Equal("/api/v4/spot/currency_pairs", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Equal("/api/v4/spot/currency_pairs/ETH_USDT", handler.Requests[1].RequestUri.AbsolutePath);
+        foreach (var request in handler.Requests)
+        {
+            Assert.Equal(HttpMethod.Get, request.Method);
+            Assert.Empty(ParseQuery(request.RequestUri));
+            Assert.DoesNotContain("KEY", request.Headers.Keys);
+            Assert.DoesNotContain("SIGN", request.Headers.Keys);
+        }
+    }
+
+    [Fact]
+    public async Task Public_and_personal_trades_use_documented_queries_and_actual_quote_responses()
+    {
+        var response = """
+            [{"id":"123","create_time_ms":"1548000000123.456","currency_pair":"BTC_USD","trade_quote":"RLUSD","deal":"65000"}]
+            """;
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(response));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var from = new DateTime(2026, 9, 1, 0, 0, 0, DateTimeKind.Utc);
+        var to = from.AddDays(30);
+        var trades = await client.Spot.GetTradesAsync(new GateSpotTradeQueryRequest
+        { Symbol = "BTC_USD", From = from, To = to, Limit = 1000, Page = 101, LastId = "122", Reverse = true });
+        var history = await client.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest
+        { Symbol = "BTC_USD", From = from, To = to, Limit = 1000, Page = 101, OrderId = 456, Account = GateSpotAccountType.Unified });
+        Assert.True(trades.Success);
+        Assert.True(history.Success);
+        Assert.Equal("RLUSD", Assert.Single(trades.Data).TradeQuote);
+        Assert.Equal("RLUSD", Assert.Single(history.Data).TradeQuote);
+        Assert.Equal(1548000000123.456m, trades.Data[0].CreateTimeInMillisecondsPrecise);
+        Assert.Equal(1548000000123.456m, history.Data[0].CreateTimeInMillisecondsPrecise);
+        Assert.Equal(65000m, history.Data[0].Deal);
+        Assert.Equal("/api/v4/spot/trades", handler.Requests[0].RequestUri.AbsolutePath);
+        Assert.Equal("/api/v4/spot/my_trades", handler.Requests[1].RequestUri.AbsolutePath);
+        var publicQuery = ParseQuery(handler.Requests[0].RequestUri);
+        Assert.Equal(7, publicQuery.Count);
+        Assert.Equal("122", publicQuery["last_id"]);
+        Assert.Equal("true", publicQuery["reverse"]);
+        var privateQuery = ParseQuery(handler.Requests[1].RequestUri);
+        Assert.Equal(7, privateQuery.Count);
+        Assert.Equal("456", privateQuery["order_id"]);
+        Assert.Equal("unified", privateQuery["account"]); // Deprecated, but retained for compatibility.
+        foreach (var request in handler.Requests)
+        {
+            var query = ParseQuery(request.RequestUri);
+            Assert.Equal("BTC_USD", query["currency_pair"]);
+            Assert.Equal("1000", query["limit"]);
+            Assert.Equal("101", query["page"]);
+            Assert.Equal(new DateTimeOffset(from).ToUnixTimeSeconds().ToString(), query["from"]);
+            Assert.Equal(new DateTimeOffset(to).ToUnixTimeSeconds().ToString(), query["to"]);
+            Assert.DoesNotContain("trade_quote", query.Keys); // These endpoints document a response field, not a query filter.
+        }
+        Assert.DoesNotContain("KEY", handler.Requests[0].Headers.Keys);
+        AssertSignedSignature(handler.Requests[1]);
+    }
+
+    [Theory]
+    [InlineData(0, 1)]
+    [InlineData(1001, 1)]
+    [InlineData(100, 0)]
+    [InlineData(1000, 102)]
+    [InlineData(1000, int.MaxValue)]
+    public async Task Trade_pagination_rejects_invalid_limits_and_offsets_before_io(int limit, int page)
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        await Assert.ThrowsAnyAsync<ArgumentException>(() => client.Spot.GetTradesAsync(new GateSpotTradeQueryRequest { Symbol = "BTC_USD", Limit = limit, Page = page }));
+        await Assert.ThrowsAnyAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest { Limit = limit, Page = page }));
+        await Assert.ThrowsAnyAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(limit: limit, page: page));
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Personal_trade_order_filters_and_time_ranges_enforce_current_contract()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest { OrderId = 123 }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(orderId: 123));
+        var from = new DateTime(2026, 9, 1, 0, 0, 0, DateTimeKind.Utc);
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest { From = from, To = from.AddDays(30).AddSeconds(1) }));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(from: 0, to: 2592001));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.GetTradeHistoryAsync(from: 2, to: 1));
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Order_validation_covers_price_hidden_icebergs_and_batch_limits()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        var order = new GateSpotOrderRequest { Symbol = "BTC_USD", Type = GateSpotOrderType.Limit, ClientOrderId = "t-test", Account = GateSpotAccountType.Unified };
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrderAsync(order));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync([order]));
+        order.Price = 10;
+        order.Iceberg = -1;
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrderAsync(order));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync([order]));
+        order.Iceberg = null;
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync([order, order with { Account = GateSpotAccountType.Spot }]));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync(Enumerable.Repeat(order, 11)));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync(Enumerable.Range(1, 5).Select(i => order with { Symbol = $"COIN{i}_USD" })));
+        await Assert.ThrowsAsync<ArgumentException>(() => client.Spot.PlaceOrdersAsync([]));
+        Assert.Empty(handler.Requests);
+    }
+
+    [Fact]
+    public async Task Receive_window_uses_expiration_header_for_order_creation_and_cancellation()
+    {
+        var handler = new RecordingHttpMessageHandler(request => JsonResponse(request.Method == HttpMethod.Delete ? "[]" : "{\"id\":\"123\"}"));
+        var client = new GateRestApiClient(new GateRestApiClientOptions { HttpClient = new HttpClient(handler), ReceiveWindow = TimeSpan.FromSeconds(15) });
+        client.SetApiCredentials("key", "secret");
+        Assert.True((await client.Spot.PlaceOrderAsync("BTC_USD", GateSpotAccountType.Unified, GateSpotOrderType.Market, GateSpotOrderSide.Buy, GateSpotTimeInForce.ImmediateOrCancel, 100)).Success);
+        Assert.True((await client.Spot.CancelOrdersAsync(new GateSpotCancelOrdersRequest { Symbol = "BTC_USD", TradeQuote = "USDC" })).Success);
+        foreach (var request in handler.Requests)
+        {
+            var timestamp = long.Parse(Assert.Single(request.Headers["Timestamp"]));
+            var expiration = long.Parse(Assert.Single(request.Headers["x-gate-exptime"]));
+            // ApiSharp 4.5.1 rounds the seconds timestamp; the expiration header retains milliseconds.
+            Assert.InRange(expiration - timestamp * 1000, 14500, 15500);
+            Assert.DoesNotContain("x-gate-exptime", ParseQuery(request.RequestUri).Keys);
+            AssertSignedSignature(request);
+        }
+    }
+
+    [Fact]
+    public async Task Batch_boundary_orders_are_enumerated_once_and_sent_unchanged()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        var enumerations = 0;
+        IEnumerable<GateSpotOrderRequest> Orders()
+        {
+            enumerations++;
+            for (var market = 0; market < 4; market++)
+                for (var order = 0; order < 10; order++)
+                    yield return new GateSpotOrderRequest
+                    {
+                        Symbol = $"COIN{market}_USD", ClientOrderId = $"t-{market}-{order}", TradeQuote = "USDC",
+                        Account = GateSpotAccountType.Unified, Type = GateSpotOrderType.Limit,
+                        Side = GateSpotOrderSide.Buy, Amount = 1, Price = 10,
+                    };
+        }
+        Assert.True((await client.Spot.PlaceOrdersAsync(Orders())).Success);
+        Assert.Equal(1, enumerations);
+        var request = Assert.Single(handler.Requests);
+        var body = JArray.Parse(request.Content);
+        Assert.Equal(40, body.Count);
+        Assert.Equal(40, body.Select(x => x["text"]!.Value<string>()).Distinct().Count());
+        Assert.All(body, x => Assert.Equal("USDC", x["trade_quote"]!.Value<string>()));
+        AssertSignedSignature(request);
+    }
+
+    [Fact]
+    public async Task Optional_personal_history_filters_remain_omitted_and_lower_limit_boundary_is_valid()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse("[]"));
+        var client = CreateClient(handler);
+        client.SetApiCredentials("key", "secret");
+        Assert.True((await client.Spot.GetTradeHistoryAsync(new GateSpotTradeHistoryQueryRequest())).Success);
+        Assert.True((await client.Spot.GetTradeHistoryAsync(limit: 1, page: 100001)).Success);
+        Assert.True((await client.Spot.GetTradesAsync(new GateSpotTradeQueryRequest { Symbol = "BTC_USD", Limit = 1, Page = 100001, Reverse = false })).Success);
+        Assert.Empty(ParseQuery(handler.Requests[0].RequestUri));
+        Assert.Equal("100001", ParseQuery(handler.Requests[1].RequestUri)["page"]);
+        Assert.Equal("false", ParseQuery(handler.Requests[2].RequestUri)["reverse"]);
+        AssertSignedSignature(handler.Requests[0]);
+        AssertSignedSignature(handler.Requests[1]);
+        Assert.DoesNotContain("KEY", handler.Requests[2].Headers.Keys);
+    }
+
     [Fact]
     public async Task Public_spot_tickers_request_serializes_query_without_authentication_headers()
     {
