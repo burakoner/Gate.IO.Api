@@ -23,6 +23,15 @@ public record GateStockAssets
     /// <summary>Gets or sets today's profit and loss.</summary>
     [JsonProperty("today_pnl")]
     public decimal TodayPnl { get; set; }
+    /// <summary>Gets or sets the option position market value, when returned by the server.</summary>
+    [JsonProperty("option_position_market_value")]
+    public decimal? OptionPositionMarketValue { get; set; }
+    /// <summary>Gets or sets option position profit and loss, when returned by the server.</summary>
+    [JsonProperty("option_position_pnl")]
+    public decimal? OptionPositionPnl { get; set; }
+    /// <summary>Gets or sets today's option profit and loss, when returned by the server.</summary>
+    [JsonProperty("option_today_pnl")]
+    public decimal? OptionTodayPnl { get; set; }
     /// <summary>Gets or sets whether the stock user exists.</summary>
     [JsonProperty("user_exists")]
     public bool UserExists { get; set; }

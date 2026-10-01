@@ -3,15 +3,24 @@ namespace Gate.IO.Api.Stock;
 /// <summary>
 /// Gate.IO Stock REST API client
 /// </summary>
+/// <remarks>
+/// The current documentation specifies 5 requests per second for each Stock operation except
+/// exchanges, whose limit is not specified. This client does not automatically enforce these limits.
+/// </remarks>
 public class GateStockRestApiClient
 {
     private const string Api = "api";
     private const string V4 = "4";
     private const string Stock = "stock";
+    private readonly bool leadTrading;
 
     internal GateRestApiClient Root { get; }
 
-    internal GateStockRestApiClient(GateRestApiClient root) => Root = root;
+    internal GateStockRestApiClient(GateRestApiClient root, bool leadTrading)
+    {
+        Root = root;
+        this.leadTrading = leadTrading;
+    }
 
     private async Task<RestCallResult<T>> SendDataRequestAsync<T>(
         string endpoint,
@@ -21,13 +30,17 @@ public class GateStockRestApiClient
         ParameterCollection queryParameters = null,
         ParameterCollection bodyParameters = null) where T : class
     {
+        var headers = leadTrading && endpoint != "transactions"
+            ? new Dictionary<string, string> { ["x-gate-trader-copy-type"] = "stock_copy" }
+            : null;
         var result = await Root.SendRequestInternal<GateStockResponse<T>>(
             Root.GetUrl(Api, V4, Stock, endpoint),
             method,
             ct,
             signed,
             queryParameters,
-            bodyParameters).ConfigureAwait(false);
+            bodyParameters,
+            headerParameters: headers).ConfigureAwait(false);
 
         if (!result.Success)
             return result.As<T>(default);
@@ -179,6 +192,8 @@ public class GateStockRestApiClient
         if (request.TimeInForce != GateStockTimeInForce.Day) throw new ArgumentOutOfRangeException(nameof(request.TimeInForce), "The current Stock API supports day orders only.");
         if (request.PriceType == GateStockOrderPriceType.Limit && (!request.Price.HasValue || request.Price <= 0))
             throw new ArgumentException("A positive price is required for a limit order.", nameof(request));
+        if (request.PriceType == GateStockOrderPriceType.Limit && request.TradingSession != GateStockTradingSession.All)
+            throw new ArgumentException("Limit orders support the all trading session only.", nameof(request));
         if (request.PriceType == GateStockOrderPriceType.Market && request.TradingSession != GateStockTradingSession.Regular)
             throw new ArgumentException("Market orders support the regular trading session only.", nameof(request));
 
@@ -353,7 +368,7 @@ public class GateStockRestApiClient
         => SendListRequestAsync<GateStockExchangeInfo>("exchanges", HttpMethod.Get, ct, true);
 
     /// <summary>
-    /// Query stock fee rates
+    /// Query fee rates for Japanese and Korean stocks
     /// </summary>
     public Task<RestCallResult<List<GateStockFeeRate>>> GetFeeRatesAsync(CancellationToken ct = default)
         => SendListRequestAsync<GateStockFeeRate>("fee-rate", HttpMethod.Get, ct);

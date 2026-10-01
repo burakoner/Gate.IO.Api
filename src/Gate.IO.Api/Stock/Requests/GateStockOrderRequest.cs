@@ -13,7 +13,7 @@ public record GateStockOrderRequest
     public GateStockOrderSide Side { get; set; }
     /// <summary>Gets or sets the price type.</summary>
     public GateStockOrderPriceType PriceType { get; set; }
-    /// <summary>Gets or sets the trading session.</summary>
+    /// <summary>Gets or sets the session: All for limit orders, Regular for market orders.</summary>
     public GateStockTradingSession TradingSession { get; set; }
     /// <summary>Gets or sets the time in force. The current API supports day orders only.</summary>
     public GateStockTimeInForce TimeInForce { get; set; } = GateStockTimeInForce.Day;

@@ -85,6 +85,21 @@ Remove-Item Env:\GATEIO_CAPTURE_PUBLIC_FIXTURE_FILTER
 
 Authenticated private endpoints are covered by contract tests and request construction/signing tests using fixtures and fake credentials. Do not commit real API keys or private account responses.
 
+## Stock trading
+
+Stock limit orders require `GateStockTradingSession.All`; market orders require `GateStockTradingSession.Regular`. Only `day` time in force is supported. The [current Stock documentation](https://www.gate.com/docs/developers/apiv4/en/stock/) specifies 5 qps for the operations other than exchanges, whose limit is not stated. The wrapper does not enforce these limits automatically; pace requests in the consuming application. `GetFeeRatesAsync` returns Japanese and Korean stock fee rates.
+
+Personal trading remains the default. To explicitly select Stock lead trading, construct a separate client with `StockLeadTrading = true`:
+
+```csharp
+using var leadApi = new GateRestApiClient(new GateRestApiClientOptions { StockLeadTrading = true });
+// Configure this client's API credentials before using signed endpoints.
+```
+
+This setting is captured at construction and sends `x-gate-trader-copy-type: stock_copy` only for eligible Stock requests. Both transaction history and fund transfers (`GET`/`POST /stock/transactions`) are excluded, and other modules are unaffected. Changing the options object later does not switch an existing client's trading context. Use separate clients for personal and lead trading.
+
+Japanese exchange queries use `GateStockExchange.Japan`. Symbol responses expose nullable `AssetType` (`STOCK`/`ETF`), and account assets expose nullable option market value and PnL fields so an omitted field is not mistaken for zero. `Category` remains a string supporting the documented `CS`, `ETF`, `ADRC`, `ADR`, `ETV`, `PFD`, `ETS`, `ETN` and `FUND` values.
+
 ## Rest Api Examples
 
 ```csharp
@@ -452,7 +467,7 @@ var stock_02 = await api.Stock.GetSymbolsAsync(new GateStockSymbolQueryRequest {
 var stock_03 = await api.Stock.GetSymbolDetailsAsync(new GateStockSymbolDetailsQueryRequest { Symbols = ["AAPL"], Page = 1, PageSize = 50 });
 var stock_04 = await api.Stock.GetOrderBookAsync("AAPL");
 var stock_05 = await api.Stock.GetOrdersAsync("AAPL");
-var stock_06 = await api.Stock.PlaceOrderAsync(new GateStockOrderRequest { Symbol = "AAPL", Side = GateStockOrderSide.Buy, Volume = 1m, PriceType = GateStockOrderPriceType.Limit, TradingSession = GateStockTradingSession.Regular, TimeInForce = GateStockTimeInForce.Day, Price = 200m, ClientOrderId = "CLIENT-STOCK-ORDER-ID" });
+var stock_06 = await api.Stock.PlaceOrderAsync(new GateStockOrderRequest { Symbol = "AAPL", Side = GateStockOrderSide.Buy, Volume = 1m, PriceType = GateStockOrderPriceType.Limit, TradingSession = GateStockTradingSession.All, TimeInForce = GateStockTimeInForce.Day, Price = 200m, ClientOrderId = "CLIENT-STOCK-ORDER-ID" });
 var stock_07 = await api.Stock.CancelAllOrdersAsync();
 var stock_08 = await api.Stock.GetOrderHistoryAsync(new GateStockOrderHistoryQueryRequest { Symbol = "AAPL", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
 var stock_09 = await api.Stock.UpdateOrderAsync(1_000_000_001, new GateStockOrderUpdateRequest { Volume = 1m, Price = 201m });

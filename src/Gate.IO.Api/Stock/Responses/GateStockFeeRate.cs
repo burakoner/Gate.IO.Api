@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Stock;
 
 /// <summary>
-/// Stock trading fee rate
+/// Trading fee rate for Japanese and Korean stocks
 /// </summary>
 public record GateStockFeeRate
 {

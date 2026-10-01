@@ -167,7 +167,7 @@ public class GateRestApiClient : RestApiClient
         Futures = new GateFuturesRestApiClient(this);
         Delivery = new GateDeliveryRestApiClient(this);
         TradFi = new GateTradFiRestApiClient(this);
-        Stock = new GateStockRestApiClient(this);
+        Stock = new GateStockRestApiClient(this, options.StockLeadTrading);
 
         Options = new GateOptionsRestApiClient(this);
         EarnUni = new GateEarnUniRestApiClient(this);

@@ -382,7 +382,7 @@ internal class Program
         var stock_03 = await api.Stock.GetSymbolDetailsAsync(new GateStockSymbolDetailsQueryRequest { Symbols = ["AAPL"], Page = 1, PageSize = 50 });
         var stock_04 = await api.Stock.GetOrderBookAsync("AAPL");
         var stock_05 = await api.Stock.GetOrdersAsync("AAPL");
-        var stock_06 = await api.Stock.PlaceOrderAsync(new GateStockOrderRequest { Symbol = "AAPL", Side = GateStockOrderSide.Buy, Volume = 1m, PriceType = GateStockOrderPriceType.Limit, TradingSession = GateStockTradingSession.Regular, TimeInForce = GateStockTimeInForce.Day, Price = 200m, ClientOrderId = "CLIENT-STOCK-ORDER-ID" });
+        var stock_06 = await api.Stock.PlaceOrderAsync(new GateStockOrderRequest { Symbol = "AAPL", Side = GateStockOrderSide.Buy, Volume = 1m, PriceType = GateStockOrderPriceType.Limit, TradingSession = GateStockTradingSession.All, TimeInForce = GateStockTimeInForce.Day, Price = 200m, ClientOrderId = "CLIENT-STOCK-ORDER-ID" });
         var stock_07 = await api.Stock.CancelAllOrdersAsync();
         var stock_08 = await api.Stock.GetOrderHistoryAsync(new GateStockOrderHistoryQueryRequest { Symbol = "AAPL", BeginTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, Page = 1, PageSize = 50 });
         var stock_09 = await api.Stock.UpdateOrderAsync(1_000_000_001, new GateStockOrderUpdateRequest { Volume = 1m, Price = 201m });

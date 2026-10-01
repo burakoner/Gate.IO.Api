@@ -1,6 +1,18 @@
 ## Change Log & Release Notes
 
 - Unreleased - 01 October 2026
+  - Reconciled the current Stock contracts indexed by v4.106.121, v4.106.136, v4.106.141 and the Stock portion of v4.106.143: limit orders now reject any session other than `all` before I/O; market orders still require `regular` and only `day` is supported. Corrected README and compiled examples.
+  - Added opt-in `GateRestApiClientOptions.StockLeadTrading`, defaulting to false and captured at construction. Eligible Stock requests use `x-gate-trader-copy-type: stock_copy`; both GET and POST `/stock/transactions` are excluded. Request-scoped headers do not alter shared HTTP defaults, other modules or personal-trading clients.
+  - Added `GateStockExchange.Japan` (`jp`) without renumbering existing values, nullable `asset_type` (`STOCK`/`ETF`) on both symbol responses, and nullable option market value/PnL fields on account assets. Updated fixtures and documented all nine category codes while preserving existing string accessors.
+  - Documented the 5 qps limits and Japanese/Korean fee scope without inventing quota-sharing buckets or automatic throttling. Retained prior production-verified exchange signing and public Stock timestamps; the published `trade_mode=4` mapping is preserved despite inconsistent example values. No live gateway verification was performed this turn.
+  - Verification: 34 focused Stock tests and 338 offline tests passed, excluding PublicIntegration and LiveCapture. The Release solution build succeeded on netstandard2.0 and netstandard2.1, including examples and tests, with zero warnings/errors. The session regression failed before the fix after supplying the previously missing price. Added all-16-operation lead-context tests, transfer and shared-client isolation checks, independently recomputed signatures, Japanese filter/response coverage, optional-field precision/null handling, market-order construction and documented HTTP 400 error handling.
+  - Consolidated the remaining Stock market/account work into the completed Stock step of the execution plan. P2P advertisement payment mappings are next; the TradFi portion of v4.106.143 and the rest of the catch-up remain pending. Package/assembly versions stay at 4.106.116. No authenticated or state-changing live call was made; no push or publishing.
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#create-order
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#query-symbol-list
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#query-symbol-details
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#query-user-assets
+  - Source: https://www.gate.com/docs/developers/apiv4/en/stock/#query-fee-rates-for-japanese-and-korean-stocks
   - Corrected the Spot POV cancellation portion of v4.106.127 against the complete current endpoint contracts: bulk cancellation uses signed `DELETE /spot/pov_orders` with the optional `currency_pair` query, and single cancellation uses signed `DELETE /spot/pov_orders/{order_id}`. Removed the erroneous POST `/cancel` paths without changing public method signatures.
   - Rechecked all cancellation response fields, enums, timestamps, optional prices and custom IDs. The existing response model remains compatible; a successful HTTP response can still contain a non-terminal order status and must not be treated as confirmed cancellation completion.
   - Added regressions for DELETE routes, empty bodies, filtered and unfiltered bulk cancellation, string/custom IDs, missing-ID rejection, empty order lists and independently recomputed request signatures. New route regressions failed against the old implementation before the fix.

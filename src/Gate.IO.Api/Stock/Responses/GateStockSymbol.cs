@@ -26,9 +26,12 @@ public record GateStockSymbol
     /// <summary>Gets or sets the symbol description.</summary>
     [JsonProperty("symbol_desc")]
     public string Description { get; set; }
-    /// <summary>Gets or sets the symbol category.</summary>
+    /// <summary>Gets or sets the category: CS, ETF, ADRC, ADR, ETV, PFD, ETS, ETN or FUND.</summary>
     [JsonProperty("category")]
     public string Category { get; set; }
+    /// <summary>Gets or sets the asset type, when returned by the server.</summary>
+    [JsonProperty("asset_type"), JsonConverter(typeof(MapConverter))]
+    public GateStockAssetType? AssetType { get; set; }
     /// <summary>Gets or sets the trading status.</summary>
     [JsonProperty("trade_status"), JsonConverter(typeof(MapConverter))]
     public GateStockTradingStatus TradingStatus { get; set; }

@@ -1,3 +1,5 @@
+using ApiSharp.Models;
+using System.Security.Cryptography;
 using System.Text;
 using Gate.IO.Api.Stock;
 using Gate.IO.Api.Tests.Infrastructure;
@@ -106,12 +108,14 @@ public class StockRequestConstructionTests
         AssertRequest(handler.Requests[1], HttpMethod.Post, "/api/v4/stock/orders", signed: true);
         var body = JObject.Parse(handler.Requests[1].Content);
         Assert.Equal("10", body["volume"]!.ToString());
+        Assert.Equal(JTokenType.String, body["volume"]!.Type);
         Assert.Equal("AAPL", body["symbol"]!.ToString());
         Assert.Equal(2, body["side"]!.Value<int>());
         Assert.Equal("limit", body["price_type"]!.ToString());
         Assert.Equal("all", body["trading_session"]!.ToString());
         Assert.Equal("day", body["time_in_force"]!.ToString());
         Assert.Equal("200.12", body["price"]!.ToString());
+        Assert.Equal(JTokenType.String, body["price"]!.Type);
         Assert.Equal("client-202607070001", body["client_order_id"]!.ToString());
         AssertRequest(handler.Requests[2], HttpMethod.Delete, "/api/v4/stock/orders", signed: true);
     }
@@ -252,7 +256,8 @@ public class StockRequestConstructionTests
     [Fact]
     public async Task Stock_order_validation_rejects_unsafe_or_unsupported_combinations_before_io()
     {
-        var client = new GateRestApiClient();
+        var handler = FixtureHandler("Docs/Stock/order_id.success.json");
+        var client = CreateSignedClient(handler);
 
         await Assert.ThrowsAsync<ArgumentException>(() => client.Stock.PlaceOrderAsync(new GateStockOrderRequest
         {
@@ -261,6 +266,7 @@ public class StockRequestConstructionTests
             Side = GateStockOrderSide.Buy,
             PriceType = GateStockOrderPriceType.Limit,
             TradingSession = GateStockTradingSession.Regular,
+            Price = 200m,
         }));
         await Assert.ThrowsAsync<ArgumentException>(() => client.Stock.PlaceOrderAsync(new GateStockOrderRequest
         {
@@ -289,6 +295,145 @@ public class StockRequestConstructionTests
             BeginTime = new DateTime(2026, 1, 1, 0, 0, 0, DateTimeKind.Utc),
             EndTime = new DateTime(2026, 4, 2, 0, 0, 0, DateTimeKind.Utc),
         }));
+        Assert.Empty(handler.Requests);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Stock_lead_trading_context_is_captured_at_construction_and_excludes_both_transaction_operations(bool enabled)
+    {
+        var responses = new Queue<string>(new[]
+        {
+            "assets", "symbols", "symbol_details", "orderbook", "orders", "order_id", "empty", "order_history",
+            "order_update", "empty", "positions", "position_close", "transactions", "empty", "exchanges", "fee_rates",
+        }.Select(name => JsonFixture.Read($"Docs/Stock/{name}.success.json")));
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var options = new GateRestApiClientOptions { HttpClient = new HttpClient(handler), StockLeadTrading = enabled };
+        var client = new GateRestApiClient(options);
+        client.SetApiCredentials("key", "secret");
+        options.StockLeadTrading = !enabled;
+
+        async Task Verify<T>(Task<RestCallResult<T>> operation, HttpMethod method, string endpoint, bool signed = true, bool leadEligible = true)
+        {
+            var result = await operation;
+            Assert.True(result.Success, result.Error?.ToString());
+            AssertRequest(handler.Requests.Last(), method, $"/api/v4/stock/{endpoint}", signed, enabled && leadEligible);
+        }
+
+        await Verify(client.Stock.GetAssetsAsync(), HttpMethod.Get, "users/assets");
+        await Verify(client.Stock.GetSymbolsAsync(), HttpMethod.Get, "symbols", signed: false);
+        await Verify(client.Stock.GetSymbolDetailsAsync(), HttpMethod.Get, "symbols/detail", signed: false);
+        await Verify(client.Stock.GetOrderBookAsync("AAPL"), HttpMethod.Get, "market/AAPL/orderbook", signed: false);
+        await Verify(client.Stock.GetOrdersAsync(), HttpMethod.Get, "orders");
+        await Verify(client.Stock.PlaceOrderAsync("AAPL", GateStockOrderSide.Buy, 1m, GateStockOrderPriceType.Limit, GateStockTradingSession.All, 200m), HttpMethod.Post, "orders");
+        await Verify(client.Stock.CancelAllOrdersAsync(), HttpMethod.Delete, "orders");
+        await Verify(client.Stock.GetOrderHistoryAsync(), HttpMethod.Get, "orders/history");
+        await Verify(client.Stock.UpdateOrderAsync(123456, 1m, 200m), HttpMethod.Put, "orders/123456");
+        await Verify(client.Stock.CancelOrderAsync(123456), HttpMethod.Delete, "orders/123456");
+        await Verify(client.Stock.GetPositionsAsync(), HttpMethod.Get, "positions");
+        await Verify(client.Stock.ClosePositionAsync(new GateStockClosePositionRequest { Symbol = "AAPL", CloseType = GateStockPositionCloseType.All }), HttpMethod.Post, "positions/close");
+        await Verify(client.Stock.GetTransactionsAsync(), HttpMethod.Get, "transactions", leadEligible: false);
+        await Verify(client.Stock.CreateTransactionAsync(new GateStockTransferRequest { Asset = "USDT", Change = 100m, ReferenceId = "transfer-1", Type = GateStockTransferType.Deposit }), HttpMethod.Post, "transactions", leadEligible: false);
+        await Verify(client.Stock.GetExchangesAsync(), HttpMethod.Get, "exchanges");
+        await Verify(client.Stock.GetFeeRatesAsync(), HttpMethod.Get, "fee-rate", signed: false);
+        Assert.Equal(16, handler.Requests.Count);
+        Assert.Empty(responses);
+    }
+
+    [Fact]
+    public async Task Stock_lead_header_does_not_leak_to_other_clients_or_modules_using_the_same_http_client()
+    {
+        var responses = new Queue<string>([
+            JsonFixture.Read("Docs/Stock/assets.success.json"),
+            "[]",
+            JsonFixture.Read("Docs/TradFi/categories.success.json"),
+            JsonFixture.Read("Docs/Stock/assets.success.json"),
+            JsonFixture.Read("Docs/Stock/assets.success.json"),
+        ]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var httpClient = new HttpClient(handler);
+        var leadClient = new GateRestApiClient(new GateRestApiClientOptions { HttpClient = httpClient, StockLeadTrading = true });
+        var personalClient = new GateRestApiClient(new GateRestApiClientOptions { HttpClient = httpClient });
+        leadClient.SetApiCredentials("key", "secret");
+        personalClient.SetApiCredentials("key", "secret");
+
+        Assert.True((await leadClient.Stock.GetAssetsAsync()).Success);
+        Assert.True((await leadClient.Spot.GetCurrenciesAsync()).Success);
+        Assert.True((await leadClient.TradFi.GetSymbolCategoriesAsync()).Success);
+        Assert.True((await personalClient.Stock.GetAssetsAsync()).Success);
+        Assert.True((await leadClient.Stock.GetAssetsAsync()).Success);
+
+        Assert.Equal(5, handler.Requests.Count);
+        Assert.Equal("stock_copy", Assert.Single(handler.Requests[0].Headers["x-gate-trader-copy-type"]));
+        foreach (var request in handler.Requests.Skip(1).Take(3))
+            Assert.DoesNotContain("x-gate-trader-copy-type", request.Headers.Keys);
+        Assert.Equal("stock_copy", Assert.Single(handler.Requests[4].Headers["x-gate-trader-copy-type"]));
+        Assert.False(httpClient.DefaultRequestHeaders.Contains("x-gate-trader-copy-type"));
+    }
+
+    [Fact]
+    public async Task Japanese_exchange_filter_is_serialized_on_all_three_supported_queries()
+    {
+        var responses = new Queue<string>([
+            JsonFixture.Read("Docs/Stock/symbols.success.json"),
+            JsonFixture.Read("Docs/Stock/symbol_details.success.json"),
+            JsonFixture.Read("Docs/Stock/positions.success.json"),
+        ]);
+        var handler = new RecordingHttpMessageHandler(_ => JsonResponse(responses.Dequeue()));
+        var client = CreateSignedClient(handler);
+
+        Assert.True((await client.Stock.GetSymbolsAsync(new GateStockSymbolQueryRequest { Exchange = GateStockExchange.Japan })).Success);
+        Assert.True((await client.Stock.GetSymbolDetailsAsync(new GateStockSymbolDetailsQueryRequest { Exchange = GateStockExchange.Japan })).Success);
+        Assert.True((await client.Stock.GetPositionsAsync(new GateStockPositionQueryRequest { Exchange = GateStockExchange.Japan })).Success);
+
+        Assert.Equal(3, handler.Requests.Count);
+        Assert.All(handler.Requests, request => Assert.Equal("jp", Assert.Single(ParseQuery(request.RequestUri)).Value));
+    }
+
+    [Theory]
+    [InlineData(GateStockOrderSide.Buy)]
+    [InlineData(GateStockOrderSide.Sell)]
+    public async Task Stock_market_orders_use_regular_session_and_omit_optional_price_and_client_id(GateStockOrderSide side)
+    {
+        var handler = FixtureHandler("Docs/Stock/order_id.success.json");
+        var client = CreateSignedClient(handler);
+
+        var result = await client.Stock.PlaceOrderAsync("AAPL", side, 1.25m, GateStockOrderPriceType.Market, GateStockTradingSession.Regular);
+
+        Assert.True(result.Success, result.Error?.ToString());
+        var request = Assert.Single(handler.Requests);
+        AssertRequest(request, HttpMethod.Post, "/api/v4/stock/orders", signed: true);
+        Assert.Empty(request.RequestUri.Query);
+        var body = JObject.Parse(request.Content);
+        Assert.Equal(6, body.Count);
+        Assert.Equal(JTokenType.String, body["volume"]!.Type);
+        Assert.Equal("1.25", body["volume"]!.ToString());
+        Assert.Equal((int)side, body["side"]!.Value<int>());
+        Assert.Equal("market", body["price_type"]!.ToString());
+        Assert.Equal("regular", body["trading_session"]!.ToString());
+        Assert.Equal("day", body["time_in_force"]!.ToString());
+        Assert.Null(body["price"]);
+        Assert.Null(body["client_order_id"]);
+    }
+
+    [Fact]
+    public async Task Documented_stock_error_is_not_reported_as_a_successful_cancellation()
+    {
+        var handler = new RecordingHttpMessageHandler(_ => new HttpResponseMessage(System.Net.HttpStatusCode.BadRequest)
+        {
+            Content = new StringContent("{\"label\":\"INVALID_ARGUMENT\",\"message\":\"invalid argument\",\"data\":null,\"timestamp\":1783411200000}", Encoding.UTF8, "application/json"),
+        });
+        var client = CreateSignedClient(handler);
+
+        var result = await client.Stock.CancelOrderAsync(123456);
+
+        Assert.False(result.Success);
+        Assert.Null(result.Data);
+        Assert.NotNull(result.Error);
+        Assert.Equal("invalid argument", result.Error.Message);
+        Assert.Contains("INVALID_ARGUMENT", result.Error.ToString());
+        AssertRequest(Assert.Single(handler.Requests), HttpMethod.Delete, "/api/v4/stock/orders/123456", signed: true);
     }
 
     private static RecordingHttpMessageHandler FixtureHandler(string path)
@@ -318,11 +463,15 @@ public class StockRequestConstructionTests
                 x => Uri.UnescapeDataString(x[0]),
                 x => x.Length == 1 ? string.Empty : Uri.UnescapeDataString(x[1]));
 
-    private static void AssertRequest(RecordedHttpRequest request, HttpMethod method, string path, bool signed)
+    private static void AssertRequest(RecordedHttpRequest request, HttpMethod method, string path, bool signed, bool leadTrading = false)
     {
         Assert.Equal(method, request.Method);
         Assert.Equal(path, request.RequestUri.AbsolutePath);
         Assert.NotEmpty(Assert.Single(request.Headers["Timestamp"]));
+        if (leadTrading)
+            Assert.Equal("stock_copy", Assert.Single(request.Headers["x-gate-trader-copy-type"]));
+        else
+            Assert.DoesNotContain("x-gate-trader-copy-type", request.Headers.Keys);
 
         if (!signed)
         {
@@ -334,5 +483,12 @@ public class StockRequestConstructionTests
         Assert.Equal("key", Assert.Single(request.Headers["KEY"]));
         Assert.NotEmpty(Assert.Single(request.Headers["SIGN"]));
         Assert.True(request.Headers.ContainsKey("X-Gate-Channel-Id"));
+        var timestamp = Assert.Single(request.Headers["Timestamp"]);
+        var bodyHash = Convert.ToHexString(SHA512.HashData(Encoding.UTF8.GetBytes(request.Content))).ToLowerInvariant();
+        var query = System.Net.WebUtility.UrlDecode(request.RequestUri.Query.TrimStart('?'));
+        var signatureInput = $"{method.Method}\n{path}\n{query}\n{bodyHash}\n{timestamp}";
+        using var hmac = new HMACSHA512(Encoding.UTF8.GetBytes("secret"));
+        var expectedSignature = Convert.ToHexString(hmac.ComputeHash(Encoding.UTF8.GetBytes(signatureInput))).ToLowerInvariant();
+        Assert.Equal(expectedSignature, Assert.Single(request.Headers["SIGN"]));
     }
 }

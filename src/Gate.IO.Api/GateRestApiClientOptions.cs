@@ -21,6 +21,16 @@ public class GateRestApiClientOptions : RestApiClientOptions
     public TimeSpan TimestampRecalculationInterval { get; set; }
 
     /// <summary>
+    /// Enable the Stock lead-trading context using the stock_copy request header.
+    /// Defaults to false; fund transfers and transaction history are excluded.
+    /// </summary>
+    /// <remarks>
+    /// Captured when the client is constructed. Use separate clients for personal and lead trading;
+    /// changing this option later does not change an existing client's trading context.
+    /// </remarks>
+    public bool StockLeadTrading { get; set; }
+
+    /// <summary>
     /// Gate.IO API Client Options
     /// </summary>
     public GateRestApiClientOptions() : this(null)

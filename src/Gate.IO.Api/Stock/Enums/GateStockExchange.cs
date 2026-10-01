@@ -14,4 +14,7 @@ public enum GateStockExchange
     /// <summary>South Korea exchange</summary>
     [Map("kr")]
     SouthKorea,
+    /// <summary>Japan exchange</summary>
+    [Map("jp")]
+    Japan,
 }

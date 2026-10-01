@@ -6,6 +6,9 @@
     "position_market_value": "1500.25",
     "position_pnl": "12.5",
     "today_pnl": "3.2",
+    "option_position_market_value": "0",
+    "option_position_pnl": "0",
+    "option_today_pnl": "0",
     "user_exists": true
   },
   "timestamp": 1783411200000
