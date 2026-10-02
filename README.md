@@ -212,7 +212,25 @@ Optional `ReceiveType` maps `Company`/`Gate`/`Recipient`/`Person` to `YOU`/`GATE
 
 Saved fiat request JSON now uses the ten documented snake_case keys, with eight required nonnull keys. Migrate older PascalCase saved DTOs to this wire shape. Enum instructions must use their documented strings; amounts must be exact decimal strings or integers, and bank IDs exact Int64 integers/numeric strings. Unknown enum values, lossy floating tokens, decimal precision loss and fractional/boolean/overflowing IDs fail rather than changing the instruction. C# accessor types are unchanged; standalone DTO serialization keeps BankId numeric, while HTTP construction writes the required bank_id string.
 
-Nonzero business `code` is an error even with HTTP 200. A successful acknowledgement requires integer code=0, a string message and a Unix-second integer timestamp; absent/malformed bodies fail with HTTP metadata retained. It contains no order ID and does not establish payment/remittance completion. No automatic retry or polling is added, including after ambiguous responses. This reconciliation is limited to fiat creation; other OTC envelopes and the pre-upload/bank-binding family remain separate pending work.
+Nonzero business `code` is an error even with HTTP 200. A successful acknowledgement requires integer code=0, a string message and a Unix-second integer timestamp; absent/malformed bodies fail with HTTP metadata retained. It contains no order ID and does not establish payment/remittance completion. No automatic retry or polling is added, including after ambiguous responses. This reconciliation is limited to fiat creation; the pre-upload method below is separately reconciled, while bank binding and other OTC envelopes remain pending.
+
+## OTC temporary upload credentials
+
+`CreatePreUploadAsync` implements signed POST `/otc/upload/pre_upload` using the complete current [endpoint and linked schemas](https://www.gate.com/docs/developers/apiv4/en/otc/#pre-upload-file-temporary-bucket). Use the DTO or content-type/optional-scene overload. Png/Jpeg/Jpg/Pdf map to the four exact base64 MIME strings; no file bytes are accepted. Null scene is omitted, leaving the server's `general` default; explicit General/Bank/Assessment/Credit are supported. Unknown instructions fail before I/O and in saved request JSON.
+
+```csharp
+var preUpload = await api.Otc.CreatePreUploadAsync(GateOtcUploadContentType.Png, GateOtcUploadScene.Bank);
+// Only if preUpload.Success: preUpload.Data.Data has FileKey, Url, Fields and ExpiresIn.
+// Credential issuance does not upload a file, bind a bank or confirm payment. Do not log these values.
+```
+
+The result retains the complete code/message/data/timestamp acknowledgement. Nonzero business codes fail even with HTTP 200. Success requires all four envelope keys, four data keys and seven case-sensitive Policy keys; malformed/missing values fail without fabricated credentials. Timestamp is exact integer Unix seconds in UTC; ExpiresIn is the returned integer, not a forced 5400-second constant. Opaque fields remain strings, including future string fields and date-looking values in saved JSON; no casing, decoding or date normalization is applied to signed form pairs.
+
+The caller performs a separate direct S3 POST using the returned URL and every Fields pair unchanged, with the file part last. The current Policy allows 1..10485760 bytes and expires after the returned validity (currently 90 minutes). The wrapper never follows that URL, forwards Gate authentication, uploads, refreshes credentials or retries automatically. Do not decode FileKey when later passing it to bank/create or order/paid. The server checks ownership and object existence at business submission; issuing credentials or an S3 HTTP 204 is not business approval.
+
+Policy credentials are sensitive. The new endpoint's default successful-response parser does not copy malformed credentials into Error.Data or parser diagnostics. This is not a global logging guarantee: ApiSharp's HTTP-error path can log the raw error body, and enabling `RawResponse` captures/logs raw responses. Keep `RawResponse` disabled and prevent payload-bearing dependency diagnostics from reaching retained logs when using this endpoint. The inherited logging exposure is recorded for a separate review; caller logging of the response, DTO or dictionary is also unsafe.
+
+`v4.106.135` is not yet closed. Bank binding and personal/enterprise material submission still need complete request/envelope reconciliation and real multipart file transport; the current helper only builds text parts. Existing bank examples below are legacy examples, not verified current file-upload recipes. The approved bank-creation result `BankId` migration from int to long belongs to that next step and is not included in this pre-upload change.
 
 ## Unified account snapshots
 
@@ -795,6 +813,8 @@ var otc_12 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { Orde
 var otc_13 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
 var otc_14 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderListRequest { CoinName = "USDT", Status = "PROCESSING", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
 var otc_15 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
+// Credentials only: no direct S3 upload or subsequent business submission is performed here. Do not log Policy values.
+var otc_16 = await api.Otc.CreatePreUploadAsync(new GateOtcUploadPreUploadRequest { ContentType = GateOtcUploadContentType.Png, Scene = GateOtcUploadScene.Bank });
 
 // P2P Methods
 // Gate's P2P "Query spot balance" guide reuses GET /spot/accounts; it does not define a separate P2P endpoint.

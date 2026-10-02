@@ -598,6 +598,8 @@ internal class Program
         var otc_13 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
         var otc_14 = await api.Otc.GetStableCoinOrdersAsync(new GateOtcStableCoinOrderListRequest { CoinName = "USDT", Status = "PROCESSING", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
         var otc_15 = await api.Otc.GetFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
+        // Credentials only: no direct S3 upload or subsequent business submission. Do not log Policy values.
+        var otc_16 = await api.Otc.CreatePreUploadAsync(new GateOtcUploadPreUploadRequest { ContentType = GateOtcUploadContentType.Png, Scene = GateOtcUploadScene.Bank });
 
         // P2P Methods
         // Gate's P2P "Query spot balance" guide reuses GET /spot/accounts; it does not define a separate P2P endpoint.

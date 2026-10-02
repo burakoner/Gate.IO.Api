@@ -37,6 +37,73 @@ public class GateOtcRestApiClient
     }
 
     /// <summary>
+    /// Issue temporary S3 POST credentials. Does not upload a file, submit materials or retry automatically.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#pre-upload-file-temporary-bucket
+    /// </summary>
+    /// <param name="contentType">Supported MIME type; the client sends its documented base64 value.</param>
+    /// <param name="scene">Optional scene. Omission leaves the server default general unchanged.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Sensitive Policy fields and the complete acknowledgement; not upload confirmation.</returns>
+    public Task<RestCallResult<GateOtcUploadPreUploadResponse>> CreatePreUploadAsync(
+        GateOtcUploadContentType contentType, GateOtcUploadScene? scene = null, CancellationToken ct = default)
+        => CreatePreUploadAsync(new GateOtcUploadPreUploadRequest { ContentType = contentType, Scene = scene }, ct);
+
+    /// <summary>
+    /// Issue temporary S3 POST credentials only. Preserve all returned fields unchanged during a separate
+    /// direct upload; Gate credentials must not be forwarded to the returned URL. No file content is accepted here.
+    /// </summary>
+    /// <param name="request">Pre-upload MIME and optional scene.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>The complete current pre-upload acknowledgement, with nonzero business codes reported as errors.</returns>
+    public async Task<RestCallResult<GateOtcUploadPreUploadResponse>> CreatePreUploadAsync(
+        GateOtcUploadPreUploadRequest request, CancellationToken ct = default)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (!Enum.IsDefined(typeof(GateOtcUploadContentType), request.ContentType))
+            throw new ArgumentOutOfRangeException(nameof(request.ContentType));
+        if (request.Scene.HasValue && !Enum.IsDefined(typeof(GateOtcUploadScene), request.Scene.Value))
+            throw new ArgumentOutOfRangeException(nameof(request.Scene));
+
+        var body = new ParameterCollection();
+        body.AddEnum("content_type", request.ContentType);
+        body.AddOptionalEnum("scene", request.Scene);
+        // Opaque signed S3 strings must not be normalized into dates by the JSON reader.
+        var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+        serializer.Converters.Add(new GateOtcUploadEnvelopeConverter());
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, "upload/pre_upload"),
+            HttpMethod.Post, ct, true, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
+        if (!result.Success)
+            return result.Error is DeserializeError
+                ? result.AsError<GateOtcUploadPreUploadResponse>(new DeserializeError("Invalid OTC pre-upload acknowledgement", null))
+                : result.As<GateOtcUploadPreUploadResponse>(null);
+
+        var token = result.Data;
+        if (!string.IsNullOrEmpty(result.Raw))
+        {
+            // RawResponse's dependency path parses dates before invoking the supplied serializer.
+            using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
+            token = serializer.Deserialize<JToken>(reader);
+        }
+
+        if (token is not JObject envelope || envelope["code"]?.Type != JTokenType.Integer
+            || !int.TryParse(envelope["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code))
+            return result.AsError<GateOtcUploadPreUploadResponse>(new DeserializeError("Pre-upload acknowledgement requires an integer business code", null));
+        if (code != 0)
+            return result.AsError<GateOtcUploadPreUploadResponse>(new ServerError(code,
+                envelope["message"]?.Type == JTokenType.String ? (string)envelope["message"] : "OTC pre-upload rejected"));
+        try
+        {
+            var response = envelope.ToObject<GateOtcUploadPreUploadResponse>(serializer);
+            return result.As(response);
+        }
+        catch (JsonException)
+        {
+            // Do not copy Policy/credential/file-key payloads into an error message or Error.Data.
+            return result.AsError<GateOtcUploadPreUploadResponse>(new DeserializeError("Invalid or incomplete OTC pre-upload acknowledgement", null));
+        }
+    }
+
+    /// <summary>
     /// Fiat and stablecoin quote
     /// </summary>
     /// <param name="side">Quote direction</param>

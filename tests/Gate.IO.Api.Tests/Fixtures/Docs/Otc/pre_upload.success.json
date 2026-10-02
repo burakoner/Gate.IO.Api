@@ -1,0 +1,19 @@
+{
+  "code": 0,
+  "message": "success",
+  "data": {
+    "file_key": "b3RjX3RlbXAvMTIzNDU2Nzg5MC9iYW5rLzIwMjYwODMxMDc1MTI1MjgyMjMzOTQ1OS5wbmc=",
+    "url": "https://example-bucket.s3.us-east-2.amazonaws.com",
+    "fields": {
+      "key": "otc_temp/1234567890/bank/202608310751252822339459.png",
+      "Content-Type": "image/png",
+      "X-Amz-Credential": "AKIAEXAMPLE/20260831/us-east-2/s3/aws4_request",
+      "X-Amz-Algorithm": "AWS4-HMAC-SHA256",
+      "X-Amz-Date": "20260831T075125Z",
+      "Policy": "eyJleHBpcmF0aW9uIjoiMjAyNi0wOC0zMVQwOToyMToyNVoiLCJjb25kaXRpb25zIjpbWyJjb250ZW50LWxlbmd0aC1yYW5nZSIsMSwxMDQ4NTc2MF1dfQ==",
+      "X-Amz-Signature": "EXAMPLE_SIGNATURE"
+    },
+    "expires_in": 5400
+  },
+  "timestamp": 1788162685
+}
