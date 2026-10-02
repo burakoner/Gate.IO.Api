@@ -12,7 +12,8 @@ public record GateCrossExIsolatedMarginRequest
     public string Symbol { get; set; }
 
     /// <summary>
-    /// Positive increases and negative decreases margin. The server truncates beyond two decimal places;
+    /// Positive increases and negative decreases margin; the absolute value must be at least 0.01.
+    /// The server truncates beyond two decimal places;
     /// the client preserves this value. Saved JSON must supply an exact decimal string or integer.
     /// </summary>
     [JsonProperty("margin", Required = Required.Always)]

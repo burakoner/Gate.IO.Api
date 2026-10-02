@@ -4,6 +4,7 @@ namespace Gate.IO.Api.CrossEx;
 /// CrossEx order action acknowledgement. A successful response means that CrossEx accepted the asynchronous request,
 /// not that the venue accepted or executed the order. Confirm the order state through the order query or private order stream.
 /// </summary>
+[JsonConverter(typeof(GateCrossExActionJsonConverter))]
 public record GateCrossExOrderActionResult
 {
     /// <summary>
@@ -14,9 +15,9 @@ public record GateCrossExOrderActionResult
     public string OrderId { get; set; }
 
     /// <summary>
-    /// Gets or sets the Text.
+    /// Required server-returned client ID. Empty is allowed; it is never filled from the request or order ID.
     /// </summary>
-    [JsonProperty("text")]
+    [JsonProperty("text", Required = Required.Always)]
     [JsonConverter(typeof(GateCrossExActionValueConverter))]
     public string Text { get; set; }
 }

@@ -24,7 +24,7 @@ public class CrossExLighterContractTests
         AssertContract<GateCrossExOrderRequest>("text,symbol,side,type,time_in_force,qty,price,quote_qty,reduce_only,position_side", "symbol,side");
         AssertContract<GateCrossExTransferRequest>("coin,amount,from,to,text", "coin,amount,from,to");
         AssertContract<GateCrossExConvertQuoteRequest>("exchange_type,from_coin,to_coin,from_amount", "exchange_type,from_coin,to_coin,from_amount");
-        AssertContract<GateCrossExOrderActionResult>("order_id,text", "order_id");
+        AssertContract<GateCrossExOrderActionResult>("order_id,text", "order_id,text");
         AssertContract<GateCrossExTransferResult>("tx_id,text", "tx_id,text");
         AssertContract<GateCrossExConvertQuote>("quote_id,valid_ms,from_coin,to_coin,from_amount,to_amount,price", "quote_id,valid_ms,from_coin,to_coin,from_amount,to_amount,price");
         Assert.StartsWith("https://www.gate.com/", Reference);
@@ -212,11 +212,11 @@ public class CrossExLighterContractTests
     [Fact]
     public async Task Omitted_order_type_and_explicit_zero_values_are_not_replaced_with_client_defaults()
     {
-        var handler = Handler("{\"order_id\":\"accepted\"}");
+        var handler = Handler("{\"order_id\":\"accepted\",\"text\":\"\"}");
         using var client = Client(handler);
         var result = await client.CrossEx.PlaceOrderAsync(Symbol, GateCrossExOrderSide.Sell, quantity: 0.1m, price: 0m, reduceOnly: false);
         Assert.True(result.Success, result.Error?.ToString());
-        Assert.Null(result.Data.Text); // No response text is invented from the input or ID.
+        Assert.Equal("", result.Data.Text); // Required server text is preserved, never invented from the input or ID.
         var body = JObject.Parse(Assert.Single(handler.Requests).Content);
         Assert.Equal("0.1", (string?)body["qty"]);
         Assert.Equal("0", (string?)body["price"]);

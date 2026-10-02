@@ -3,6 +3,7 @@ namespace Gate.IO.Api.CrossEx;
 /// <summary>
 /// CrossEx flash swap quote
 /// </summary>
+[JsonConverter(typeof(GateCrossExActionJsonConverter))]
 public record GateCrossExConvertQuote
 {
     /// <summary>

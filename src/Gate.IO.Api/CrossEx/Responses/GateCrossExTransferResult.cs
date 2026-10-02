@@ -3,6 +3,7 @@ namespace Gate.IO.Api.CrossEx;
 /// <summary>
 /// CrossEx transfer result
 /// </summary>
+[JsonConverter(typeof(GateCrossExActionJsonConverter))]
 public record GateCrossExTransferResult
 {
     /// <summary>

@@ -406,9 +406,9 @@ public class CrossExCurrentContractTests
     [Theory]
     [InlineData("-30.129", null, null)]
     [InlineData("30.129", GateCrossExPositionSide.None, "NONE")]
-    [InlineData("0", GateCrossExPositionSide.Long, "LONG")]
-    [InlineData("0.001", GateCrossExPositionSide.Short, "SHORT")]
-    [InlineData("-0.001", GateCrossExPositionSide.None, "NONE")]
+    [InlineData("0.01", GateCrossExPositionSide.Long, "LONG")]
+    [InlineData("0.019", GateCrossExPositionSide.Short, "SHORT")]
+    [InlineData("-0.019", GateCrossExPositionSide.None, "NONE")]
     public async Task Isolated_margin_preserves_explicit_amount_and_side_in_signed_json_without_retry(string margin, GateCrossExPositionSide? side, string? expectedSide)
     {
         var handler = Handler(JsonFixture.Read("Docs/CrossEx/isolated_margin.success.json"), HttpStatusCode.Accepted);

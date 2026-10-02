@@ -331,6 +331,29 @@ public class AnnouncementsRestCurrentContractTests
         Assert.Single(handler.Requests);
     }
 
+    [Theory]
+    [InlineData(false, false)]
+    [InlineData(false, true)]
+    [InlineData(true, false)]
+    [InlineData(true, true)]
+    public async Task Parser_errors_are_payload_free_while_explicit_raw_response_is_retained(bool malformed, bool raw)
+    {
+        const string secret = "announcement-private-sentinel";
+        var json = malformed ? "{\"private\":\"announcement-private-sentinel\","
+            : "{\"code\":{\"private\":\"announcement-private-sentinel\"},\"data\":{\"list\":[],\"total\":0},\"message\":\"ok\",\"version\":\"1\"}";
+        var handler = Handler(json);
+        using var client = Client(handler, raw);
+        var result = await client.Announcements.GetArticlesAsync();
+        Assert.False(result.Success);
+        Assert.Null(result.Data);
+        Assert.Equal(HttpStatusCode.OK, result.Response!.StatusCode);
+        Assert.NotNull(result.Error);
+        Assert.Null(result.Error.Data);
+        Assert.DoesNotContain(secret, result.Error.ToString());
+        if (raw) Assert.Equal(json, result.Raw);
+        Assert.Single(handler.Requests);
+    }
+
     private static GateAnnouncementArticleListRequest Request() => new()
     {
         TitleQuery = "  duyuru / 上线  ", Page = "1", Size = "5", Tags = "new,tag", Timer = "10",

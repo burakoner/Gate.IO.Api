@@ -65,7 +65,10 @@ public class GateAnnouncementsRestApiClient
         var result = await root.SendRequestInternal<JToken>(
             root.GetUrl("api", "4", "ann", "list_article"), HttpMethod.Post, ct,
             signed: false, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
-        if (!result.Success) return result.As<GateAnnouncementArticleListResponse>(null);
+        if (!result.Success)
+            return result.Error is DeserializeError
+                ? result.AsError<GateAnnouncementArticleListResponse>(new DeserializeError("Invalid or incomplete announcement envelope", null))
+                : result.As<GateAnnouncementArticleListResponse>(null);
         try
         {
             var token = result.Data;

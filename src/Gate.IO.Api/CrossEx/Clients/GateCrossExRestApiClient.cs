@@ -217,9 +217,9 @@ public class GateCrossExRestApiClient
         parameters.AddEnum("to", request.To);
         parameters.AddOptional("text", request.Text);
 
-        var result = await _.SendRequestInternal<GateCrossExTransferResult>(_.GetUrl(api, v4, crossex, "transfers"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await SendCrossExActionRequestAsync<GateCrossExTransferResult>("transfers", HttpMethod.Post, null, parameters, ct).ConfigureAwait(false);
         if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.TransactionId)))
-            return result.AsError<GateCrossExTransferResult>(new DeserializeError("Expected a CrossEx transfer acknowledgement with a transaction ID", result.Data));
+            return result.AsError<GateCrossExTransferResult>(new DeserializeError("Expected a CrossEx transfer acknowledgement with a transaction ID", null));
         return result;
     }
 
@@ -319,9 +319,9 @@ public class GateCrossExRestApiClient
         parameters.AddOptional("reduce_only", request.ReduceOnly.HasValue ? request.ReduceOnly.Value.ToString().ToLowerInvariant() : null);
         parameters.AddOptionalEnum("position_side", request.PositionSide);
 
-        var result = await _.SendRequestInternal<GateCrossExOrderActionResult>(_.GetUrl(api, v4, crossex, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await SendCrossExActionRequestAsync<GateCrossExOrderActionResult>("orders", HttpMethod.Post, null, parameters, ct).ConfigureAwait(false);
         if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.OrderId)))
-            return result.AsError<GateCrossExOrderActionResult>(new DeserializeError("Expected a CrossEx order acknowledgement with an order ID", result.Data));
+            return result.AsError<GateCrossExOrderActionResult>(new DeserializeError("Expected a CrossEx order acknowledgement with an order ID", null));
         return result;
     }
 
@@ -435,10 +435,10 @@ public class GateCrossExRestApiClient
         parameters.AddEnum("exchange_type", request.ExchangeType);
         parameters.AddString("from_amount", request.FromAmount);
 
-        var result = await _.SendRequestInternal<GateCrossExConvertQuote>(_.GetUrl(api, v4, crossex, "convert/quote"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        var result = await SendCrossExActionRequestAsync<GateCrossExConvertQuote>("convert/quote", HttpMethod.Post, null, parameters, ct).ConfigureAwait(false);
         if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.QuoteId)
             || string.IsNullOrWhiteSpace(result.Data.FromCoin) || string.IsNullOrWhiteSpace(result.Data.ToCoin)))
-            return result.AsError<GateCrossExConvertQuote>(new DeserializeError("Expected a CrossEx quote with an ID and both assets", result.Data));
+            return result.AsError<GateCrossExConvertQuote>(new DeserializeError("Expected a CrossEx quote with an ID and both assets", null));
         return result;
     }
 
@@ -633,7 +633,7 @@ public class GateCrossExRestApiClient
         if (request.Symbol.Any(char.IsWhiteSpace) || request.Symbol.Any(char.IsControl) || request.Symbol.Contains(','))
             throw new ArgumentException("A single futures symbol is required", nameof(request.Symbol));
         var parameters = new ParameterCollection { { "symbol", request.Symbol } };
-        return SendMarginModeRequestAsync(HttpMethod.Get, parameters, null, ct);
+        return SendCrossExActionRequestAsync<GateCrossExMarginModeResponse>("positions/margin_mode", HttpMethod.Get, parameters, null, ct);
     }
 
     /// <summary>
@@ -667,30 +667,33 @@ public class GateCrossExRestApiClient
         ValidateInstructionEnum(request.MarginMode, nameof(request.MarginMode));
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
-        return SendMarginModeRequestAsync(HttpMethod.Post, null, parameters, ct);
+        return SendCrossExActionRequestAsync<GateCrossExMarginModeResponse>("positions/margin_mode", HttpMethod.Post, null, parameters, ct);
     }
 
-    private async Task<RestCallResult<GateCrossExMarginModeResponse>> SendMarginModeRequestAsync(
-        HttpMethod method, ParameterCollection query, ParameterCollection body, CancellationToken ct)
+    private async Task<RestCallResult<T>> SendCrossExActionRequestAsync<T>(
+        string endpoint, HttpMethod method, ParameterCollection query, ParameterCollection body, CancellationToken ct) where T : class
     {
         var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, crossex, "positions/margin_mode"),
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, crossex, endpoint),
             method, ct, true, queryParameters: query, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
-        if (!result.Success) return result.As<GateCrossExMarginModeResponse>(null);
+        if (!result.Success)
+            return result.Error is DeserializeError
+                ? result.AsError<T>(new DeserializeError("Invalid or incomplete CrossEx acknowledgement", null))
+                : result.As<T>(null);
         try
         {
             var token = result.Data;
-            // RawResponse's dependency path may parse raw future mode strings as dates before invoking the serializer.
+            // RawResponse's dependency path may parse opaque strings as dates before invoking the serializer.
             if (!string.IsNullOrEmpty(result.Raw))
             {
                 using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
                 token = serializer.Deserialize<JToken>(reader);
             }
-            var response = token?.ToObject<GateCrossExMarginModeResponse>(serializer);
+            var response = token?.ToObject<T>(serializer);
             if (response != null) return result.As(response);
         }
         catch (JsonException) { }
-        return result.AsError<GateCrossExMarginModeResponse>(new DeserializeError("Invalid or incomplete margin-mode response", null));
+        return result.AsError<T>(new DeserializeError("Invalid or incomplete CrossEx acknowledgement", null));
     }
 
     /// <summary>
@@ -699,7 +702,7 @@ public class GateCrossExRestApiClient
     /// No account-mode lookup, automatic margin-mode change, retry or completion confirmation is performed.
     /// </summary>
     /// <param name="symbol">Hyperliquid futures trading pair</param>
-    /// <param name="margin">Signed adjustment. Sent unchanged as a string; the server truncates beyond two decimal places.</param>
+    /// <param name="margin">Signed adjustment with absolute value at least 0.01. Sent unchanged; the server truncates beyond two decimal places.</param>
     /// <param name="positionSide">Optional NONE/LONG/SHORT. Omission defaults to NONE for one-way positions on the server.</param>
     /// <param name="ct">Cancellation Token</param>
     public Task<RestCallResult<GateCrossExIsolatedMarginResponse>> UpdateIsolatedMarginAsync(string symbol, decimal margin, GateCrossExPositionSide? positionSide = null, CancellationToken ct = default)
@@ -723,6 +726,9 @@ public class GateCrossExRestApiClient
             throw new ArgumentException("A single Hyperliquid futures symbol is required", nameof(request.Symbol));
         if (request.PositionSide.HasValue && !Enum.IsDefined(typeof(GateCrossExPositionSide), request.PositionSide.Value))
             throw new ArgumentException("PositionSide must be NONE, LONG or SHORT", nameof(request.PositionSide));
+        // Reject sub-minimum instructions without rounding or changing their sign.
+        if (request.Margin > -0.01m && request.Margin < 0.01m)
+            throw new ArgumentOutOfRangeException(nameof(request.Margin), "The absolute margin adjustment must be at least 0.01; it is never rounded");
 
         var parameters = new ParameterCollection();
         parameters.SetBody(request);
