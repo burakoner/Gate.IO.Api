@@ -58,4 +58,10 @@ public enum GateCrossExTransferAccountType
     /// </summary>
     [Map("CROSSEX_DERIBIT")]
     CrossExDeribit = 9,
+
+    /// <summary>
+    /// Lighter CrossEx account. Supports USDC transfers to/from the spot account.
+    /// </summary>
+    [Map("CROSSEX_LIGHTER")]
+    CrossExLighter = 10,
 }

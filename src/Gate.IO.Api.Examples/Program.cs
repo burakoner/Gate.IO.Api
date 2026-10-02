@@ -646,11 +646,12 @@ internal class Program
         var crossex_04 = await api.CrossEx.GetTransferHistoryAsync(new GateCrossExTransferHistoryQueryRequest { Coin = "USDT", From = DateTime.UtcNow.AddDays(-7), To = DateTime.UtcNow, Page = 1, Limit = 100 });
         var crossex_05 = await api.CrossEx.TransferAsync(new GateCrossExTransferRequest { Coin = "USDT", Amount = 100.0m, From = GateCrossExTransferAccountType.Spot, To = GateCrossExTransferAccountType.CrossExKraken, Text = "CLIENT-TRANSFER-ID" });
         // A successful action response acknowledges asynchronous acceptance only. Confirm State via GetOrderAsync or the private order stream: FAIL is CrossEx validation; REJECT is venue rejection.
-        var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", Side = GateCrossExOrderSide.Buy, Type = GateCrossExOrderType.Limit, TimeInForce = GateCrossExTimeInForce.GoodTillCancelled, Quantity = 1m, Price = 0.5m, Text = "CLIENT-ORDER-ID" });
+        // LIGHTER futures use LIGHTER_FUTURE_ADA_USDC; change the symbol/amount only for an intended, eligible trade.
+        var crossex_06 = await api.CrossEx.PlaceOrderAsync(new GateCrossExOrderRequest { Symbol = "KRAKEN_FUTURE_ADA_USD", Side = GateCrossExOrderSide.Buy, Type = GateCrossExOrderType.Limit, TimeInForce = GateCrossExTimeInForce.GoodTillCancelled, Quantity = 1m, Price = 0.5m, Text = "client-order-id" });
         var crossex_07 = await api.CrossEx.GetOrderAsync("ORDER-ID");
         var crossex_08 = await api.CrossEx.UpdateOrderAsync("ORDER-ID", new GateCrossExOrderUpdateRequest { Quantity = 0.001m, Price = 61000.0m });
         var crossex_09 = await api.CrossEx.CancelOrderAsync("ORDER-ID");
-        var crossex_09b = await api.CrossEx.CancelOrdersAsync(new[] { new GateCrossExBatchCancelOrderRequest { OrderId = "ORDER-ID" }, new GateCrossExBatchCancelOrderRequest { Text = "CLIENT-ORDER-ID" } });
+        var crossex_09b = await api.CrossEx.CancelOrdersAsync(new[] { new GateCrossExBatchCancelOrderRequest { OrderId = "ORDER-ID" }, new GateCrossExBatchCancelOrderRequest { Text = "client-order-id" } });
         var crossex_10 = await api.CrossEx.GetConvertQuoteAsync(new GateCrossExConvertQuoteRequest { ExchangeType = GateCrossExExchangeType.Gate, FromCoin = "USDT", ToCoin = "BTC", FromAmount = 100.0m });
         var crossex_11 = await api.CrossEx.CreateConvertOrderAsync(new GateCrossExConvertOrderRequest { QuoteId = "QUOTE-ID" });
         var crossex_12 = await api.CrossEx.GetAccountAsync(new GateCrossExAccountQueryRequest { ExchangeType = GateCrossExExchangeType.Gate });

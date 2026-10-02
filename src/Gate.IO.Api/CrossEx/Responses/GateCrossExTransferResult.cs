@@ -8,12 +8,14 @@ public record GateCrossExTransferResult
     /// <summary>
     /// Gets or sets the Transaction ID.
     /// </summary>
-    [JsonProperty("tx_id")]
+    [JsonProperty("tx_id", Required = Required.Always)]
+    [JsonConverter(typeof(GateCrossExActionValueConverter))]
     public string TransactionId { get; set; }
 
     /// <summary>
     /// Gets or sets the Text.
     /// </summary>
-    [JsonProperty("text")]
+    [JsonProperty("text", Required = Required.Always)]
+    [JsonConverter(typeof(GateCrossExActionValueConverter))]
     public string Text { get; set; }
 }

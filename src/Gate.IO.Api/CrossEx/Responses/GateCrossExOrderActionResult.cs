@@ -9,12 +9,14 @@ public record GateCrossExOrderActionResult
     /// <summary>
     /// Order ID used to query the subsequent order state. Its presence does not prove venue acceptance or execution.
     /// </summary>
-    [JsonProperty("order_id")]
+    [JsonProperty("order_id", Required = Required.Always)]
+    [JsonConverter(typeof(GateCrossExActionValueConverter))]
     public string OrderId { get; set; }
 
     /// <summary>
     /// Gets or sets the Text.
     /// </summary>
     [JsonProperty("text")]
+    [JsonConverter(typeof(GateCrossExActionValueConverter))]
     public string Text { get; set; }
 }

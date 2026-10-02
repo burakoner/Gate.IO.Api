@@ -16,6 +16,16 @@ public class GateCrossExRestApiClient
     // Constructor
     internal GateCrossExRestApiClient(GateRestApiClient root) => _ = root;
 
+    private static void ValidateRequiredValue(string value, string name)
+    {
+        if (string.IsNullOrWhiteSpace(value)) throw new ArgumentException("A nonblank value is required", name);
+    }
+
+    private static void ValidateInstructionEnum<T>(T value, string name) where T : struct
+    {
+        if (!Enum.IsDefined(typeof(T), value)) throw new ArgumentOutOfRangeException(name, "Undefined CrossEx instruction enum");
+    }
+
     private static string JoinValues(IEnumerable<string> values)
         => values == null ? null : string.Join(",", values.Where(x => !string.IsNullOrWhiteSpace(x)));
 
@@ -171,7 +181,8 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
-    /// Fund transfer
+    /// Fund transfer. LIGHTER supports USDC between CROSSEX_LIGHTER and SPOT.
+    /// Rate limit: 10 requests per 10 seconds. No retry or follow-up transfer is performed automatically.
     /// </summary>
     /// <param name="coin">Currency</param>
     /// <param name="amount">Transfer amount</param>
@@ -184,13 +195,19 @@ public class GateCrossExRestApiClient
         => TransferAsync(new GateCrossExTransferRequest { Coin = coin, Amount = amount, From = from, To = to, Text = text }, ct);
 
     /// <summary>
-    /// Fund transfer
+    /// Fund transfer. LIGHTER supports USDC between CROSSEX_LIGHTER and SPOT.
+    /// Rate limit: 10 requests per 10 seconds. No retry or follow-up transfer is performed automatically.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateCrossExTransferResult>> TransferAsync(GateCrossExTransferRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateCrossExTransferResult>> TransferAsync(GateCrossExTransferRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        ValidateRequiredValue(request.Coin, nameof(request.Coin));
+        ValidateInstructionEnum(request.From, nameof(request.From));
+        ValidateInstructionEnum(request.To, nameof(request.To));
+
         var parameters = new ParameterCollection
         {
             { "coin", request.Coin },
@@ -200,12 +217,16 @@ public class GateCrossExRestApiClient
         parameters.AddEnum("to", request.To);
         parameters.AddOptional("text", request.Text);
 
-        return _.SendRequestInternal<GateCrossExTransferResult>(_.GetUrl(api, v4, crossex, "transfers"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateCrossExTransferResult>(_.GetUrl(api, v4, crossex, "transfers"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.TransactionId)))
+            return result.AsError<GateCrossExTransferResult>(new DeserializeError("Expected a CrossEx transfer acknowledgement with a transaction ID", result.Data));
+        return result;
     }
 
     /// <summary>
     /// Create an order. A successful response only acknowledges that CrossEx accepted the asynchronous request.
     /// Query the order or subscribe to private order updates to confirm venue acceptance and execution.
+    /// Rate limit: 100 requests per 10 seconds; at most 1,000 open orders per user.
     /// </summary>
     /// <param name="symbol">Trading pair identifier</param>
     /// <param name="side">Order side</param>
@@ -248,12 +269,42 @@ public class GateCrossExRestApiClient
     /// <summary>
     /// Create an order. A successful response only acknowledges that CrossEx accepted the asynchronous request.
     /// Query the order or subscribe to private order updates to confirm venue acceptance and execution.
+    /// Rate limit: 100 requests per 10 seconds; at most 1,000 open orders per user.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateCrossExOrderActionResult>> PlaceOrderAsync(GateCrossExOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateCrossExOrderActionResult>> PlaceOrderAsync(GateCrossExOrderRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        ValidateRequiredValue(request.Symbol, nameof(request.Symbol));
+        ValidateInstructionEnum(request.Side, nameof(request.Side));
+        if (request.Type.HasValue) ValidateInstructionEnum(request.Type.Value, nameof(request.Type));
+        if (request.TimeInForce.HasValue) ValidateInstructionEnum(request.TimeInForce.Value, nameof(request.TimeInForce));
+        if (request.PositionSide.HasValue) ValidateInstructionEnum(request.PositionSide.Value, nameof(request.PositionSide));
+        if (request.Text != null && (request.Text.Length >= 64 || !Regex.IsMatch(request.Text, @"\A[a-z0-9_-]+\z")))
+            throw new ArgumentException("Order text must be shorter than 64 characters using only a-z, 0-9, hyphen and underscore", nameof(request.Text));
+        if (request.Quantity.HasValue && request.Quantity.Value <= 0)
+            throw new ArgumentOutOfRangeException(nameof(request.Quantity), "Order quantity must be greater than zero");
+        if (request.QuoteQuantity.HasValue && request.QuoteQuantity.Value <= 0)
+            throw new ArgumentOutOfRangeException(nameof(request.QuoteQuantity), "Quote quantity must be greater than zero");
+        if (request.Type == GateCrossExOrderType.Market
+            && (request.TimeInForce == GateCrossExTimeInForce.PendingOrCancelled || request.TimeInForce == GateCrossExTimeInForce.RetailPriceImprovement))
+            throw new ArgumentException("Market orders cannot use POC or RPI", nameof(request.TimeInForce));
+
+        var symbolParts = request.Symbol.Split('_');
+        if (symbolParts.Length >= 4 && symbolParts[1] == "MARGIN"
+            && request.PositionSide != GateCrossExPositionSide.Long && request.PositionSide != GateCrossExPositionSide.Short)
+            throw new ArgumentException("Margin orders require an explicit LONG or SHORT position side", nameof(request.PositionSide));
+        var quoteRequired = request.Type == GateCrossExOrderType.Market && request.Side == GateCrossExOrderSide.Buy
+            && symbolParts.Length >= 4 && (symbolParts[1] == "SPOT" || symbolParts[1] == "MARGIN");
+        if (quoteRequired && !request.QuoteQuantity.HasValue)
+            throw new ArgumentException("Spot and margin market buys require quote quantity", nameof(request.QuoteQuantity));
+        if (!quoteRequired && !request.Quantity.HasValue)
+            throw new ArgumentException("This order requires base quantity", nameof(request.Quantity));
+        if ((request.Type == null || request.Type == GateCrossExOrderType.Limit) && !request.Price.HasValue)
+            throw new ArgumentException("Limit orders require a price", nameof(request.Price));
+
         var parameters = new ParameterCollection
         {
             { "symbol", request.Symbol },
@@ -268,7 +319,10 @@ public class GateCrossExRestApiClient
         parameters.AddOptional("reduce_only", request.ReduceOnly.HasValue ? request.ReduceOnly.Value.ToString().ToLowerInvariant() : null);
         parameters.AddOptionalEnum("position_side", request.PositionSide);
 
-        return _.SendRequestInternal<GateCrossExOrderActionResult>(_.GetUrl(api, v4, crossex, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateCrossExOrderActionResult>(_.GetUrl(api, v4, crossex, "orders"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.OrderId)))
+            return result.AsError<GateCrossExOrderActionResult>(new DeserializeError("Expected a CrossEx order acknowledgement with an order ID", result.Data));
+        return result;
     }
 
     /// <summary>
@@ -341,7 +395,8 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
-    /// Flash swap quote
+    /// Flash swap quote only (100 requests per day). LIGHTER_USDC / CROSSEX_USDT swaps require CROSS_EXCHANGE mode.
+    /// No quote execution, expiry inference or automatic account-mode change is performed.
     /// </summary>
     /// <param name="exchangeType">Exchange type</param>
     /// <param name="fromCoin">Asset sold</param>
@@ -353,13 +408,25 @@ public class GateCrossExRestApiClient
         => GetConvertQuoteAsync(new GateCrossExConvertQuoteRequest { ExchangeType = exchangeType, FromCoin = fromCoin, ToCoin = toCoin, FromAmount = fromAmount }, ct);
 
     /// <summary>
-    /// Flash swap quote
+    /// Flash swap quote only (100 requests per day). LIGHTER_USDC / CROSSEX_USDT swaps require CROSS_EXCHANGE mode.
+    /// No quote execution, expiry inference or automatic account-mode change is performed.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateCrossExConvertQuote>> GetConvertQuoteAsync(GateCrossExConvertQuoteRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateCrossExConvertQuote>> GetConvertQuoteAsync(GateCrossExConvertQuoteRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        ValidateInstructionEnum(request.ExchangeType, nameof(request.ExchangeType));
+        if (request.ExchangeType == GateCrossExExchangeType.CrossEx || request.ExchangeType == GateCrossExExchangeType.Deribit)
+            throw new ArgumentOutOfRangeException(nameof(request.ExchangeType), "This exchange is not documented for CrossEx quotes");
+        ValidateRequiredValue(request.FromCoin, nameof(request.FromCoin));
+        ValidateRequiredValue(request.ToCoin, nameof(request.ToCoin));
+        if (request.FromCoin == request.ToCoin)
+            throw new ArgumentException("Quote source and destination assets must differ", nameof(request.ToCoin));
+        if (request.FromAmount <= 0 || ((decimal.GetBits(request.FromAmount)[3] >> 16) & 0xff) > 16)
+            throw new ArgumentOutOfRangeException(nameof(request.FromAmount), "Quote amount must be greater than zero with no more than 16 decimal places; it is never rounded");
+
         var parameters = new ParameterCollection
         {
             { "from_coin", request.FromCoin },
@@ -368,7 +435,11 @@ public class GateCrossExRestApiClient
         parameters.AddEnum("exchange_type", request.ExchangeType);
         parameters.AddString("from_amount", request.FromAmount);
 
-        return _.SendRequestInternal<GateCrossExConvertQuote>(_.GetUrl(api, v4, crossex, "convert/quote"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<GateCrossExConvertQuote>(_.GetUrl(api, v4, crossex, "convert/quote"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        if (result.Success && (result.Data == null || string.IsNullOrWhiteSpace(result.Data.QuoteId)
+            || string.IsNullOrWhiteSpace(result.Data.FromCoin) || string.IsNullOrWhiteSpace(result.Data.ToCoin)))
+            return result.AsError<GateCrossExConvertQuote>(new DeserializeError("Expected a CrossEx quote with an ID and both assets", result.Data));
+        return result;
     }
 
     /// <summary>

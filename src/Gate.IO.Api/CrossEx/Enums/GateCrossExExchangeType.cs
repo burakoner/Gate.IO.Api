@@ -52,4 +52,10 @@ public enum GateCrossExExchangeType
     /// </summary>
     [Map("DERIBIT")]
     Deribit = 8,
+
+    /// <summary>
+    /// Lighter. CrossEx supports futures; flash swaps require cross-exchange account mode.
+    /// </summary>
+    [Map("LIGHTER")]
+    Lighter = 9,
 }
