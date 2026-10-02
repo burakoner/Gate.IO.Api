@@ -6,12 +6,13 @@ This document tracks the catch-up from its starting baseline, `v4.106.116`, to t
 
 - Starting sequential baseline: `v4.106.116` dated 04 August 2026, implemented on 08 August 2026. Later endpoint groups are completed out of release order below; closing `126` does not close unfinished earlier or later groups.
 - Documentation checked on 02 October 2026: the website identifies `v4.106.146`, but its last changelog entry is `v4.106.144` dated 17 September 2026. The linked official C# SDK also identifies API version `v4.106.144`. Changes for `145` and `146` remain unverified.
+- The current changelog also has no entries for `118`/`119`/`120`/`129`/`134`/`137`/`140`. Missing numbers are evidence gaps, not proof of skipped endpoint changes or permission to invent them. The official C# SDK's `129` commit was inspected in turn 12: only README, package version, user-agent and diagnostic version metadata changed; no API/model changes appear in that diff. The other absent numbers still have no verified separate endpoint scope.
 - The changelog identifies endpoints to inspect; it is not the complete implementation specification. Reconcile each touched endpoint with its entire current request, response, authentication, validation, and documented error contract.
 - Partial fixes do not mark an entire release complete. The package version stays at the last completed release until a separate version update is justified; no publishing or pushing is part of this work.
 
 ## Work order
 
-All abbreviated release numbers below have the prefix `v4.106.`. This order prioritizes known request incompatibilities before additive features.
+All abbreviated release numbers below have the prefix `v4.106.`. The table retains the historical implementation groups. The user revised the forward priority in turn 12: close skipped earlier groups before LIGHTER or newer releases. Current known unresolved changelog order is `135`, then `139`, then `142/144`; absent-number evidence remains separate and must be resolved before claiming complete sequential catch-up.
 
 | Order | Scope | State |
 | --- | --- | --- |
@@ -30,13 +31,14 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 | 5b8 | Public contract/market/risk metadata and trail/chase strategies; include missing contracts_all and ordinary trading candlesticks | Completed in turn 10 |
 | 6 | TradFi response removal from `132`, optional order leverage from `138`, authentication from `143`, and the full current affected contracts plus direct cancellation context | Completed bounded scope; IDs retain `long` by explicit user policy |
 | 7a | CrossEx GET rule/symbols, GET history_positions and missing POST positions/margin; whole current contracts indexed by `130` and `131` | Completed in turn 11; `130/131` closed |
-| 7b | LIGHTER support from `139`: inventory and reconcile complete current order, transfer and convert-quote contracts, not enum additions alone | Next bounded group; not implemented here |
+| 7b | LIGHTER support from `139`: inventory and reconcile complete current order, transfer and convert-quote contracts, not enum additions alone | Pending after earlier `135`; no LIGHTER edits in turn 12 |
 | 7c | Adjacent GET/POST positions/margin_mode absent locally; reconcile as a separate isolated-mode family if included after the LIGHTER inventory | Inventoried gap; pending, not an automatic mode change in 7a |
-| 8 | Remaining OTC change from `127`, then pre-upload and related business submissions from `135` | Pending |
+| 8a | Remaining OTC fiat creation from `127`, including all current body/acknowledgement fields and errors | Completed in turn 12; `127` closed with the previously completed POV portion |
+| 8b | OTC pre-upload and current bank-binding/business submission contracts from `135`; review their business envelopes, not just file fields | Next bounded group, before LIGHTER |
 | 9 | Stock category and market/account changes from `136` and `143`, without a C# breaking accessor change solely because the Java SDK changed | Completed in order 2 |
 | 10 | REST announcement queries from `142` and `144` | Pending |
-| 11 | Assess public SDK Launch removal from `123` and Unified documentation changes from `128`; do not infer a service shutdown from SDK removal | Pending |
-| 12 | Resolve the undocumented `145` and `146` version gap using official evidence before claiming full catch-up | Evidence pending |
+| 11 | Assess public SDK Launch removal from `123`, whole Unified accounts contract from `128` and official C# SDK-only metadata diff for `129` | Completed in turn 12; no Launch API exists locally to remove, and no API/model change appears in the SDK `129` diff |
+| 12 | Resolve absent changelog-number evidence, including `145/146`, before claiming full sequential catch-up | Evidence pending except inspected SDK `129` diff; do not fabricate implementation scopes |
 
 ## Verification and review checkpoints
 
@@ -44,11 +46,39 @@ All abbreviated release numbers below have the prefix `v4.106.`. This order prio
 - Never place, cancel, transfer, upload, or otherwise mutate financial accounts in live verification. Signed request construction is tested with a recording HTTP handler and dummy credentials.
 - Check that user-supplied identifiers cannot change the target path or broaden the scope of mutating requests. The POV cancellation tests exposed this risk even after the documented route correction.
 - After four development turns, review changes, documentation, and this plan. Do not continue past five turns without that retrospective and an explicit scope/order revision where needed.
-- Current catch-up development turn: 11. Retrospectives after turns 4 and 8 are complete; turns 10 and 11 include intra-turn contract reviews. The next cross-turn retrospective is due after turn 12 and mandatory before turn 14; these intra-turn checks do not replace it.
+- Current catch-up development turn: 12. Retrospectives after turns 4, 8 and 12 are complete; turns 10 and 11 also include intra-turn contract reviews. The next cross-turn retrospective is due after turn 16 and mandatory before turn 18; intra-turn checks do not replace it.
 - Keep existing numeric identifier accessors as `long` when the wire format is a numeric string, as explicitly requested by the user. Reject nonnumeric/out-of-range values rather than rounding or introducing string identifiers. Document acknowledgement/task identity separately from actual order identity.
 - A previously completed out-of-order endpoint is rechecked when its original release is reached, without duplicating implementation or declaring unfinished sibling endpoints complete.
 
 ## Current turn
+
+02 October 2026, turn 12: the user explicitly requested completing skipped earlier updates first. LIGHTER had been inventoried but no code changed. Reconciled `123`, the remaining OTC part of `127`, and the full current Unified endpoint indexed by `128`, then inspected the undocumented official C# SDK `129` diff. This closes those bounded scopes, not `135`, LIGHTER or the entire catch-up. Package/assembly versions stay 4.106.116.
+
+For `123`, source/tests/docs searches found no LaunchPool/HODLer/CandyDrop client, request or endpoint locally. The official C# SDK's complete, non-truncated tree at 44299691284ddace333b9c259c88b1d3f34336bf and its API index also contain no such API family. Currency fixtures merely containing Launchpool/Airdrop token names are unrelated and preserved. No endpoint is removed, and SDK removal is not treated as evidence of a service shutdown. For `129`, [official commit 96fc1ed919c5](https://github.com/gate/gateapi-csharp/commit/96fc1ed919c5) changes three metadata files only (+7/-7); it provides no extra API/model work for this wrapper and does not establish that all undocumented release numbers have no server changes.
+
+For `127`, compared signed POST /otc/order/create and the linked OtcOrderRequest/OtcActionResponse schemas in the [current OTC reference](https://www.gate.com/docs/developers/apiv4/en/otc/#create-fiat-order). All ten body fields and all three required acknowledgement fields are represented. Added nullable ReceiveType with all four current remittance-name mappings. The Side accessor now supports FIAT/CRYPTO/PAY/GET; STABLE remains quote order_type metadata but is rejected for fiat creation. Existing enum values, accessor types and the convenience signature/positional token remain intact. There is no inferred account type, selected remittance name, bank lookup, quote creation or minimum-amount/scale rule. A positive actual BankId and nonblank quote token/currencies are explicit client safety checks. BankId stays long and HTTP bank_id stays a precise numeric string.
+
+Five initial failing regressions proved HTTP-success business errors, missing acknowledgements and unsupported STABLE instructions were accepted. Fiat creation now converts nonzero business codes to errors, preserves the original HTTP response, and requires exact integer code=0, string message and a valid integer Unix-second timestamp for success. The acknowledgement has no order ID and does not prove payment completion. Saved DTOs use current snake_case keys, require all eight required values, reject unknown/invalid enum instructions, and reuse exact decimal/Int64 codecs. Older PascalCase saved DTOs need migration; standalone BankId serialization remains numeric, distinct from HTTP's string. Generic OTC response handling and other actions are not changed or declared reconciled.
+
+For `128`, compared signed GET /unified/accounts, both optional query parameters, UnifiedAccount/UnifiedBalance schemas and the current linked [margin formula article](https://www.gate.com/help/unified-account/risk_control_mechanism/33018). All 22 account and 21 balance fields were already present. Updated XML/link/mode applicability and retained deprecated fields, existing accessor types and raw funding strings. UserId/SubAccountId/BalanceVersion remain exact long identities; all 31 existing typed decimal fields now reject precision loss and write documented strings. Thirty-seven initial failing regressions exposed lossy parsing, dropped saved sub_uid and missing-object false success. Empty/null/non-object responses fail; genuine partial objects still work because every schema property is optional. Undefined omitted Mode=0 is not Classic, and legacy zero/false defaults are not financial evidence. No refresh_time unit is stated, so its existing converter is retained as a documented compatibility decision, not a new unit claim. No risk formula or account mutation is added.
+
+Verification: 244 new tests; 79 OTC, 107 Unified, 722 Futures/Delivery focused offline tests and 1,439 total offline tests passed, excluding PublicIntegration/LiveCapture. Full field inventories, official/legacy fixtures, exact financial values/identities, required saved inputs, optional null/zero/omission, all sides/remittance names/modes, legacy overloads, independent signatures and HTTP 400/429/500/deserialization/business metadata are covered with dummy handlers. Release builds passed for netstandard2.0/netstandard2.1, examples and tests with zero warnings/errors. Examples compile only; no live financial calls, upload, polling, publication or push.
+
+Forward revision: complete the whole pre-upload/bank-binding contracts indexed by `135` next, including business-error handling in those touched flows. Other OTC quote/data/action methods still use transport-success-only handling and are not made safe merely by this fiat fix; reconcile their own current envelopes before claiming broader OTC completion. LIGHTER `139` remains behind this earlier gap, followed by announcement `142/144`. Adjacent CrossEx margin-mode routes and unaudited legacy time-helper consumers stay separately recorded; do not infer they are covered by the scoped Futures fix. Resolve absent-number evidence before final version closure.
+
+## Retrospective after development turn 12
+
+Reviewed turns 9-12 changes, current endpoint references, risk-sensitive production diffs, regression coverage, README/XML/compiled examples, changelog and this execution contract. Focused on mutating Futures route/identity preflight, batch enumeration and partial failures, price/BBO differences, settlement precedence, exact long/decimal codecs and their shared consumers, CrossEx required/optional metadata and isolated-margin acknowledgement semantics, and this turn's fiat creation/Unified contracts. This is a scoped retrospective, not a fresh audit of every unrelated module or a live financial acceptance claim.
+
+Found and fixed two remaining gaps in the turn 10 Futures response hardening: required properties on a wrapper do not reject an entirely null/empty body, and the generic countdown timestamp parser infers units or fabricates a default date for malformed values. Eight countdown/trail/chase wrapper operations now guard absent result containers. Exact countdown milliseconds support both schema integers and the example's integer strings, including zero; invalid/fractional/boolean/overflowing/out-of-date-range timestamps fail. Genuine empty strategy arrays remain valid. No cancellation scope, trading instruction, retry or automatic action is changed.
+
+Closed the recorded UTC/Local query defect in both Futures client layers with one small Futures-only conversion helper. Thirty Local filter cases and four mixed-kind range cases failed before the fix; ninety UTC/Local/Unspecified filter cases now preserve the intended instant, and optional omission/Unix-second overloads/rounding remain compatible. The 106 review regressions include the empty-body bypass and seven initially failing countdown-unit/value cases. Generic time helpers and unrelated modules remain unchanged; this does not prove every legacy consumer has been audited.
+
+The documentation review also corrected forward ordering: `123/127/128` were still pending when LIGHTER was initially selected. They are now reconciled, with explicit no-local-removal/SDK-only evidence for `123/129`, and `135` is ahead of `139`. Historical turn records remain below; their former next-step suggestions are superseded by this current contract. No new source-breaking accessor migration is introduced. Saved JSON wire-shape/strictness changes and partial/default snapshot limitations are explicit in migration guidance. Next retrospective: turn 16, mandatory before turn 18.
+
+## Development turn 11 record
+
+Historical checkpoint; its LIGHTER-first forward priority is superseded by the user's earlier-gap priority in turn 12.
 
 02 October 2026, turn 11: selected a bounded three-operation CrossEx group after reading the [official changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog), each complete endpoint section and the linked Symbol/CrossexIsolatedMarginRequest/CrossexIsolatedMarginResponse schemas in the [current CrossEx reference](https://www.gate.com/docs/developers/apiv4/en/crossex/). The `130` entry adds symbol support_cross; `131` adds historical margin_mode and isolated-margin response position_side. The latter endpoint was entirely missing locally, so the complete signed request/response API was added instead of adding a detached response field. This closes `130/131`, not the entire CrossEx module or the sequential catch-up.
 
@@ -123,6 +153,10 @@ Forward revision: split the combined Margin/Futures group into two bounded steps
 - [Current Futures REST audit and endpoint evidence](FUTURES_REST_AUDIT.md)
 - [Official changelog](https://www.gate.com/docs/developers/apiv4/en/#changelog)
 - [Official C# SDK](https://github.com/gate/gateapi-csharp)
+- [Official C# SDK 128-to-129 metadata-only diff](https://github.com/gate/gateapi-csharp/commit/96fc1ed919c5)
+- [OTC fiat creation and linked request/acknowledgement schemas](https://www.gate.com/docs/developers/apiv4/en/otc/#create-fiat-order)
+- [Unified accounts and linked account/balance schemas](https://www.gate.com/docs/developers/apiv4/en/unified/#get-unified-account-information)
+- [Current linked multi-currency margin article](https://www.gate.com/help/unified-account/risk_control_mechanism/33018)
 - [Bulk Spot POV cancellation](https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-spot-pov-orders)
 - [Single Spot POV cancellation](https://www.gate.com/docs/developers/apiv4/en/spot/#cancel-a-spot-pov-order)
 - [Stock API and lead-trading scope](https://www.gate.com/docs/developers/apiv4/en/stock/)

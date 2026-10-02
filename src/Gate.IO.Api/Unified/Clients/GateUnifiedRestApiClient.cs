@@ -18,7 +18,10 @@ public class GateUnifiedRestApiClient
 
     /// <summary>
     /// Get unified account info
-    /// <para><a href="https://www.gate.io/docs/developers/apiv4/#get-unified-account-information" /></para>
+    /// <para><a href="https://www.gate.com/docs/developers/apiv4/en/unified/#get-unified-account-information" /></para>
+    /// <para>Server risk values depend on account mode and currency liquidity coefficients.
+    /// <a href="https://www.gate.com/help/unified-account/risk_control_mechanism/33018">Current margin formula reference</a>.
+    /// Omitted optional response fields/default values are not proof of available funds or zero risk.</para>
     /// </summary>
     /// <param name="currency">Filter by asset, for example `ETH`</param>
     /// <param name="subAccountId">Sub-account user ID</param>
@@ -46,13 +49,17 @@ public class GateUnifiedRestApiClient
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(GateUnifiedAccountInfoRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateUnifiedAccountInfo>> GetAccountInfoAsync(GateUnifiedAccountInfoRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency", request.Currency);
         parameters.AddOptional("sub_uid", request.SubAccountId);
 
-        return _.SendRequestInternal<GateUnifiedAccountInfo>(_.GetUrl(api, v4, unified, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters);
+        var result = await _.SendRequestInternal<GateUnifiedAccountInfo>(_.GetUrl(api, v4, unified, "accounts"), HttpMethod.Get, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        if (result.Success && result.Data == null)
+            return result.AsError<GateUnifiedAccountInfo>(new DeserializeError("Expected a unified account object", result.Data));
+        return result;
     }
 
     /// <summary>

@@ -109,7 +109,7 @@ public class GateFuturesRestApiClient
 
     // Futures trading history
     internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
-    => GetTradesAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, offset, lastId, ct);
+    => GetTradesAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, offset, lastId, ct);
 
     // Futures trading history
     internal Task<RestCallResult<List<GateFuturesTrade>>> GetTradesAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, int offset = 0, long? lastId = null, CancellationToken ct = default)
@@ -131,7 +131,7 @@ public class GateFuturesRestApiClient
 
     // Get futures candlesticks
     internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateFuturesSettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => GetCandlesticksAsync(settle, prefix, contract, interval, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
+    => GetCandlesticksAsync(settle, prefix, contract, interval, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, ct);
 
     // Get futures candlesticks
     internal Task<RestCallResult<List<GateFuturesCandlestick>>> GetCandlesticksAsync(GateFuturesSettlement settle, string prefix, string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default, string timezone = null)
@@ -158,7 +158,7 @@ public class GateFuturesRestApiClient
 
     // Premium Index K-Line
     internal Task<RestCallResult<List<GateFuturesCandlestickPremium>>> GetPremiumIndexCandlesticksAsync(GateFuturesSettlement settle, string contract, GateFuturesCandlestickInterval interval, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-    => GetPremiumIndexCandlesticksAsync(settle, contract, interval, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
+    => GetPremiumIndexCandlesticksAsync(settle, contract, interval, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, ct);
 
     // Premium Index K-Line
     internal Task<RestCallResult<List<GateFuturesCandlestickPremium>>> GetPremiumIndexCandlesticksAsync(GateFuturesSettlement settle, string contract, GateFuturesCandlestickInterval interval, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
@@ -195,7 +195,7 @@ public class GateFuturesRestApiClient
 
     // Funding rate history
     internal Task<RestCallResult<List<GateFuturesFundingRate>>> GetFundingRateHistoryAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, CancellationToken ct = default)
-        => GetFundingRateHistoryAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
+        => GetFundingRateHistoryAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, ct);
 
     // Funding rate history
     internal Task<RestCallResult<List<GateFuturesFundingRate>>> GetFundingRateHistoryAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, CancellationToken ct = default)
@@ -255,7 +255,7 @@ public class GateFuturesRestApiClient
 
     // Futures stats
     internal Task<RestCallResult<List<GateFuturesStats>>> GetStatsAsync(GateFuturesSettlement settle, string contract, GateFuturesStatsInterval interval, DateTime from, int limit = 100, CancellationToken ct = default)
-    => GetStatsAsync(settle, contract, interval, from.ConvertToSeconds(), limit, ct);
+    => GetStatsAsync(settle, contract, interval, GateFuturesRequestTime.Seconds(from), limit, ct);
 
     // Futures stats
     internal Task<RestCallResult<List<GateFuturesStats>>> GetStatsAsync(GateFuturesSettlement settle, string contract, GateFuturesStatsInterval? interval = null, long? from = null, int? limit = 100, CancellationToken ct = default)
@@ -284,7 +284,7 @@ public class GateFuturesRestApiClient
 
     // Retrieve liquidation history
     internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int? limit = null, CancellationToken ct = default)
-    => GetLiquidationsAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, ct);
+    => GetLiquidationsAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, ct);
 
     // Retrieve liquidation history
     internal Task<RestCallResult<List<GateFuturesLiquidation>>> GetLiquidationsAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int? limit = null, CancellationToken ct = default)
@@ -331,7 +331,7 @@ public class GateFuturesRestApiClient
 
     // Query account book
     internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesBalanceChangeType type, int limit = 100, int offset = 0, CancellationToken ct = default)
-    => GetBalanceHistoryAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), type, limit, offset, ct);
+    => GetBalanceHistoryAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), type, limit, offset, ct);
 
     // Query account book
     internal Task<RestCallResult<List<GateFuturesBalanceChange>>> GetBalanceHistoryAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesBalanceChangeType? type = null, int limit = 100, int offset = 0, CancellationToken ct = default)
@@ -368,7 +368,7 @@ public class GateFuturesRestApiClient
 
     // Get user's historical position information list by time
     internal Task<RestCallResult<List<GateFuturesPosition>>> GetHistoricalPositionsAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => GetHistoricalPositionsAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), limit, offset, ct);
+        => GetHistoricalPositionsAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, offset, ct);
 
     // Get user's historical position information list by time
     internal Task<RestCallResult<List<GateFuturesPosition>>> GetHistoricalPositionsAsync(GateFuturesSettlement settle, string contract, long? from = null, long? to = null, int limit = 100, int offset = 0, CancellationToken ct = default)
@@ -666,7 +666,7 @@ public class GateFuturesRestApiClient
 
     // List Futures Orders By Time Range
     internal Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(GateFuturesSettlement settle, string contract = null, DateTime? from = null, DateTime? to = null, int? limit = null, int? offset = null, CancellationToken ct = default)
-        => GetOrdersAsync(settle, contract, from?.ConvertToSeconds(), to?.ConvertToSeconds(), limit, offset, ct);
+        => GetOrdersAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), limit, offset, ct);
 
     // List Futures Orders By Time Range
     internal Task<RestCallResult<List<GateFuturesOrder>>> GetOrdersAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, int? limit = null, int? offset = null, CancellationToken ct = default)
@@ -763,7 +763,7 @@ public class GateFuturesRestApiClient
 
     // List personal trading history by time range
     internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract, DateTime? from, DateTime? to, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => GetUserTradesAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), role, limit, offset, ct);
+        => GetUserTradesAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), role, limit, offset, ct);
 
     // List personal trading history by time range
     internal Task<RestCallResult<List<GateFuturesUserTrade>>> GetUserTradesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesTradeRole? role = null, int limit = 100, int offset = 0, CancellationToken ct = default)
@@ -785,7 +785,7 @@ public class GateFuturesRestApiClient
 
     // List position close history
     internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, GateFuturesPositionSide? side = null, decimal? pnl = null, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => GetPositionClosesAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), side, pnl, limit, offset, ct);
+        => GetPositionClosesAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), side, pnl, limit, offset, ct);
 
     // List position close history
     internal Task<RestCallResult<List<GateFuturesPositionClose>>> GetPositionClosesAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, GateFuturesPositionSide? side = null, decimal? pnl = null, int limit = 100, int offset = 0, CancellationToken ct = default)
@@ -813,7 +813,7 @@ public class GateFuturesRestApiClient
     internal Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(GateFuturesSettlement settle, GateFuturesUserLiquidationQueryRequest request, CancellationToken ct = default)
     {
         if (request == null) throw new ArgumentNullException(nameof(request));
-        return GetUserLiquidationsAsync(settle, request.Contract, request.From?.ConvertToSeconds(), request.To?.ConvertToSeconds(), request.At?.ConvertToSeconds(), request.Limit, request.Offset, ct);
+        return GetUserLiquidationsAsync(settle, request.Contract, GateFuturesRequestTime.Seconds(request.From), GateFuturesRequestTime.Seconds(request.To), GateFuturesRequestTime.Seconds(request.At), request.Limit, request.Offset, ct);
     }
 
     private Task<RestCallResult<List<GateFuturesUserLiquidation>>> GetUserLiquidationsAsync(GateFuturesSettlement settle, string contract, long? from, long? to, long? at, int? limit, int? offset, CancellationToken ct)
@@ -834,7 +834,7 @@ public class GateFuturesRestApiClient
 
     // List Auto-Deleveraging History
     internal Task<RestCallResult<List<GateFuturesAdlRecord>>> GetAdlHistoryAsync(GateFuturesSettlement settle, string contract, DateTime from, DateTime to, DateTime? at = null, int limit = 100, int offset = 0, CancellationToken ct = default)
-        => GetAdlHistoryAsync(settle, contract, from.ConvertToSeconds(), to.ConvertToSeconds(), at?.ConvertToSeconds(), limit, offset, ct);
+        => GetAdlHistoryAsync(settle, contract, GateFuturesRequestTime.Seconds(from), GateFuturesRequestTime.Seconds(to), GateFuturesRequestTime.Seconds(at), limit, offset, ct);
 
     // List Auto-Deleveraging History
     internal Task<RestCallResult<List<GateFuturesAdlRecord>>> GetAdlHistoryAsync(GateFuturesSettlement settle, string contract = null, long? from = null, long? to = null, long? at = null, int limit = 100, int offset = 0, CancellationToken ct = default)
@@ -865,6 +865,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/countdown_cancel_all".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesCountdown>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        if (result.Success && result.Data == null)
+            return result.AsError<DateTime>(new DeserializeError("Countdown response omitted its timestamp", result.Data));
         return result.As(result.Data?.Time ?? default);
     }
 
@@ -986,6 +988,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/trail/stop_all".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesTrailOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        if (result.Success && result.Data?.Orders == null)
+            return result.AsError<List<GateFuturesTrailOrder>>(new DeserializeError("Trail response omitted its orders list", result.Data));
         return result.As(result.Data?.Orders ?? []);
     }
 
@@ -995,7 +999,7 @@ public class GateFuturesRestApiClient
         if (request == null) throw new ArgumentNullException(nameof(request));
         GateFuturesPriceOrderValidation.Contract(request.Contract);
         GateFuturesStrategyValidation.Page(request.PageNumber, request.PageSize);
-        GateFuturesStrategyValidation.Range(request.StartAt?.ConvertToSeconds(), request.EndAt?.ConvertToSeconds());
+        GateFuturesStrategyValidation.Range(GateFuturesRequestTime.Seconds(request.StartAt), GateFuturesRequestTime.Seconds(request.EndAt));
         GateFuturesStrategyValidation.Filter(request.SortBy, nameof(request.SortBy));
         GateFuturesStrategyValidation.Filter(request.RelatedPosition, nameof(request.RelatedPosition));
         GateFuturesStrategyValidation.Filter(request.ReduceOnly, nameof(request.ReduceOnly));
@@ -1003,8 +1007,8 @@ public class GateFuturesRestApiClient
         var parameters = new ParameterCollection();
         parameters.AddOptional("contract", request.Contract);
         parameters.AddOptional("is_finished", request.IsFinished?.ToString().ToLowerInvariant());
-        parameters.AddOptional("start_at", request.StartAt?.ConvertToSeconds());
-        parameters.AddOptional("end_at", request.EndAt?.ConvertToSeconds());
+        parameters.AddOptional("start_at", GateFuturesRequestTime.Seconds(request.StartAt));
+        parameters.AddOptional("end_at", GateFuturesRequestTime.Seconds(request.EndAt));
         parameters.AddOptional("page_num", request.PageNumber);
         parameters.AddOptional("page_size", request.PageSize);
         parameters.AddOptional("sort_by", request.SortBy);
@@ -1016,6 +1020,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/trail/list".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesTrailOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        if (result.Success && result.Data?.Orders == null)
+            return result.AsError<List<GateFuturesTrailOrder>>(new DeserializeError("Trail response omitted its orders list", result.Data));
         return result.As(result.Data?.Orders ?? []);
     }
 
@@ -1096,6 +1102,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/trail/change_log".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesTrailOrderChangeLogResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        if (result.Success && result.Data?.ChangeLog == null)
+            return result.AsError<List<GateFuturesTrailOrderChange>>(new DeserializeError("Trail response omitted its change-log list", result.Data));
         return result.As(result.Data?.ChangeLog ?? []);
     }
 
@@ -1141,6 +1149,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/chase/stop".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesChaseOrderDetailResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        if (result.Success && result.Data?.Order == null)
+            return result.AsError<GateFuturesChaseOrder>(new DeserializeError("Chase response omitted its order", result.Data));
         return result.As(result.Data?.Order);
     }
 
@@ -1158,6 +1168,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/chase/stop_all".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesChaseOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        if (result.Success && result.Data?.Orders == null)
+            return result.AsError<List<GateFuturesChaseOrder>>(new DeserializeError("Chase response omitted its orders list", result.Data));
         return result.As(result.Data?.Orders ?? []);
     }
 
@@ -1173,15 +1185,15 @@ public class GateFuturesRestApiClient
         if (request.PageSize.HasValue && (request.PageSize < 1 || request.PageSize > 100)) throw new ArgumentOutOfRangeException(nameof(request.PageSize));
         if (request.IsFinished == true && (!request.StartAt.HasValue || !request.EndAt.HasValue))
             throw new ArgumentException("Finished chase orders require both start_at and end_at", nameof(request));
-        GateFuturesStrategyValidation.Range(request.StartAt?.ConvertToSeconds(), request.EndAt?.ConvertToSeconds());
+        GateFuturesStrategyValidation.Range(GateFuturesRequestTime.Seconds(request.StartAt), GateFuturesRequestTime.Seconds(request.EndAt));
         var parameters = new ParameterCollection
         {
             { "sort_by", (int)request.SortBy },
         };
         parameters.AddOptional("contract", request.Contract);
         parameters.AddOptional("is_finished", request.IsFinished?.ToString().ToLowerInvariant());
-        parameters.AddOptional("start_at", request.StartAt?.ConvertToSeconds());
-        parameters.AddOptional("end_at", request.EndAt?.ConvertToSeconds());
+        parameters.AddOptional("start_at", GateFuturesRequestTime.Seconds(request.StartAt));
+        parameters.AddOptional("end_at", GateFuturesRequestTime.Seconds(request.EndAt));
         parameters.AddOptional("page_num", request.PageNumber);
         parameters.AddOptional("page_size", request.PageSize);
         parameters.AddOptional("hide_cancel", request.HideCancelled?.ToString().ToLowerInvariant());
@@ -1190,6 +1202,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/chase/list".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesChaseOrderListResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        if (result.Success && result.Data?.Orders == null)
+            return result.AsError<List<GateFuturesChaseOrder>>(new DeserializeError("Chase response omitted its orders list", result.Data));
         return result.As(result.Data?.Orders ?? []);
     }
 
@@ -1204,6 +1218,8 @@ public class GateFuturesRestApiClient
 
         var endpoint = "{settle}/autoorder/v1/chase/detail".Replace("{settle}", MapConverter.GetString(settle));
         var result = await _.SendRequestInternal<GateFuturesChaseOrderDetailResponse>(_.GetUrl(api, v4, futures, endpoint), HttpMethod.Get, ct, true, queryParameters: parameters);
+        if (result.Success && result.Data?.Order == null)
+            return result.AsError<GateFuturesChaseOrder>(new DeserializeError("Chase response omitted its order", result.Data));
         return result.As(result.Data?.Order);
     }
 

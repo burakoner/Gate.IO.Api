@@ -1,7 +1,9 @@
 namespace Gate.IO.Api.Unified;
 
 /// <summary>
-/// Unified account info
+/// Unified account info. Values are server-calculated and mode-dependent; all schema properties are optional.
+/// Legacy nonnullable defaults do not prove zero liability, an unlocked account or available funds.
+/// https://www.gate.com/docs/developers/apiv4/en/unified/#get-unified-account-information
 /// </summary>
 public record GateUnifiedAccountInfo
 {
@@ -15,10 +17,11 @@ public record GateUnifiedAccountInfo
     /// User id
     /// </summary>
     [JsonProperty("user_id")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long UserId { get; set; }
 
     /// <summary>
-    /// Last refresh time
+    /// Last refresh time. The schema does not state a unit; the existing timestamp converter is retained.
     /// </summary>
     [JsonProperty("refresh_time")]
     [JsonConverter(typeof(DateTimeConverter))]
@@ -37,87 +40,101 @@ public record GateUnifiedAccountInfo
     public Dictionary<string, GateIoUnifiedAccountBalance> Balances { get; set; } = [];
 
     /// <summary>
-    /// Total value in USD
+    /// Deprecated total assets converted to USD. Prefer UnifiedAccountTotal; retained for compatibility.
     /// </summary>
     [JsonProperty("total")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Total { get; set; }
 
     /// <summary>
-    /// Borrowed value in USD
+    /// Borrowed value in USD, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("borrowed")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Borrowed { get; set; }
 
     /// <summary>
-    /// Total initial margin
+    /// Cross initial margin, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_initial_margin")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalInitialMargin { get; set; }
 
     /// <summary>
-    /// Total margin balance
+    /// Cross margin balance, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_margin_balance")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalMarginBalance { get; set; }
 
     /// <summary>
-    /// Total maintenance margin
+    /// Cross maintenance margin, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_maintenance_margin")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalMaintenanceMargin { get; set; }
 
     /// <summary>
-    /// Total initial margin rate
+    /// Cross initial margin rate, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_initial_margin_rate")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalInitialMarginRate { get; set; }
 
     /// <summary>
-    /// Total maintenance margin rate
+    /// Cross maintenance margin rate, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_maintenance_margin_rate")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalMaintenanceMarginRate { get; set; }
 
     /// <summary>
-    /// Total available margin
+    /// Available cross margin, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_available_margin")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalAvailableMargin { get; set; }
 
     /// <summary>
-    /// Unified account total
+    /// Total assets: cross and isolated in single-/multi-currency mode; cross only in portfolio mode.
     /// </summary>
     [JsonProperty("unified_account_total")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal UnifiedAccountTotal { get; set; }
 
     /// <summary>
-    /// Unified account total liabilities
+    /// Total cross liabilities, effective in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("unified_account_total_liab")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal UnifiedAccountTotalLiabilities { get; set; }
 
     /// <summary>
-    /// Unified account total equity
+    /// Total equity: cross and isolated in single-/multi-currency mode; cross only in portfolio mode.
     /// </summary>
     [JsonProperty("unified_account_total_equity")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal UnifiedAccountTotalEquity { get; set; }
 
     /// <summary>
-    /// Leverage
+    /// Deprecated account leverage in multi-currency/portfolio mode. Query /unified/leverage/user_currency_setting.
     /// </summary>
     [JsonProperty("leverage")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Leverage { get; set; }
 
     /// <summary>
-    /// Total order loss, in USDT
+    /// Spot pending-order loss, in USDT; effective in multi-currency/portfolio mode only.
     /// </summary>
     [JsonProperty("spot_order_loss")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalOrderLoss { get; set; }
 
     /// <summary>
-    /// Option pending order loss, in USDT
+    /// Option pending-order loss, in USDT; effective in portfolio mode only.
     /// </summary>
     [JsonProperty("options_order_loss")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal OptionsOrderLoss { get; set; }
 
     /// <summary>
@@ -145,57 +162,66 @@ public record GateUnifiedAccountInfo
 public record GateIoUnifiedAccountBalance
 {
     /// <summary>
-    /// Available quantity
+    /// Cross available quantity after isolated occupation and frozen funds, in all three margin modes.
     /// </summary>
     [JsonProperty("available")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Available { get; set; }
 
     /// <summary>
     /// Frozen quantity
     /// </summary>
     [JsonProperty("freeze")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Frozen { get; set; }
 
     /// <summary>
-    /// Borrowed quantity
+    /// Borrowed quantity in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("borrowed")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Borrowed { get; set; }
 
     /// <summary>
-    /// Negative liabilities
+    /// Negative-balance borrowing in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("negative_liab")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal NegativeLiabilities { get; set; }
 
     /// <summary>
-    /// Borrowing to open futures positions
+    /// Deprecated contract-opening borrowing currency, scheduled for removal; retained for compatibility.
     /// </summary>
     [JsonProperty("futures_pos_liab")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal FuturesPositionLiabilities { get; set; }
 
     /// <summary>
-    /// Equity
+    /// Cross currency equity in single-currency/multi-currency/portfolio mode.
     /// </summary>
     [JsonProperty("equity")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Equity { get; set; }
 
     /// <summary>
-    /// Total frozen
+    /// Deprecated total frozen, scheduled for removal; retained for compatibility.
     /// </summary>
     [JsonProperty("total_freeze")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalFrozen { get; set; }
 
     /// <summary>
-    /// Total liabilities
+    /// Total borrowed quantity in multi-currency/portfolio mode; zero in single-currency mode.
     /// </summary>
     [JsonProperty("total_liab")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal TotalLiabilities { get; set; }
 
     /// <summary>
-    /// Spot hedging utilization
+    /// Spot hedging utilization in portfolio mode; zero in other margin modes.
     /// </summary>
     [JsonProperty("spot_in_use")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal SpotInUse { get; set; }
 
     /// <summary>
@@ -211,51 +237,59 @@ public record GateIoUnifiedAccountBalance
     public string FundingVersion { get; set; }
 
     /// <summary>
-    /// Cross margin balance
+    /// Cross balance in single-/multi-currency mode; zero in portfolio mode.
     /// </summary>
     [JsonProperty("cross_balance")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? CrossMarginBalance { get; set; }
 
     /// <summary>
-    /// Isolated margin balance
+    /// Futures isolated balance in single-/multi-currency mode; zero in portfolio mode.
     /// </summary>
     [JsonProperty("iso_balance")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? IsolatedMarginBalance { get; set; }
 
     /// <summary>
-    /// Initial margin
+    /// Cross initial margin: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("im")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? InitialMargin { get; set; }
 
     /// <summary>
-    /// Maintenance margin
+    /// Cross maintenance margin: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("mm")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? MaintenanceMargin { get; set; }
 
     /// <summary>
-    /// Initial margin rate
+    /// Cross initial margin rate: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("imr")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? InitialMarginRate { get; set; }
 
     /// <summary>
-    /// Maintenance margin rate
+    /// Cross maintenance margin rate: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("mmr")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? MaintenanceMarginRate { get; set; }
 
     /// <summary>
-    /// Margin balance
+    /// Cross margin balance: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("margin_balance")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? MarginBalance { get; set; }
 
     /// <summary>
-    /// Available margin
+    /// Cross available margin: effective for USDT in single-currency mode only; zero in other margin modes.
     /// </summary>
     [JsonProperty("available_margin")]
+    [JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? AvailableMargin { get; set; }
 
     /// <summary>
@@ -268,5 +302,6 @@ public record GateIoUnifiedAccountBalance
     /// Balance version number
     /// </summary>
     [JsonProperty("balance_version")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? BalanceVersion { get; set; }
 }

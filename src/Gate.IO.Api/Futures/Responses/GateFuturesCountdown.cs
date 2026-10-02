@@ -6,6 +6,6 @@ internal record GateFuturesCountdown
     /// Timestamp of the end of the countdown, in milliseconds
     /// </summary>
     [JsonProperty("triggerTime", Required = Required.Always)]
-    [JsonConverter(typeof(DateTimeConverter))]
+    [JsonConverter(typeof(GateFuturesCountdownTimeConverter))]
     public DateTime Time { get; set; }
 }

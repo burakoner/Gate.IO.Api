@@ -114,7 +114,8 @@ public class GateOtcRestApiClient
     }
 
     /// <summary>
-    /// Create fiat order
+    /// Create fiat order using the legacy FIAT validation side. Use the DTO overload for the quote's
+    /// explicit PAY/GET side and optional remittance name. The result is not proof of bank settlement.
     /// </summary>
     /// <param name="type">BUY for on-ramp or SELL for off-ramp</param>
     /// <param name="cryptoCurrency">Cryptocurrency</param>
@@ -149,13 +150,28 @@ public class GateOtcRestApiClient
         }, ct);
 
     /// <summary>
-    /// Create fiat order
+    /// Create fiat order with an explicit quote-validation side and optional remittance name.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#create-fiat-order
+    /// An acknowledgement has no order ID and does not confirm payment or settlement.
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateOtcActionResult>> CreateFiatOrderAsync(GateOtcFiatOrderRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateOtcActionResult>> CreateFiatOrderAsync(GateOtcFiatOrderRequest request, CancellationToken ct = default)
     {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        Require(request.CryptoCurrency, nameof(request.CryptoCurrency));
+        Require(request.FiatCurrency, nameof(request.FiatCurrency));
+        Require(request.QuoteToken, nameof(request.QuoteToken));
+        if (!Enum.IsDefined(typeof(GateOtcOrderType), request.Type))
+            throw new ArgumentOutOfRangeException(nameof(request.Type));
+        if (!Enum.IsDefined(typeof(GateOtcOrderKind), request.Side) || request.Side == GateOtcOrderKind.Stable)
+            throw new ArgumentException("Fiat order side must be FIAT, CRYPTO, PAY or GET", nameof(request.Side));
+        if (request.ReceiveType.HasValue && !Enum.IsDefined(typeof(GateOtcReceiveType), request.ReceiveType.Value))
+            throw new ArgumentOutOfRangeException(nameof(request.ReceiveType));
+        // Explicit actual bank identity is a client safety constraint, not an inferred default bank.
+        if (request.BankId <= 0) throw new ArgumentOutOfRangeException(nameof(request.BankId));
+
         var parameters = new ParameterCollection
         {
             { "crypto_currency", request.CryptoCurrency },
@@ -168,8 +184,28 @@ public class GateOtcRestApiClient
         parameters.AddString("crypto_amount", request.CryptoAmount);
         parameters.AddString("fiat_amount", request.FiatAmount);
         parameters.AddOptional("promotion_code", request.PromotionCode);
+        parameters.AddOptionalEnum("receive_type", request.ReceiveType);
 
-        return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "order/create"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, "order/create"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
+        if (!result.Success) return result.As<GateOtcActionResult>(null);
+
+        if (result.Data is not JObject response || response["code"]?.Type != JTokenType.Integer
+            || !int.TryParse(response["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code))
+            return result.AsError<GateOtcActionResult>(new DeserializeError("Fiat-order acknowledgement requires an integer business code", result.Data));
+        var message = response["message"]?.Type == JTokenType.String ? (string)response["message"] : null;
+        if (code != 0)
+            return result.AsError<GateOtcActionResult>(new ServerError(code, message ?? "OTC fiat order rejected"));
+        if (message == null || response["timestamp"]?.Type != JTokenType.Integer
+            || !long.TryParse(response["timestamp"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var timestamp))
+            return result.AsError<GateOtcActionResult>(new DeserializeError("Fiat-order acknowledgement requires message and Unix-second timestamp", result.Data));
+        try
+        {
+            return result.As(new GateOtcActionResult { Code = code, Message = message, Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamp).UtcDateTime });
+        }
+        catch (ArgumentOutOfRangeException exception)
+        {
+            return result.AsError<GateOtcActionResult>(new DeserializeError(exception.Message, result.Data));
+        }
     }
 
     /// <summary>
