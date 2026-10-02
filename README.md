@@ -220,6 +220,26 @@ Transfer acknowledgements require both `tx_id` and `text`. Quotes require all se
 
 A valid order acknowledgement is asynchronous acceptance, not venue acceptance or execution. Later `FAIL` means CrossEx validation failed; `REJECT` means the venue rejected the order. HTTP errors retain status, raw data and the stable label in `Error.Data`; use the label, not diagnostic `message`/`detail`, for programmatic decisions. Malformed/empty HTTP-success payloads also fail. Tick/lot size, balances, position-mode compatibility, RPI access and risk limits remain server-side. The LIGHTER capacity error is preserved without placing taker trades to replenish capacity. There are no automatic retries, order queries, transfers, quote execution or mode changes. All verification was offline; the adjacent missing GET/POST margin-mode family remains separate work.
 
+## REST announcement articles
+
+`api.Announcements.GetArticlesAsync` adds the public JSON POST `/ann/list_article` indexed by [v4.106.142/144](https://www.gate.com/docs/developers/apiv4/en/#changelog), separate from announcement WebSocket subscriptions. The endpoint page was not independently accessible during this check; the entire contract was read from the website-linked official C# SDK's [endpoint documentation](https://github.com/gate/gateapi-csharp/blob/44299691284ddace333b9c259c88b1d3f34336bf/docs/AnnouncementApi.md) and [OpenAPI path and five response/request schemas](https://github.com/gate/gateapi-csharp/blob/44299691284ddace333b9c259c88b1d3f34336bf/openapi.yaml). That published specification identifies `v4.106.144`; it does not resolve the website header's undocumented `145/146` changes.
+
+All twelve filters are optional. Omission sends the required `{}` JSON body without injecting defaults. `Page`, `Size`, `Timer`, `CategoryLevel` and `SubWebsiteId` are unchanged strings, not numeric JSON tokens; `Pinned` and `FilterEmptyContent` are nullable integer 0/1 flags. `UpdateAfter` is a raw nullable integer timestamp, with no local date conversion. `Language` is unrestricted text, not the stream's cn/en enum. Category level must be "1" or "2" when supplied. The server defaults are subsite "0", pinned 1 and empty-content filtering 1; page-size limits and endpoint-specific request rates are not specified, so none are invented. The method is unsigned even when credentials are configured.
+
+The return value keeps the complete `Code`/`Message`/`Version`/`Data` envelope and `Data.List`/`Data.Total`, not just the current page. **The specification does not define a successful business-code value.** `RestCallResult.Success` means HTTP and JSON contract validation succeeded, not that Code=0 or any other business result has been verified. Check the preserved code against a separately verified Gate contract; the wrapper neither guesses a mapping nor drops a nonzero code. Missing/null required fields, malformed containers, null array entries, wrong scalar tokens and out-of-range integers fail; empty article/language arrays remain valid. HTTP errors retain their status, raw response when requested and stable label.
+
+Article, author and category identities are exact `long` numeric tokens. `Created`, `Updated` and `ReleaseTime` remain raw strings; no inferred DateTime, date format or precision loss. Raw category/source/pinned-status/language values, including unfamiliar values, are retained. Saved JSON uses wire names/types and preserves date-looking strings, as do both RawResponse modes. No automatic pagination, retries, source-link following, content rendering, subscription or trading action is performed. Verification is offline, using schema-authored data rather than a claimed production capture.
+
+```csharp
+// No API credentials are required. Page and size may also be omitted independently.
+var result = await api.Announcements.GetArticlesAsync(page: "1", size: "5", language: "en");
+// result.Data retains the business code and the complete article page; see the caveat above.
+var filtered = await api.Announcements.GetArticlesAsync(new GateAnnouncementArticleListRequest
+{
+    TitleQuery = "listing", CategoryLevel = "1", SubWebsiteId = "177", Pinned = 1, FilterEmptyContent = 1,
+});
+```
+
 ## OTC fiat order creation
 
 `CreateFiatOrderAsync(GateOtcFiatOrderRequest)` follows the complete current [fiat-order contract](https://www.gate.com/docs/developers/apiv4/en/otc/#create-fiat-order). `Side` validates the quote's `side` (`PAY`/`GET`), not its `order_type` (`FIAT`/`STABLE`). Legacy `FIAT`/`CRYPTO` also work; `STABLE` is rejected for this endpoint but remains valid quote metadata. The original convenience signature and its C# `Side=Fiat` default are retained. New integrations should explicitly copy the actual quote side into the matching `GateOtcOrderKind` value, not infer it from BUY/SELL.

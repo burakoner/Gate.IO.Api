@@ -30,5 +30,6 @@ public class RestClientSurfaceTests
         Assert.NotNull(client.CrossEx);
         Assert.NotNull(client.Alpha);
         Assert.NotNull(client.Bot);
+        Assert.NotNull(client.Announcements);
     }
 }

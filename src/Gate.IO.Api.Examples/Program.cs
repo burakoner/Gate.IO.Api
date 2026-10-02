@@ -1,5 +1,6 @@
 ﻿using Gate.IO.Api.Delivery;
 using Gate.IO.Api.Account;
+using Gate.IO.Api.Announcements;
 using Gate.IO.Api.Bot;
 using Gate.IO.Api.CrossEx;
 using Gate.IO.Api.Earn;
@@ -27,6 +28,14 @@ internal class Program
     {
         var api = new GateRestApiClient();
         api.SetApiCredentials("XXXXXXXX-API-KEY-XXXXXXXX", "XXXXXXXX-API-SECRET-XXXXXXXX");
+
+        // Announcement queries are unsigned even with credentials. Page/size are optional strings.
+        // Success is HTTP/JSON validity only; the documented business code has no published success mapping.
+        var announcements_01 = await api.Announcements.GetArticlesAsync(page: "1", size: "5", language: "en");
+        var announcements_02 = await api.Announcements.GetArticlesAsync(new GateAnnouncementArticleListRequest
+        {
+            TitleQuery = "listing", CategoryLevel = "1", SubWebsiteId = "177", Pinned = 1, FilterEmptyContent = 1,
+        });
 
         // Wallet Methods
         var wallet_01 = await api.Wallet.WithdrawAsync("CURRENCY", 1.0m, "CHAIN", "ADDRESS", "MEMO", "CLIENT-ORDER-ID");

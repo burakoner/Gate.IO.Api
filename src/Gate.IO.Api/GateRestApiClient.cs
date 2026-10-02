@@ -122,6 +122,9 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     public GateBotRestApiClient Bot { get; }
 
+    /// <summary>Public announcement article queries.</summary>
+    public GateAnnouncementsRestApiClient Announcements { get; }
+
     /// <summary>
     /// Gate.IO REST API Client Constructor
     /// </summary>
@@ -181,6 +184,7 @@ public class GateRestApiClient : RestApiClient
         CrossEx = new GateCrossExRestApiClient(this);
         Alpha = new GateAlphaRestApiClient(this);
         Bot = new GateBotRestApiClient(this);
+        Announcements = new GateAnnouncementsRestApiClient(this);
     }
 
     #region Override Methods
