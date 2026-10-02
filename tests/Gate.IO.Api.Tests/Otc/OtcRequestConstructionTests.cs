@@ -78,7 +78,7 @@ public class OtcRequestConstructionTests
             RemittanceLineNumber = "021000021",
             AgentBankName = "Correspondent Bank",
             AgentBankSwift = "CORRGB2L",
-            DocumentationFile = "BASE64-ACCOUNT-PROOF",
+            DocumentationFile = Convert.ToBase64String(Encoding.UTF8.GetBytes("ACCOUNT-PROOF")),
         });
         var deletedBank = await client.Otc.DeleteBankCardAsync("762");
         var defaultBank = await client.Otc.SetDefaultBankCardAsync("762");
@@ -199,7 +199,8 @@ public class OtcRequestConstructionTests
         AssertMultipartField(handler.Requests[4], "remittance_line_number", "021000021");
         AssertMultipartField(handler.Requests[4], "agent_bank_name", "Correspondent Bank");
         AssertMultipartField(handler.Requests[4], "agent_bank_swift", "CORRGB2L");
-        AssertMultipartField(handler.Requests[4], "documentation_file", "BASE64-ACCOUNT-PROOF");
+        Assert.Contains("name=\"documentation_file\"; filename=documentation_file", handler.Requests[4].Content);
+        Assert.Contains("Content-Type: application/octet-stream\r\n\r\nACCOUNT-PROOF\r\n", handler.Requests[4].Content);
         AssertMultipartSignature(handler.Requests[4]);
 
         var deleteBody = JObject.Parse(handler.Requests[5].Content);

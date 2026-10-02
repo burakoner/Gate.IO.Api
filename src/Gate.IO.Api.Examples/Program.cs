@@ -587,7 +587,8 @@ internal class Program
         var otc_02 = await api.Otc.CreateFiatOrderAsync(new GateOtcFiatOrderRequest { Type = GateOtcOrderType.Buy, Side = GateOtcOrderKind.Pay, CryptoCurrency = "USDT", FiatCurrency = "USD", CryptoAmount = 30000.0m, FiatAmount = 30000.0m, QuoteToken = "QUOTE-TOKEN", BankId = 1_000_000_001, ReceiveType = null });
         var otc_03 = await api.Otc.CreateStableCoinOrderAsync("USDC", "USDT", 30000.0m, 20000.0m, GateOtcQuoteSide.Pay, "QUOTE-TOKEN");
         var otc_04 = await api.Otc.GetBankAccountsAsync();
-        var otc_05 = await api.Otc.CreateBankCardAsync(new GateOtcBankCreateRequest { BankAccountName = "ACCOUNT-NAME", BankName = "BANK-NAME", BankCountry = "GB", BankAddress = "BANK-ADDRESS", Iban = "IBAN", Swift = "SWIFT", DocumentationFile = "BASE64-ACCOUNT-PROOF" });
+        // Supply the actual key after a separate successful S3 upload; submission is not bank review approval.
+        var otc_05 = await api.Otc.CreateBankCardAsync(new GateOtcBankCreateRequest { BankAccountName = "ACCOUNT-NAME", BankName = "BANK-NAME", BankCountry = "GB", BankAddress = "BANK-ADDRESS", Iban = "IBAN", Swift = "SWIFT", DocumentationFileKey = "ACTUAL-PRE-UPLOADED-KEY", FileType = "aW1hZ2UvcG5n" });
         var otc_06 = await api.Otc.DeleteBankCardAsync("BANK-CARD-ID");
         var otc_07 = await api.Otc.SetDefaultBankCardAsync("BANK-CARD-ID");
         var otc_08 = await api.Otc.GetBankSupplementChecklistAsync("BANK-CARD-ID");

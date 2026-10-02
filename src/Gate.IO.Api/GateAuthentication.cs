@@ -38,7 +38,10 @@ internal class GateAuthentication(ApiCredentials credentials) : AuthenticationPr
 
         // Signature
         var queryString = HttpUtility.UrlDecode(uri.Query.TrimStart('?'));
-        var signature = CreateRestSignature(method, uri.AbsolutePath, queryString, bodyContent, timestamp);
+        var multipart = GateMultipartFormData.Find(body);
+        var signature = multipart?.Bytes != null
+            ? CreateRestSignature(method, uri.AbsolutePath, queryString, multipart.Bytes, timestamp)
+            : CreateRestSignature(method, uri.AbsolutePath, queryString, bodyContent, timestamp);
         headers.Add("SIGN", signature);
 
         // Broker Id
@@ -46,12 +49,18 @@ internal class GateAuthentication(ApiCredentials credentials) : AuthenticationPr
     }
 
     internal string CreateRestSignature(HttpMethod method, string path, string queryString, string bodyContent, string timestamp)
+        => CreateRestSignatureWithHash(method, path, queryString, SignSHA512(bodyContent ?? string.Empty, SignatureOutputType.Hex).ToLower(), timestamp);
+
+    internal string CreateRestSignature(HttpMethod method, string path, string queryString, byte[] bodyContent, string timestamp)
+        => CreateRestSignatureWithHash(method, path, queryString, SignSHA512(bodyContent, SignatureOutputType.Hex).ToLower(), timestamp);
+
+    private string CreateRestSignatureWithHash(HttpMethod method, string path, string queryString, string bodyHash, string timestamp)
     {
         var signbody = new StringBuilder();
         signbody.Append(method.ToString().ToUpper() + "\n");
         signbody.Append(path + "\n");
         signbody.Append((queryString ?? string.Empty) + "\n");
-        signbody.Append(SignSHA512(bodyContent ?? string.Empty, SignatureOutputType.Hex).ToLower() + "\n");
+        signbody.Append(bodyHash + "\n");
         signbody.Append(timestamp);
         return SignHMACSHA512(signbody.ToString()).ToLower();
     }

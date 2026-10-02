@@ -74,6 +74,13 @@ internal sealed class GateRequest : ApiSharp.Interfaces.IRequest
     public void SetContent(byte[] data)
         => request.Content = new ByteArrayContent(data);
 
+    internal void SetContent(byte[] data, string contentType)
+    {
+        Content = "[multipart/form-data content omitted]";
+        request.Content = new ByteArrayContent(data);
+        request.Content.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse(contentType);
+    }
+
     public void SetContent(string data, string contentType)
     {
         if (!contentType.StartsWith("multipart/form-data;", StringComparison.OrdinalIgnoreCase))

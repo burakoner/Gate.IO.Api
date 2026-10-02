@@ -150,9 +150,10 @@ public class GateRestApiClient : RestApiClient
     /// </summary>
     /// <param name="logger">ILogger Instance</param>
     /// <param name="options">GateRestApiClientOptions Instance</param>
-    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options) : base(logger, options ??= new GateRestApiClientOptions())
+    public GateRestApiClient(ILogger logger, GateRestApiClientOptions options) : base(Microsoft.Extensions.Logging.Abstractions.NullLogger.Instance, options ??= new GateRestApiClientOptions())
     {
-        Logger = logger;
+        // ApiSharp's diagnostics can contain bodies and authentication headers. Emit metadata here instead.
+        Logger = logger ?? CreateLogger();
         RequestFactory = new GateRequestFactory();
         RequestFactory.Configure(options.HttpOptions, options.Proxy, options.HttpClient);
         RequestBodyFormat = RestRequestBodyFormat.Json;
@@ -204,7 +205,13 @@ public class GateRestApiClient : RestApiClient
         var multipart = GateMultipartFormData.Find(bodyParameters);
         var request = base.ConstructRequest(uri, method, signed, queryParameters, bodyParameters, headerParameters, serialization, requestId);
 
-        if (multipart != null)
+        if (multipart?.Bytes != null)
+        {
+            if (request is not GateRequest gateRequest)
+                throw new InvalidOperationException("Binary multipart requires the Gate request implementation");
+            gateRequest.SetContent(multipart.Bytes, multipart.ContentType);
+        }
+        else if (multipart != null)
             request.SetContent(multipart.Body, multipart.ContentType);
 
         return request;
@@ -282,20 +289,23 @@ public class GateRestApiClient : RestApiClient
             if (result.Success)
             {
                 Logger?.LogDebug(
-                    "Gate REST request succeeded: {Method} {Endpoint} in {ElapsedMilliseconds}ms. ResponseType={ResponseType}",
+                    "Gate REST request succeeded: {Method} {Endpoint} in {ElapsedMilliseconds}ms. HTTPStatus={HTTPStatus}; ResponseType={ResponseType}. Transport result only",
                     method.Method,
                     endpoint,
                     stopwatch.ElapsedMilliseconds,
+                    result.Response?.StatusCode,
                     typeof(T).Name);
             }
             else
             {
                 Logger?.LogWarning(
-                    "Gate REST request failed: {Method} {Endpoint} in {ElapsedMilliseconds}ms. Error={Error}",
+                    "Gate REST request failed: {Method} {Endpoint} in {ElapsedMilliseconds}ms. HTTPStatus={HTTPStatus}; ErrorType={ErrorType}; ErrorCode={ErrorCode}",
                     method.Method,
                     endpoint,
                     stopwatch.ElapsedMilliseconds,
-                    result.Error);
+                    result.Response?.StatusCode,
+                    result.Error?.GetType().Name,
+                    result.Error?.Code);
             }
 
             return result;
@@ -304,11 +314,11 @@ public class GateRestApiClient : RestApiClient
         {
             stopwatch.Stop();
             Logger?.LogError(
-                ex,
-                "Gate REST request threw an exception: {Method} {Endpoint} after {ElapsedMilliseconds}ms",
+                "Gate REST request threw an exception: {Method} {Endpoint} after {ElapsedMilliseconds}ms. ExceptionType={ExceptionType}",
                 method.Method,
                 endpoint,
-                stopwatch.ElapsedMilliseconds);
+                stopwatch.ElapsedMilliseconds,
+                ex.GetType().Name);
             throw;
         }
     }

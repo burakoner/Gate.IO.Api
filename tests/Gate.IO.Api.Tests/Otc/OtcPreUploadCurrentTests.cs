@@ -265,6 +265,22 @@ public class OtcPreUploadCurrentTests
 
     private static JObject Fixture() => (JObject)JsonFixture.Parse("Docs/Otc/pre_upload.success.json");
 
+    [Fact]
+    public async Task HTTP_error_statuses_retain_explicit_OTC_parameter_codes()
+    {
+        foreach (var status in new[] { HttpStatusCode.BadRequest, HttpStatusCode.TooManyRequests, HttpStatusCode.InternalServerError })
+        {
+            var handler = Handler("{\"code\":10010400,\"message\":\"content type is required.\"}", status);
+            using var client = Client(handler);
+            var result = await client.Otc.CreatePreUploadAsync(GateOtcUploadContentType.Png);
+            Assert.False(result.Success);
+            Assert.Equal(10010400, result.Error!.Code);
+            Assert.Equal("content type is required.", result.Error.Message);
+            Assert.Equal(status, result.Response!.StatusCode);
+            Assert.Single(handler.Requests);
+        }
+    }
+
     private static JProperty Property(JObject root, string path)
     {
         var parts = path.Split('.');

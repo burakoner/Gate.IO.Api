@@ -1,7 +1,7 @@
 namespace Gate.IO.Api.Otc;
 
-/// <summary>Stops malformed credential JSON from reaching the dependency's payload-bearing parser errors.</summary>
-internal sealed class GateOtcUploadEnvelopeConverter : JsonConverter
+/// <summary>Stops malformed OTC JSON from reaching the dependency's payload-bearing parser errors.</summary>
+internal sealed class GateOtcSensitiveEnvelopeConverter : JsonConverter
 {
     public override bool CanConvert(Type objectType) => objectType == typeof(JToken);
     public override bool CanWrite => false;

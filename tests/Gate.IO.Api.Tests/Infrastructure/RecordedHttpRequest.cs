@@ -9,4 +9,6 @@ internal sealed class RecordedHttpRequest
     public IReadOnlyDictionary<string, string[]> Headers { get; init; } = new Dictionary<string, string[]>();
 
     public string Content { get; init; } = string.Empty;
+
+    public byte[] ContentBytes { get; init; } = [];
 }

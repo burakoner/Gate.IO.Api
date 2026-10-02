@@ -36,6 +36,21 @@ public class GateOtcRestApiClient
         return result.Success ? result.As(result.Data?.Data) : result.As<T>(default);
     }
 
+    private static RestCallResult<T> AsSensitiveOtcFailure<T>(RestCallResult<JToken> result, JsonSerializer serializer, string diagnostic) where T : class
+    {
+        if (result.Error is DeserializeError)
+            return result.AsError<T>(new DeserializeError(diagnostic, null));
+        if (result.Error is ServerError && !string.IsNullOrEmpty(result.Raw))
+        {
+            using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
+            if (serializer.Deserialize<JToken>(reader) is JObject envelope && envelope["code"]?.Type == JTokenType.Integer
+                && int.TryParse(envelope["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code) && code != 0)
+                return result.AsError<T>(new ServerError(code,
+                    envelope["message"]?.Type == JTokenType.String ? (string)envelope["message"] : "OTC request rejected", result.Error.Data));
+        }
+        return result.As<T>(null);
+    }
+
     /// <summary>
     /// Issue temporary S3 POST credentials. Does not upload a file, submit materials or retry automatically.
     /// https://www.gate.com/docs/developers/apiv4/en/otc/#pre-upload-file-temporary-bucket
@@ -69,13 +84,11 @@ public class GateOtcRestApiClient
         body.AddOptionalEnum("scene", request.Scene);
         // Opaque signed S3 strings must not be normalized into dates by the JSON reader.
         var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
-        serializer.Converters.Add(new GateOtcUploadEnvelopeConverter());
+        serializer.Converters.Add(new GateOtcSensitiveEnvelopeConverter());
         var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, "upload/pre_upload"),
             HttpMethod.Post, ct, true, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
         if (!result.Success)
-            return result.Error is DeserializeError
-                ? result.AsError<GateOtcUploadPreUploadResponse>(new DeserializeError("Invalid OTC pre-upload acknowledgement", null))
-                : result.As<GateOtcUploadPreUploadResponse>(null);
+            return AsSensitiveOtcFailure<GateOtcUploadPreUploadResponse>(result, serializer, "Invalid OTC pre-upload acknowledgement");
 
         var token = result.Data;
         if (!string.IsNullOrEmpty(result.Raw))
@@ -350,12 +363,13 @@ public class GateOtcRestApiClient
     }
 
     /// <summary>
-    /// Create bank card
+    /// Submit bank card materials using exactly one direct-file or pre-upload key source. Not review approval.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#create-bank-card
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateOtcBankCreateResult>> CreateBankCardAsync(GateOtcBankCreateRequest request, CancellationToken ct = default)
+    public async Task<RestCallResult<GateOtcBankCreateResult>> CreateBankCardAsync(GateOtcBankCreateRequest request, CancellationToken ct = default)
     {
         if (request == null)
             throw new ArgumentNullException(nameof(request));
@@ -366,7 +380,22 @@ public class GateOtcRestApiClient
         Require(request.BankAddress, nameof(request.BankAddress));
         Require(request.Iban, nameof(request.Iban));
         Require(request.Swift, nameof(request.Swift));
-        Require(request.DocumentationFile, nameof(request.DocumentationFile));
+        var sourceCount = (request.DocumentationFile != null ? 1 : 0) + (request.DocumentationUpload != null ? 1 : 0)
+            + (request.DocumentationFileKey != null ? 1 : 0);
+        if (sourceCount == 0) throw new ArgumentException("Exactly one proof source is required", nameof(request.DocumentationFile));
+        if (sourceCount != 1) throw new ArgumentException("Proof sources are mutually exclusive", nameof(request));
+        var upload = request.DocumentationUpload;
+        if (request.DocumentationFile != null)
+        {
+            Require(request.DocumentationFile, nameof(request.DocumentationFile));
+            try { upload = new GateOtcFileUpload { Content = Convert.FromBase64String(request.DocumentationFile), FileName = "documentation_file" }; }
+            catch (FormatException) { throw new ArgumentException("DocumentationFile must be Base64 file content", nameof(request.DocumentationFile)); }
+        }
+        if (request.DocumentationFileKey != null)
+        {
+            Require(request.DocumentationFileKey, nameof(request.DocumentationFileKey));
+            Require(request.FileType, nameof(request.FileType));
+        }
 
         var form = new ParameterCollection
         {
@@ -376,17 +405,45 @@ public class GateOtcRestApiClient
             { "bank_address", request.BankAddress },
             { "iban", request.Iban },
             { "swift", request.Swift },
-            { "documentation_file", request.DocumentationFile },
         };
         form.AddOptional("remittance_line_number", request.RemittanceLineNumber);
         form.AddOptional("agent_bank_name", request.AgentBankName);
         form.AddOptional("agent_bank_swift", request.AgentBankSwift);
+        form.AddOptional("documentation_file_key", request.DocumentationFileKey);
+        form.AddOptional("file_type", request.FileType);
 
-        return SendOtcDataRequestAsync<GateOtcBankCreateResult>(
-            "bank/create",
-            HttpMethod.Post,
-            ct,
-            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
+        var body = upload == null ? GateMultipartFormData.CreateBodyParameters(form)
+            : GateMultipartFormData.CreateBodyParameters(form, "documentation_file", upload);
+        var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+        serializer.Converters.Add(new GateOtcSensitiveEnvelopeConverter());
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, "bank/create"), HttpMethod.Post, ct,
+            true, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
+        if (!result.Success)
+            return AsSensitiveOtcFailure<GateOtcBankCreateResult>(result, serializer, "Invalid bank-create acknowledgement");
+        var token = result.Data;
+        if (!string.IsNullOrEmpty(result.Raw))
+        {
+            using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
+            token = serializer.Deserialize<JToken>(reader);
+        }
+        if (token is not JObject envelope || envelope["code"]?.Type != JTokenType.Integer
+            || !int.TryParse(envelope["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code))
+            return result.AsError<GateOtcBankCreateResult>(new DeserializeError("Bank-create acknowledgement requires an integer business code", null));
+        if (code != 0)
+            return result.AsError<GateOtcBankCreateResult>(new ServerError(code,
+                envelope["message"]?.Type == JTokenType.String ? (string)envelope["message"] : "OTC bank submission rejected"));
+        try
+        {
+            var response = envelope.ToObject<GateOtcBankCreateResponse>(serializer);
+            response.Data.Code = response.Code;
+            response.Data.Message = response.Message;
+            response.Data.Timestamp = response.Timestamp;
+            return result.As(response.Data);
+        }
+        catch (JsonException)
+        {
+            return result.AsError<GateOtcBankCreateResult>(new DeserializeError("Invalid or incomplete bank-create acknowledgement", null));
+        }
     }
 
     /// <summary>

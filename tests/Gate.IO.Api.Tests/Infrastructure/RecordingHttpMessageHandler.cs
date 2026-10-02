@@ -13,6 +13,7 @@ internal sealed class RecordingHttpMessageHandler : HttpMessageHandler
 
     protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        var contentBytes = request.Content == null ? [] : await request.Content.ReadAsByteArrayAsync(cancellationToken);
         var content = request.Content == null
             ? string.Empty
             : await request.Content.ReadAsStringAsync(cancellationToken);
@@ -27,6 +28,7 @@ internal sealed class RecordingHttpMessageHandler : HttpMessageHandler
             RequestUri = request.RequestUri!,
             Headers = headers,
             Content = content,
+            ContentBytes = contentBytes,
         };
 
         Requests.Add(recorded);
