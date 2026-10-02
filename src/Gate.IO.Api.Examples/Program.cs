@@ -672,6 +672,9 @@ internal class Program
         // Explicit financial action for an existing Hyperliquid isolated position only. Do not run this catalogue as a batch.
         // The server truncates -30.129 to two decimal places; HTTP 202 is acceptance, not proof of completed adjustment.
         var crossex_17b = await api.CrossEx.UpdateIsolatedMarginAsync(new GateCrossExIsolatedMarginRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", Margin = -30.129m, PositionSide = GateCrossExPositionSide.None });
+        var crossex_17c = await api.CrossEx.GetMarginModeAsync(new GateCrossExMarginModeQueryRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC" });
+        // Separate explicit mutation; no open orders/positions allowed. HTTP 202 is acceptance only.
+        var crossex_17d = await api.CrossEx.UpdateMarginModeAsync(new GateCrossExMarginModeRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", MarginMode = GateCrossExMarginMode.Isolated });
         var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long }); // Requires no open orders and a position strictly below min notional or min size; PositionSide is required for margin positions.
         var crossex_19 = await api.CrossEx.GetInterestRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
         var crossex_20 = await api.CrossEx.GetFeesAsync();

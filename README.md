@@ -204,6 +204,27 @@ Symbol metadata requires all 14 documented non-optional keys rather than fabrica
 
 HTTP 202 is acceptance only, not completed adjustment. `GateCrossExIsolatedMarginResponse.Margin` is the returned adjustment for this request, not resulting total position margin; returned symbol/side are not filled from the input. Missing required symbol/margin, absent response objects and missing list containers fail with HTTP metadata retained; empty arrays remain valid. Saved request JSON must supply symbol and an exact decimal string/integer margin. Unknown side mappings and lossy floating tokens fail instead of silently changing the financial instruction. Calling this method is an explicit financial mutation; it adds no automatic lookups, mode changes, retries or polling. Verification used no live exchange calls.
 
+## CrossEx futures margin mode
+
+`GetMarginModeAsync` and `UpdateMarginModeAsync` cover the complete current signed GET/POST `/crossex/positions/margin_mode` [contracts](https://www.gate.com/docs/developers/apiv4/en/crossex/#get-futures-position-margin-mode), including both required response fields and the request schemas. This closes the adjacent missing mode family; it does not audit the entire CrossEx module or establish undocumented release-number changes.
+
+GET requires one nonblank futures symbol and sends only `symbol` in the query, without a body. Its documentation does not impose POST's Hyperliquid-only restriction, so the client does not invent one. Supplied symbols are not trimmed, renamed or turned into an all-symbol query; embedded CSV, whitespace and control characters fail. The documented GET rate is 200 requests per 10 seconds. Both operations require API credentials; missing credentials retain the existing authentication exception before HTTP.
+
+POST explicitly selects `GateCrossExMarginMode.Cross` or `.Isolated`, serialized as `CROSS`/`ISOLATED`, for one Hyperliquid futures symbol. Zero is undefined, not a default mode. The two required fields are `symbol` and `margin_mode`; there is no position-side, leverage or account-mode instruction. The server rejects changes while open orders or positions exist, and checks symbol eligibility. The documented POST rate is 100 requests per 10 seconds. These rates are documented, not automatically scheduled/enforced by the wrapper.
+
+HTTP 202 only acknowledges acceptance; it does not confirm that the requested mode is active. `GateCrossExMarginModeResponse` preserves the returned symbol and raw mode instead of copying the request into the response or inferring local account state. Unfamiliar mode strings remain uninterpreted, never mapped to CROSS. Missing/null/blank required values, wrong scalar tokens, malformed JSON and absent objects fail with HTTP metadata retained. Saved JSON uses required wire names and strict enum/string tokens; raw strings are preserved in saved JSON and both RawResponse modes. Existing identifier types, isolated-margin methods, other response enums and WebSocket behavior are unchanged.
+
+The [official error guide](https://www.gate.com/docs/developers/crossex/) documents `TRADE_CHANGE_MARGIN_MODE_SAME_ERROR` and `TRADE_MARGIN_MODE_NOT_SUPPORT`; the stable label remains in `Error.Data`, with status/diagnostic/raw metadata retained. A same-mode rejection is not silently converted to success. Neither method automatically queries eligibility, cancels orders, closes positions, updates account mode, adjusts margin, retries or polls. No live account call was used for verification.
+
+```csharp
+var mode = await api.CrossEx.GetMarginModeAsync("HYPERLIQUID_FUTURE_CXMT_USDC");
+// Separate explicit mutation only; arrange eligibility yourself. HTTP 202 is not completion.
+var accepted = await api.CrossEx.UpdateMarginModeAsync(new GateCrossExMarginModeRequest
+{
+    Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", MarginMode = GateCrossExMarginMode.Isolated,
+});
+```
+
 ## CrossEx LIGHTER orders, transfers and quotes
 
 The entire current signed POST contracts for `/crossex/orders`, `/crossex/transfers` and `/crossex/convert/quote` are reconciled using [v4.106.139](https://www.gate.com/docs/developers/apiv4/en/#changelog) as the index and the [endpoint reference](https://www.gate.com/docs/developers/apiv4/en/crossex/) plus the [CrossEx error guide](https://www.gate.com/docs/developers/crossex/) as the specification. Existing methods, convenience overloads and accessor types remain; `Lighter=9` and `CrossExLighter=10` append enum members without renumbering earlier values.
@@ -218,7 +239,7 @@ Saved `GateCrossExOrderRequest`, `GateCrossExTransferRequest` and `GateCrossExCo
 
 Transfer acknowledgements require both `tx_id` and `text`. Quotes require all seven documented fields and exact monetary values. `GateCrossExConvertQuote.ValidMilliseconds` stays `long`, accepts exact Int64 strings/integers and writes the documented string token when saved. The docs call `valid_ms` a millisecond validity timestamp but illustrate `5000`; no duration, expiry date or clock origin is inferred. Quote IDs and action/transfer IDs already typed as `string` remain opaque strings; no existing `long` identity changes type. Saved response decimal fields now write strings; lossy floating tokens and missing required values fail. Order acknowledgements require a nonblank order ID, but do not fabricate optional echoed text.
 
-A valid order acknowledgement is asynchronous acceptance, not venue acceptance or execution. Later `FAIL` means CrossEx validation failed; `REJECT` means the venue rejected the order. HTTP errors retain status, raw data and the stable label in `Error.Data`; use the label, not diagnostic `message`/`detail`, for programmatic decisions. Malformed/empty HTTP-success payloads also fail. Tick/lot size, balances, position-mode compatibility, RPI access and risk limits remain server-side. The LIGHTER capacity error is preserved without placing taker trades to replenish capacity. There are no automatic retries, order queries, transfers, quote execution or mode changes. All verification was offline; the adjacent missing GET/POST margin-mode family remains separate work.
+A valid order acknowledgement is asynchronous acceptance, not venue acceptance or execution. Later `FAIL` means CrossEx validation failed; `REJECT` means the venue rejected the order. HTTP errors retain status, raw data and the stable label in `Error.Data`; use the label, not diagnostic `message`/`detail`, for programmatic decisions. Malformed/empty HTTP-success payloads also fail. Tick/lot size, balances, position-mode compatibility, RPI access and risk limits remain server-side. The LIGHTER capacity error is preserved without placing taker trades to replenish capacity. There are no automatic retries, order queries, transfers, quote execution or mode changes. All verification was offline; the adjacent GET/POST margin-mode family is implemented separately above and never called automatically by these actions.
 
 ## REST announcement articles
 
@@ -937,6 +958,9 @@ var crossex_17 = await api.CrossEx.UpdateMarginLeverageAsync(new GateCrossExLeve
 // Explicit financial action for an existing Hyperliquid isolated position only. Do not run this catalogue as a batch.
 // The server truncates -30.129 to two decimal places; HTTP 202 is acceptance, not proof of completed adjustment.
 var crossex_17b = await api.CrossEx.UpdateIsolatedMarginAsync(new GateCrossExIsolatedMarginRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", Margin = -30.129m, PositionSide = GateCrossExPositionSide.None });
+var crossex_17c = await api.CrossEx.GetMarginModeAsync(new GateCrossExMarginModeQueryRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC" });
+// Separate explicit mutation; no open orders/positions allowed. HTTP 202 is acceptance only.
+var crossex_17d = await api.CrossEx.UpdateMarginModeAsync(new GateCrossExMarginModeRequest { Symbol = "HYPERLIQUID_FUTURE_CXMT_USDC", MarginMode = GateCrossExMarginMode.Isolated });
 var crossex_18 = await api.CrossEx.ClosePositionAsync(new GateCrossExClosePositionRequest { Symbol = "BINANCE_FUTURE_BTC_USDT", PositionSide = GateCrossExPositionSide.Long }); // Requires no open orders and a position strictly below min notional or min size; PositionSide is required for margin positions.
 var crossex_19 = await api.CrossEx.GetInterestRatesAsync(new GateCrossExCoinExchangeQueryRequest { Coin = "USDT", ExchangeType = GateCrossExExchangeType.Gate });
 var crossex_20 = await api.CrossEx.GetFeesAsync();

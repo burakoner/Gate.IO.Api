@@ -2,7 +2,7 @@ namespace Gate.IO.Api.CrossEx;
 
 /// <summary>
 /// Reads saved CrossEx instructions using exact documented enum strings, not CLR names or numeric defaults.
-/// Scoped to order, transfer and quote requests; unrelated response enum behavior is unchanged.
+/// Scoped to order, transfer, quote and margin-mode requests; unrelated response enum behavior is unchanged.
 /// </summary>
 public class GateCrossExInstructionEnumConverter : JsonConverter
 {
@@ -12,7 +12,7 @@ public class GateCrossExInstructionEnumConverter : JsonConverter
         var type = Nullable.GetUnderlyingType(objectType) ?? objectType;
         return type == typeof(GateCrossExOrderSide) || type == typeof(GateCrossExOrderType)
             || type == typeof(GateCrossExTimeInForce) || type == typeof(GateCrossExExchangeType)
-            || type == typeof(GateCrossExTransferAccountType);
+            || type == typeof(GateCrossExTransferAccountType) || type == typeof(GateCrossExMarginMode);
     }
 
     /// <inheritdoc />
@@ -42,6 +42,7 @@ public class GateCrossExInstructionEnumConverter : JsonConverter
         GateCrossExTimeInForce time => MapConverter.GetString(time),
         GateCrossExExchangeType exchange => MapConverter.GetString(exchange),
         GateCrossExTransferAccountType account => MapConverter.GetString(account),
+        GateCrossExMarginMode mode => MapConverter.GetString(mode),
         _ => throw new JsonSerializationException("Unsupported CrossEx instruction enum"),
     };
 }

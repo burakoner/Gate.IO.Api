@@ -613,6 +613,87 @@ public class GateCrossExRestApiClient
     }
 
     /// <summary>
+    /// Get one futures symbol's margin mode. Signed GET; documented rate: 200 requests per 10 seconds.
+    /// https://www.gate.com/docs/developers/apiv4/en/crossex/#get-futures-position-margin-mode
+    /// </summary>
+    /// <param name="symbol">Required single futures symbol. No Hyperliquid-only restriction is imposed on GET.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Server symbol and raw mode, without inferring a default or updating local account state.</returns>
+    public Task<RestCallResult<GateCrossExMarginModeResponse>> GetMarginModeAsync(string symbol, CancellationToken ct = default)
+        => GetMarginModeAsync(new GateCrossExMarginModeQueryRequest { Symbol = symbol }, ct);
+
+    /// <summary>Query one required futures symbol. No automatic mode mutation, retry or other account lookup.</summary>
+    /// <param name="request">Single-symbol query.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Server symbol and raw mode, including unknown future mode strings.</returns>
+    public Task<RestCallResult<GateCrossExMarginModeResponse>> GetMarginModeAsync(GateCrossExMarginModeQueryRequest request, CancellationToken ct = default)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        ValidateRequiredValue(request.Symbol, nameof(request.Symbol));
+        if (request.Symbol.Any(char.IsWhiteSpace) || request.Symbol.Any(char.IsControl) || request.Symbol.Contains(','))
+            throw new ArgumentException("A single futures symbol is required", nameof(request.Symbol));
+        var parameters = new ParameterCollection { { "symbol", request.Symbol } };
+        return SendMarginModeRequestAsync(HttpMethod.Get, parameters, null, ct);
+    }
+
+    /// <summary>
+    /// Explicitly change one Hyperliquid futures symbol's margin mode. Signed POST; HTTP 202 is acceptance only.
+    /// Documented rate: 100 requests per 10 seconds. Open orders or positions prevent the change.
+    /// https://www.gate.com/docs/developers/apiv4/en/crossex/#update-futures-position-margin-mode
+    /// </summary>
+    /// <param name="symbol">Required Hyperliquid futures symbol.</param>
+    /// <param name="marginMode">Explicit CROSS/ISOLATED mode, with no default.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>Server acknowledgement, not confirmation that the requested mode is active.</returns>
+    public Task<RestCallResult<GateCrossExMarginModeResponse>> UpdateMarginModeAsync(string symbol, GateCrossExMarginMode marginMode, CancellationToken ct = default)
+        => UpdateMarginModeAsync(new GateCrossExMarginModeRequest { Symbol = symbol, MarginMode = marginMode }, ct);
+
+    /// <summary>
+    /// Explicit Hyperliquid margin-mode update only. Eligibility and open-order/position state are checked by the server.
+    /// No automatic cancellation, closing, account-mode change, margin adjustment, pre-query, retry or polling occurs.
+    /// </summary>
+    /// <param name="request">Required symbol and explicitly selected mode.</param>
+    /// <param name="ct">Cancellation token.</param>
+    /// <returns>HTTP acknowledgement with required server-returned symbol/mode; missing values are not filled from input.</returns>
+    public Task<RestCallResult<GateCrossExMarginModeResponse>> UpdateMarginModeAsync(GateCrossExMarginModeRequest request, CancellationToken ct = default)
+    {
+        if (request == null) throw new ArgumentNullException(nameof(request));
+        if (string.IsNullOrWhiteSpace(request.Symbol)
+            || !request.Symbol.StartsWith("HYPERLIQUID_FUTURE_", StringComparison.Ordinal)
+            || request.Symbol.LastIndexOf('_') <= "HYPERLIQUID_FUTURE_".Length
+            || request.Symbol.EndsWith("_", StringComparison.Ordinal)
+            || request.Symbol.Any(char.IsWhiteSpace) || request.Symbol.Any(char.IsControl) || request.Symbol.Contains(','))
+            throw new ArgumentException("A single Hyperliquid futures symbol is required", nameof(request.Symbol));
+        ValidateInstructionEnum(request.MarginMode, nameof(request.MarginMode));
+        var parameters = new ParameterCollection();
+        parameters.SetBody(request);
+        return SendMarginModeRequestAsync(HttpMethod.Post, null, parameters, ct);
+    }
+
+    private async Task<RestCallResult<GateCrossExMarginModeResponse>> SendMarginModeRequestAsync(
+        HttpMethod method, ParameterCollection query, ParameterCollection body, CancellationToken ct)
+    {
+        var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, crossex, "positions/margin_mode"),
+            method, ct, true, queryParameters: query, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
+        if (!result.Success) return result.As<GateCrossExMarginModeResponse>(null);
+        try
+        {
+            var token = result.Data;
+            // RawResponse's dependency path may parse raw future mode strings as dates before invoking the serializer.
+            if (!string.IsNullOrEmpty(result.Raw))
+            {
+                using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
+                token = serializer.Deserialize<JToken>(reader);
+            }
+            var response = token?.ToObject<GateCrossExMarginModeResponse>(serializer);
+            if (response != null) return result.As(response);
+        }
+        catch (JsonException) { }
+        return result.AsError<GateCrossExMarginModeResponse>(new DeserializeError("Invalid or incomplete margin-mode response", null));
+    }
+
+    /// <summary>
     /// Increase/decrease an existing Hyperliquid isolated futures position's margin. Signed POST; HTTP 202 is acceptance only.
     /// Documented rate limit: 100 requests per 10 seconds.
     /// No account-mode lookup, automatic margin-mode change, retry or completion confirmation is performed.
