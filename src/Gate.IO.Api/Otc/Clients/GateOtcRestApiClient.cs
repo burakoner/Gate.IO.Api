@@ -51,6 +51,55 @@ public class GateOtcRestApiClient
         return result.As<T>(null);
     }
 
+    private async Task<RestCallResult<GateOtcActionResult>> SendOtcActionRequestAsync(
+        string endpoint, ParameterCollection body, CancellationToken ct, bool legacyFiatSeconds = false)
+    {
+        var serializer = JsonSerializer.Create(new JsonSerializerSettings { DateParseHandling = DateParseHandling.None });
+        serializer.Converters.Add(new GateOtcSensitiveEnvelopeConverter());
+        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, endpoint), HttpMethod.Post, ct,
+            true, bodyParameters: body, deserializer: serializer).ConfigureAwait(false);
+        if (!result.Success)
+            return AsSensitiveOtcFailure<GateOtcActionResult>(result, serializer, "Invalid OTC action acknowledgement");
+        var token = result.Data;
+        if (!string.IsNullOrEmpty(result.Raw))
+        {
+            using var reader = new JsonTextReader(new System.IO.StringReader(result.Raw)) { DateParseHandling = DateParseHandling.None };
+            token = serializer.Deserialize<JToken>(reader);
+        }
+        if (token is not JObject envelope || envelope["code"]?.Type != JTokenType.Integer
+            || !int.TryParse(envelope["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code))
+            return result.AsError<GateOtcActionResult>(new DeserializeError("OTC action acknowledgement requires an integer business code", null));
+        var message = envelope["message"]?.Type == JTokenType.String ? (string)envelope["message"] : null;
+        if (code != 0)
+            return result.AsError<GateOtcActionResult>(new ServerError(code, message ?? "OTC action rejected"));
+        if (message == null || envelope["timestamp"]?.Type != JTokenType.Integer
+            || !long.TryParse(envelope["timestamp"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var timestamp))
+            return result.AsError<GateOtcActionResult>(new DeserializeError("OTC action acknowledgement requires a message and integer timestamp", null));
+        try
+        {
+            // The user explicitly retained DateTime. Preserve each existing interpretation, not a new wire-unit rule.
+            return result.As(legacyFiatSeconds
+                ? new GateOtcActionResult { Code = code, Message = message, Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamp).UtcDateTime }
+                : envelope.ToObject<GateOtcActionResult>(serializer));
+        }
+        catch (JsonException) { return result.AsError<GateOtcActionResult>(new DeserializeError("Invalid OTC action acknowledgement", null)); }
+        catch (ArgumentOutOfRangeException) { return result.AsError<GateOtcActionResult>(new DeserializeError("OTC action timestamp is outside the legacy date range", null)); }
+    }
+
+    private static void AddSupplementFile(List<KeyValuePair<string, GateOtcFileUpload>> files, string field,
+        string base64, GateOtcFileUpload upload, string parameterName)
+    {
+        if (base64 != null && upload != null)
+            throw new ArgumentException("File representations are mutually exclusive", parameterName);
+        if (base64 != null)
+        {
+            Require(base64, parameterName);
+            try { upload = new GateOtcFileUpload { Content = Convert.FromBase64String(base64), FileName = field }; }
+            catch (FormatException) { throw new ArgumentException("Supplement file content must be Base64", parameterName); }
+        }
+        if (upload != null) files.Add(new KeyValuePair<string, GateOtcFileUpload>(field, upload));
+    }
+
     /// <summary>
     /// Issue temporary S3 POST credentials. Does not upload a file, submit materials or retry automatically.
     /// https://www.gate.com/docs/developers/apiv4/en/otc/#pre-upload-file-temporary-bucket
@@ -266,26 +315,7 @@ public class GateOtcRestApiClient
         parameters.AddOptional("promotion_code", request.PromotionCode);
         parameters.AddOptionalEnum("receive_type", request.ReceiveType);
 
-        var result = await _.SendRequestInternal<JToken>(_.GetUrl(api, v4, otc, "order/create"), HttpMethod.Post, ct, true, bodyParameters: parameters).ConfigureAwait(false);
-        if (!result.Success) return result.As<GateOtcActionResult>(null);
-
-        if (result.Data is not JObject response || response["code"]?.Type != JTokenType.Integer
-            || !int.TryParse(response["code"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var code))
-            return result.AsError<GateOtcActionResult>(new DeserializeError("Fiat-order acknowledgement requires an integer business code", result.Data));
-        var message = response["message"]?.Type == JTokenType.String ? (string)response["message"] : null;
-        if (code != 0)
-            return result.AsError<GateOtcActionResult>(new ServerError(code, message ?? "OTC fiat order rejected"));
-        if (message == null || response["timestamp"]?.Type != JTokenType.Integer
-            || !long.TryParse(response["timestamp"].ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out var timestamp))
-            return result.AsError<GateOtcActionResult>(new DeserializeError("Fiat-order acknowledgement requires message and Unix-second timestamp", result.Data));
-        try
-        {
-            return result.As(new GateOtcActionResult { Code = code, Message = message, Timestamp = DateTimeOffset.FromUnixTimeSeconds(timestamp).UtcDateTime });
-        }
-        catch (ArgumentOutOfRangeException exception)
-        {
-            return result.AsError<GateOtcActionResult>(new DeserializeError(exception.Message, result.Data));
-        }
+        return await SendOtcActionRequestAsync("order/create", parameters, ct, legacyFiatSeconds: true).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -523,7 +553,8 @@ public class GateOtcRestApiClient
     }
 
     /// <summary>
-    /// Submit personal bank card supplementary materials
+    /// Submit personal bank materials selected from the matching checklist. Files and pre-upload JSON can be mixed.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#submit-bank-card-supplement-materials-personal
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
@@ -534,29 +565,22 @@ public class GateOtcRestApiClient
             throw new ArgumentNullException(nameof(request));
 
         Require(request.BankId, nameof(request.BankId));
-        Require(request.IdDocumentFront, nameof(request.IdDocumentFront));
-        Require(request.IdDocumentBack, nameof(request.IdDocumentBack));
-        Require(request.AddressProof, nameof(request.AddressProof));
 
         var form = new ParameterCollection
         {
             { "bank_id", request.BankId },
-            { "id_document_front", request.IdDocumentFront },
-            { "id_document_back", request.IdDocumentBack },
-            { "address_proof", request.AddressProof },
         };
         form.AddOptional("relationship_proof", request.RelationshipProof);
-
-        return _.SendRequestInternal<GateOtcActionResult>(
-            _.GetUrl(api, v4, otc, "bank/personal/bank_supplement"),
-            HttpMethod.Post,
-            ct,
-            true,
-            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
+        var files = new List<KeyValuePair<string, GateOtcFileUpload>>();
+        AddSupplementFile(files, "id_document_front", request.IdDocumentFront, request.IdDocumentFrontUpload, nameof(request.IdDocumentFront));
+        AddSupplementFile(files, "id_document_back", request.IdDocumentBack, request.IdDocumentBackUpload, nameof(request.IdDocumentBack));
+        AddSupplementFile(files, "address_proof", request.AddressProof, request.AddressProofUpload, nameof(request.AddressProof));
+        return SendOtcActionRequestAsync("bank/personal/bank_supplement", GateMultipartFormData.CreateBodyParameters(form, files), ct);
     }
 
     /// <summary>
-    /// Submit enterprise bank card supplementary materials
+    /// Submit enterprise bank materials selected from the matching checklist. Files and pre-upload JSON can be mixed.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#submit-bank-card-supplement-materials-enterprise
     /// </summary>
     /// <param name="request">Request</param>
     /// <param name="ct">Cancellation Token</param>
@@ -567,34 +591,26 @@ public class GateOtcRestApiClient
             throw new ArgumentNullException(nameof(request));
 
         Require(request.BankId, nameof(request.BankId));
-        Require(request.Certificate, nameof(request.Certificate));
-        Require(request.ShareHolders, nameof(request.ShareHolders));
-        Require(request.Passport, nameof(request.Passport));
-        Require(request.ShareHoldingStructure, nameof(request.ShareHoldingStructure));
 
         var form = new ParameterCollection
         {
             { "bank_id", request.BankId },
-            { "certificate", request.Certificate },
-            { "share_holders", request.ShareHolders },
-            { "passport", request.Passport },
-            { "share_holding_structure", request.ShareHoldingStructure },
         };
         form.AddOptional("uid", request.UserId);
-        form.AddOptional("funds_statement", request.FundsStatement);
-        form.AddOptional("additional", request.Additional);
         form.AddOptional("relationship_proof", request.RelationshipProof);
-
-        return _.SendRequestInternal<GateOtcActionResult>(
-            _.GetUrl(api, v4, otc, "bank/enterprise/bank_supplement"),
-            HttpMethod.Post,
-            ct,
-            true,
-            bodyParameters: GateMultipartFormData.CreateBodyParameters(form));
+        var files = new List<KeyValuePair<string, GateOtcFileUpload>>();
+        AddSupplementFile(files, "certificate", request.Certificate, request.CertificateUpload, nameof(request.Certificate));
+        AddSupplementFile(files, "share_holders", request.ShareHolders, request.ShareHoldersUpload, nameof(request.ShareHolders));
+        AddSupplementFile(files, "passport", request.Passport, request.PassportUpload, nameof(request.Passport));
+        AddSupplementFile(files, "share_holding_structure", request.ShareHoldingStructure, request.ShareHoldingStructureUpload, nameof(request.ShareHoldingStructure));
+        AddSupplementFile(files, "funds_statement", request.FundsStatement, request.FundsStatementUpload, nameof(request.FundsStatement));
+        AddSupplementFile(files, "additional", request.Additional, request.AdditionalUpload, nameof(request.Additional));
+        return SendOtcActionRequestAsync("bank/enterprise/bank_supplement", GateMultipartFormData.CreateBodyParameters(form, files), ct);
     }
 
     /// <summary>
-    /// Mark fiat order as paid
+    /// Notify payment on a fiat BUY order, using the unchanged receipt key. Not bank settlement confirmation.
+    /// https://www.gate.com/docs/developers/apiv4/en/otc/#mark-fiat-order-as-paid-deposit-confirmation
     /// </summary>
     /// <param name="orderId">Order ID</param>
     /// <param name="paymentReceiptFileKey">Required payment receipt file key</param>
@@ -625,7 +641,7 @@ public class GateOtcRestApiClient
         parameters.AddOptional("client_order_id", request.ClientOrderId);
         parameters.AddOptional("payment_receipt", request.PaymentReceipt);
 
-        return _.SendRequestInternal<GateOtcActionResult>(_.GetUrl(api, v4, otc, "order/paid"), HttpMethod.Post, ct, true, bodyParameters: parameters);
+        return SendOtcActionRequestAsync("order/paid", parameters, ct);
     }
 
     /// <summary>

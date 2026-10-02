@@ -86,21 +86,21 @@ public class OtcRequestConstructionTests
         var personalSupplement = await client.Otc.SubmitPersonalBankSupplementAsync(new GateOtcBankPersonalSupplementRequest
         {
             BankId = "762",
-            IdDocumentFront = "BASE64-ID-FRONT",
-            IdDocumentBack = "BASE64-ID-BACK",
-            AddressProof = "BASE64-ADDRESS-PROOF",
+            IdDocumentFront = Convert.ToBase64String(Encoding.UTF8.GetBytes("ID-FRONT")),
+            IdDocumentBack = Convert.ToBase64String(Encoding.UTF8.GetBytes("ID-BACK")),
+            AddressProof = Convert.ToBase64String(Encoding.UTF8.GetBytes("ADDRESS-PROOF")),
             RelationshipProof = "{\"relationship\":\"account-holder\"}",
         });
         var enterpriseSupplement = await client.Otc.SubmitEnterpriseBankSupplementAsync(new GateOtcBankEnterpriseSupplementRequest
         {
             UserId = "10001",
             BankId = "762",
-            Certificate = "BASE64-CERTIFICATE",
-            ShareHolders = "BASE64-SHAREHOLDERS",
-            Passport = "BASE64-PASSPORT",
-            ShareHoldingStructure = "BASE64-STRUCTURE",
-            FundsStatement = "BASE64-FUNDS",
-            Additional = "BASE64-ADDITIONAL",
+            Certificate = Convert.ToBase64String(Encoding.UTF8.GetBytes("CERTIFICATE")),
+            ShareHolders = Convert.ToBase64String(Encoding.UTF8.GetBytes("SHAREHOLDERS")),
+            Passport = Convert.ToBase64String(Encoding.UTF8.GetBytes("PASSPORT")),
+            ShareHoldingStructure = Convert.ToBase64String(Encoding.UTF8.GetBytes("STRUCTURE")),
+            FundsStatement = Convert.ToBase64String(Encoding.UTF8.GetBytes("FUNDS")),
+            Additional = Convert.ToBase64String(Encoding.UTF8.GetBytes("ADDITIONAL")),
             RelationshipProof = "{\"relationship\":\"beneficial-owner\"}",
         });
         var paid = await client.Otc.MarkFiatOrderAsPaidAsync(new GateOtcMarkOrderPaidRequest
@@ -217,21 +217,21 @@ public class OtcRequestConstructionTests
 
         Assert.Equal("/api/v4/otc/bank/personal/bank_supplement", handler.Requests[8].RequestUri.AbsolutePath);
         AssertMultipartField(handler.Requests[8], "bank_id", "762");
-        AssertMultipartField(handler.Requests[8], "id_document_front", "BASE64-ID-FRONT");
-        AssertMultipartField(handler.Requests[8], "id_document_back", "BASE64-ID-BACK");
-        AssertMultipartField(handler.Requests[8], "address_proof", "BASE64-ADDRESS-PROOF");
+        AssertMultipartFile(handler.Requests[8], "id_document_front", "ID-FRONT");
+        AssertMultipartFile(handler.Requests[8], "id_document_back", "ID-BACK");
+        AssertMultipartFile(handler.Requests[8], "address_proof", "ADDRESS-PROOF");
         AssertMultipartField(handler.Requests[8], "relationship_proof", "{\"relationship\":\"account-holder\"}");
         AssertMultipartSignature(handler.Requests[8]);
 
         Assert.Equal("/api/v4/otc/bank/enterprise/bank_supplement", handler.Requests[9].RequestUri.AbsolutePath);
         AssertMultipartField(handler.Requests[9], "uid", "10001");
         AssertMultipartField(handler.Requests[9], "bank_id", "762");
-        AssertMultipartField(handler.Requests[9], "certificate", "BASE64-CERTIFICATE");
-        AssertMultipartField(handler.Requests[9], "share_holders", "BASE64-SHAREHOLDERS");
-        AssertMultipartField(handler.Requests[9], "passport", "BASE64-PASSPORT");
-        AssertMultipartField(handler.Requests[9], "share_holding_structure", "BASE64-STRUCTURE");
-        AssertMultipartField(handler.Requests[9], "funds_statement", "BASE64-FUNDS");
-        AssertMultipartField(handler.Requests[9], "additional", "BASE64-ADDITIONAL");
+        AssertMultipartFile(handler.Requests[9], "certificate", "CERTIFICATE");
+        AssertMultipartFile(handler.Requests[9], "share_holders", "SHAREHOLDERS");
+        AssertMultipartFile(handler.Requests[9], "passport", "PASSPORT");
+        AssertMultipartFile(handler.Requests[9], "share_holding_structure", "STRUCTURE");
+        AssertMultipartFile(handler.Requests[9], "funds_statement", "FUNDS");
+        AssertMultipartFile(handler.Requests[9], "additional", "ADDITIONAL");
         AssertMultipartField(handler.Requests[9], "relationship_proof", "{\"relationship\":\"beneficial-owner\"}");
         AssertMultipartSignature(handler.Requests[9]);
 
@@ -402,6 +402,12 @@ public class OtcRequestConstructionTests
 
         var boundary = contentType[(contentType.IndexOf("boundary=", StringComparison.OrdinalIgnoreCase) + "boundary=".Length)..];
         Assert.EndsWith($"--{boundary}--\r\n", request.Content, StringComparison.Ordinal);
+    }
+
+    private static void AssertMultipartFile(RecordedHttpRequest request, string name, string value)
+    {
+        Assert.Contains($"name=\"{name}\"; filename={name};", request.Content);
+        Assert.Contains($"Content-Type: application/octet-stream\r\n\r\n{value}\r\n", request.Content);
     }
 
     private static void AssertMultipartSignature(RecordedHttpRequest request)

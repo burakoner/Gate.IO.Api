@@ -592,8 +592,10 @@ internal class Program
         var otc_06 = await api.Otc.DeleteBankCardAsync("BANK-CARD-ID");
         var otc_07 = await api.Otc.SetDefaultBankCardAsync("BANK-CARD-ID");
         var otc_08 = await api.Otc.GetBankSupplementChecklistAsync("BANK-CARD-ID");
-        var otc_09 = await api.Otc.SubmitPersonalBankSupplementAsync(new GateOtcBankPersonalSupplementRequest { BankId = "BANK-CARD-ID", IdDocumentFront = "BASE64-ID-FRONT", IdDocumentBack = "BASE64-ID-BACK", AddressProof = "BASE64-ADDRESS-PROOF" });
-        var otc_10 = await api.Otc.SubmitEnterpriseBankSupplementAsync(new GateOtcBankEnterpriseSupplementRequest { BankId = "BANK-CARD-ID", Certificate = "BASE64-CERTIFICATE", ShareHolders = "BASE64-SHAREHOLDERS", Passport = "BASE64-PASSPORT", ShareHoldingStructure = "BASE64-STRUCTURE" });
+        // Replace empty bytes with actual materials from the matching checklist; empty placeholders fail before HTTP.
+        // RelationshipProof pre-upload JSON uses plaintext keys/MIME, unlike bank/create and order/paid.
+        var otc_09 = await api.Otc.SubmitPersonalBankSupplementAsync(new GateOtcBankPersonalSupplementRequest { BankId = "BANK-CARD-ID", IdDocumentFrontUpload = new GateOtcFileUpload { Content = Array.Empty<byte>(), FileName = "id-front.pdf", ContentType = "application/pdf" } });
+        var otc_10 = await api.Otc.SubmitEnterpriseBankSupplementAsync(new GateOtcBankEnterpriseSupplementRequest { BankId = "BANK-CARD-ID", CertificateUpload = new GateOtcFileUpload { Content = Array.Empty<byte>(), FileName = "certificate.pdf", ContentType = "application/pdf" } });
         var otc_11 = await api.Otc.MarkFiatOrderAsPaidAsync(new GateOtcMarkOrderPaidRequest { OrderId = "1000000001", PaymentReceiptFileKey = "PAYMENT-RECEIPT-FILE-KEY" });
         var otc_12 = await api.Otc.CancelFiatOrderAsync(new GateOtcOrderIdRequest { OrderId = "1000000001" });
         var otc_13 = await api.Otc.GetFiatOrdersAsync(new GateOtcFiatOrderListRequest { Type = GateOtcOrderType.Buy, FiatCurrency = "USD", CryptoCurrency = "USDT", StartTime = DateTime.UtcNow.AddDays(-7), EndTime = DateTime.UtcNow, PageNumber = 1, PageSize = 10 });
