@@ -1349,12 +1349,15 @@ public class GateSpotRestApiClient
     /// <param name="symbol">Currency pair. When omitted, all eligible Spot POV orders are targeted.</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<List<GateSpotPovOrder>>> CancelPovOrdersAsync(string symbol = null, CancellationToken ct = default)
+    public async Task<RestCallResult<List<GateSpotPovOrder>>> CancelPovOrdersAsync(string symbol = null, CancellationToken ct = default)
     {
         var parameters = new ParameterCollection();
         parameters.AddOptional("currency_pair", symbol);
 
-        return _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders"), HttpMethod.Delete, ct, true, queryParameters: parameters);
+        var result = await _.SendRequestInternal<List<GateSpotPovOrder>>(_.GetUrl(api, v4, spot, "pov_orders"), HttpMethod.Delete, ct, true, queryParameters: parameters).ConfigureAwait(false);
+        if (result.Success && (result.Data == null || result.Data.Any(order => order == null)))
+            return result.AsError<List<GateSpotPovOrder>>(new DeserializeError("Expected a Spot POV cancellation array containing order objects", result.Data));
+        return result;
     }
 
     /// <summary>
@@ -1377,7 +1380,7 @@ public class GateSpotRestApiClient
     /// <param name="orderId">Exchange order ID or the custom ID supplied in the text field</param>
     /// <param name="ct">Cancellation Token</param>
     /// <returns></returns>
-    public Task<RestCallResult<GateSpotPovOrder>> CancelPovOrderAsync(string orderId, CancellationToken ct = default)
+    public async Task<RestCallResult<GateSpotPovOrder>> CancelPovOrderAsync(string orderId, CancellationToken ct = default)
     {
         if (string.IsNullOrWhiteSpace(orderId))
             throw new ArgumentException("Order ID is required.", nameof(orderId));
@@ -1387,6 +1390,9 @@ public class GateSpotRestApiClient
         if (id == "." || id == ".." || id.IndexOfAny(['/', '\\', '?', '#', '%']) >= 0 || id.Any(char.IsControl))
             throw new ArgumentException("Order ID must be a literal path segment without URL routing syntax.", nameof(orderId));
 
-        return _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(id)), HttpMethod.Delete, ct, true);
+        var result = await _.SendRequestInternal<GateSpotPovOrder>(_.GetUrl(api, v4, spot, "pov_orders".AppendPath(id)), HttpMethod.Delete, ct, true).ConfigureAwait(false);
+        if (result.Success && result.Data == null)
+            return result.AsError<GateSpotPovOrder>(new DeserializeError("Expected a Spot POV cancellation order object", result.Data));
+        return result;
     }
 }

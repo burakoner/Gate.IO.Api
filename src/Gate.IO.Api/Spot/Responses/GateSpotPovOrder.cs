@@ -26,7 +26,7 @@ public record GateSpotPovOrder
     /// <summary>
     /// Trade amount
     /// </summary>
-    [JsonProperty("amount"), JsonConverter(typeof(GateDecimalConverter))]
+    [JsonProperty("amount"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal Amount { get; set; }
 
     /// <summary>
@@ -44,13 +44,13 @@ public record GateSpotPovOrder
     /// <summary>
     /// Limit price. A missing value means that the market price is used.
     /// </summary>
-    [JsonProperty("limit_price"), JsonConverter(typeof(GateDecimalConverter))]
+    [JsonProperty("limit_price"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? LimitPrice { get; set; }
 
     /// <summary>
     /// Trigger price. A missing value means that the order is triggered immediately.
     /// </summary>
-    [JsonProperty("trigger_price"), JsonConverter(typeof(GateDecimalConverter))]
+    [JsonProperty("trigger_price"), JsonConverter(typeof(GateFuturesOrderDecimalStringConverter))]
     public decimal? TriggerPrice { get; set; }
 
     /// <summary>
@@ -69,30 +69,35 @@ public record GateSpotPovOrder
     /// Order execution start time in milliseconds
     /// </summary>
     [JsonProperty("start_time_ms")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? StartTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Order execution end time in milliseconds
     /// </summary>
     [JsonProperty("end_time_ms")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? EndTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Order expiration time in milliseconds
     /// </summary>
     [JsonProperty("expire_time_ms")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? ExpireTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Creation time in milliseconds
     /// </summary>
     [JsonProperty("create_time_ms")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long CreateTimeInMilliseconds { get; set; }
 
     /// <summary>
     /// Last modification time in milliseconds
     /// </summary>
     [JsonProperty("update_time_ms")]
+    [JsonConverter(typeof(GateFuturesOrderIdConverter))]
     public long? UpdateTimeInMilliseconds { get; set; }
 
     /// <summary>

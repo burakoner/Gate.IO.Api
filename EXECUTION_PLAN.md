@@ -16,7 +16,7 @@ All abbreviated release numbers below have the prefix `v4.106.`. The table retai
 
 | Order | Scope | State |
 | --- | --- | --- |
-| 1 | Spot POV cancellation correction from `127`: both DELETE routes, optional bulk filter, string IDs, signatures, full response contract and cancellation semantics | Completed |
+| 1 | Spot POV cancellation correction from `127`: both DELETE routes, optional bulk filter, string IDs, signatures, full response contract and cancellation semantics | Completed; remaining result-container/exact-value defects fixed in turn 13 |
 | 2 | Stock contracts from `121`, `136`, `141` and the Stock portion of `143`: order sessions, opt-in lead-trading context, Japanese exchanges, asset types, option assets, categories, rate-limit and fee documentation | Completed |
 | 3 | P2P advertisement payment mappings from `117`; reconcile the complete current advertisement endpoint | Completed |
 | 4 | Spot currency-pair limits and unified-market quote support from `122` and `133`, including the shared batch request and full cancellation/trade contracts | Completed |
@@ -33,11 +33,11 @@ All abbreviated release numbers below have the prefix `v4.106.`. The table retai
 | 7a | CrossEx GET rule/symbols, GET history_positions and missing POST positions/margin; whole current contracts indexed by `130` and `131` | Completed in turn 11; `130/131` closed |
 | 7b | LIGHTER support from `139`: inventory and reconcile complete current order, transfer and convert-quote contracts, not enum additions alone | Pending after earlier `135`; no LIGHTER edits in turn 12 |
 | 7c | Adjacent GET/POST positions/margin_mode absent locally; reconcile as a separate isolated-mode family if included after the LIGHTER inventory | Inventoried gap; pending, not an automatic mode change in 7a |
-| 8a | Remaining OTC fiat creation from `127`, including all current body/acknowledgement fields and errors | Completed in turn 12; `127` closed with the previously completed POV portion |
+| 8a | Remaining OTC fiat creation from `127`, including all current body/acknowledgement fields and errors | Completed in turn 12; rechecked with the POV follow-up in turn 13 |
 | 8b | OTC pre-upload and current bank-binding/business submission contracts from `135`; review their business envelopes, not just file fields | Next bounded group, before LIGHTER |
 | 9 | Stock category and market/account changes from `136` and `143`, without a C# breaking accessor change solely because the Java SDK changed | Completed in order 2 |
 | 10 | REST announcement queries from `142` and `144` | Pending |
-| 11 | Assess public SDK Launch removal from `123`, whole Unified accounts contract from `128` and official C# SDK-only metadata diff for `129` | Completed in turn 12; no Launch API exists locally to remove, and no API/model change appears in the SDK `129` diff |
+| 11 | Assess public SDK Launch removal from `123`, whole Unified accounts contract from `128` and official C# SDK-only metadata diff for `129` | Completed in turn 12 and rechecked in turn 13; no Launch API exists locally to remove, and no API/model change appears in the SDK `129` diff |
 | 12 | Resolve absent changelog-number evidence, including `145/146`, before claiming full sequential catch-up | Evidence pending except inspected SDK `129` diff; do not fabricate implementation scopes |
 
 ## Verification and review checkpoints
@@ -46,11 +46,21 @@ All abbreviated release numbers below have the prefix `v4.106.`. The table retai
 - Never place, cancel, transfer, upload, or otherwise mutate financial accounts in live verification. Signed request construction is tested with a recording HTTP handler and dummy credentials.
 - Check that user-supplied identifiers cannot change the target path or broaden the scope of mutating requests. The POV cancellation tests exposed this risk even after the documented route correction.
 - After four development turns, review changes, documentation, and this plan. Do not continue past five turns without that retrospective and an explicit scope/order revision where needed.
-- Current catch-up development turn: 12. Retrospectives after turns 4, 8 and 12 are complete; turns 10 and 11 also include intra-turn contract reviews. The next cross-turn retrospective is due after turn 16 and mandatory before turn 18; intra-turn checks do not replace it.
+- Current catch-up development turn: 13. Retrospectives after turns 4, 8 and 12 are complete; turns 10, 11 and 13 also include intra-turn contract reviews. The next cross-turn retrospective is due after turn 16 and mandatory before turn 18; intra-turn checks do not replace it.
 - Keep existing numeric identifier accessors as `long` when the wire format is a numeric string, as explicitly requested by the user. Reject nonnumeric/out-of-range values rather than rounding or introducing string identifiers. Document acknowledgement/task identity separately from actual order identity.
 - A previously completed out-of-order endpoint is rechecked when its original release is reached, without duplicating implementation or declaring unfinished sibling endpoints complete.
 
 ## Current turn
+
+02 October 2026, turn 13: the user clarified that "gaps" means `123/127/128/129`, not `135` or all remaining catch-up work. Those scopes had already been handled in e7b103c, so rechecked them against the current official references rather than repeating implementation or moving to a newer release. The initial `135` read-only analysis produced no edits, uploads or live calls; its implementation remains pending.
+
+The recheck found remaining defects in the previously completed `127` POV cancellation portion: empty/null bodies and null bulk order items still reported successful acknowledgements, and the shared response model could round financial strings or fractional millisecond values. Sixteen of the initial 25 new regressions failed. Both DELETE methods now validate their result containers without changing routes, signing, filtering, literal IDs, public signatures, retry or polling behavior. Real empty arrays remain valid. The shared model reuses existing exact primitive codecs for three decimal and five Int64 fields; all 16 response keys/public types and legitimate optional omission/null/zero remain intact. Saved prices/amounts now serialize as documented strings. All POV model consumers receive that parsing change, but list/create/detail missing-body guards and unrelated generic converters are not claimed fixed. No new required-field rule is inferred from the generated tables.
+
+For `123`, local searches and the same complete non-truncated official SDK tree still show no LaunchPool/HODLer/CandyDrop client or endpoint to remove. Unrelated Alpha launch-platform/Futures launch-time metadata remains untouched; no service-shutdown inference is made. For `127` fiat creation, all ten request keys, three required ACK fields and their current remittance/side semantics still match. For `128`, all 22 account/21 balance fields, both optional query parameters and current linked margin reference remain covered without changing long IDs or fabricating absent risk values. For `129`, the inspected official SDK diff is still three metadata files only (+7/-7), not a new endpoint/model specification. No additional implementation difference was found in those bounded scopes.
+
+Verification: 33 new tests; 259 focused Spot/OTC/Unified and 1,472 total offline tests pass, excluding PublicIntegration/LiveCapture. Release builds pass for netstandard2.0/netstandard2.1, examples and tests with zero warnings/errors. Intra-turn review covered production/shared-model changes, error metadata, existing route/signature/cancellation-scope regressions, README migration semantics and this plan. No examples executed, financial calls, upload, retries, publication or push. Package/assembly versions remain 4.106.116. Next forward group is still `135`, then `139`, then `142/144`; absent-number evidence and adjacent CrossEx margin-mode scope remain separate. The next cross-turn retrospective remains turn 16, mandatory before turn 18.
+
+## Development turn 12 record
 
 02 October 2026, turn 12: the user explicitly requested completing skipped earlier updates first. LIGHTER had been inventoried but no code changed. Reconciled `123`, the remaining OTC part of `127`, and the full current Unified endpoint indexed by `128`, then inspected the undocumented official C# SDK `129` diff. This closes those bounded scopes, not `135`, LIGHTER or the entire catch-up. Package/assembly versions stay 4.106.116.
 
